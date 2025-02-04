@@ -1,80 +1,56 @@
 package main.com.rocs.infirimary.deskstop.application;
 
 
-import main.com.rocs.infirimary.deskstop.application.app.facade.studInfo.impl.studentImplFacadeImpl;
-import main.com.rocs.infirimary.deskstop.application.app.facade.studentInfoFacade;
-import main.com.rocs.infirimary.deskstop.application.model.StudentInfo.studentInfo;
+import main.com.rocs.infirimary.deskstop.application.app.facade.PatientFacade;
+import main.com.rocs.infirimary.deskstop.application.app.facade.patient.impl.PatientFacadeImpl;
+import main.com.rocs.infirimary.deskstop.application.data.dbConnector.ConnectorHelper;
+import main.com.rocs.infirimary.deskstop.application.model.patient.Patient;
 
+
+import java.sql.Connection;
 import java.util.Scanner;
 
 public class infirmaryDesktopApplication {
-    public infirmaryDesktopApplication() {
-    }
 
     public static void main(String[] args) {
-        studentInfoFacade studentInfoFacade = new studentImplFacadeImpl();
+
 
         Scanner sc = new Scanner(System.in);
-        System.out.println("Choice to search ");
+        PatientFacade PatientFacade = new PatientFacadeImpl();
 
-        System.out.println("1. LRN");
-        System.out.println("2, Name");
+        System.out.println(" Search for Students Medical Information / Record Using LRN : ");
+        long LRN = sc.nextLong();
 
-        int choice = sc.nextInt();
-        sc.nextLine();
 
-        switch (choice) {
+        Patient patient = PatientFacade.SearchMedInfoUsingLRN(LRN);
 
-            case 1:
-                System.out.println("Search for students LRN : ");
 
-                long LRN = sc.nextLong();
+            if(patient == null ) {
 
-                studentInfo studentInfo = studentInfoFacade.searchStudentbyLRN(LRN);
-                if (studentInfo == null) {
+                System.out.println("No Student Found");
 
-                    System.out.println("Not Student Found!");
-                    break;
-                } else {
-                    System.out.println("Student Info ");
-                    System.out.println("Firstname : " + studentInfo.getFirstName());
-                    System.out.println("Middlename : " + studentInfo.getMiddleName());
-                    System.out.println("Lastname : " + studentInfo.getLastName());
-                    System.out.println("Address : " + studentInfo.getAddress());
-                    System.out.println("Age : " + studentInfo.getAge());
-                    System.out.println("Birthdate : " + studentInfo.getBirthDate());
-                    System.out.println("Gender : " + studentInfo.getGender());
-                    System.out.println("Email : " + studentInfo.getGmail());
-                    System.out.println("ContactNumber : " + studentInfo.getContactNumber());
-                    System.out.println("Guardian ContactNumber  : " + studentInfo.getGuardianContactNumber());
-                }
-            case 2:
-                System.out.println("Enter a firstname : ");
-                String firstname = sc.nextLine();
-                System.out.println("Enter a lastname : ");
-                String lastname = sc.nextLine();
+            }else {
 
-                studentInfo = studentInfoFacade.searchStudentsbyFullName(firstname, lastname);
+                System.out.println("Patient ID  :" + patient.getPatientId());
+                System.out.println("Patient Firstname  : " + patient.getFirstName());
+                System.out.println("Patient Middlename  :" + patient.getMiddleName());
+                System.out.println("Patient Lastname : " + patient.getLastName());
+                System.out.println("Symptoms : " + patient.getSymptoms());
+                System.out.println("Added Remarks : " + patient.getAddedRemarks());
+                System.out.println("Temperature Readings :" + patient.getTemperatureReadings());
+                System.out.println("Visit Date : " + patient.getVisitDate());
+                System.out.println("Time-In : " + patient.getTimeIn());
+                System.out.println("Time-Out : " + patient.getTimeOut());
+                System.out.println("Medication Administered  :" + patient.getMedicationAdministered());
+                System.out.println("Nurse in Charge : " + patient.getNurseInCharge());
 
-                if (studentInfo != null) {
-                    System.out.println("Student Info ");
-                    System.out.println("Firstname : " + studentInfo.getFirstName());
-                    System.out.println("Middlename : " + studentInfo.getMiddleName());
-                    System.out.println("Lastname : " + studentInfo.getLastName());
-                    System.out.println("Address : " + studentInfo.getAddress());
-                    System.out.println("Age : " + studentInfo.getAge());
-                    System.out.println("Birthdate : " + studentInfo.getBirthDate());
-                    System.out.println("Gender : " + studentInfo.getGender());
-                    System.out.println("Email : " + studentInfo.getGmail());
-                    System.out.println("ContactNumber : " + studentInfo.getContactNumber());
-                    System.out.println("Guardian ContactNumber  : " + studentInfo.getGuardianContactNumber());
-                } else {
 
-                    System.out.println("Not Student Found!");
-                }
-        }
+            }
+
+
 
     }
 }
+
 
 
