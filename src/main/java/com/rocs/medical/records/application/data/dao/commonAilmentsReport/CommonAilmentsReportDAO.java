@@ -6,5 +6,5 @@ import java.util.Date;
 import java.util.List;
 
 public interface CommonAilmentsReportDAO {
-    List<CommonAilmentsReport> generateReport(Date startDate, Date endDate, String gradeLevel, String section);
+    List<CommonAilmentsReport> getGeneratedReport(Date startDate, Date endDate, String gradeLevel, String section);
 }
