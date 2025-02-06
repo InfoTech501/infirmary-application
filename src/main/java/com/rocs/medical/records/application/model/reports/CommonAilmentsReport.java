@@ -13,7 +13,14 @@ public class CommonAilmentsReport {
     private int occurrences;
     private List<ReportAffectedStudents> mockAffectedStudents;
 
-    public CommonAilmentsReport(Long id, Long patientId, Date reportDate, String ailment, int occurrences, List<ReportAffectedStudents> mockAffectedStudents) {
+    public CommonAilmentsReport(
+            Long id,
+            Long patientId,
+            Date reportDate,
+            String ailment,
+            int occurrences,
+            List<ReportAffectedStudents> mockAffectedStudents
+    ) {
         this.id = id;
         this.patientId = patientId;
         this.reportDate = reportDate;
