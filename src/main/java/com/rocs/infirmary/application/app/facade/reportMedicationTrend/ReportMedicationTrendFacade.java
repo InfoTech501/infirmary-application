@@ -5,9 +5,9 @@ import com.rocs.infirmary.application.model.report.MedicationTrendReport;
 import java.util.Date;
 import java.util.List;
 
-public interface reportMedicationTrendFacade {
+public interface ReportMedicationTrendFacade {
         List<MedicationTrendReport> generateReport(
-                Date startingDate,
+                Date startDate,
                 Date endDate
         );
 }

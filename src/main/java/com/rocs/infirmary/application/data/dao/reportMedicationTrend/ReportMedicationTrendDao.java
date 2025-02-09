@@ -5,6 +5,6 @@ import com.rocs.infirmary.application.model.report.MedicationTrendReport;
 import java.util.Date;
 import java.util.List;
 
-public interface reportMedicationTrendDao {
-    List<MedicationTrendReport> generateReport(Date startingDate, Date endDate);
+public interface ReportMedicationTrendDao {
+    List<MedicationTrendReport> getGenerateReport(Date startDate, Date endDate);
 }

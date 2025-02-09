@@ -5,15 +5,15 @@ import java.util.Date;
 public class MedicationTrendReport {
 
     private int id;
-    private Date startingDate;
+    private Date startDate;
     private Date endDate;
     private String medName;
     private int quantityUsed;
     private int quantityAvailable;
 
-    public MedicationTrendReport(int id, Date startingDate, Date endDate, String medName, int quantityUsed, int quantityAvailable) {
+    public MedicationTrendReport(int id, Date startDate, Date endDate, String medName, int quantityUsed, int quantityAvailable) {
         this.id = id;
-        this.startingDate = startingDate;
+        this.startDate = startDate;
         this.endDate = endDate;
         this.medName = medName;
         this.quantityUsed = quantityUsed;
@@ -32,12 +32,12 @@ public class MedicationTrendReport {
     }
 
 
-    public Date getStartingDate() {
-        return startingDate;
+    public Date getStartDate() {
+        return startDate;
     }
 
-    public void setStartingDate(Date startingDate) {
-        this.startingDate = startingDate;
+    public void setStartDate(Date startingDate) {
+        this.startDate = startingDate;
     }
 
     public Date getEndDate() {
@@ -76,7 +76,7 @@ public class MedicationTrendReport {
     public String toString() {
         return "MedicationTrendsReport{" +
                 "id=" + id +
-                ", startingDate=" + startingDate +
+                ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", medName='" + medName + '\'' +
                 ", quantityUsed=" + quantityUsed +
