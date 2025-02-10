@@ -1,11 +1,5 @@
 package main.com.rocs.infirimary.deskstop.application.model.patient;
-
-import oracle.sql.DATE;
-
-public class Patient {
-
-
-
+public class StudentMedicalRecord {
 
     private int patientId;
 
@@ -34,11 +28,11 @@ public class Patient {
     private String nurseInCharge;
 
 
-    public Patient(){
+    public StudentMedicalRecord(){
 
     }
 
-    public Patient(
+    public StudentMedicalRecord(
                        int patientId,
                        String studentNumber,
                        String firstName,
