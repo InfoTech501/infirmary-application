@@ -4,8 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="de693386-38b5-40da-a00e-1296b679e8e3" name="Changes" comment="">
+    <list default="true" id="3f3a3a15-ae97-4760-8911-f540789170f7" name="Changes" comment="">
       <change afterPath="$PROJECT_DIR$/../Microsoft VS Code/debug.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/infirmary-application/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/infirmary-application/src/main/java/com/rocs/student/medical/records/application/InfirmarySystemApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/infirmary-application/src/main/java/com/rocs/student/medical/records/application/app/facade/studentmedicalreport/StudentMedicalReportFacade.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/infirmary-application/src/main/java/com/rocs/student/medical/records/application/app/facade/studentmedicalreport/impl/StudentMedicalReportFacadeImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/infirmary-application/src/main/java/com/rocs/student/medical/records/application/data/connection/ConnectionHelper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/infirmary-application/src/main/java/com/rocs/student/medical/records/application/data/dao/studentmedicalreport/StudentMedicalReportDao.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/infirmary-application/src/main/java/com/rocs/student/medical/records/application/data/dao/studentmedicalreport/impl/StudentMedicalReportDaoImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/infirmary-application/src/main/java/com/rocs/student/medical/records/application/model/studentmedicalreport/StudentMedicalReport.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/infirmary-application/src/main/java/resources/database.sql" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,76 +32,45 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
-  </component>
-  <component name="HighlightingSettingsPerFile">
-    <setting file="jar://$PROJECT_DIR$/../../../../Program Files/Java/jdk-17/lib/src.zip!/java.base/java/lang/RuntimeException.java" root0="FORCE_HIGHLIGHTING" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProblemsViewState">
-    <option name="selectedTabId" value="ProjectErrors" />
-  </component>
-  <component name="ProjectId" id="2siUk13GdSREM62SVOJuYy69at1" />
-  <component name="ProjectLevelVcsManager">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
+  <component name="ProjectId" id="2spEiOxML6m2EtixDgtH1NHka5j" />
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "ignore.virus.scanning.warn.message": "true",
     "last_opened_file_path": "C:/Users/zander/Desktop/infirmary-application",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "Project",
+    "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="de693386-38b5-40da-a00e-1296b679e8e3" name="Changes" comment="" />
-      <created>1738938030669</created>
+      <changelist id="3f3a3a15-ae97-4760-8911-f540789170f7" name="Changes" comment="" />
+      <created>1739144247129</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1738938030669</updated>
-      <workItem from="1738938031290" duration="5746000" />
-      <workItem from="1738981196573" duration="105000" />
-      <workItem from="1738981334573" duration="72000" />
-      <workItem from="1738986810968" duration="46000" />
-      <workItem from="1738986983697" duration="11000" />
-      <workItem from="1738987666788" duration="1611000" />
-      <workItem from="1739142208551" duration="2029000" />
+      <updated>1739144247129</updated>
+      <workItem from="1739144248150" duration="1530000" />
+      <workItem from="1739146342489" duration="45000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="VcsManagerConfiguration">
-    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <breakpoint enabled="true" type="java-exception">
-          <properties class="java.lang.RuntimeException" package="java.lang" />
-          <option name="timeStamp" value="1" />
-        </breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
