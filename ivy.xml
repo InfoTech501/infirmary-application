@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="2.0"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
+
+    <info
+            organisation="com.rocs"
+            module="infirmary-application"
+            revision="1.0"
+            status="integration">
+    </info>
+
+    <dependencies>
+        <dependency org="com.oracle.database.jdbc" name="ojdbc11" rev="23.7.0.25.01"/>
+
+        <dependency org="org.junit.jupiter" name="junit-jupiter-api" rev="5.11.4"/>
+        <dependency org="org.junit.jupiter" name="junit-jupiter-engine" rev="5.11.4"/>
+        <dependency org="org.mockito" name="mockito-junit-jupiter" rev="5.15.2"/>
+        <dependency org="org.junit.jupiter" name="junit-jupiter-params" rev="5.11.4"/>
+
+    </dependencies>
+
+</ivy-module>
