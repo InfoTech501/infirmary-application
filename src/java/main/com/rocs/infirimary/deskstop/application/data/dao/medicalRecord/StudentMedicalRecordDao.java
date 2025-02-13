@@ -1,10 +1,9 @@
-package main.com.rocs.infirimary.deskstop.application.app.facade;
-
+package main.com.rocs.infirimary.deskstop.application.data.dao.medicalRecord;
 
 
 import main.com.rocs.infirimary.deskstop.application.model.medicalrecord.StudentMedicalRecord;
 
-
-public interface StudentMedicalRecordFacade {
+public interface StudentMedicalRecordDao {
     StudentMedicalRecord SearchMedInfoUsingLRN(long LRN);
+
 }

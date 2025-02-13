@@ -2,8 +2,9 @@ package main.com.rocs.infirimary.deskstop.application;
 
 
 import main.com.rocs.infirimary.deskstop.application.app.facade.StudentMedicalRecordFacade;
-import main.com.rocs.infirimary.deskstop.application.app.facade.patient.impl.StudentMedicalRecordImplFacade;
-import main.com.rocs.infirimary.deskstop.application.model.patient.StudentMedicalRecord;
+import main.com.rocs.infirimary.deskstop.application.app.facade.medicalRecord.impl.StudentMedicalRecordImplFacade;
+import main.com.rocs.infirimary.deskstop.application.model.medicalrecord.StudentMedicalRecord;
+import main.com.rocs.infirimary.deskstop.application.model.studentdetails.StudentDetails;
 
 
 import java.util.Scanner;
@@ -16,34 +17,37 @@ public class infirmaryDesktopApplication {
         Scanner sc = new Scanner(System.in);
         StudentMedicalRecordFacade StudentMedicalRecord = new StudentMedicalRecordImplFacade();
 
-        System.out.println(" Search for Students Medical Information / Record Using LRN : ");
+        System.out.println(" Search Student Medical Records using LRN: ");
         long LRN = sc.nextLong();
 
 
-        StudentMedicalRecord studentMedicalRecord = StudentMedicalRecord.SearchMedInfoUsingLRN(LRN);
+        StudentMedicalRecord record = StudentMedicalRecord.SearchMedInfoUsingLRN(LRN);
 
+        StudentDetails details = record.getStudentDetails();
 
-            if(studentMedicalRecord == null ) {
+        if( details == null ) {
 
-                System.out.println("No Student Found");
+            System.out.println("No Student Found");
+        }else {
 
-            }else {
+            System.out.println("Firstname             : " + details.getFirstName());
+            System.out.println("Middlename            : " + details.getMiddleName());
+            System.out.println("Lastname              : " + details.getLastName());
+            System.out.println("Age                   : " + details.getAge());
+            System.out.println("Gender                : " + details.getGender());
+            System.out.println("Email                 : " + details.getEmail());
+            System.out.println("Address               : " + details.getAddress());
+            System.out.println("Contact Number        : " + details.getContactNumber());
 
-                System.out.println("Patient ID  :" + studentMedicalRecord.getPatientId());
-                System.out.println("Patient Firstname  : " + studentMedicalRecord.getFirstName());
-                System.out.println("Patient Middlename  :" + studentMedicalRecord.getMiddleName());
-                System.out.println("Patient Lastname : " + studentMedicalRecord.getLastName());
-                System.out.println("Symptoms : " + studentMedicalRecord.getSymptoms());
-                System.out.println("Added Remarks : " + studentMedicalRecord.getAddedRemarks());
-                System.out.println("Temperature Readings :" + studentMedicalRecord.getTemperatureReadings());
-                System.out.println("Visit Date : " + studentMedicalRecord.getVisitDate());
-                System.out.println("Time-In : " + studentMedicalRecord.getTimeIn());
-                System.out.println("Time-Out : " + studentMedicalRecord.getTimeOut());
-                System.out.println("Medication Administered  :" + studentMedicalRecord.getMedicationAdministered());
-                System.out.println("Nurse in Charge : " + studentMedicalRecord.getNurseInCharge());
+            System.out.println("Ailment ID            : "  + record.getAilmentID());
+            System.out.println("Medical History ID    : "  + record.getMedHistoryID());
+            System.out.println("Nurse In Charge ID    : "  + record.getNurseInChargeID());
+            System.out.println("Symptoms              : "  + record.getSymptoms());
+            System.out.println("Temperature Readings  : "  + record.getTemperatureReadings());
+            System.out.println("Visit Date            : "  + record.getVisitDate());
+            System.out.println("Treatment             : "  + record.getTreatment());
 
-
-            }
+        }
 
 
 

@@ -3,7 +3,7 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 .idea/
-Infirmary2025.iml/
+
 ### Eclipse ###
 .apt_generated
 .classpath
