@@ -1,6 +1,9 @@
 ### IntelliJ IDEA ###
 *.idea/
-*.iml/
+*.iml
+
+/lib/
+/build/
 
 out/
 !**/src/main/**/out/

@@ -1,4 +1,4 @@
-package com.rocs.infirmary.application.data.connection;
+package com.rocs.medical.records.application.data.connection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
