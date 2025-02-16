@@ -1,4 +1,4 @@
-package com.rocs.nurse.desktop.application.data.connection;
+package com.rocs.Medicine.Inventory.Application.data.connection;
 
 
 import java.sql.Connection;
@@ -10,7 +10,7 @@ public class ConnectionHelper {
 
     public static final String ORACLE_DRIVER = "oracle.jdbc.driver.OracleDriver";
 
-    public static final String USERNAME = "dbAdmin";
+    public static final String USERNAME = "INFIRMARY";
 
     public static final String PASSWORD = "Changeme0";
 
