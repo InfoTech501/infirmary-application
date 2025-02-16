@@ -1,4 +1,4 @@
-package com.rocs.Medicine.Inventory.Application.model.Inventory;
+package com.rocs.medical.records.application.model.Inventory;
 
 
 public class Inventory {

@@ -23,13 +23,13 @@ create table inventory (
   primary key (inventory_id));
 
 
-  insert into inventory (medicine_id, item_type, description, quantity_available)
-  values ('IB', 'Medicine', 'Ibuprofen', 50);
-  insert into inventory (medicine_id, item_type, description, quantity_available)
-  values ('CS', 'Medicine', 'Cough syrup', 30);
-  insert into inventory (medicine_id, item_type, description, quantity_available)
-  values ('PT', 'Medicine', 'Paracetamol', 40);
-  insert into inventory (medicine_id, item_type, description, quantity_available)
-  values ('AC', 'Medicine', 'Antacid', 25);
-  insert into inventory (medicine_id, item_type, description, quantity_available)
-  values ('AH', 'Medicine', 'Antihistamine', 20);
+insert into inventory (medicine_id, item_type, description, quantity_available)
+values ('IB', 'Medicine', 'Ibuprofen', 50);
+insert into inventory (medicine_id, item_type, description, quantity_available)
+values ('CS', 'Medicine', 'Cough syrup', 30);
+insert into inventory (medicine_id, item_type, description, quantity_available)
+values ('PT', 'Medicine', 'Paracetamol', 40);
+insert into inventory (medicine_id, item_type, description, quantity_available)
+values ('AC', 'Medicine', 'Antacid', 25);
+insert into inventory (medicine_id, item_type, description, quantity_available)
+values ('AH', 'Medicine', 'Antihistamine', 20);

@@ -1,4 +1,4 @@
-package com.rocs.Medicine.Inventory.Application.data.connection;
+package com.rocs.medical.records.application.data.connection;
 
 
 import java.sql.Connection;

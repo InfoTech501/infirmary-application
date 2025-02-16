@@ -1,9 +1,9 @@
-package com.rocs.Medicine.Inventory.Application;
+package com.rocs.medical.records.application;
 
 
-import com.rocs.Medicine.Inventory.Application.app.facade.InventoryFacade;
-import com.rocs.Medicine.Inventory.Application.app.facade.impl.InventoryFacadeImpl;
-import com.rocs.Medicine.Inventory.Application.model.Inventory.Inventory;
+import com.rocs.medical.records.application.app.facade.InventoryFacade;
+import com.rocs.medical.records.application.app.facade.impl.InventoryFacadeImpl;
+import com.rocs.medical.records.application.model.Inventory.Inventory;
 
 import java.util.List;
 import java.util.Scanner;
@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 
 
-public class NurseDesktopApplication {
+public class InfirmarySystemApplication {
 
     public static void main(String[] args) {
         InventoryFacade inventoryFacade = new InventoryFacadeImpl();

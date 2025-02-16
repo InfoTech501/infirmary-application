@@ -1,7 +1,7 @@
-package com.rocs.Medicine.Inventory.Application.data.dao.impl;
-import com.rocs.Medicine.Inventory.Application.model.Inventory.Inventory;
-import com.rocs.Medicine.Inventory.Application.data.dao.InventoryDao;
-import com.rocs.Medicine.Inventory.Application.data.connection.ConnectionHelper;
+package com.rocs.medical.records.application.data.dao.impl;
+import com.rocs.medical.records.application.model.Inventory.Inventory;
+import com.rocs.medical.records.application.data.dao.InventoryDao;
+import com.rocs.medical.records.application.data.connection.ConnectionHelper;
 
 
 import java.sql.*;
