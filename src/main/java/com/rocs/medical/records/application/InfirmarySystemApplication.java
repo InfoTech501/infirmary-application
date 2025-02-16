@@ -13,6 +13,8 @@ import java.util.Scanner;
 
 public class InfirmarySystemApplication {
     public static void main(String[] args) {
+
+
         CommonAilmentsReportFacade ailmentsReportFacade = new CommonAilmentsReportFacadeImpl();
 
         try (Scanner scanner = new Scanner(System.in)) {
