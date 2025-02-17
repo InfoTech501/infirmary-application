@@ -23,4 +23,6 @@ public interface CommonAilmentsReportFacade {
             String gradeLevel,
             String section
     );
+
+    void displayCommonAilmentsReport(List<CommonAilmentsReport> reports, Date startDate, Date endDate, String gradeLevel, String section);
 }
