@@ -26,15 +26,15 @@ public class InfirmarySystemApplication {
         System.out.println("Enter your choice: ");
         int choice = scanner.nextInt();
 
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
+
         switch (choice){
             case 1: {
                 CommonAilmentsReportFacade ailmentsReportFacade = new CommonAilmentsReportFacadeImpl();
 
                 try{
                     System.out.println("Common Ailments Report");
-
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    dateFormat.setLenient(false);
 
                     Date startDate = getValidInputDate(scanner, dateFormat, "Enter start date (yyyy-MM-dd): ");
                     Date endDate = getValidInputDate(scanner, dateFormat, "Enter end date (yyyy-MM-dd): ");
@@ -59,16 +59,14 @@ public class InfirmarySystemApplication {
                 ReportMedicationTrendFacade medicationTrendFacade = new ReportMedicationTrendFacadeImpl();
 
                 try{
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    dateFormat.setLenient(false);
-
                     System.out.println("\nWelcome to Medication Trend Report");
 
                     Date startDate = getValidInputDate(scanner, dateFormat, "Please enter start date (yyyy-MM-dd): ");
                     Date endDate = getValidInputDate(scanner, dateFormat, "Please enter end date (yyyy-MM-dd): ");
 
                     List<MedicationTrendReport> reports = medicationTrendFacade.generateReport(startDate, endDate);
-                    displayMedTrendReport(reports, startDate, endDate);
+                    medicationTrendFacade.displayMedTrendReport(reports, startDate, endDate);
+
 
                 } catch (RuntimeException e) {
                     System.err.println("Error generating: " + e.getMessage());
@@ -103,23 +101,6 @@ public class InfirmarySystemApplication {
         System.out.println("Total no. of occurrences: " + totalOccurrences);
     }
 
-    private static void displayMedTrendReport(List<MedicationTrendReport> reports, Date startDate, Date endDate) {
-        if (reports == null || reports.isEmpty()) {
-            System.out.println("No data available for the selected criteria.");
-            return;
-        }
-
-        SimpleDateFormat displayFormat = new SimpleDateFormat("MMMM dd, yyyy");
-        System.out.println("\nMedication Trend report");
-        System.out.println("Period date: " + displayFormat.format(startDate) + " to " + displayFormat.format(endDate));
-        System.out.println("\nTotal no. of medicine usage within the period date: " + reports.size());
-
-        for (MedicationTrendReport report : reports) {
-            printMedicationTrend(report);
-        }
-
-    }
-
     private static void printAilmentSection(CommonAilmentsReport report) {
         System.out.println("\nAffected students:");
         for (Person student : report.getAffectedPeople()) {
@@ -131,12 +112,6 @@ public class InfirmarySystemApplication {
         System.out.println("Grade Level: " + report.getGradeLevel());
         System.out.println("Strand: " + report.getStrand());
 
-    }
-
-    private static void printMedicationTrend(MedicationTrendReport report) {
-        System.out.print("\nMedication Usage: " + report.getUsage());
-        System.out.print(" | Medicine: " + report.getMedicineName());
-        System.out.print(" | Medication Stocks: " + report.getStocks());
     }
 
     private static Date getValidInputDate(Scanner scanner, SimpleDateFormat dateFormat, String prompt) {
