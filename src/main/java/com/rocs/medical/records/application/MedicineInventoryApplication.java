@@ -1,17 +1,14 @@
 package com.rocs.medical.records.application;
-
-
 import com.rocs.medical.records.application.app.facade.InventoryFacade;
 import com.rocs.medical.records.application.app.facade.impl.InventoryFacadeImpl;
 import com.rocs.medical.records.application.model.Inventory.Inventory;
-
 import java.util.List;
 import java.util.Scanner;
 
 
 
 
-public class InfirmarySystemApplication {
+public class MedicineInventoryApplication {
 
     public static void main(String[] args) {
         InventoryFacade inventoryFacade = new InventoryFacadeImpl();
@@ -23,17 +20,17 @@ public class InfirmarySystemApplication {
         sc.nextLine();
         switch (input) {
             case 1: {
-                List<Inventory> Inventorys = inventoryFacade.getAllItems();
+                List<Inventory> Inventorys = inventoryFacade.getInventoryItems();
 
                 if (Inventorys.isEmpty()) {
                     System.out.println("The list of items is empty.");
                 } else {
                     System.out.println("LIST OF ITEMS:");
                     for (Inventory Inventory : Inventorys) {
-                        System.out.println("InventoryID:  "+Inventory.getInventoryId());
-                        System.out.println("MedicineID:  "+Inventory.getMedicineId());
-                        System.out.println("ItemType:  "+Inventory.getItemType());
+
+
                         System.out.println("Description:  "+Inventory.getDescription());
+                        System.out.println("ItemType:  "+Inventory.getItemType());
                         System.out.println("QuantityAvailable:  "+Inventory.getQuantityAvailable());
                         System.out.println();
 
