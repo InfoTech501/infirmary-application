@@ -5,6 +5,10 @@ import com.rocs.medical.records.application.app.facade.commonAilmentsReport.impl
 import com.rocs.medical.records.application.model.reports.CommonAilmentsReport;
 import com.rocs.medical.records.application.model.person.Person;
 
+import com.rocs.medical.records.application.app.facade.reportMedicationTrend.ReportMedicationTrendFacade;
+import com.rocs.medical.records.application.app.facade.reportMedicationTrend.impl.ReportMedicationTrendFacadeImpl;
+import com.rocs.medical.records.application.model.reports.MedicationTrendReport;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,31 +17,65 @@ import java.util.Scanner;
 
 public class InfirmarySystemApplication {
     public static void main(String[] args) {
-        CommonAilmentsReportFacade ailmentsReportFacade = new CommonAilmentsReportFacadeImpl();
 
-        try (Scanner scanner = new Scanner(System.in)) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            dateFormat.setLenient(false);
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Welcome to Infirmary System Application");
+        System.out.println("Please select which report:");
+        System.out.println("1 - Common Ailments Report");
+        System.out.println("2 - Medication Trend Report");
+        System.out.println("Enter your choice: ");
+        int choice = scanner.nextInt();
 
-            System.out.println("Common Ailments Report");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
 
-            Date startDate = getValidInputDate(scanner, dateFormat, "Enter start date (yyyy-MM-dd): ");
-            Date endDate = getValidInputDate(scanner, dateFormat, "Enter end date (yyyy-MM-dd): ");
+        switch (choice){
+            case 1: {
+                CommonAilmentsReportFacade ailmentsReportFacade = new CommonAilmentsReportFacadeImpl();
 
-            System.out.print("Enter grade level (enter to skip): ");
-            String gradeLevel = scanner.nextLine().trim();
-            gradeLevel = gradeLevel.isEmpty() ? null : gradeLevel;
+                try{
+                    System.out.println("Common Ailments Report");
 
-            System.out.print("Enter section (enter to skip): ");
-            String section = scanner.nextLine().trim();
-            section = section.isEmpty() ? null : section;
+                    Date startDate = getValidInputDate(scanner, dateFormat, "Enter start date (yyyy-MM-dd): ");
+                    Date endDate = getValidInputDate(scanner, dateFormat, "Enter end date (yyyy-MM-dd): ");
 
-            List<CommonAilmentsReport> reports = ailmentsReportFacade.generateReport(startDate, endDate, gradeLevel, section);
-            displayCommonAilmentsReport(reports, startDate, endDate, gradeLevel, section);
+                    System.out.print("Enter grade level (enter to skip): ");
+                    String gradeLevel = scanner.nextLine().trim();
+                    gradeLevel = gradeLevel.isEmpty() ? null : gradeLevel;
 
-        } catch (RuntimeException e) {
-            System.err.println("Report generation failed: " + e.getMessage());
+                    System.out.print("Enter section (enter to skip): ");
+                    String section = scanner.nextLine().trim();
+                    section = section.isEmpty() ? null : section;
+
+                    List<CommonAilmentsReport> reports = ailmentsReportFacade.generateReport(startDate, endDate, gradeLevel, section);
+                    displayCommonAilmentsReport(reports, startDate, endDate, gradeLevel, section);
+                } catch (RuntimeException e) {
+                    System.err.println("Report generation failed: " + e.getMessage());
+                }
+                break;
+            }
+
+            case 2: {
+                ReportMedicationTrendFacade medicationTrendFacade = new ReportMedicationTrendFacadeImpl();
+
+                try{
+                    System.out.println("\nWelcome to Medication Trend Report");
+
+                    Date startDate = getValidInputDate(scanner, dateFormat, "Please enter start date (yyyy-MM-dd): ");
+                    Date endDate = getValidInputDate(scanner, dateFormat, "Please enter end date (yyyy-MM-dd): ");
+
+                    List<MedicationTrendReport> reports = medicationTrendFacade.generateReport(startDate, endDate);
+                    medicationTrendFacade.displayMedTrendReport(reports, startDate, endDate);
+
+
+                } catch (RuntimeException e) {
+                    System.err.println("Error generating: " + e.getMessage());
+                }
+                break;
+            }
         }
+
+
     }
 
     private static void displayCommonAilmentsReport(List<CommonAilmentsReport> reports, Date startDate, Date endDate, String gradeLevel, String section) {
