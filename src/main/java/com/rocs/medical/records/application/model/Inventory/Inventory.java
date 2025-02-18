@@ -1,6 +1,8 @@
 package com.rocs.medical.records.application.model.Inventory;
 
 
+import java.sql.Timestamp;
+
 public class Inventory {
 
     private int InventoryId;
@@ -9,6 +11,7 @@ public class Inventory {
     private String Description;
     private int QuantityAvailable;
 
+    private Timestamp ExpirationDate;
 
 
 
@@ -16,12 +19,13 @@ public class Inventory {
     }
 
 
-    public Inventory(int InventoryId, String MedicineId, String ItemType, String Description,int QuantityAvailable) {
+    public Inventory(int InventoryId, String MedicineId, String ItemType, String Description,int QuantityAvailable,Timestamp ExpirationDate) {
         this.InventoryId = InventoryId;
         this.MedicineId = MedicineId;
         this.ItemType = ItemType;
         this.Description = Description;
         this.QuantityAvailable = QuantityAvailable;
+        this.ExpirationDate = ExpirationDate;
 
 
     }
@@ -67,6 +71,15 @@ public class Inventory {
         this.QuantityAvailable = QuantityAvailable;
     }
 
+
+
+    public Timestamp getExpirationDate() {
+        return ExpirationDate;
+    }
+
+    public void setExpirationDate(Timestamp ExpirationDate) {
+        this.ExpirationDate = ExpirationDate;
+    }
 
 
 

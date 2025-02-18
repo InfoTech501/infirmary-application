@@ -8,14 +8,19 @@ import java.util.List;
 
 public class InventoryDaoImpl implements InventoryDao {
 
-
     @Override
     public List<Inventory> getInventoryItems() {
-        List<Inventory> intvn = new ArrayList<>();
+        List<Inventory> inventoryList = new ArrayList<>();
 
-        try (Connection con = ConnectionHelper.getConnection()) {
-            PreparedStatement stmt = con.prepareStatement("SELECT * FROM INVENTORY");
-            ResultSet rs = stmt.executeQuery();
+
+        String sql = "SELECT i.INVENTORY_ID, i.MEDICINE_ID, i.ITEM_TYPE, i.DESCRIPTION, i.QUANTITY_AVAILABLE, m.EXPIRATION_DATE " +
+                "FROM INVENTORY i " +
+                "JOIN MEDICINE m ON i.MEDICINE_ID = m.MEDICINE_ID";
+
+        try (Connection con = ConnectionHelper.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
 
             while (rs.next()) {
                 Inventory inventory = new Inventory();
@@ -24,16 +29,17 @@ public class InventoryDaoImpl implements InventoryDao {
                 inventory.setItemType(rs.getString("ITEM_TYPE"));
                 inventory.setDescription(rs.getString("DESCRIPTION"));
                 inventory.setQuantityAvailable(rs.getInt("QUANTITY_AVAILABLE"));
+                inventory.setExpirationDate(rs.getTimestamp("EXPIRATION_DATE"));
 
 
-
-                intvn.add(inventory);
+                inventoryList.add(inventory);
             }
 
         } catch (SQLException e) {
             System.out.println("An SQL Exception occurred: " + e.getMessage());
         }
 
-        return intvn;
+        return inventoryList;
     }
 }
+

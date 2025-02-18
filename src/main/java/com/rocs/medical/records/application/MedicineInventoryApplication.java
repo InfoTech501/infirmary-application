@@ -28,10 +28,11 @@ public class MedicineInventoryApplication {
                     System.out.println("LIST OF ITEMS:");
                     for (Inventory Inventory : Inventorys) {
 
-
-                        System.out.println("Description:  "+Inventory.getDescription());
-                        System.out.println("ItemType:  "+Inventory.getItemType());
-                        System.out.println("QuantityAvailable:  "+Inventory.getQuantityAvailable());
+                        System.out.println();
+                        System.out.println("NameofMedicine:  "+Inventory.getDescription());
+                        System.out.println("Stock:  "+Inventory.getQuantityAvailable());
+                        System.out.println("Description:  "+Inventory.getItemType());
+                        System.out.println("ExpirationDate:  " + Inventory.getExpirationDate());
                         System.out.println();
 
                     }
