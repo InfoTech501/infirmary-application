@@ -4,13 +4,17 @@ import com.rocs.medical.records.application.app.facade.commonAilmentsReport.Comm
 import com.rocs.medical.records.application.app.facade.commonAilmentsReport.impl.CommonAilmentsReportFacadeImpl;
 import com.rocs.medical.records.application.model.reports.CommonAilmentsReport;
 import com.rocs.medical.records.application.model.person.Person;
-
 import com.rocs.medical.records.application.app.facade.reportMedicationTrend.ReportMedicationTrendFacade;
 import com.rocs.medical.records.application.app.facade.reportMedicationTrend.impl.ReportMedicationTrendFacadeImpl;
 import com.rocs.medical.records.application.model.reports.MedicationTrendReport;
+import com.rocs.medical.records.application.app.facade.createMedicalRecords.createMedicalRecordsFacade;
+import com.rocs.medical.records.application.app.facade.createMedicalRecords.impl.createMedicalRecordsFacadeImpl;
+import com.rocs.medical.records.application.model.createmedicalrecords.MedicalRecords;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -19,64 +23,83 @@ public class InfirmarySystemApplication {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Welcome to Infirmary System Application");
-        System.out.println("Please select which report:");
-        System.out.println("1 - Common Ailments Report");
-        System.out.println("2 - Medication Trend Report");
-        System.out.println("Enter your choice: ");
-        int choice = scanner.nextInt();
+        createMedicalRecordsFacade records = new createMedicalRecordsFacadeImpl();
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        dateFormat.setLenient(false);
+        while (true) {
+            System.out.println("Infirmary System Application");
+            System.out.println("1 - Common Ailments Report");
+            System.out.println("2 - Medication Trend Report");
+            System.out.println("3 - Add Student Record");
+            System.out.println("4 - Exit");
+            System.out.print("Enter your choice: ");
 
-        switch (choice){
-            case 1: {
-                CommonAilmentsReportFacade ailmentsReportFacade = new CommonAilmentsReportFacadeImpl();
+            if (scanner.hasNextInt()) {
+                int choice = scanner.nextInt();
+                scanner.nextLine();
 
-                try{
-                    System.out.println("Common Ailments Report");
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                dateFormat.setLenient(false);
 
-                    Date startDate = getValidInputDate(scanner, dateFormat, "Enter start date (yyyy-MM-dd): ");
-                    Date endDate = getValidInputDate(scanner, dateFormat, "Enter end date (yyyy-MM-dd): ");
+                switch (choice) {
+                    case 1: {
+                        CommonAilmentsReportFacade ailmentsReportFacade = new CommonAilmentsReportFacadeImpl();
 
-                    System.out.print("Enter grade level (enter to skip): ");
-                    String gradeLevel = scanner.nextLine().trim();
-                    gradeLevel = gradeLevel.isEmpty() ? null : gradeLevel;
+                        try {
+                            System.out.println("Common Ailments Report");
 
-                    System.out.print("Enter section (enter to skip): ");
-                    String section = scanner.nextLine().trim();
-                    section = section.isEmpty() ? null : section;
+                            Date startDate = getValidInputDate(scanner, dateFormat, "Enter start date (yyyy-MM-dd): ");
+                            Date endDate = getValidInputDate(scanner, dateFormat, "Enter end date (yyyy-MM-dd): ");
 
-                    List<CommonAilmentsReport> reports = ailmentsReportFacade.generateReport(startDate, endDate, gradeLevel, section);
-                    displayCommonAilmentsReport(reports, startDate, endDate, gradeLevel, section);
-                } catch (RuntimeException e) {
-                    System.err.println("Report generation failed: " + e.getMessage());
+                            System.out.print("Enter grade level (enter to skip): ");
+                            String gradeLevel = scanner.nextLine().trim();
+                            gradeLevel = gradeLevel.isEmpty() ? null : gradeLevel;
+
+                            System.out.print("Enter section (enter to skip): ");
+                            String section = scanner.nextLine().trim();
+                            section = section.isEmpty() ? null : section;
+
+                            List<CommonAilmentsReport> reports = ailmentsReportFacade.generateReport(startDate, endDate, gradeLevel, section);
+                            displayCommonAilmentsReport(reports, startDate, endDate, gradeLevel, section);
+                        } catch (RuntimeException e) {
+                            System.err.println("Report generation failed: " + e.getMessage());
+                        }
+                        break;
+                    }
+
+                    case 2: {
+                        ReportMedicationTrendFacade medicationTrendFacade = new ReportMedicationTrendFacadeImpl();
+
+                        try {
+                            System.out.println("\nWelcome to Medication Trend Report");
+
+                            Date startDate = getValidInputDate(scanner, dateFormat, "Please enter start date (yyyy-MM-dd): ");
+                            Date endDate = getValidInputDate(scanner, dateFormat, "Please enter end date (yyyy-MM-dd): ");
+
+                            List<MedicationTrendReport> reports = medicationTrendFacade.generateReport(startDate, endDate);
+                            medicationTrendFacade.displayMedTrendReport(reports, startDate, endDate);
+
+                        } catch (RuntimeException e) {
+                            System.err.println("Error generating: " + e.getMessage());
+                        }
+                        break;
+                    }
+                    case 3:
+                        records.getMedicalRecordFromUserInput();
+                        break;
+                    case 4:
+                        System.out.println("Goodbye!");
+                        scanner.close();
+                        return;
+                    default:
+                        System.out.println("Invalid option.");
                 }
-                break;
-            }
-
-            case 2: {
-                ReportMedicationTrendFacade medicationTrendFacade = new ReportMedicationTrendFacadeImpl();
-
-                try{
-                    System.out.println("\nWelcome to Medication Trend Report");
-
-                    Date startDate = getValidInputDate(scanner, dateFormat, "Please enter start date (yyyy-MM-dd): ");
-                    Date endDate = getValidInputDate(scanner, dateFormat, "Please enter end date (yyyy-MM-dd): ");
-
-                    List<MedicationTrendReport> reports = medicationTrendFacade.generateReport(startDate, endDate);
-                    medicationTrendFacade.displayMedTrendReport(reports, startDate, endDate);
-
-
-                } catch (RuntimeException e) {
-                    System.err.println("Error generating: " + e.getMessage());
-                }
-                break;
+            } else {
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.next();
             }
         }
-
-
     }
+
 
     private static void displayCommonAilmentsReport(List<CommonAilmentsReport> reports, Date startDate, Date endDate, String gradeLevel, String section) {
         if (reports == null || reports.isEmpty()) {
@@ -116,18 +139,22 @@ public class InfirmarySystemApplication {
 
     private static Date getValidInputDate(Scanner scanner, SimpleDateFormat dateFormat, String prompt) {
         while (true) {
-            try {
-                System.out.print(prompt);
+            System.out.print(prompt);
+            if (scanner.hasNextLine()) {
                 String input = scanner.nextLine().trim();
-                Date date = dateFormat.parse(input);
-
-                if (date.after(new Date())) {
-                    System.err.println("Please enter a present or past date.");
-                    continue;
+                try {
+                    Date date = dateFormat.parse(input);
+                    if (date.after(new Date())) {
+                        System.err.println("Please enter a present or past date.");
+                    } else {
+                        return date;
+                    }
+                } catch (ParseException e) {
+                    System.err.println("Invalid date format, use yyyy-MM-dd.");
                 }
-                return date;
-            } catch (ParseException e) {
-                System.err.println("Invalid date format, use yyyy-MM-dd.");
+            } else {
+                System.out.println("Invalid input. Please try again.");
+                scanner.next();
             }
         }
     }
