@@ -5,10 +5,7 @@ import com.rocs.medical.records.application.data.dao.frequentVisitReport.Frequen
 import com.rocs.medical.records.application.data.dao.frequentVisitReport.impl.FrequentVisitReportDaoImpl;
 import com.rocs.medical.records.application.model.reports.FrequentVisitReport;
 
-<<<<<<< HEAD
-=======
 import java.text.SimpleDateFormat;
->>>>>>> cec7215 (frequent visit update)
 import java.util.Date;
 import java.util.List;
 
@@ -19,10 +16,6 @@ public class FrequentVisitReportFacadeImpl implements FrequentVisitReportFacade 
     public List<FrequentVisitReport> generateReport(Date startDate, Date endDate, String gradeLevel) {
         return frequentVisitDao.getFrequentVisitReports(gradeLevel, startDate, endDate);
     }
-<<<<<<< HEAD
-}
-
-=======
 
     @Override
     public void handleFrequentVisit(List<FrequentVisitReport> reports, Date startDate, Date endDate, String gradeLevel) {
@@ -49,4 +42,3 @@ public class FrequentVisitReportFacadeImpl implements FrequentVisitReportFacade 
         System.out.println("Health Concern: " + report.getSymptoms());
     }
 }
->>>>>>> cec7215 (frequent visit update)

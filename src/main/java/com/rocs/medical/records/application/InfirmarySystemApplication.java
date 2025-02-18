@@ -4,6 +4,9 @@ import com.rocs.medical.records.application.app.facade.commonAilmentsReport.Comm
 import com.rocs.medical.records.application.app.facade.commonAilmentsReport.impl.CommonAilmentsReportFacadeImpl;
 import com.rocs.medical.records.application.model.reports.CommonAilmentsReport;
 import com.rocs.medical.records.application.model.person.Person;
+import com.rocs.medical.records.application.app.facade.frequentVisitReport.FrequentVisitReportFacade;
+import com.rocs.medical.records.application.app.facade.frequentVisitReport.impl.FrequentVisitReportFacadeImpl;
+import com.rocs.medical.records.application.model.reports.FrequentVisitReport;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,30 +16,64 @@ import java.util.Scanner;
 
 public class InfirmarySystemApplication {
     public static void main(String[] args) {
-        CommonAilmentsReportFacade ailmentsReportFacade = new CommonAilmentsReportFacadeImpl();
 
-        try (Scanner scanner = new Scanner(System.in)) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            dateFormat.setLenient(false);
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Select Report Type:");
+        System.out.println("1. Common Ailments Report");
+        System.out.println("2. Frequent Visit Report");
 
-            System.out.println("Common Ailments Report");
+        int type = scanner.nextInt();
+        scanner.nextLine(); // Consume newline left-over
 
-            Date startDate = getValidInputDate(scanner, dateFormat, "Enter start date (yyyy-MM-dd): ");
-            Date endDate = getValidInputDate(scanner, dateFormat, "Enter end date (yyyy-MM-dd): ");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
 
-            System.out.print("Enter grade level (enter to skip): ");
-            String gradeLevel = scanner.nextLine().trim();
-            gradeLevel = gradeLevel.isEmpty() ? null : gradeLevel;
+        switch (type) {
+            case 1:
+                CommonAilmentsReportFacade ailmentsReportFacade = new CommonAilmentsReportFacadeImpl();
+                try {
+                    System.out.println("Common Ailments Report");
 
-            System.out.print("Enter section (enter to skip): ");
-            String section = scanner.nextLine().trim();
-            section = section.isEmpty() ? null : section;
+                    Date startDate = getValidInputDate(scanner, dateFormat, "Enter start date (yyyy-MM-dd): ");
+                    Date endDate = getValidInputDate(scanner, dateFormat, "Enter end date (yyyy-MM-dd): ");
 
-            List<CommonAilmentsReport> reports = ailmentsReportFacade.generateReport(startDate, endDate, gradeLevel, section);
-            displayCommonAilmentsReport(reports, startDate, endDate, gradeLevel, section);
+                    System.out.print("Enter grade level (enter to skip): ");
+                    String gradeLevel = scanner.nextLine().trim();
+                    gradeLevel = gradeLevel.isEmpty() ? null : gradeLevel;
 
-        } catch (RuntimeException e) {
-            System.err.println("Report generation failed: " + e.getMessage());
+                    System.out.print("Enter section (enter to skip): ");
+                    String section = scanner.nextLine().trim();
+                    section = section.isEmpty() ? null : section;
+
+                    List<CommonAilmentsReport> reports = ailmentsReportFacade.generateReport(startDate, endDate, gradeLevel, section);
+                    displayCommonAilmentsReport(reports, startDate, endDate, gradeLevel, section);
+
+                } catch (RuntimeException e) {
+                    System.err.println("Report generation failed: " + e.getMessage());
+                }
+                break;
+
+            case 2:
+                FrequentVisitReportFacade frequentVisitReportFacade = new FrequentVisitReportFacadeImpl();
+                try {
+                    System.out.println("Frequent Visit Report");
+
+                    Date frequentVisitStartDate = getValidInputDate(scanner, dateFormat, "Enter start date (yyyy-MM-dd): ");
+                    Date frequentVisitEndDate = getValidInputDate(scanner, dateFormat, "Enter end date (yyyy-MM-dd): ");
+                    System.out.print("Enter grade level for Frequent Visit: ");
+                    String frequentVisitGradeLevel = scanner.nextLine().trim();
+
+                    List<FrequentVisitReport> reports = frequentVisitReportFacade.generateReport(frequentVisitStartDate, frequentVisitEndDate, frequentVisitGradeLevel);
+                    frequentVisitReportFacade.handleFrequentVisit(reports, frequentVisitStartDate, frequentVisitEndDate, frequentVisitGradeLevel);
+
+                } catch (RuntimeException e) {
+                    System.err.println("Report generation failed: " + e.getMessage());
+                }
+                break;
+
+            default:
+                System.out.println("Invalid report type selected.");
+                break;
         }
     }
 
@@ -73,7 +110,6 @@ public class InfirmarySystemApplication {
         System.out.println("No. of occurrences per ailment: " + report.getOccurrences());
         System.out.println("Grade Level: " + report.getGradeLevel());
         System.out.println("Strand: " + report.getStrand());
-
     }
 
     private static Date getValidInputDate(Scanner scanner, SimpleDateFormat dateFormat, String prompt) {
