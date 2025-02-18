@@ -91,4 +91,18 @@ public class MedicalRecords {
         this.treatment = treatment;
     }
 
+    @Override
+    public String toString() {
+        return "Medical_Records{" +
+                "studentId=" + studentId +
+                ", ailmentId='" + ailmentId + '\'' +
+                ", medHistoryId='" + medHistoryId + '\'' +
+                ", nurseInChargeId='" + nurseInChargeId + '\'' +
+                ", symptoms=" + symptoms + '\'' +
+                ", temperatureReadings=" + temperatureReadings +
+                ", visitDate='" + visitDate + '\'' +
+                ", treatment='" + treatment + '\'' +
+                '}';
+    }
 }
+
