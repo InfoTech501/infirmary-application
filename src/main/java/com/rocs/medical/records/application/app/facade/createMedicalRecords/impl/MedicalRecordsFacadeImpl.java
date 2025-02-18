@@ -13,7 +13,7 @@ public class MedicalRecordsFacadeImpl implements MedicalRecordsFacade {
     private final Scanner input = new Scanner(System.in);
 
     @Override
-    public boolean saveOrUpdateMedicalRecord(MedicalRecords record) {
+    public boolean saveOrcancelMedicalRecord(MedicalRecords record) {
         System.out.println("Saving/Updating record: " + record);
         return true;
     }
@@ -32,16 +32,16 @@ public class MedicalRecordsFacadeImpl implements MedicalRecordsFacade {
         record.setVisitDate(getDateTime("Visit Date and Time (YYYY-MM-DD HH:mm): "));
         record.setTreatment(getString("Treatment: "));
 
-        boolean exists = saveOrUpdateMedicalRecord(record);
+        boolean exists = saveOrcancelMedicalRecord(record);
 
         if (exists) {
             if (confirmAction("Record exists. Update?")) {
-                saveOrUpdateMedicalRecord(record);
+                saveOrcancelMedicalRecord(record);
                 System.out.println("Record updated.");
             }
         } else {
             if (confirmAction("Save record?")) {
-                saveOrUpdateMedicalRecord(record);
+                saveOrcancelMedicalRecord(record);
                 System.out.println("Record saved.");
             }
         }
