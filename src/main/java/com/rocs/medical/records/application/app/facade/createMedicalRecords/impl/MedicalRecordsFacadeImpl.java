@@ -14,7 +14,7 @@ public class MedicalRecordsFacadeImpl implements MedicalRecordsFacade {
 
     @Override
     public boolean saveOrcancelMedicalRecord(MedicalRecords record) {
-        System.out.println("Saving/Updating record: " + record);
+        System.out.println("Saving/Cancel record: " + record);
         return true;
     }
 
