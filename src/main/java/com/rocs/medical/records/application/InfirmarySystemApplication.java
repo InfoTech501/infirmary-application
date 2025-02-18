@@ -27,8 +27,11 @@ public class InfirmarySystemApplication {
         System.out.println("Please select which report:");
         System.out.println("1 - Common Ailments Report");
         System.out.println("2 - Medication Trend Report");
+        System.out.println("3 - Frequent Visit Report");
         System.out.println("Enter your choice: ");
+
         int choice = scanner.nextInt();
+        scanner.nextLine();
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setLenient(false);
