@@ -29,15 +29,13 @@ public class FrequentVisitReportDaoImpl implements FrequentVisitReportDao {
         try (Connection conn = ConnectionHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, gradeLevel);
-            stmt.setTimestamp(1, new java.sql.Timestamp(startDate.getTime()));
-            stmt.setTimestamp(2, new java.sql.Timestamp(endDate.getTime()));
-
             stmt.setTimestamp(2, new java.sql.Timestamp(startDate.getTime()));
             stmt.setTimestamp(3, new java.sql.Timestamp(endDate.getTime()));
 
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 FrequentVisitReport report = new FrequentVisitReport();
+
                 report.setStudentId(rs.getInt("student_id"));
                 report.setFirstName(rs.getString("first_name"));
                 report.setLastName(rs.getString("last_name"));

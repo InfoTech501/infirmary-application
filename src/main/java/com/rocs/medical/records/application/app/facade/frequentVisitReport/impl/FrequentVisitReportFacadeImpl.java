@@ -40,9 +40,9 @@ public class FrequentVisitReportFacadeImpl implements FrequentVisitReportFacade 
             return;
         }
         SimpleDateFormat displayFormat = new SimpleDateFormat("MMMM dd, yyyy");
-        System.out.println("Frequent Visit Report");
+        System.out.println("\nFrequent Visit Report");
         System.out.println("Period of Date: " + displayFormat.format(startDate) + " to " + displayFormat.format(endDate));
-        System.out.println("Total no. of Visit: " + reports.size());
+        System.out.println("\nTotal no. of Visit: " + reports.size());
 
         for (FrequentVisitReport report : reports) {
             printFrequentVisit(report);

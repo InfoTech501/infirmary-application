@@ -15,5 +15,5 @@ import java.util.List;
 public interface FrequentVisitReportFacade {
     List<FrequentVisitReport> generateReport(Date startDate, Date endDate, String gradeLevel);
 
-    void handleFrequentVisit(List<FrequentVisitReport> reports, Date frequentVisitStartDate, Date frequentVisitEndDate, String frequentVisitGradeLevel);
+    void handleFrequentVisit(List<FrequentVisitReport> reports, Date startDate, Date endDate, String gradeLevel);
 }
