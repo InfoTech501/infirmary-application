@@ -2,7 +2,9 @@ package com.rocs.medical.records.application;
 
 import com.rocs.medical.records.application.app.facade.commonAilmentsReport.CommonAilmentsReportFacade;
 import com.rocs.medical.records.application.app.facade.commonAilmentsReport.impl.CommonAilmentsReportFacadeImpl;
+
 import com.rocs.medical.records.application.app.facade.medicalRecord.impl.StudentMedicalRecordImplFacade;
+
 import com.rocs.medical.records.application.model.reports.CommonAilmentsReport;
 import com.rocs.medical.records.application.model.person.Person;
 
@@ -24,10 +26,15 @@ public class InfirmarySystemApplication {
         System.out.println("Please select which report:");
         System.out.println("1 - Common Ailments Report");
         System.out.println("2 - Medication Trend Report");
+
         System.out.println("3 - Retrieve Student Medical Record");
         System.out.println("Enter your choice: ");
         int choice = scanner.nextInt();
         scanner.nextLine();
+
+        System.out.println("Enter your choice: ");
+        int choice = scanner.nextInt();
+
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setLenient(false);
@@ -97,6 +104,7 @@ public class InfirmarySystemApplication {
                 break;
 
             }
+
         }
 
 
