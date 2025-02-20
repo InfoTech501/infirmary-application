@@ -10,10 +10,12 @@ import com.rocs.medical.records.application.app.facade.reportMedicationTrend.Rep
 import com.rocs.medical.records.application.app.facade.reportMedicationTrend.impl.ReportMedicationTrendFacadeImpl;
 import com.rocs.medical.records.application.model.reports.MedicationTrendReport;
 
+
 import com.rocs.medical.records.application.app.facade.medicineInventory.InventoryFacade;
 import com.rocs.medical.records.application.app.facade.medicineInventory.impl.InventoryFacadeImpl;
 
 import java.text.ParseException;
+
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,7 +26,9 @@ import java.util.Scanner;
 public class InfirmarySystemApplication {
     public static void main(String[] args) {
 
+
         InventoryFacade inventoryFacade = new InventoryFacadeImpl();
+
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to Infirmary System Application");
@@ -33,6 +37,7 @@ public class InfirmarySystemApplication {
         System.out.println("2 - Medication Trend Report");
         System.out.println("3 - Retrieve Student Medical Record");
         System.out.println("4 - View Inventory List");
+
 
         System.out.println("Enter your choice: ");
         int choice = scanner.nextInt();
@@ -107,10 +112,11 @@ public class InfirmarySystemApplication {
                 }
                 break;
             }
+
             case 4: {
                 inventoryFacade.displayInventoryItems();
                 break;
-            }
+
 
         }
 
