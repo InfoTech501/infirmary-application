@@ -1,4 +1,3 @@
-
 package com.rocs.medical.records.application.data.connection;
 
 import java.sql.Connection;
