@@ -3,6 +3,9 @@ package com.rocs.medical.records.application;
 import com.rocs.medical.records.application.app.facade.commonAilmentsReport.CommonAilmentsReportFacade;
 import com.rocs.medical.records.application.app.facade.commonAilmentsReport.impl.CommonAilmentsReportFacadeImpl;
 import com.rocs.medical.records.application.app.facade.medicalRecord.impl.StudentMedicalRecordFacadeImpl;
+import com.rocs.medical.records.application.app.facade.medicineInventory.MedicineInventoryFacade;
+import com.rocs.medical.records.application.app.facade.medicineInventory.impl.MedicineInventoryFacadeImpl;
+import com.rocs.medical.records.application.model.medicineInventory.MedicineInventory;
 import com.rocs.medical.records.application.model.reports.CommonAilmentsReport;
 import com.rocs.medical.records.application.model.person.Person;
 
@@ -25,6 +28,8 @@ public class InfirmarySystemApplication {
         System.out.println("1 - Common Ailments Report");
         System.out.println("2 - Medication Trend Report");
         System.out.println("3 - Retrieve Student Medical Record");
+        System.out.println("4- Search for an Medicine Name");
+        System.out.println("5 - Display all Medicine Names");
 
         System.out.println("Enter your choice: ");
         int choice = scanner.nextInt();
@@ -99,6 +104,40 @@ public class InfirmarySystemApplication {
                 }
                 break;
             }
+            case 4: {
+                scanner.nextLine();
+                MedicineInventoryFacadeImpl medicineInventory = new MedicineInventoryFacadeImpl();
+                System.out.println("Enter the Medicine Name of the medicine to search: ");
+                String Medicine_id = scanner.nextLine();
+                medicineInventory.getItemByMedicine_Id(Medicine_id);
+
+                break;
+            }
+            case 5: {
+                scanner.nextLine();
+                MedicineInventoryFacade medicineInventoryFacade = new MedicineInventoryFacadeImpl();
+
+                try {
+                    System.out.println("Welcome to Medicine Inventory");
+
+                    Class<InfirmarySystemApplication> endDate = InfirmarySystemApplication.class;
+
+                    List<MedicineInventory> medicineInventoryList = medicineInventoryFacade.getAllMedicine(endDate);
+                    if (medicineInventoryList.isEmpty()) {
+                        System.out.println("The list of medicine Name is empty.");
+                    } else {
+                        System.out.println("List of medicine Name:");
+                        for (MedicineInventory medicineInventory : medicineInventoryList) {
+                            System.out.println(medicineInventory.getMedicine_id());
+                        }
+
+                    }
+
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            break;
 
         }
 
