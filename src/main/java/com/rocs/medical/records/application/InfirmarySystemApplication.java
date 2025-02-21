@@ -2,6 +2,7 @@ package com.rocs.medical.records.application;
 
 import com.rocs.medical.records.application.app.facade.commonAilmentsReport.CommonAilmentsReportFacade;
 import com.rocs.medical.records.application.app.facade.commonAilmentsReport.impl.CommonAilmentsReportFacadeImpl;
+import com.rocs.medical.records.application.app.facade.medicalRecord.impl.StudentMedicalRecordFacadeImpl;
 import com.rocs.medical.records.application.model.reports.CommonAilmentsReport;
 import com.rocs.medical.records.application.model.person.Person;
 
@@ -23,6 +24,8 @@ public class InfirmarySystemApplication {
         System.out.println("Please select which report:");
         System.out.println("1 - Common Ailments Report");
         System.out.println("2 - Medication Trend Report");
+        System.out.println("3 - Retrieve Student Medical Record");
+
         System.out.println("Enter your choice: ");
         int choice = scanner.nextInt();
 
@@ -34,6 +37,7 @@ public class InfirmarySystemApplication {
                 CommonAilmentsReportFacade ailmentsReportFacade = new CommonAilmentsReportFacadeImpl();
 
                 try{
+                    scanner.nextLine();
                     System.out.println("Common Ailments Report");
 
                     Date startDate = getValidInputDate(scanner, dateFormat, "Enter start date (yyyy-MM-dd): ");
@@ -56,6 +60,7 @@ public class InfirmarySystemApplication {
             }
 
             case 2: {
+                scanner.nextLine();
                 ReportMedicationTrendFacade medicationTrendFacade = new ReportMedicationTrendFacadeImpl();
 
                 try{
@@ -73,6 +78,28 @@ public class InfirmarySystemApplication {
                 }
                 break;
             }
+
+
+            case 3: {
+                try{
+                    scanner.nextLine();
+
+                    StudentMedicalRecordFacadeImpl studentMedical = new StudentMedicalRecordFacadeImpl();
+
+                    System.out.println("Search Student Medical Records using LRN: ");
+                    long LRN = scanner.nextLong();
+
+                    studentMedical.findMedicalInformationByLRN(LRN);
+
+
+
+
+                } catch (RuntimeException e) {
+                    System.err.println("Error generating: " + e.getMessage());
+                }
+                break;
+            }
+
         }
 
 
