@@ -9,6 +9,8 @@ import com.rocs.medical.records.application.model.person.Person;
 import com.rocs.medical.records.application.app.facade.reportMedicationTrend.ReportMedicationTrendFacade;
 import com.rocs.medical.records.application.app.facade.reportMedicationTrend.impl.ReportMedicationTrendFacadeImpl;
 import com.rocs.medical.records.application.model.reports.MedicationTrendReport;
+import com.rocs.medical.records.application.model.update.UpdateMedicineInventory;
+import com.rocs.medical.records.application.app.facade.updateMedicineInventory.impl.UpdateMedicineInventoryFacadeImpl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,6 +27,7 @@ public class InfirmarySystemApplication {
         System.out.println("1 - Common Ailments Report");
         System.out.println("2 - Medication Trend Report");
         System.out.println("3 - Retrieve Student Medical Record");
+        System.out.println("4 - Update Medicine Inventory");
 
         System.out.println("Enter your choice: ");
         int choice = scanner.nextInt();
@@ -92,11 +95,14 @@ public class InfirmarySystemApplication {
                     studentMedical.findMedicalInformationByLRN(LRN);
 
 
-
-
                 } catch (RuntimeException e) {
                     System.err.println("Error generating: " + e.getMessage());
                 }
+                break;
+            }
+
+            case 4: {
+                updateMedicineInventory(scanner);
                 break;
             }
 
@@ -156,6 +162,44 @@ public class InfirmarySystemApplication {
             } catch (ParseException e) {
                 System.err.println("Invalid date format, use yyyy-MM-dd.");
             }
+        }
+    }
+
+    private static void updateMedicineInventory(Scanner scanner) {
+        try {
+            UpdateMedicineInventoryFacadeImpl updateMedicineFacade = new UpdateMedicineInventoryFacadeImpl();
+
+            System.out.print("Enter new Medicine Name: ");
+            scanner.nextLine();
+            String newName = scanner.nextLine();
+
+            System.out.print("Enter new Stock Quantity: ");
+            int newQuantity = Integer.parseInt(scanner.nextLine());
+
+            System.out.print("Enter Unit of Measurement (e.g., mg, ml, tablet): ");
+            String newUnit = scanner.nextLine();
+
+            System.out.print("Enter new Expiration Date (YYYY-MM-DD): ");
+            String newExpiry = scanner.nextLine();
+
+            System.out.print("Save changes? (YES/NO): ");
+            String confirm = scanner.nextLine();
+
+            if (confirm.equalsIgnoreCase("yes")) {
+                UpdateMedicineInventory medicine = new UpdateMedicineInventory(newName, newQuantity, newUnit, newExpiry);
+                boolean success = updateMedicineFacade.updateMedicineInventory(medicine);
+
+                if (success) {
+                    System.out.println("Changes saved successfully.");
+                } else {
+                    System.out.println("Failed to update the inventory.");
+                }
+            } else {
+                System.out.println("Update cancelled.");
+            }
+
+        } catch (RuntimeException e) {
+            System.err.println("Error updating inventory: " + e.getMessage());
         }
     }
 }
