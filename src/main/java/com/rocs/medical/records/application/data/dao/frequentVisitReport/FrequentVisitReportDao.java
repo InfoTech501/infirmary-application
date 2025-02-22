@@ -15,5 +15,5 @@ public interface FrequentVisitReportDao {
      * * @return list of FrequentVisitReport object like student id, firstName, lastName, grade level, symptoms, visit count, and visit date.
      * */
 
-    List<FrequentVisitReport> getFrequentVisitReports(String gradeLevel, Date startDate, Date endDate);
+  List<FrequentVisitReport> getFrequentVisitReports(String gradeLevel, Date startDate, Date endDate);
 }
