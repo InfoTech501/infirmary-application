@@ -14,7 +14,7 @@ public class MedicalRecords {
     private double temperatureReadings;
     private String treatment;
     private int nurseInChargeId;
-
+    private Integer ailmentId;
 
     public MedicalRecords() {
     }
@@ -34,7 +34,6 @@ public class MedicalRecords {
     public void setLrn(long lrn) {
         this.lrn = lrn;
     }
-
 
     public String getFirstName() {
         return firstName;
@@ -100,6 +99,14 @@ public class MedicalRecords {
         this.nurseInChargeId = nurseInChargeId;
     }
 
+    public Integer getAilmentId() {
+        return ailmentId;
+    }
+
+    public void setAilmentId(Integer ailmentId) {
+        this.ailmentId = ailmentId;
+    }
+
     @Override
     public String toString() {
         return "MedicalRecords{" +
@@ -113,6 +120,7 @@ public class MedicalRecords {
                 ", temperatureReadings=" + temperatureReadings +
                 ", treatment='" + treatment + '\'' +
                 ", nurseInChargeId=" + nurseInChargeId +
+                ", ailmentId=" + ailmentId +
                 '}';
     }
 }

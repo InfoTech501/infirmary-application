@@ -14,11 +14,10 @@ public class createMedicalRecordsDaoImpl implements createMedicalRecordsDao {
         try (Connection con = ConnectionHelper.getConnection()) {
             int studentId = getStudentIdByName(con, medicalRecords.getFirstName(), medicalRecords.getMiddleName(), medicalRecords.getLastName());
             if (studentId == -1) {
-                System.err.println("Student not found.");
                 return false;
             }
 
-            String sql = "INSERT INTO medical_record (student_id, symptoms, visit_datetime, temperature, treatment, nurse_in_charge_id) VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO medical_record (student_id, symptoms, visit_datetime, temperature, treatment, nurse_in_charge_id, ailment_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement stmt = con.prepareStatement(sql)) {
 
                 stmt.setInt(1, studentId);
@@ -29,7 +28,6 @@ public class createMedicalRecordsDaoImpl implements createMedicalRecordsDao {
                         LocalDateTime ldt = medicalRecords.getVisitDateTime();
                         stmt.setTimestamp(3, Timestamp.valueOf(ldt));
                     } catch (IllegalArgumentException e) {
-                        System.err.println("Date/Time parsing error: " + e.getMessage());
                         return false;
                     }
                 } else {
@@ -40,11 +38,17 @@ public class createMedicalRecordsDaoImpl implements createMedicalRecordsDao {
                 stmt.setString(5, medicalRecords.getTreatment());
                 stmt.setInt(6, medicalRecords.getNurseInChargeId());
 
+                Integer ailmentId = medicalRecords.getAilmentId();
+                if (ailmentId == null) {
+                    throw new IllegalArgumentException("Ailment ID cannot be null.");
+                } else {
+                    stmt.setInt(7, ailmentId);
+                }
+
                 int rowsAffected = stmt.executeUpdate();
                 return rowsAffected > 0;
 
             } catch (SQLException e) {
-                System.err.println("An SQL Exception occurred: " + e.getMessage());
                 return false;
             }
 
