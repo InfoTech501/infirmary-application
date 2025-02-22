@@ -14,25 +14,10 @@ public class ReportMedicationTrendFacadeImpl implements ReportMedicationTrendFac
     /** The data access object for ReportMedicationTrend. */
     private final ReportMedicationTrendDao medTrendDao = new ReportMedicationTrendDaoImpl();
 
-    /**
-     * A class that manages the report of medication trend within the given report period
-     * * @param startDate  The start date of the report period.
-     * * @param endDate    The end date of the report period.
-     * * @return list of MedicationTrendReports.
-     * */
-
     @Override
     public List<MedicationTrendReport> generateReport(Date startDate, Date endDate) {
         return this.medTrendDao.getGeneratedReport(startDate, endDate);
     }
-
-    /**
-     * A class that manages the displaying of medication trend within the given report period.
-     * * @param reports    Checking if there is a report within the given report period.
-     * * @param startDate  The start date of the report period.
-     * * @param endDate    The end date of the report period.
-     * * @return list of MedicationTrendReports.
-     * */
 
     @Override
     public void displayMedTrendReport(List<MedicationTrendReport> reports, Date startDate, Date endDate) {
@@ -51,6 +36,13 @@ public class ReportMedicationTrendFacadeImpl implements ReportMedicationTrendFac
         }
 
     }
+
+    /**
+     * A class that manages the printing of medication trend within the given report period.
+     *
+     * * @param reports    Checking if there is a report within the given report period.
+     * * @return list of MedicationTrendReports.
+     * */
 
     private static void printMedicationTrend(MedicationTrendReport report) {
         System.out.print("\nMedication Usage: " + report.getUsage());

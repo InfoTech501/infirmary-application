@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.List;
 
 public class CommonAilmentsReportFacadeImpl implements CommonAilmentsReportFacade {
+
+    /** The data access object for CommonAilmentsReport. */
     private final CommonAilmentsReportDAO ailmentsReportDAO = new CommonAilmentsReportDaoImpl();
 
     @Override
