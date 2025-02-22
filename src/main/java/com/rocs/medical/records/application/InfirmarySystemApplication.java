@@ -9,7 +9,12 @@ import com.rocs.medical.records.application.model.person.Person;
 import com.rocs.medical.records.application.app.facade.reportMedicationTrend.ReportMedicationTrendFacade;
 import com.rocs.medical.records.application.app.facade.reportMedicationTrend.impl.ReportMedicationTrendFacadeImpl;
 import com.rocs.medical.records.application.model.reports.MedicationTrendReport;
-import com.rocs.medical.records.application.model.update.UpdateMedicineInventory;
+
+import com.rocs.medical.records.application.app.facade.frequentVisitReport.FrequentVisitReportFacade;
+import com.rocs.medical.records.application.app.facade.frequentVisitReport.impl.FrequentVisitReportFacadeImpl;
+import com.rocs.medical.records.application.model.reports.FrequentVisitReport;
+
+import com.rocs.medical.records.application.model.inventory.UpdateMedicineInventory;
 import com.rocs.medical.records.application.app.facade.updateMedicineInventory.impl.UpdateMedicineInventoryFacadeImpl;
 
 import java.text.ParseException;
@@ -27,7 +32,8 @@ public class InfirmarySystemApplication {
         System.out.println("1 - Common Ailments Report");
         System.out.println("2 - Medication Trend Report");
         System.out.println("3 - Retrieve Student Medical Record");
-        System.out.println("4 - Update Medicine Inventory");
+        System.out.println("4 - Frequent Visit Report");
+        System.out.println("5 - Update Medicine Inventory");
 
         System.out.println("Enter your choice: ");
         int choice = scanner.nextInt();
@@ -95,6 +101,8 @@ public class InfirmarySystemApplication {
                     studentMedical.findMedicalInformationByLRN(LRN);
 
 
+
+
                 } catch (RuntimeException e) {
                     System.err.println("Error generating: " + e.getMessage());
                 }
@@ -102,10 +110,35 @@ public class InfirmarySystemApplication {
             }
 
             case 4: {
-                updateMedicineInventory(scanner);
+                scanner.nextLine();
+                FrequentVisitReportFacade frequentVisitReportFacade = new FrequentVisitReportFacadeImpl();
+
+                try {
+                    System.out.println("Frequent Visit Report");
+
+                    Date frequentVisitStartDate = getValidInputDate(scanner, dateFormat, "Enter start date (yyyy-MM-dd): ");
+                    Date frequentVisitEndDate = getValidInputDate(scanner, dateFormat, "Enter end date (yyyy-MM-dd): ");
+                    System.out.print("Enter grade level for Frequent Visit: ");
+                    String frequentVisitGradeLevel = scanner.nextLine().trim();
+
+                    List<FrequentVisitReport> reports = frequentVisitReportFacade.generateReport(frequentVisitStartDate, frequentVisitEndDate, frequentVisitGradeLevel);
+                    frequentVisitReportFacade.handleFrequentVisit(reports, frequentVisitStartDate, frequentVisitEndDate, frequentVisitGradeLevel);
+
+                } catch (RuntimeException e) {
+                    System.err.println("Report generation failed: " + e.getMessage());
+                }
                 break;
+
             }
 
+            case 5: {
+                try {
+                    updateMedicineInventory(scanner);
+                    break;
+                } catch (RuntimeException e) {
+                    System.err.println("Error updating inventory: " + e.getMessage());
+                }
+            }
         }
 
 
@@ -164,39 +197,36 @@ public class InfirmarySystemApplication {
             }
         }
     }
-
     private static void updateMedicineInventory(Scanner scanner) {
         try {
             UpdateMedicineInventoryFacadeImpl updateMedicineFacade = new UpdateMedicineInventoryFacadeImpl();
+                System.out.print("Enter new Medicine Name: ");
+                scanner.nextLine();
+                String newName = scanner.nextLine();
 
-            System.out.print("Enter new Medicine Name: ");
-            scanner.nextLine();
-            String newName = scanner.nextLine();
+                System.out.print("Enter new Stock Quantity: ");
+                int newQuantity = Integer.parseInt(scanner.nextLine());
 
-            System.out.print("Enter new Stock Quantity: ");
-            int newQuantity = Integer.parseInt(scanner.nextLine());
+                System.out.print("Enter Unit of Measurement (e.g., mg, ml, tablet): ");
+                String newUnit = scanner.nextLine();
 
-            System.out.print("Enter Unit of Measurement (e.g., mg, ml, tablet): ");
-            String newUnit = scanner.nextLine();
+                System.out.print("Enter new Expiration Date (YYYY-MM-DD): ");
+                String newExpiry = scanner.nextLine();
 
-            System.out.print("Enter new Expiration Date (YYYY-MM-DD): ");
-            String newExpiry = scanner.nextLine();
+                System.out.print("Save changes? (YES/NO): ");
+                String confirm = scanner.nextLine();
 
-            System.out.print("Save changes? (YES/NO): ");
-            String confirm = scanner.nextLine();
+                if (confirm.equalsIgnoreCase("yes")) {
+                    boolean success = updateMedicineFacade.updateMedicineInventory(newName, newQuantity, newUnit, newExpiry);
 
-            if (confirm.equalsIgnoreCase("yes")) {
-                UpdateMedicineInventory medicine = new UpdateMedicineInventory(newName, newQuantity, newUnit, newExpiry);
-                boolean success = updateMedicineFacade.updateMedicineInventory(medicine);
-
-                if (success) {
-                    System.out.println("Changes saved successfully.");
+                    if (success) {
+                        System.out.println("Changes saved successfully.");
+                    } else {
+                        System.out.println("Failed to update the inventory.");
+                    }
                 } else {
-                    System.out.println("Failed to update the inventory.");
+                    System.out.println("Update cancelled.");
                 }
-            } else {
-                System.out.println("Update cancelled.");
-            }
 
         } catch (RuntimeException e) {
             System.err.println("Error updating inventory: " + e.getMessage());

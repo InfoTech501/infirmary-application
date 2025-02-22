@@ -1,4 +1,4 @@
-package com.rocs.medical.records.application.model.update;
+package com.rocs.medical.records.application.model.inventory;
 
 public class UpdateMedicineInventory {
     private String newName;

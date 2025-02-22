@@ -2,7 +2,7 @@ package com.rocs.medical.records.application.data.dao.updateMedicineInventory.im
 
 import com.rocs.medical.records.application.data.connection.ConnectionHelper;
 import com.rocs.medical.records.application.data.dao.updateMedicineInventory.UpdateMedicineInventoryDao;
-import com.rocs.medical.records.application.model.update.UpdateMedicineInventory;
+import com.rocs.medical.records.application.model.inventory.UpdateMedicineInventory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
