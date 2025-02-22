@@ -18,10 +18,9 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     public List<MedicineInventory> findAllMedicine() {
         List<MedicineInventory> medicineInventoryList = new ArrayList<>();
 
-        String sql = "Select i.medicine_id, m.item_name, mr.expiration_date, i.quantity_available"+
+        String sql = "Select i.medicine_id, m.item_name, m.expiration_date, i.quantity_available"+
                 "FROM MEDICINE ma"+
                 "JOIN inventory i ON i.medicine_id = ma.medicine_id" +
-                "JOIN medicine m ON m.medicine_id = ma.medicine_id " +
                 "WHERE m.item_name = ?"+
                 "GROUP BY i.medicine_id, m.item_name, mr.expiration_date, i.quantity_available";
         try (Connection connection = ConnectionHelper.getConnection();

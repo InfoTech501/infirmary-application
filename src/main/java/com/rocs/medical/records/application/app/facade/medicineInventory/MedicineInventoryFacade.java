@@ -8,4 +8,7 @@ public interface MedicineInventoryFacade {
 
     List<MedicineInventory> getAllMedicine();
 
+    static void medicineInventoryList() {
+
+    }
 }

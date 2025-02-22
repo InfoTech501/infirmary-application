@@ -17,6 +17,7 @@ import com.rocs.medical.records.application.app.facade.frequentVisitReport.Frequ
 import com.rocs.medical.records.application.app.facade.frequentVisitReport.impl.FrequentVisitReportFacadeImpl;
 import com.rocs.medical.records.application.model.reports.FrequentVisitReport;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -135,28 +136,17 @@ public class InfirmarySystemApplication {
                 MedicineInventoryFacade medicineInventoryFacade = new MedicineInventoryFacadeImpl();
 
                 try {
-                    System.out.println("Welcome to Medicine Inventory");
-
                     List<MedicineInventory> medicineInventoryList = medicineInventoryFacade.getAllMedicine();
-                    if (medicineInventoryList.isEmpty()) {
-                        System.out.println("The list of medicine Name is empty.");
-                    } else {
-                        System.out.println("List of medicine Name:");
-                        for (MedicineInventory medicineInventory : medicineInventoryList) {
-                            System.out.println(medicineInventory.getItem_name());
-                            System.out.println(medicineInventory.getQuantity_available());
-                            System.out.println(medicineInventory.getExpiration_date());
-
-                        }
-
-                    }
-
+                     MedicineInventoryFacade.medicineInventoryList();
                 } catch (Exception e) {
                     throw new RuntimeException(e);
+
                 }
             }
             break;
 
+            default:
+                throw new IllegalStateException("Unexpected value: " + choice);
         }
 
 
