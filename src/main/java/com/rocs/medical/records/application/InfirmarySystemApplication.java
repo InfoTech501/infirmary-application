@@ -3,6 +3,9 @@ package com.rocs.medical.records.application;
 import com.rocs.medical.records.application.app.facade.commonAilmentsReport.CommonAilmentsReportFacade;
 import com.rocs.medical.records.application.app.facade.commonAilmentsReport.impl.CommonAilmentsReportFacadeImpl;
 import com.rocs.medical.records.application.app.facade.medicalRecord.impl.StudentMedicalRecordFacadeImpl;
+import com.rocs.medical.records.application.app.facade.medicineInventory.MedicineInventoryFacade;
+import com.rocs.medical.records.application.app.facade.medicineInventory.impl.MedicineInventoryFacadeImpl;
+import com.rocs.medical.records.application.model.medicineInventory.MedicineInventory;
 import com.rocs.medical.records.application.model.reports.CommonAilmentsReport;
 import com.rocs.medical.records.application.model.person.Person;
 
@@ -14,6 +17,7 @@ import com.rocs.medical.records.application.app.facade.frequentVisitReport.Frequ
 import com.rocs.medical.records.application.app.facade.frequentVisitReport.impl.FrequentVisitReportFacadeImpl;
 import com.rocs.medical.records.application.model.reports.FrequentVisitReport;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,6 +34,7 @@ public class InfirmarySystemApplication {
         System.out.println("2 - Medication Trend Report");
         System.out.println("3 - Retrieve Student Medical Record");
         System.out.println("4 - Frequent Visit Report");
+        System.out.println("5 - Display all Medicine Names");
 
         System.out.println("Enter your choice: ");
         int choice = scanner.nextInt();
@@ -126,11 +131,29 @@ public class InfirmarySystemApplication {
                 break;
 
             }
+            case 5: {
+                scanner.nextLine();
+                MedicineInventoryFacade medicineInventoryFacade = new MedicineInventoryFacadeImpl();
 
+                try {
+                    List<MedicineInventory> medicineInventoryList = medicineInventoryFacade.getAllMedicine();
+                     MedicineInventoryFacade.medicineInventoryList();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+
+                }
+            }
+            break;
+
+            default:
+                throw new IllegalStateException("Unexpected value: " + choice);
         }
 
 
     }
+
+
+
 
     private static void displayCommonAilmentsReport(List<CommonAilmentsReport> reports, Date startDate, Date endDate, String gradeLevel, String section) {
         if (reports == null || reports.isEmpty()) {
