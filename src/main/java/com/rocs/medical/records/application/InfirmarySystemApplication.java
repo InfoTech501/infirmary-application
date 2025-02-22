@@ -10,6 +10,10 @@ import com.rocs.medical.records.application.app.facade.reportMedicationTrend.Rep
 import com.rocs.medical.records.application.app.facade.reportMedicationTrend.impl.ReportMedicationTrendFacadeImpl;
 import com.rocs.medical.records.application.model.reports.MedicationTrendReport;
 
+import com.rocs.medical.records.application.app.facade.frequentVisitReport.FrequentVisitReportFacade;
+import com.rocs.medical.records.application.app.facade.frequentVisitReport.impl.FrequentVisitReportFacadeImpl;
+import com.rocs.medical.records.application.model.reports.FrequentVisitReport;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,6 +29,7 @@ public class InfirmarySystemApplication {
         System.out.println("1 - Common Ailments Report");
         System.out.println("2 - Medication Trend Report");
         System.out.println("3 - Retrieve Student Medical Record");
+        System.out.println("4 - Frequent Visit Report");
 
         System.out.println("Enter your choice: ");
         int choice = scanner.nextInt();
@@ -98,6 +103,28 @@ public class InfirmarySystemApplication {
                     System.err.println("Error generating: " + e.getMessage());
                 }
                 break;
+            }
+
+            case 4: {
+                scanner.nextLine();
+                FrequentVisitReportFacade frequentVisitReportFacade = new FrequentVisitReportFacadeImpl();
+
+                try {
+                    System.out.println("Frequent Visit Report");
+
+                    Date frequentVisitStartDate = getValidInputDate(scanner, dateFormat, "Enter start date (yyyy-MM-dd): ");
+                    Date frequentVisitEndDate = getValidInputDate(scanner, dateFormat, "Enter end date (yyyy-MM-dd): ");
+                    System.out.print("Enter grade level for Frequent Visit: ");
+                    String frequentVisitGradeLevel = scanner.nextLine().trim();
+
+                    List<FrequentVisitReport> reports = frequentVisitReportFacade.generateReport(frequentVisitStartDate, frequentVisitEndDate, frequentVisitGradeLevel);
+                    frequentVisitReportFacade.handleFrequentVisit(reports, frequentVisitStartDate, frequentVisitEndDate, frequentVisitGradeLevel);
+
+                } catch (RuntimeException e) {
+                    System.err.println("Report generation failed: " + e.getMessage());
+                }
+                break;
+
             }
 
         }
