@@ -2,7 +2,10 @@ package com.rocs.medical.records.application;
 
 import com.rocs.medical.records.application.app.facade.commonAilmentsReport.CommonAilmentsReportFacade;
 import com.rocs.medical.records.application.app.facade.commonAilmentsReport.impl.CommonAilmentsReportFacadeImpl;
+import com.rocs.medical.records.application.app.facade.lowStockMedicine.LowStockMedicineFacade;
+import com.rocs.medical.records.application.app.facade.lowStockMedicine.impl.LowStockMedicineFacadeImpl;
 import com.rocs.medical.records.application.app.facade.medicalRecord.impl.StudentMedicalRecordFacadeImpl;
+import com.rocs.medical.records.application.model.inventory.LowStockItem;
 import com.rocs.medical.records.application.model.reports.CommonAilmentsReport;
 import com.rocs.medical.records.application.model.person.Person;
 
@@ -20,6 +23,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
+
 public class InfirmarySystemApplication {
     public static void main(String[] args) {
 
@@ -30,6 +34,7 @@ public class InfirmarySystemApplication {
         System.out.println("2 - Medication Trend Report");
         System.out.println("3 - Retrieve Student Medical Record");
         System.out.println("4 - Frequent Visit Report");
+        System.out.println("5 - Check Low Stock Medicine");
 
         System.out.println("Enter your choice: ");
         int choice = scanner.nextInt();
@@ -126,6 +131,19 @@ public class InfirmarySystemApplication {
                 break;
 
             }
+            case 5:{
+                LowStockMedicineFacade lowStockMedicineFacade = new LowStockMedicineFacadeImpl();
+                try {
+                    List<LowStockItem> lowStockItems = lowStockMedicineFacade.checkLowStockAndNotify();
+                } catch (RuntimeException e) {
+                    System.err.println("Error checking low stock items: " + e.getMessage());
+                }
+                break;
+            }
+            default:
+                System.out.println("Invalid choice. Please select a valid option.");
+                break;
+
 
         }
 
