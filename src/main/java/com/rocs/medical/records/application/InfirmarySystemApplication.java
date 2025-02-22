@@ -14,8 +14,7 @@ import com.rocs.medical.records.application.app.facade.frequentVisitReport.Frequ
 import com.rocs.medical.records.application.app.facade.frequentVisitReport.impl.FrequentVisitReportFacadeImpl;
 import com.rocs.medical.records.application.model.reports.FrequentVisitReport;
 
-import com.rocs.medical.records.application.model.inventory.UpdateMedicineInventory;
-import com.rocs.medical.records.application.app.facade.updateMedicineInventory.impl.UpdateMedicineInventoryFacadeImpl;
+import com.rocs.medical.records.application.app.facade.medicineInventory.impl.UpdateMedicineInventoryFacadeImpl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -200,24 +199,21 @@ public class InfirmarySystemApplication {
     private static void updateMedicineInventory(Scanner scanner) {
         try {
             UpdateMedicineInventoryFacadeImpl updateMedicineFacade = new UpdateMedicineInventoryFacadeImpl();
-            System.out.print("Enter new Medicine Name: ");
+            System.out.print("Enter Inventory ID: ");
             scanner.nextLine();
-            String newName = scanner.nextLine();
+            int newInventoryId = Integer.parseInt(scanner.nextLine());
 
             System.out.print("Enter new Stock Quantity: ");
             int newQuantity = Integer.parseInt(scanner.nextLine());
 
-            System.out.print("Enter Unit of Measurement (e.g., mg, ml, tablet): ");
-            String newUnit = scanner.nextLine();
-
-            System.out.print("Enter new Expiration Date (YYYY-MM-DD): ");
-            String newExpiry = scanner.nextLine();
+            System.out.print("Enter Description: ");
+            String newDescription = scanner.nextLine();
 
             System.out.print("Save changes? (YES/NO): ");
             String confirm = scanner.nextLine();
 
             if (confirm.equalsIgnoreCase("yes")) {
-                boolean success = updateMedicineFacade.updateMedicineInventory(newName, newQuantity, newUnit, newExpiry);
+                boolean success = updateMedicineFacade.updateMedicineInventory(newInventoryId, newQuantity, newDescription);
 
                 if (success) {
                     System.out.println("Changes saved successfully.");
