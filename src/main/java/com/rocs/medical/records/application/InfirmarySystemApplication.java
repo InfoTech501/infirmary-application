@@ -3,6 +3,9 @@ package com.rocs.medical.records.application;
 import com.rocs.medical.records.application.app.facade.commonAilmentsReport.CommonAilmentsReportFacade;
 import com.rocs.medical.records.application.app.facade.commonAilmentsReport.impl.CommonAilmentsReportFacadeImpl;
 import com.rocs.medical.records.application.app.facade.medicalRecord.impl.StudentMedicalRecordFacadeImpl;
+import com.rocs.medical.records.application.app.facade.medicineInventory.MedicineInventoryFacade;
+import com.rocs.medical.records.application.app.facade.medicineInventory.impl.MedicineInventoryFacadeImpl;
+import com.rocs.medical.records.application.model.medicineInventory.MedicineInventory;
 import com.rocs.medical.records.application.model.reports.CommonAilmentsReport;
 import com.rocs.medical.records.application.model.person.Person;
 
@@ -30,6 +33,7 @@ public class InfirmarySystemApplication {
         System.out.println("2 - Medication Trend Report");
         System.out.println("3 - Retrieve Student Medical Record");
         System.out.println("4 - Frequent Visit Report");
+        System.out.println("5 - Display all Medicine Names");
 
         System.out.println("Enter your choice: ");
         int choice = scanner.nextInt();
@@ -126,11 +130,40 @@ public class InfirmarySystemApplication {
                 break;
 
             }
+            case 5: {
+                scanner.nextLine();
+                MedicineInventoryFacade medicineInventoryFacade = new MedicineInventoryFacadeImpl();
+
+                try {
+                    System.out.println("Welcome to Medicine Inventory");
+
+                    List<MedicineInventory> medicineInventoryList = medicineInventoryFacade.getAllMedicine();
+                    if (medicineInventoryList.isEmpty()) {
+                        System.out.println("The list of medicine Name is empty.");
+                    } else {
+                        System.out.println("List of medicine Name:");
+                        for (MedicineInventory medicineInventory : medicineInventoryList) {
+                            System.out.println(medicineInventory.getItem_name());
+                            System.out.println(medicineInventory.getQuantity_available());
+                            System.out.println(medicineInventory.getExpiration_date());
+
+                        }
+
+                    }
+
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            break;
 
         }
 
 
     }
+
+
+
 
     private static void displayCommonAilmentsReport(List<CommonAilmentsReport> reports, Date startDate, Date endDate, String gradeLevel, String section) {
         if (reports == null || reports.isEmpty()) {
