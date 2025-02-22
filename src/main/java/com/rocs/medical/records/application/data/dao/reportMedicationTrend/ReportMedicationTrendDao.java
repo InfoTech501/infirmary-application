@@ -5,6 +5,12 @@ import com.rocs.medical.records.application.model.reports.MedicationTrendReport;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * An interface that manages the generated ReportMedicationTrend object that maintains
+ * medication usage, medicine name, and medication stocks
+ * within the given report period.
+ * */
+
 public interface ReportMedicationTrendDao {
 
     /**

@@ -5,6 +5,12 @@ import com.rocs.medical.records.application.model.reports.CommonAilmentsReport;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * An interface that manages the generated CommonAilmentsReport object that maintains
+ * common ailments, occurrences, affected people, grade level, and strand
+ * within the given report period.
+ * */
+
 public interface CommonAilmentsReportDAO {
 
     /**

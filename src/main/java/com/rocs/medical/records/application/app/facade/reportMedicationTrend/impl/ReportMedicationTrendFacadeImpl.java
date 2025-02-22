@@ -9,6 +9,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * A class that implements the ReportMedicationTrendFacade
+ * managing the ReportMedicationTrend object maintenance such as
+ * medication usage, medicine name, and medication stocks
+ * within the given report period.
+ * */
+
 public class ReportMedicationTrendFacadeImpl implements ReportMedicationTrendFacade {
 
     /** The data access object for ReportMedicationTrend. */
@@ -36,13 +43,6 @@ public class ReportMedicationTrendFacadeImpl implements ReportMedicationTrendFac
         }
 
     }
-
-    /**
-     * A class that manages the printing of medication trend within the given report period.
-     *
-     * * @param reports    Checking if there is a report within the given report period.
-     * * @return list of MedicationTrendReports.
-     * */
 
     private static void printMedicationTrend(MedicationTrendReport report) {
         System.out.print("\nMedication Usage: " + report.getUsage());
