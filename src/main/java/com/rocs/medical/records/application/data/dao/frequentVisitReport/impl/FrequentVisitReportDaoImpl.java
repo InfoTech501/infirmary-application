@@ -1,7 +1,7 @@
 package com.rocs.medical.records.application.data.dao.frequentVisitReport.impl;
 
-import com.rocs.medical.records.application.data.dao.frequentVisitReport.FrequentVisitReportDao;
 import com.rocs.medical.records.application.data.connection.ConnectionHelper;
+import com.rocs.medical.records.application.data.dao.frequentVisitReport.FrequentVisitReportDao;
 import com.rocs.medical.records.application.model.reports.FrequentVisitReport;
 
 import java.sql.Connection;

@@ -1,8 +1,8 @@
 package com.rocs.medical.records.application.app.facade.reportMedicationTrend.impl;
 
 import com.rocs.medical.records.application.app.facade.reportMedicationTrend.ReportMedicationTrendFacade;
-import com.rocs.medical.records.application.data.dao.reportMedicationTrend.impl.ReportMedicationTrendDaoImpl;
 import com.rocs.medical.records.application.data.dao.reportMedicationTrend.ReportMedicationTrendDao;
+import com.rocs.medical.records.application.data.dao.reportMedicationTrend.impl.ReportMedicationTrendDaoImpl;
 import com.rocs.medical.records.application.model.reports.MedicationTrendReport;
 
 import java.text.SimpleDateFormat;

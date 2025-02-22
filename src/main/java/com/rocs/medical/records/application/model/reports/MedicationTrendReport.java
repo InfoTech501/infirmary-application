@@ -1,7 +1,5 @@
 package com.rocs.medical.records.application.model.reports;
 
-import java.util.Date;
-
 public class MedicationTrendReport {
 
     private int usage;

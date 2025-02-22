@@ -2,7 +2,6 @@ package com.rocs.medical.records.application.model.reports;
 
 import com.rocs.medical.records.application.model.person.Person;
 
-import java.util.Date;
 import java.util.List;
 
 public class CommonAilmentsReport {

@@ -1,8 +1,8 @@
 package com.rocs.medical.records.application.app.facade.commonAilmentsReport.impl;
 
+import com.rocs.medical.records.application.app.facade.commonAilmentsReport.CommonAilmentsReportFacade;
 import com.rocs.medical.records.application.data.dao.commonAilmentsReport.CommonAilmentsReportDAO;
 import com.rocs.medical.records.application.data.dao.commonAilmentsReport.impl.CommonAilmentsReportDaoImpl;
-import com.rocs.medical.records.application.app.facade.commonAilmentsReport.CommonAilmentsReportFacade;
 import com.rocs.medical.records.application.model.reports.CommonAilmentsReport;
 
 import java.util.Date;
