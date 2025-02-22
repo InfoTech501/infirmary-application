@@ -20,3 +20,4 @@ public interface ReportMedicationTrendFacade {
 
     void displayMedTrendReport (List<MedicationTrendReport> reports, Date startDate, Date endDate);
 }
+

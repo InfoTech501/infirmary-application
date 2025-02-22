@@ -3,6 +3,7 @@ package com.rocs.medical.records.application;
 import com.rocs.medical.records.application.app.facade.commonAilmentsReport.CommonAilmentsReportFacade;
 import com.rocs.medical.records.application.app.facade.commonAilmentsReport.impl.CommonAilmentsReportFacadeImpl;
 import com.rocs.medical.records.application.app.facade.medicalRecord.impl.StudentMedicalRecordFacadeImpl;
+import com.rocs.medical.records.application.app.facade.medicneInfirmary.impl.MedicineFacadeImpl;
 import com.rocs.medical.records.application.model.reports.CommonAilmentsReport;
 import com.rocs.medical.records.application.model.person.Person;
 
@@ -25,7 +26,7 @@ public class InfirmarySystemApplication {
         System.out.println("1 - Common Ailments Report");
         System.out.println("2 - Medication Trend Report");
         System.out.println("3 - Retrieve Student Medical Record");
-
+        System.out.println("4 - Delete Medicine From Inventory");
         System.out.println("Enter your choice: ");
         int choice = scanner.nextInt();
 
@@ -99,6 +100,40 @@ public class InfirmarySystemApplication {
                 }
                 break;
             }
+
+            case 4: {
+                try {
+                    scanner.nextLine();
+
+                    MedicineFacadeImpl medicineFacade = new MedicineFacadeImpl();
+
+                    System.out.println("Enter Medicine ID to delete: ");
+                    String medicineId = scanner.nextLine();
+
+                    System.out.println("Are you sure you want to delete Medicine ID " + medicineId + "? (Confirm/Cancel): ");
+                    String confirmation = scanner.nextLine().trim().toLowerCase();
+
+                    if (confirmation.equals("Confirm")) {
+                        boolean isDeleted = medicineFacade.deleteMedicineById(medicineId);
+
+                        if (isDeleted) {
+                            System.out.println("Medicine with ID " + medicineId + " has been successfully deleted.");
+                        } else {
+                            System.out.println("Failed to delete medicine. Medicine ID may not exist.");
+                        }
+                    } else {
+                        System.out.println("Deletion canceled.");
+                    }
+
+                } catch (RuntimeException e) {
+                    System.err.println("Error deleting medicine: " + e.getMessage());
+                }
+                break;
+            }
+
+
+
+
 
         }
 
