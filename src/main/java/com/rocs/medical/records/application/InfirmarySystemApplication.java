@@ -2,10 +2,13 @@ package com.rocs.medical.records.application;
 
 import com.rocs.medical.records.application.app.facade.commonAilmentsReport.CommonAilmentsReportFacade;
 import com.rocs.medical.records.application.app.facade.commonAilmentsReport.impl.CommonAilmentsReportFacadeImpl;
+import com.rocs.medical.records.application.app.facade.medicalRecord.StudentMedicalRecordFacade;
 import com.rocs.medical.records.application.app.facade.medicalRecord.impl.StudentMedicalRecordFacadeImpl;
 import com.rocs.medical.records.application.model.reports.CommonAilmentsReport;
 import com.rocs.medical.records.application.model.person.Person;
 
+import com.rocs.medical.records.application.app.facade.medicalRecord.createMedicalRecords.CreateMedicalRecordsFacade;
+import com.rocs.medical.records.application.app.facade.medicalRecord.createMedicalRecords.impl.CreateMedicalRecordsFacadeImpl;
 import com.rocs.medical.records.application.app.facade.reportMedicationTrend.ReportMedicationTrendFacade;
 import com.rocs.medical.records.application.app.facade.reportMedicationTrend.impl.ReportMedicationTrendFacadeImpl;
 import com.rocs.medical.records.application.model.reports.MedicationTrendReport;
@@ -24,12 +27,15 @@ public class InfirmarySystemApplication {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
+        CreateMedicalRecordsFacade recordsFacade = new CreateMedicalRecordsFacadeImpl();
+
         System.out.println("Welcome to Infirmary System Application");
         System.out.println("Please select which report:");
         System.out.println("1 - Common Ailments Report");
         System.out.println("2 - Medication Trend Report");
         System.out.println("3 - Retrieve Student Medical Record");
         System.out.println("4 - Frequent Visit Report");
+        System.out.println("5 - Add Student Record");
 
         System.out.println("Enter your choice: ");
         int choice = scanner.nextInt();
@@ -123,15 +129,14 @@ public class InfirmarySystemApplication {
                 } catch (RuntimeException e) {
                     System.err.println("Report generation failed: " + e.getMessage());
                 }
-                break;
-
+                    break;
             }
-
+            case 5: {
+                recordsFacade.addStudentMedicalRecord();
+                break;
+            }
         }
-
-
-    }
-
+}
     private static void displayCommonAilmentsReport(List<CommonAilmentsReport> reports, Date startDate, Date endDate, String gradeLevel, String section) {
         if (reports == null || reports.isEmpty()) {
             System.out.println("No data available for the selected criteria.");
@@ -186,3 +191,4 @@ public class InfirmarySystemApplication {
         }
     }
 }
+
