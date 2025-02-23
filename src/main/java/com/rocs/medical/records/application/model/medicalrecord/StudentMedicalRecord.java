@@ -1,7 +1,12 @@
 package com.rocs.medical.records.application.model.medicalrecord;
 
+import java.util.List;
+
 public class StudentMedicalRecord {
-     private int ID;
+
+    public List<StudentMedicalRecord> getAllStudentMedicalRecords;
+
+    private int ID;
 
      private long LRN;
 
@@ -169,4 +174,51 @@ public class StudentMedicalRecord {
     }
 
 
+    public List<StudentMedicalRecord> getGetAllStudentMedicalRecords() {
+        return getAllStudentMedicalRecords;
+    }
+
+    public void setGetAllStudentMedicalRecords(List<StudentMedicalRecord> getAllStudentMedicalRecords) {
+        this.getAllStudentMedicalRecords = getAllStudentMedicalRecords;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public void setPersonID(int personID) {
+        this.personID = personID;
+    }
+
+    public int getStudentID() {
+        return studentID;
+    }
+
+    public int getAilmentID() {
+        return ailmentID;
+    }
+
+    public void setAilmentID(int ailmentID) {
+        this.ailmentID = ailmentID;
+    }
+
+    public int getMedHistoryID() {
+        return medHistoryID;
+    }
+
+    public void setMedHistoryID(int medHistoryID) {
+        this.medHistoryID = medHistoryID;
+    }
+
+    public int getNurseInChargeID() {
+        return nurseInChargeID;
+    }
+
+    public void setNurseInChargeID(int nurseInChargeID) {
+        this.nurseInChargeID = nurseInChargeID;
+    }
 }

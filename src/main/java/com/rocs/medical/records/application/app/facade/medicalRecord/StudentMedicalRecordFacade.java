@@ -1,6 +1,10 @@
 package com.rocs.medical.records.application.app.facade.medicalRecord;
 
 
+import com.rocs.medical.records.application.model.medicalrecord.StudentMedicalRecord;
+
+import java.util.List;
+
 public interface StudentMedicalRecordFacade {
 
     /**
@@ -10,4 +14,6 @@ public interface StudentMedicalRecordFacade {
      */
 
     void findMedicalInformationByLRN(long LRN);
+
+    List<StudentMedicalRecord> findAllStudentMedicalRecords();
 }
