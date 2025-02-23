@@ -35,6 +35,7 @@ public class InfirmarySystemApplication {
         System.out.println("3 - Retrieve Student Medical Record");
         System.out.println("4 - Frequent Visit Report");
         System.out.println("5 - Check Low Stock Medicine");
+        System.out.println("6 - Read Student Medical Record");
 
         System.out.println("Enter your choice: ");
         int choice = scanner.nextInt();
@@ -42,11 +43,11 @@ public class InfirmarySystemApplication {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setLenient(false);
 
-        switch (choice){
+        switch (choice) {
             case 1: {
                 CommonAilmentsReportFacade ailmentsReportFacade = new CommonAilmentsReportFacadeImpl();
 
-                try{
+                try {
                     scanner.nextLine();
                     System.out.println("Common Ailments Report");
 
@@ -73,7 +74,7 @@ public class InfirmarySystemApplication {
                 scanner.nextLine();
                 ReportMedicationTrendFacade medicationTrendFacade = new ReportMedicationTrendFacadeImpl();
 
-                try{
+                try {
                     System.out.println("\nWelcome to Medication Trend Report");
 
                     Date startDate = getValidInputDate(scanner, dateFormat, "Please enter start date (yyyy-MM-dd): ");
@@ -91,7 +92,7 @@ public class InfirmarySystemApplication {
 
 
             case 3: {
-                try{
+                try {
                     scanner.nextLine();
 
                     StudentMedicalRecordFacadeImpl studentMedical = new StudentMedicalRecordFacadeImpl();
@@ -102,8 +103,6 @@ public class InfirmarySystemApplication {
                     studentMedical.findMedicalInformationByLRN(LRN);
 
 
-
-
                 } catch (RuntimeException e) {
                     System.err.println("Error generating: " + e.getMessage());
                 }
@@ -111,6 +110,7 @@ public class InfirmarySystemApplication {
             }
 
             case 4: {
+
                 scanner.nextLine();
                 FrequentVisitReportFacade frequentVisitReportFacade = new FrequentVisitReportFacadeImpl();
 
@@ -131,7 +131,7 @@ public class InfirmarySystemApplication {
                 break;
 
             }
-            case 5:{
+            case 5: {
                 LowStockMedicineFacade lowStockMedicineFacade = new LowStockMedicineFacadeImpl();
                 try {
                     List<LowStockItem> lowStockItems = lowStockMedicineFacade.checkLowStockAndNotify();
@@ -144,10 +144,12 @@ public class InfirmarySystemApplication {
                 System.out.println("Invalid choice. Please select a valid option.");
                 break;
 
+            case 6: {
+                StudentMedicalRecordFacadeImpl studentMedical = new StudentMedicalRecordFacadeImpl();
 
+                studentMedical.findAllStudentMedicalRecords();
+            }
         }
-
-
     }
 
     private static void displayCommonAilmentsReport(List<CommonAilmentsReport> reports, Date startDate, Date endDate, String gradeLevel, String section) {
