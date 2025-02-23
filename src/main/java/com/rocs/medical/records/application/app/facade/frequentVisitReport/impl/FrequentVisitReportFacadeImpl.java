@@ -21,7 +21,8 @@ public class FrequentVisitReportFacadeImpl implements FrequentVisitReportFacade 
      * * @param gradeLevel - The grade level of the students with frequent visit.
      * * @return - Return the list of frequent visit report.
      * */
-    @Override
+
+  @Override
     public List<FrequentVisitReport> generateReport(Date startDate, Date endDate, String gradeLevel) {
         return frequentVisitReportDao.getFrequentVisitReports(gradeLevel, startDate, endDate);
     }
@@ -33,7 +34,8 @@ public class FrequentVisitReportFacadeImpl implements FrequentVisitReportFacade 
      * * @param endDate - The end of the report date period.
      * * @param gradeLevel - The grade level of the students with frequent visit.
      */
-    @Override
+
+  @Override
     public void handleFrequentVisit(List<FrequentVisitReport> reports, Date startDate, Date endDate, String gradeLevel) {
         if (reports == null || reports.isEmpty()) {
             System.out.println("No data available for the selected criteria.");
@@ -53,7 +55,8 @@ public class FrequentVisitReportFacadeImpl implements FrequentVisitReportFacade 
      * * This prints the details of frequent visit report of the students.
      * * @param report  - The frequent visit report to be printed.
      * */
-    private static void printFrequentVisit(FrequentVisitReport report) {
+
+  private static void printFrequentVisit(FrequentVisitReport report) {
         System.out.println("\nStudent Id: " + report.getStudentId());
         System.out.println("\nStudent First Name: " + report.getFirstName());
         System.out.println("\nStudent Last Name: " + report.getLastName());
