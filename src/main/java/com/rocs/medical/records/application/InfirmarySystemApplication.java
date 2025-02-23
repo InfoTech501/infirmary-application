@@ -17,6 +17,10 @@ import com.rocs.medical.records.application.app.facade.frequentVisitReport.Frequ
 import com.rocs.medical.records.application.app.facade.frequentVisitReport.impl.FrequentVisitReportFacadeImpl;
 import com.rocs.medical.records.application.model.reports.FrequentVisitReport;
 
+
+import com.rocs.medical.records.application.app.facade.medicineInventory.InventoryFacade;
+import com.rocs.medical.records.application.app.facade.medicineInventory.impl.InventoryFacadeImpl;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,6 +39,7 @@ public class InfirmarySystemApplication {
         System.out.println("3 - Retrieve Student Medical Record");
         System.out.println("4 - Frequent Visit Report");
         System.out.println("5 - Check Low Stock Medicine");
+        System.out.println("6 - View Medicine Inventory List");
 
         System.out.println("Enter your choice: ");
         int choice = scanner.nextInt();
@@ -140,6 +145,13 @@ public class InfirmarySystemApplication {
                 }
                 break;
             }
+
+
+            case 6: {
+                InventoryFacade inventoryFacade = new InventoryFacadeImpl();
+                ((InventoryFacadeImpl) inventoryFacade).displayInventoryItems();
+                break;
+            }
             default:
                 System.out.println("Invalid choice. Please select a valid option.");
                 break;
@@ -147,8 +159,9 @@ public class InfirmarySystemApplication {
 
         }
 
-
     }
+
+
 
     private static void displayCommonAilmentsReport(List<CommonAilmentsReport> reports, Date startDate, Date endDate, String gradeLevel, String section) {
         if (reports == null || reports.isEmpty()) {
