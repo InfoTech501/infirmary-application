@@ -14,7 +14,6 @@ public interface CommonAilmentsReportFacade {
 
     /**
      * Generates a report listing common ailments within a given period
-     *
      * @param startDate  The start date of the report period.
      * @param endDate    The end date of the report period.
      * @param gradeLevel The grade level to filter the report and can be null.
