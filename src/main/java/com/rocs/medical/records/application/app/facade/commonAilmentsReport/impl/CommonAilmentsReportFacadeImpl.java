@@ -14,7 +14,6 @@ import java.util.List;
  * common ailments, occurrences, affected people, grade level, and strand
  * within the given report period.
  * */
-
 public class CommonAilmentsReportFacadeImpl implements CommonAilmentsReportFacade {
 
     /** The data access object for CommonAilmentsReport. */

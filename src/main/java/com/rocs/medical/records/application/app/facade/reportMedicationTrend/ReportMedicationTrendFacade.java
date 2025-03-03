@@ -10,7 +10,6 @@ import java.util.List;
  * medication usage, medicine name, and medication stocks
  * within the given report period.
  * */
-
 public interface ReportMedicationTrendFacade {
 
     /**
@@ -19,7 +18,6 @@ public interface ReportMedicationTrendFacade {
      *  @param endDate    The end date of the report period.
      *  @return list of MedicationTrendReports object such as medication usage, medicine name and medication stocks.
      * */
-
     List<MedicationTrendReport> generateReport(
             Date startDate,
             Date endDate
@@ -32,6 +30,5 @@ public interface ReportMedicationTrendFacade {
      *  @param endDate    The end date of the report period.
      *  @return list of MedicationTrendReports object such as medication usage, medicine name and medication stocks.
      * */
-
     void displayMedTrendReport (List<MedicationTrendReport> reports, Date startDate, Date endDate);
 }

@@ -10,7 +10,6 @@ import java.util.List;
  * common ailments, occurrences, affected people, grade level, and strand
  * within the given report period.
  * */
-
 public interface CommonAilmentsReportDAO {
 
     /**
@@ -21,6 +20,5 @@ public interface CommonAilmentsReportDAO {
      *  @param section    The section to filter the report and can be null.
      *  @return list of CommonAilmentsReport object such as common ailments, occurrences, affected people, grade level, and strand.
      * */
-
     List<CommonAilmentsReport> getGeneratedReport(Date startDate, Date endDate, String gradeLevel, String section);
 }

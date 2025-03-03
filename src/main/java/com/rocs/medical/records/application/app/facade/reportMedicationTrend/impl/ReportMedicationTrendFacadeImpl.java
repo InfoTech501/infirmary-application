@@ -15,7 +15,6 @@ import java.util.List;
  * medication usage, medicine name, and medication stocks
  * within the given report period.
  * */
-
 public class ReportMedicationTrendFacadeImpl implements ReportMedicationTrendFacade {
 
     /** The data access object for ReportMedicationTrend. */

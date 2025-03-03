@@ -10,7 +10,6 @@ import java.util.List;
  * common ailments, occurrences, affected people, grade level, and strand
  * within the given report period.
  * */
-
 public interface CommonAilmentsReportFacade {
 
     /**
@@ -22,7 +21,6 @@ public interface CommonAilmentsReportFacade {
      * @param section    The section to filter the report and can be null.
      * @return A list of CommonAilmentsReport objects.
      */
-
     List<CommonAilmentsReport> generateReport(
             Date startDate,
             Date endDate,
