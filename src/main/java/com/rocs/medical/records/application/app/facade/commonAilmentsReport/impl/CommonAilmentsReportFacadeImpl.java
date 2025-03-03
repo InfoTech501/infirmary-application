@@ -8,7 +8,15 @@ import com.rocs.medical.records.application.model.reports.CommonAilmentsReport;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * A class that implements the CommonAilmentsReportFacade
+ * managing the CommonAilmentsReport object maintenance such as
+ * common ailments, occurrences, affected people, grade level, and strand
+ * within the given report period.
+ * */
 public class CommonAilmentsReportFacadeImpl implements CommonAilmentsReportFacade {
+
+    /** The data access object for CommonAilmentsReport. */
     private final CommonAilmentsReportDAO ailmentsReportDAO = new CommonAilmentsReportDaoImpl();
 
     @Override
