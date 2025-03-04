@@ -9,7 +9,6 @@ import java.util.List;
  * * This is an interface that manages the generated report of FrequentVisitReport object that maintains
  * * studentId, firstName, lastName, gradeLevel, symptoms, visitCount, and visitDate.
  * */
-
 public interface FrequentVisitReportDao {
     /**
      * * This returns the generated report of FrequentVisitReport List with the given report period.
