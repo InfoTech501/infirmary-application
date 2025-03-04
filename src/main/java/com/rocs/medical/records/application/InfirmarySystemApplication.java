@@ -4,8 +4,10 @@ import com.rocs.medical.records.application.app.facade.commonAilmentsReport.Comm
 import com.rocs.medical.records.application.app.facade.commonAilmentsReport.impl.CommonAilmentsReportFacadeImpl;
 import com.rocs.medical.records.application.app.facade.lowStockMedicine.LowStockMedicineFacade;
 import com.rocs.medical.records.application.app.facade.lowStockMedicine.impl.LowStockMedicineFacadeImpl;
+
 import com.rocs.medical.records.application.app.facade.medicalRecord.impl.StudentMedicalRecordFacadeImpl;
 import com.rocs.medical.records.application.model.inventory.LowStockItem;
+import com.rocs.medical.records.application.model.medicalrecord.StudentMedicalRecord;
 import com.rocs.medical.records.application.model.reports.CommonAilmentsReport;
 import com.rocs.medical.records.application.model.person.Person;
 
@@ -35,6 +37,7 @@ public class InfirmarySystemApplication {
         System.out.println("3 - Retrieve Student Medical Record");
         System.out.println("4 - Frequent Visit Report");
         System.out.println("5 - Check Low Stock Medicine");
+        System.out.println("6 - Read Student Medical Record");
 
         System.out.println("Enter your choice: ");
         int choice = scanner.nextInt();
@@ -42,11 +45,11 @@ public class InfirmarySystemApplication {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setLenient(false);
 
-        switch (choice){
+        switch (choice) {
             case 1: {
                 CommonAilmentsReportFacade ailmentsReportFacade = new CommonAilmentsReportFacadeImpl();
 
-                try{
+                try {
                     scanner.nextLine();
                     System.out.println("Common Ailments Report");
 
@@ -73,7 +76,7 @@ public class InfirmarySystemApplication {
                 scanner.nextLine();
                 ReportMedicationTrendFacade medicationTrendFacade = new ReportMedicationTrendFacadeImpl();
 
-                try{
+                try {
                     System.out.println("\nWelcome to Medication Trend Report");
 
                     Date startDate = getValidInputDate(scanner, dateFormat, "Please enter start date (yyyy-MM-dd): ");
@@ -91,7 +94,7 @@ public class InfirmarySystemApplication {
 
 
             case 3: {
-                try{
+                try {
                     scanner.nextLine();
 
                     StudentMedicalRecordFacadeImpl studentMedical = new StudentMedicalRecordFacadeImpl();
@@ -102,8 +105,6 @@ public class InfirmarySystemApplication {
                     studentMedical.findMedicalInformationByLRN(LRN);
 
 
-
-
                 } catch (RuntimeException e) {
                     System.err.println("Error generating: " + e.getMessage());
                 }
@@ -111,6 +112,7 @@ public class InfirmarySystemApplication {
             }
 
             case 4: {
+
                 scanner.nextLine();
                 FrequentVisitReportFacade frequentVisitReportFacade = new FrequentVisitReportFacadeImpl();
 
@@ -131,7 +133,7 @@ public class InfirmarySystemApplication {
                 break;
 
             }
-            case 5:{
+            case 5: {
                 LowStockMedicineFacade lowStockMedicineFacade = new LowStockMedicineFacadeImpl();
                 try {
                     List<LowStockItem> lowStockItems = lowStockMedicineFacade.checkLowStockAndNotify();
@@ -144,10 +146,26 @@ public class InfirmarySystemApplication {
                 System.out.println("Invalid choice. Please select a valid option.");
                 break;
 
+            case 6: {
+                StudentMedicalRecordFacadeImpl studentMedical = new StudentMedicalRecordFacadeImpl();
+                List<StudentMedicalRecord> medicalRecords = studentMedical.readAllStudentMedicalRecords();
 
+                for (StudentMedicalRecord record: medicalRecords){
+                    System.out.println();
+                    System.out.println("Firstname             : " + record.getFirstName());
+                    System.out.println("Middlename            : " + record.getMiddleName());
+                    System.out.println("Lastname              : " + record.getLastName());
+                    System.out.println("Age                   : " + record.getAge());
+                    System.out.println("Gender                : " + record.getGender());
+                    System.out.println("Symptoms              : " + record.getSymptoms());
+                    System.out.println("Temperature Readings  : " + record.getTemperatureReadings());
+                    System.out.println("Visit Date            : " + record.getVisitDate());
+                    System.out.println("Treatment             : " + record.getTreatment());
+
+                    System.out.println();
+                }
+            }
         }
-
-
     }
 
     private static void displayCommonAilmentsReport(List<CommonAilmentsReport> reports, Date startDate, Date endDate, String gradeLevel, String section) {
@@ -172,7 +190,6 @@ public class InfirmarySystemApplication {
         int totalOccurrences = reports.stream().mapToInt(CommonAilmentsReport::getOccurrences).sum();
         System.out.println("Total no. of occurrences: " + totalOccurrences);
     }
-
     private static void printAilmentSection(CommonAilmentsReport report) {
         System.out.println("\nAffected students:");
         for (Person student : report.getAffectedPeople()) {

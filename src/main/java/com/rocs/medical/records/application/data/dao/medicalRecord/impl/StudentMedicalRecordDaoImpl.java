@@ -8,8 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
@@ -66,7 +66,6 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                     studentMedicalRecord.setTreatment(rs.getString("treatment"));
 
 
-
                 }
             }
 
@@ -75,6 +74,51 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
 
         }
       return  studentMedicalRecord;
+    }
+
+
+    @Override
+    public List<StudentMedicalRecord> getAllStudentMedicalRecords() {
+        List<StudentMedicalRecord> medicalRecords = new ArrayList<>();
+        try (Connection con = ConnectionHelper.getConnection()) {
+            String sql = "SELECT " +
+                    "student.id, " +
+                    "person.first_name, " +
+                    "person.middle_name, " +
+                    "person.last_name, " +
+                    "person.age, " +
+                    "person.gender, " +
+                    "medical_record.symptoms, " +
+                    "medical_record.temperature_readings, " +
+                    "medical_record.visit_date, " +
+                    "medical_record.treatment " +
+                    "FROM medical_record " +
+                    "JOIN person ON medical_record.student_id = person.id " +
+                    "LEFT JOIN student ON medical_record.student_id = student.id";
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                StudentMedicalRecord studentMedicalRecord = new StudentMedicalRecord();
+
+                studentMedicalRecord.setFirstName(rs.getString("first_name"));
+                studentMedicalRecord.setMiddleName(rs.getString("middle_name"));
+                studentMedicalRecord.setLastName(rs.getString("last_name"));
+                studentMedicalRecord.setAge(rs.getInt("age"));
+                studentMedicalRecord.setGender(rs.getString("gender"));
+                studentMedicalRecord.setSymptoms(rs.getString("symptoms"));
+                studentMedicalRecord.setTemperatureReadings(rs.getString("temperature_readings"));
+                studentMedicalRecord.setVisitDate(rs.getString("visit_date"));
+                studentMedicalRecord.setTreatment(rs.getString("treatment"));
+
+                medicalRecords.add(studentMedicalRecord);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error fetching student medical records", e);
+        }
+
+        return medicalRecords;
     }
 }
 

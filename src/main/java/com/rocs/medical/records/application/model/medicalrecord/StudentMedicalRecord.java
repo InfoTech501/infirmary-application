@@ -1,9 +1,13 @@
 package com.rocs.medical.records.application.model.medicalrecord;
 
-public class StudentMedicalRecord {
-     private int ID;
+import java.sql.Timestamp;
+import java.util.List;
 
-     private long LRN;
+public class StudentMedicalRecord {
+
+    private int ID;
+
+    private long LRN;
 
     private int personID;
 
@@ -41,6 +45,9 @@ public class StudentMedicalRecord {
     private String contactNumber;
 
     private String ailment;
+
+    private List<StudentMedicalRecord> getAllStudentMedicalRecords;
+
 
     public String getFirstName() {
         return firstName;
@@ -117,6 +124,7 @@ public class StudentMedicalRecord {
     public int getPersonID() {
         return personID;
     }
+
     public long getLRN() {
         return LRN;
     }
@@ -125,12 +133,9 @@ public class StudentMedicalRecord {
         this.LRN = LRN;
     }
 
-
-
     public void setStudentID(int studentID) {
         this.studentID = studentID;
     }
-
 
     public String getSymptoms() {
         return symptoms;
@@ -169,4 +174,55 @@ public class StudentMedicalRecord {
     }
 
 
+    public List<StudentMedicalRecord> getGetAllStudentMedicalRecords() {
+        return getAllStudentMedicalRecords;
+    }
+
+    public void setGetAllStudentMedicalRecords(List<StudentMedicalRecord> getAllStudentMedicalRecords) {
+        this.getAllStudentMedicalRecords = getAllStudentMedicalRecords;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
+    }
+
+    public void setPersonID(int personID) {
+        this.personID = personID;
+    }
+
+    public int getStudentID() {
+        return studentID;
+    }
+
+    public int getAilmentID() {
+        return ailmentID;
+    }
+
+    public void setAilmentID(int ailmentID) {
+        this.ailmentID = ailmentID;
+    }
+
+    public int getMedHistoryID() {
+        return medHistoryID;
+    }
+
+    public void setMedHistoryID(int medHistoryID) {
+        this.medHistoryID = medHistoryID;
+    }
+
+    public int getNurseInChargeID() {
+        return nurseInChargeID;
+    }
+
+    public void setNurseInChargeID(int nurseInChargeID) {
+        this.nurseInChargeID = nurseInChargeID;
+    }
+
+    public void getVisitDate(String visitDate) {
+        this.visitDate = visitDate;
+    }
 }

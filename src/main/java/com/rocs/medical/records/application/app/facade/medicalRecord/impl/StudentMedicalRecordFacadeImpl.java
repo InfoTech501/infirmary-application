@@ -6,9 +6,12 @@ import com.rocs.medical.records.application.data.dao.medicalRecord.StudentMedica
 import com.rocs.medical.records.application.data.dao.medicalRecord.impl.StudentMedicalRecordDaoImpl;
 import com.rocs.medical.records.application.model.medicalrecord.StudentMedicalRecord;
 
-public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacade {
-    private final StudentMedicalRecordDao StudentMedRecord = new StudentMedicalRecordDaoImpl();
+import java.util.ArrayList;
+import java.util.List;
 
+public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacade {
+
+    private final StudentMedicalRecordDao StudentMedRecord = new StudentMedicalRecordDaoImpl();
 
     public void findMedicalInformationByLRN(long LRN) {
 
@@ -36,7 +39,12 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
 
     }
 
+    @Override
+    public List<StudentMedicalRecord> readAllStudentMedicalRecords() {
+        List<StudentMedicalRecord> medicalRecords = this.StudentMedRecord.getAllStudentMedicalRecords();
 
+        return medicalRecords;
+    }
 }
 
 
