@@ -1,14 +1,13 @@
 package com.rocs.medical.records.application.model.medicalrecord;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public class StudentMedicalRecord {
 
-    public List<StudentMedicalRecord> getAllStudentMedicalRecords;
-
     private int ID;
 
-     private long LRN;
+    private long LRN;
 
     private int personID;
 
@@ -46,6 +45,9 @@ public class StudentMedicalRecord {
     private String contactNumber;
 
     private String ailment;
+
+    private List<StudentMedicalRecord> getAllStudentMedicalRecords;
+
 
     public String getFirstName() {
         return firstName;
@@ -122,6 +124,7 @@ public class StudentMedicalRecord {
     public int getPersonID() {
         return personID;
     }
+
     public long getLRN() {
         return LRN;
     }
@@ -130,12 +133,9 @@ public class StudentMedicalRecord {
         this.LRN = LRN;
     }
 
-
-
     public void setStudentID(int studentID) {
         this.studentID = studentID;
     }
-
 
     public String getSymptoms() {
         return symptoms;
@@ -220,5 +220,9 @@ public class StudentMedicalRecord {
 
     public void setNurseInChargeID(int nurseInChargeID) {
         this.nurseInChargeID = nurseInChargeID;
+    }
+
+    public void getVisitDate(String visitDate) {
+        this.visitDate = visitDate;
     }
 }

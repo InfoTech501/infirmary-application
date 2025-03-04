@@ -4,8 +4,10 @@ import com.rocs.medical.records.application.app.facade.commonAilmentsReport.Comm
 import com.rocs.medical.records.application.app.facade.commonAilmentsReport.impl.CommonAilmentsReportFacadeImpl;
 import com.rocs.medical.records.application.app.facade.lowStockMedicine.LowStockMedicineFacade;
 import com.rocs.medical.records.application.app.facade.lowStockMedicine.impl.LowStockMedicineFacadeImpl;
+
 import com.rocs.medical.records.application.app.facade.medicalRecord.impl.StudentMedicalRecordFacadeImpl;
 import com.rocs.medical.records.application.model.inventory.LowStockItem;
+import com.rocs.medical.records.application.model.medicalrecord.StudentMedicalRecord;
 import com.rocs.medical.records.application.model.reports.CommonAilmentsReport;
 import com.rocs.medical.records.application.model.person.Person;
 
@@ -146,8 +148,22 @@ public class InfirmarySystemApplication {
 
             case 6: {
                 StudentMedicalRecordFacadeImpl studentMedical = new StudentMedicalRecordFacadeImpl();
+                List<StudentMedicalRecord> medicalRecords = studentMedical.readAllStudentMedicalRecords();
 
-                studentMedical.findAllStudentMedicalRecords();
+                for (StudentMedicalRecord record: medicalRecords){
+                    System.out.println();
+                    System.out.println("Firstname             : " + record.getFirstName());
+                    System.out.println("Middlename            : " + record.getMiddleName());
+                    System.out.println("Lastname              : " + record.getLastName());
+                    System.out.println("Age                   : " + record.getAge());
+                    System.out.println("Gender                : " + record.getGender());
+                    System.out.println("Symptoms              : " + record.getSymptoms());
+                    System.out.println("Temperature Readings  : " + record.getTemperatureReadings());
+                    System.out.println("Visit Date            : " + record.getVisitDate());
+                    System.out.println("Treatment             : " + record.getTreatment());
+
+                    System.out.println();
+                }
             }
         }
     }
@@ -174,7 +190,6 @@ public class InfirmarySystemApplication {
         int totalOccurrences = reports.stream().mapToInt(CommonAilmentsReport::getOccurrences).sum();
         System.out.println("Total no. of occurrences: " + totalOccurrences);
     }
-
     private static void printAilmentSection(CommonAilmentsReport report) {
         System.out.println("\nAffected students:");
         for (Person student : report.getAffectedPeople()) {

@@ -15,5 +15,10 @@ public interface StudentMedicalRecordFacade {
 
     void findMedicalInformationByLRN(long LRN);
 
-    List<StudentMedicalRecord> findAllStudentMedicalRecords();
+    /**
+     * Retrieves all student medical records from the database.
+     *
+     * @return A list of student medical records, or an empty list if no records are found.
+     */
+    List<StudentMedicalRecord> readAllStudentMedicalRecords();
 }

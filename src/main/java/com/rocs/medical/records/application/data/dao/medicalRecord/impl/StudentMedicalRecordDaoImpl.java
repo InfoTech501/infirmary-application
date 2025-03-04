@@ -81,9 +81,20 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
     public List<StudentMedicalRecord> getAllStudentMedicalRecords() {
         List<StudentMedicalRecord> medicalRecords = new ArrayList<>();
         try (Connection con = ConnectionHelper.getConnection()) {
-            String sql = "SELECT student.id,  person.first_name, person.middle_name, person.last_name, person.age, person.gender, medical_record.symptoms, medical_record.temperature_readings, TO_CHAR(medical_record.visit_date, 'YYYY-MM-DD HH24:MI:SS') AS visit_date, medical_record.treatment FROM medical_record JOIN person ON medical_record.student_id = person.id LEFT JOIN student ON medical_record.student_id = student.id";
-
-
+            String sql = "SELECT " +
+                    "student.id, " +
+                    "person.first_name, " +
+                    "person.middle_name, " +
+                    "person.last_name, " +
+                    "person.age, " +
+                    "person.gender, " +
+                    "medical_record.symptoms, " +
+                    "medical_record.temperature_readings, " +
+                    "medical_record.visit_date, " +
+                    "medical_record.treatment " +
+                    "FROM medical_record " +
+                    "JOIN person ON medical_record.student_id = person.id " +
+                    "LEFT JOIN student ON medical_record.student_id = student.id";
 
             PreparedStatement stmt = con.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
