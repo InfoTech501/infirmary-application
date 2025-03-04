@@ -91,13 +91,13 @@ create table inventory (
     constraint INVENTORY_NOT_NULL not null,
   medicine_id varchar2(50 char),
   item_type varchar2(60),
-  description varchar2(255),
-  quantity_available number(10,0),
+  quantity number(10,0),
   primary key (inventory_id));
 
 create table medicine (
   medicine_id varchar2(50 char) not null,
   item_name varchar2(50),
+  description varchar2(255),
   expiration_date timestamp(6),
   primary key (medicine_id));
 
@@ -105,7 +105,10 @@ create table medicine_administered (
   id number(20,0),
   medicine_id varchar2(50 char),
   med_record_id number(20,0),
+  nurse_in_charge_id number(20,0),
   description varchar2(255),
+  quantity number(10,0),
+  date_administered timestamp(6),
   primary key (id));
 
 create table login (
@@ -179,6 +182,10 @@ alter table medicine_administered
 alter table medicine_administered
     add constraint FK_MEDICINE_ADMINISTERED_MED_RECORD_ID
     foreign key (med_record_id) references medical_record;
+
+alter table medicine_administered
+    add constraint FK_MEDICINE_ADMINISTERED_NURSE_IN_CHARGE_ID
+    foreign key (nurse_in_charge_id) references employee;
 
 alter table login
     add constraint FK_LOGIN_PERSON_ID
@@ -272,29 +279,28 @@ insert into ailments (ailment_id, description)
 values (5, 'Stomachache');
 
 --INSERT MEDICINE DATA
-insert into medicine (medicine_id, item_name, expiration_date)
-values ('IB', 'Ibuprofen', to_timestamp('1982-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
-insert into medicine (medicine_id, item_name, expiration_date)
-values ('CS', 'Cough Syrup', to_timestamp('1982-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
-insert into medicine (medicine_id, item_name, expiration_date)
-values ('PT', 'Paracetamol', to_timestamp('1982-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
-insert into medicine (medicine_id, item_name, expiration_date)
-values ('AC', 'Antacid', to_timestamp('1982-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
-insert into medicine (medicine_id, item_name, expiration_date)
-values ('AH', 'Antihistamine', to_timestamp('1982-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+insert into medicine (medicine_id, item_name, description, expiration_date)
+values ('IB', 'Ibuprofen', 'can treat fever, mild to moderate pain, etc', to_timestamp('2028-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+insert into medicine (medicine_id, item_name, description, expiration_date)
+values ('CS', 'Cough Syrup', 'Adults with both dry and productive coughs', to_timestamp('2028-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+insert into medicine (medicine_id, item_name, description, expiration_date)
+values ('PT', 'Paracetamol', 'temporarily relieve mild-to-moderate pain and fever', to_timestamp('2028-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+insert into medicine (medicine_id, item_name, description, expiration_date)
+values ('AC', 'Antacid', 'a medicine used to treat heartburn and indigestion', to_timestamp('2028-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+insert into medicine (medicine_id, item_name, description, expiration_date)
+values ('AH', 'Antihistamine', 'treat allergic rhinitis, common cold, influenza, and other allergies', to_timestamp('2026-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 
-
- --INISERT INVENTORY DATA
-insert into inventory (medicine_id, item_type, description, quantity_available)
-values ('IB', 'Medicine', 'Ibuprofen', 50);
-insert into inventory (medicine_id, item_type, description, quantity_available)
-values ('CS', 'Medicine', 'Cough syrup', 30);
-insert into inventory (medicine_id, item_type, description, quantity_available)
-values ('PT', 'Medicine', 'Paracetamol', 40);
-insert into inventory (medicine_id, item_type, description, quantity_available)
-values ('AC', 'Medicine', 'Antacid', 25);
-insert into inventory (medicine_id, item_type, description, quantity_available)
-values ('AH', 'Medicine', 'Antihistamine', 20);
+ --INSERT INVENTORY DATA
+insert into inventory (medicine_id, item_type, quantity)
+values ('IB', 'Medicine', 50);
+insert into inventory (medicine_id, item_type, quantity)
+values ('CS', 'Medicine', 30);
+insert into inventory (medicine_id, item_type, quantity)
+values ('PT', 'Medicine', 40);
+insert into inventory (medicine_id, item_type, quantity)
+values ('AC', 'Medicine', 25);
+insert into inventory (medicine_id, item_type, quantity)
+values ('AH', 'Medicine', 20);
 
 --INSERT MEDICAL RECORD DATA
 insert into medical_record (student_id, ailment_id, med_history_id, nurse_in_charge_id, symptoms, temperature_readings, visit_date, treatment)
@@ -307,11 +313,13 @@ insert into medical_record (student_id, ailment_id, med_history_id, nurse_in_cha
 values (4, 4, null, 4, 'Dry cough', '37.0°C', to_timestamp('2024-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Prescribed cough syrup');
 
 --INSERT MEDICINE ADMINISTERED
-insert into medicine_administered (id, medicine_id, med_record_id, description)
-values (1, 'IB', 1, 'Ibuprofen 200mg administered');
-insert into medicine_administered (id, medicine_id, med_record_id, description)
-values (2, 'CS', 2, 'Cough syrup 10ml administered');
-insert into medicine_administered (id, medicine_id, med_record_id, description)
-values (3, 'PT', 3, 'Paracetamol 500mg administered');
-insert into medicine_administered (id, medicine_id, med_record_id, description)
-values (4, 'AC', 4, 'Antacid 500mg administered');
+insert into medicine_administered (id, medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
+values (1, 'IB', 1, '1', 'Ibuprofen 200mg administered', 1, to_timestamp('2000-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+insert into medicine_administered (id, medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
+values (2, 'CS', 2, '2', 'Cough syrup 10ml administered', 2, to_timestamp('2008-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+insert into medicine_administered (id, medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
+values (3, 'PT', 3, '1', 'Paracetamol 500mg administered', 1, to_timestamp('2025-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+insert into medicine_administered (id, medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
+values (4, 'AC', 4, '3', 'Antacid 500mg administered', 2, to_timestamp('2024-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+
+commit;
