@@ -12,7 +12,11 @@ import java.sql.SQLException;
 
 
 
-
+/**
+ * The StudentMedicalRecordDaoImpl class implements the StudentMedicalRecordDao interface
+ * it provides methods for interacting with the infirmary database.
+ * It includes methods for retrieving, adding, updating, and deleting student medical records.
+ */
 public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
 
 
