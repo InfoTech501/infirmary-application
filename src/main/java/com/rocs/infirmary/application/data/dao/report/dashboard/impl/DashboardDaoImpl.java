@@ -34,7 +34,7 @@ public class DashboardDaoImpl implements DashboardDao {
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                LowStockReport item = new LowStockReport(resultSet.getString("description"), resultSet.getInt("quantity_available"));
+                LowStockReport item = new LowStockReport(resultSet.getString("item_name"), resultSet.getInt("quantity"));
                 lowStockItems.add(item);
             }
         } catch (SQLException e) {
