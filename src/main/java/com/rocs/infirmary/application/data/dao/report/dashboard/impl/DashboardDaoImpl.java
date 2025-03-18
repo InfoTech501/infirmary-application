@@ -139,7 +139,7 @@ public class DashboardDaoImpl implements DashboardDao {
                 MedicationTrendReport report = new MedicationTrendReport();
                 report.setUsage(rs.getInt("usage"));
                 report.setMedicineName(rs.getString("item_name"));
-                report.setStocks(rs.getInt("quantity_available"));
+                report.setStocks(rs.getInt("quantity"));
 
                 reportList.add(report);
             }

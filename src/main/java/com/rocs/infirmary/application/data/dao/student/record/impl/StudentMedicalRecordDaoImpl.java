@@ -9,7 +9,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -56,6 +57,39 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
         return  studentMedicalRecord;
 
 
+    }
+    @Override
+    public List<Student> getAllStudentMedicalRecords() {
+        List<Student> medicalRecords = new ArrayList<>();
+        try (Connection con = ConnectionHelper.getConnection()) {
+
+            QueryConstants queryConstants  = new QueryConstants();
+
+            String sql = queryConstants.getAllStudentMedicalRecords();
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Student studentMedicalRecord = new Student();
+
+                studentMedicalRecord.setFirstName(rs.getString("first_name"));
+                studentMedicalRecord.setMiddleName(rs.getString("middle_name"));
+                studentMedicalRecord.setLastName(rs.getString("last_name"));
+                studentMedicalRecord.setAge(rs.getInt("age"));
+                studentMedicalRecord.setGender(rs.getString("gender"));
+                studentMedicalRecord.setSymptoms(rs.getString("symptoms"));
+                studentMedicalRecord.setTemperatureReadings(rs.getString("temperature_readings"));
+                studentMedicalRecord.setVisitDate(rs.getDate("visit_date"));
+                studentMedicalRecord.setTreatment(rs.getString("treatment"));
+
+                medicalRecords.add(studentMedicalRecord);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error fetching student medical records", e);
+        }
+
+        return medicalRecords;
     }
 }
 
