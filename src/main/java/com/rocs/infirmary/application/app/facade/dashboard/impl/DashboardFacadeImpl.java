@@ -1,8 +1,8 @@
 package com.rocs.infirmary.application.app.facade.dashboard.impl;
 
 import com.rocs.infirmary.application.app.facade.dashboard.DashboardFacade;
-import com.rocs.infirmary.application.data.dao.report.dashboard.DashboardDao;
-import com.rocs.infirmary.application.data.dao.report.dashboard.impl.DashboardDaoImpl;
+import com.rocs.infirmary.application.data.dao.report.dashboard.DashboardReports;
+import com.rocs.infirmary.application.data.dao.report.dashboard.impl.DashboardReportsImpl;
 import com.rocs.infirmary.application.data.model.report.ailment.CommonAilmentsReport;
 import com.rocs.infirmary.application.data.model.report.lowstock.LowStockReport;
 import com.rocs.infirmary.application.data.model.report.visit.FrequentVisitReport;
@@ -18,7 +18,7 @@ import java.util.List;
 public class DashboardFacadeImpl implements DashboardFacade {
 
     /** The data access object for Dashboard. */
-    private final DashboardDao dashboard = new DashboardDaoImpl();
+    private final DashboardReports dashboard = new DashboardReportsImpl();
 
     @Override
     public List<LowStockReport> findAllLowStockMedicine() {

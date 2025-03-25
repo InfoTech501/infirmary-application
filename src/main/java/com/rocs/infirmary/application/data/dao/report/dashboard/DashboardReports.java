@@ -8,7 +8,7 @@ import com.rocs.infirmary.application.data.model.report.medication.MedicationTre
 import java.util.Date;
 import java.util.List;
 
-public interface DashboardDao {
+public interface DashboardReports {
 
     List<LowStockReport> getAllLowStockMedicine();
 
