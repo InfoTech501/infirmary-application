@@ -36,3 +36,7 @@
     -fx-alignment: CENTER-LEFT;
 }
 
+.table-view .scroll-bar:vertical,
+.table-view .scroll-bar:horizontal {
+    -fx-opacity: 0.3;
+}

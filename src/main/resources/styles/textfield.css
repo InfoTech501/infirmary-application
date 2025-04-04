@@ -4,14 +4,9 @@
     -fx-border-radius: 5px;
     -fx-background-radius: 5px;
 }
-TextFieldAddingHealthProblem1 {
+#TextfieldHealthProblem {
 -fx-border-color: lightgray;
     -fx-border-radius: 5px;
     -fx-background-radius: 5px;
 }
 
-#TextFieldAddingHealthProblem2{
--fx-border-color: lightgray;
-    -fx-border-radius: 5px;
-    -fx-background-radius: 5px;
-}

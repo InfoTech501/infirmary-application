@@ -16,7 +16,7 @@
 }
 
 
- .button,.label, .hyperlink, .toggle-button {
+ .label,.button, .hyperlink, .toggle-button {
     -fx-font-family: 'Lexend';
     -fx-font-weight: 400;
     -fx-font-size: 15px;
