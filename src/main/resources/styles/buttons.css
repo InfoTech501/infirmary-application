@@ -15,3 +15,209 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.120), 8, 0, 0, 5);
 }
 
+
+ .label,.button, .hyperlink, .toggle-button {
+    -fx-font-family: 'Lexend';
+    -fx-font-weight: 400;
+    -fx-font-size: 15px;
+}
+
+
+
+#DashboardSideBar,#ClinicVisitLogSideBar, #InventorySideBar,#MessageSideBar,#StudentHealthSideBar {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 8px;
+    -fx-text-fill: #737791;
+    -fx-translate-y: 40px;
+
+}
+
+
+#StudentHealthSideBar :focused{
+-fx-background-color: #066C3D;
+ -fx-text-fill: white;
+}
+
+
+#DashboardSideBar:focused {
+    -fx-background-color: #066C3D;
+    -fx-text-fill: white;
+}
+#ClinicVisitLogSideBar:focused {
+    -fx-background-color: #066C3D;
+    -fx-text-fill: white;
+}
+#InventorySideBar:focused {
+    -fx-background-color: #066C3D;
+    -fx-text-fill: white;
+
+
+
+}
+
+#MessageSideBar:focused {
+    -fx-background-color: #066C3D;
+    -fx-text-fill: white;
+}
+
+
+#DashboardSideBar:hover {
+    -fx-background-color: #066C3D;
+    -fx-text-fill: white;
+    -fx-transition: 0.3s;
+
+}
+
+
+#StudentHealthSideBar:focused {
+    -fx-background-color: #066C3D;
+    -fx-text-fill: white;
+
+}
+
+#ClinicVisitLogSideBar:hover {
+    -fx-background-color: #066C3D;
+    -fx-text-fill: white;
+    -fx-transition: 0.3s;
+
+}
+
+#InventorySideBar:hover {
+    -fx-background-color: #066C3D;
+    -fx-text-fill: white;
+-fx-transition: 0.3s;
+}
+
+#MessageSideBar:hover {
+ -fx-background-color: #066C3D;
+    -fx-text-fill: white;
+    -fx-transition: 0.3s;
+}
+
+#ShowInformationButton{
+-fx-text-fill: white;
+-fx-background-color: #2196F3;
+-fx-font-size:Large;
+-fx-background-radius: 15px;
+-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 10, 5);
+}
+
+#Filter_Button_A,#Filter_Button_Z,#ClearFilterButton, #AgeFilterBtn {
+    -fx-background-color: #FFFFFF;
+    -fx-border-radius: 10px;
+    -fx-padding: 10px;
+    -fx-text-fill: #737791;
+    -fx-border-width: 1px;
+    -fx-border-color: #d3d3d3;
+
+}
+
+#Filter_Button_A:focused {
+    -fx-background-color: #066C3D;
+    -fx-text-fill: white;
+}
+#Filter_Button_Z:focused {
+    -fx-background-color: #066C3D;
+    -fx-text-fill: white;
+}
+#ClearFilterButton:focused {
+
+    -fx-background-color: #066C3D;
+    -fx-text-fill: white;
+}
+
+#AgeFilterBtn :focused{
+    -fx-background-color: #066C3D;
+    -fx-text-fill: white;
+}
+
+
+#Filter_Button_A:hover {
+   -fx-background-color: #066C3D;
+    -fx-text-fill: white;
+
+}
+
+#Filter_Button_Z:hover {
+       -fx-background-color: #066C3D;
+       -fx-text-fill: white;
+
+}
+#ClearFilterButton:hover {
+      -fx-background-color: #066C3D;
+      -fx-text-fill: white;
+
+}
+
+#AgeFilterBtn:hover{
+ -fx-background-color: #066C3D;
+ -fx-text-fill: white;
+}
+
+
+#SexComboBox, #SectionComboBox{
+     -fx-background-color: #ffffff;
+     -fx-border-color: #d3d3d3;
+     -fx-border-radius: 10px;
+     -fx-font-size: 14px;
+
+}
+
+
+#ButtonConfirm {
+    -fx-background-color: #2E2E2E;
+    -fx-text-fill: white;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+}
+#ButtonCancel{
+-fx-background-color:#FFFFFF;
+-fx-border-width: 1px;
+-fx-border-color: black;
+-fx-border-radius:10px;
+}
+#ButtonAddField{
+-fx-background-color:#000000;
+-fx-text-fill:#FFFFFF;
+-fx-border-radius:10px;
+
+}
+
+#ButtonEditHealthInfo {
+fx-font-weight: 400;
+    -fx-font-size: 15px;
+}
+
+#AgeComboBox .cell {
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+      -fx-translate-x: 10px;
+        -fx-translate-y: 2px;
+
+}
+
+#SexComboBox .cell {
+-fx-alignment: center;
+    -fx-text-alignment: center;
+      -fx-translate-x: 11px;
+        -fx-translate-y: 1px;
+
+}
+
+
+
+#SectionComboBox .cell {
+-fx-alignment: center;
+    -fx-text-alignment: center;
+      -fx-translate-x: 10px;
+        -fx-translate-y: 1px;
+
+}
+
+
+#SexComboBox .text-field,
+#SectionComboBox .text-field {
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+}
+

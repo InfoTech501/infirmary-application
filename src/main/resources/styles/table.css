@@ -1,0 +1,42 @@
+.table-view {
+    -fx-background-color: #f5f5f5;
+    -fx-border-color: #d3d3d3;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px;
+    -fx-table-cell-border-color: transparent;
+    -fx-border-color: transparent;
+
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #ffffff;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-alignment:CENTER-LEFT;
+
+
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #cfcfcf;
+}
+
+.table-row-cell {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 0 0 1 0;
+}
+
+.table-cell {
+    -fx-padding: 10px;
+    -fx-alignment: CENTER-LEFT;
+}
+
+.table-view .scroll-bar:vertical,
+.table-view .scroll-bar:horizontal {
+    -fx-opacity: 0.3;
+}

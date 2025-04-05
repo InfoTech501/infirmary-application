@@ -1,0 +1,106 @@
+#StudentProfileLabel {
+
+-fx-font-weight: 1000;
+-fx-font-size: 35px;
+}
+#StudentHealthLabel {
+ -fx-font-weight: 900;
+-fx-font-size: 17px;
+
+}
+#StudentLabel {
+-fx-font-weight: 900;
+-fx-font-size: 17px;
+
+}
+#SkinLabel {
+
+-fx-font-size: 14px;
+}
+#heartDiseaseLabel {
+
+-fx-font-size: 14px;
+}
+
+
+#AdviserNameLabel{
+
+-fx-font-weight: none;
+-fx-font-size: 12px;
+
+
+}
+#MoreInformationLabel  {
+
+ -fx-font-weight: 900;
+-fx-font-size: 35px;
+
+
+}
+
+
+#ResetHistoryLabel{
+
+-fx-font-size: 15px;
+-fx-font-weight: 700;
+ -fx-text-fill: #737791;
+}
+
+#ContactInfoLabel {
+-fx-font-weight: 900;
+-fx-font-size: 17px;
+}
+
+
+#StudentHealthProfileLabel{
+ -fx-font-weight: 700;
+-fx-font-size: 15px;
+
+}
+
+
+
+#ButtonEditHealthInfo {
+-fx-background-color: #FFFFFF;
+-fx-border-width: 1px;
+-fx-border-color: black;
+-fx-border-radius:15px;
+}
+#ContactNumLabel{
+-fx-font-size: 14px;
+}
+#EmailAddressLabel{
+-fx-font-size: 14px;
+}
+#AddressLabel{
+-fx-font-size: 14px;
+}
+#HealthProbLabel{
+-fx-font-size: 15px;
+}
+#LabelEditInformation{
+ -fx-font-weight: 700;
+-fx-font-size: 35px;
+}
+
+#LabelStudent{
+ -fx-font-weight: 900;
+ -fx-font-size:20px;
+}
+
+#LabelStudentHealthInfo {
+
+-fx-font-weight: 900;
+ -fx-font-size:20px;
+}
+
+#LabelLRN,#LabelFirstname,#LabelLastname,#LabelSex,#LabelAge,#LabelGradeLevel,#LabelSection,#LabelContactNumber,#LabelHomeAddress,#LabelEmailAddress,#LabelEmailAddress,#LabelHealthProblem{
+-fx-font-size:14px;
+
+
+}
+
+
+#NursePromptLabel {
+-fx-font-size:11px;
+}
