@@ -101,14 +101,14 @@
                      </rowConstraints>
                      <children>
                         <Label prefHeight="23.0" prefWidth="137.0" style="-fx-font-size: 18;" stylesheets="@../styles/fonts.css" text="Search Name" />
-                        <TextField fx:id="searchTextField" opacity="0.39" prefHeight="26.0" prefWidth="362.0" style="-fx-border-radius: 5;" styleClass="search-text-field" text="Search" GridPane.columnIndex="1">
+                        <TextField fx:id="searchTextField" opacity="0.39" prefHeight="35.0" prefWidth="356.0" style="-fx-border-radius: 5;" styleClass="search-text-field" text="Search" GridPane.columnIndex="1">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
                         </TextField>
                         <VBox prefHeight="67.0" prefWidth="179.0" GridPane.columnIndex="3">
                            <children>
-                              <ToggleButton fx:id="toggleAddEntry" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="67.0" prefWidth="125.0" style="-fx-font-size: 18; -fx-background-color: #1976D2; -fx-border-radius: 5;" styleClass="add-entry-btn" text="Add Entry" textFill="WHITE">
+                              <ToggleButton fx:id="toggleAddEntry" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="67.0" prefWidth="125.0" style="-fx-background-color: #1976D2;" styleClass="add-entry-btn" stylesheets="@../styles/buttons.css" text="Add Entry" textFill="WHITE">
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
@@ -133,23 +133,27 @@
                      <children>
                         <VBox prefHeight="706.0" prefWidth="1080.0">
                            <children>
-                              <TableView fx:id="LogTable" prefHeight="908.0" prefWidth="1075.0">
-                                <columns>
-                                  <TableColumn prefWidth="188.0" text="Name" />
-                                  <TableColumn prefWidth="115.0" text="Grade &amp; Section" />
-                                    <TableColumn prefWidth="90.0" text="Temperature" />
-                                    <TableColumn prefWidth="65.0" text="Pulse" />
-                                    <TableColumn prefWidth="103.0" text="Respiratory Rate" />
-                                    <TableColumn prefWidth="97.0" text="Blood Pressure" />
-                                    <TableColumn prefWidth="105.0" text="Symptoms" />
-                                    <TableColumn prefWidth="120.0" text="Nurse Intervention" />
-                                    <TableColumn prefWidth="89.0" text="Dispensing IN" />
-                                    <TableColumn minWidth="0.0" prefWidth="101.0" text="Dispensing OUT" />
-                                </columns>
+                              <ScrollPane>
                                  <VBox.margin>
                                     <Insets right="5.0" />
                                  </VBox.margin>
-                              </TableView>
+                                 <content>
+                                    <TableView fx:id="LogTable" prefHeight="908.0" prefWidth="1075.0" styleClass="clinic-visit-table-view" stylesheets="@../styles/table.css">
+                                      <columns>
+                                        <TableColumn prefWidth="146.0" text="Name" />
+                                        <TableColumn prefWidth="115.0" text="Grade &amp; Section" />
+                                          <TableColumn prefWidth="94.0" text="Temperature" />
+                                          <TableColumn prefWidth="78.0" text="Pulse" />
+                                          <TableColumn prefWidth="108.0" text="Respiratory Rate" />
+                                          <TableColumn prefWidth="105.0" text="Blood Pressure" />
+                                          <TableColumn prefWidth="94.0" text="Symptoms" />
+                                          <TableColumn prefWidth="122.0" text="Nurse Intervention" />
+                                          <TableColumn prefWidth="89.0" text="Dispensing IN" />
+                                          <TableColumn minWidth="0.0" prefWidth="122.0" text="Dispensing OUT" />
+                                      </columns>
+                                    </TableView>
+                                 </content>
+                              </ScrollPane>
                               <HBox prefHeight="115.0" prefWidth="1080.0">
                                  <children>
                                     <GridPane alignment="TOP_RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="37.0" prefWidth="401.0">
