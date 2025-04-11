@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -17,15 +18,22 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1124.0" styleClass="..\styles\buttons.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1124.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <stylesheets>
+        <URL value="@../styles/buttons.css" />
+        <URL value="@../styles/lable.css" />
+        <URL value="@../styles/table.css" />
+        <URL value="@../styles/textfield.css" />
+        <URL value="@../styles/fonts.css" />
+    </stylesheets>
     <top>
     <VBox prefHeight="91.0" prefWidth="1109.0" BorderPane.alignment="CENTER">
         <children>
             <HBox prefHeight="90.0" prefWidth="1124.0">
                 <children>
-                    <HBox alignment="CENTER_LEFT" prefHeight="85.0" prefWidth="211.0" styleClass="..\styles\fonts.css">
+                    <HBox alignment="CENTER_LEFT" prefHeight="85.0" prefWidth="211.0">
                         <children>
-                            <Label prefHeight="36.0" prefWidth="249.0" style="-fx-font-size: 26;" styleClass="label-clinic-visit" stylesheets="@../styles/fonts.css" text="Clinic Visit Log" textAlignment="CENTER" />
+                            <Label prefHeight="36.0" prefWidth="249.0" style="-fx-font-size: 26;" styleClass="label-clinic-visit" text="Clinic Visit Log" textAlignment="CENTER" />
                         </children>
                     </HBox>
                     <HBox prefHeight="90.0" prefWidth="471.0" />
@@ -69,7 +77,7 @@
                                             </ImageView>
                                         </graphic>
                                     </ToggleButton>
-                                    <Label fx:id="accountUsernameDisplay" style="-fx-font-size: 15;" styleClass="label" stylesheets="@../styles/fonts.css" text="Mr./ Mrs. @Username" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <Label fx:id="accountUsernameDisplay" style="-fx-font-size: 15;" styleClass="label" text="Mr./ Mrs. @Username" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                 </children>
                             </GridPane>
                         </children>
@@ -102,14 +110,14 @@
                      </rowConstraints>
                      <children>
                         <Label prefHeight="23.0" prefWidth="137.0" style="-fx-font-size: 18;" stylesheets="@../styles/fonts.css" text="Search Name" />
-                        <TextField fx:id="searchTextField" opacity="0.39" prefHeight="40.0" prefWidth="356.0" style="-fx-border-radius: 10;" styleClass="search-text-field" stylesheets="@../styles/textfield.css" text="Search" GridPane.columnIndex="1">
+                        <TextField fx:id="searchTextField" opacity="0.39" prefHeight="40.0" prefWidth="356.0" style="-fx-border-radius: 10;" styleClass="search-text-field" text="Search" GridPane.columnIndex="1">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
                         </TextField>
                         <VBox prefHeight="67.0" prefWidth="179.0" GridPane.columnIndex="3">
                            <children>
-                              <ToggleButton fx:id="toggleAddEntry" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="67.0" prefWidth="125.0" style="-fx-background-color: #1976D2;" styleClass="add-entry-btn" stylesheets="@../styles/buttons.css" text="Add Entry" textFill="WHITE">
+                              <ToggleButton fx:id="toggleAddEntry" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="67.0" prefWidth="125.0" style="-fx-background-color: #1976D2;" styleClass="add-entry-btn" text="Add Entry" textFill="WHITE">
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
@@ -136,7 +144,7 @@
                            <children>
                               <Pane>
                                  <children>
-                                    <TableView fx:id="VisitLogTable" prefHeight="908.0" prefWidth="1075.0" styleClass="clinic-visit-table-view" stylesheets="@../styles/table.css">
+                                    <TableView fx:id="VisitLogTable" prefHeight="908.0" prefWidth="1075.0" styleClass="clinic-visit-table-view" >
                                       <columns>
                                         <TableColumn prefWidth="155.0" text="Name" />
                                         <TableColumn prefWidth="104.0" text="Grade &amp; Section" />
@@ -171,8 +179,8 @@
                                                 <Insets left="680.0" />
                                              </HBox.margin>
                                              <children>
-                                                <Label style="-fx-font-size: 14;" styleClass="label-rows-page" stylesheets="@../styles/fonts.css" text="Rows per Page:" />
-                                                <Label contentDisplay="CENTER" style="-fx-font-size: 14;" styleClass="label-rows" stylesheets="@../styles/fonts.css" text="10" GridPane.columnIndex="1">
+                                                <Label style="-fx-font-size: 14;" styleClass="label-rows-page" text="Rows per Page:" />
+                                                <Label contentDisplay="CENTER" style="-fx-font-size: 14;" styleClass="label-rows" text="10" GridPane.columnIndex="1">
                                                    <opaqueInsets>
                                                       <Insets />
                                                    </opaqueInsets>

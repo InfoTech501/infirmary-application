@@ -12,10 +12,14 @@
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="764.0" prefWidth="1129.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <stylesheets>
+        <URL value="@../styles/buttons.css" />
+        <URL value="@../styles/fonts.css" />
+    </stylesheets>
     <top>
         <VBox prefHeight="107.0" prefWidth="1129.0" BorderPane.alignment="CENTER">
             <children>
-                <Label fx:id="DailyTreatmentRecordLabel" style="-fx-font-size: 32; -fx-font-weight: bold;" styleClass="label-add-treatment-record" stylesheets="@../styles/fonts.css" text="Student Clinic Visit Log - more Information">
+                <Label fx:id="studentClinicVisitLog" styleClass="LabelClinicVisitLog" text="Student Clinic Visit Log - more Information">
                     <padding>
                         <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
                     </padding>
@@ -38,8 +42,9 @@
                                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="557.3333129882812" minWidth="0.0" prefWidth="344.0" />
                                   </columnConstraints>
                                   <rowConstraints>
+                                      <RowConstraints />
                                       <RowConstraints maxHeight="61.333343505859375" minHeight="10.0" prefHeight="54.66667175292969" vgrow="SOMETIMES" />
-                                      <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
@@ -51,7 +56,7 @@
                               <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
                                   </rowConstraints>
                                   <children>
-                                      <Label fx:id="viewStudInfoLabel" style="-fx-font-size: 22; -fx-font-weight: bold;" styleClass="view-label-student-info" stylesheets="@../styles/fonts.css" text="Student Info">
+                                      <Label fx:id="viewStudInfoLabel" styleClass="ViewLabelStudInfo" text="Student Info" GridPane.rowIndex="1">
                                           <padding>
                                               <Insets bottom="20.0" right="10.0" top="20.0" />
                                           </padding>
@@ -59,15 +64,15 @@
                                               <Insets />
                                           </GridPane.margin>
                                       </Label>
-                              <Label fx:id="viewLrn" style="-fx-font-size: 16;" styleClass="label-view" text="LRN:" GridPane.rowIndex="1" />
-                              <Label fx:id="viewFname" style="-fx-font-size: 16;" styleClass="label-view" text="First Name: " GridPane.rowIndex="2" />
-                              <Label fx:id="viewLname" style="-fx-font-size: 16;" styleClass="label-view" text="Last Name:" GridPane.rowIndex="3" />
-                              <Label fx:id="viewSex" style="-fx-font-size: 16;" styleClass="label-view" text="Sex:" GridPane.rowIndex="4" />
-                              <Label fx:id="viewAge" style="-fx-font-size: 16;" styleClass="label-view" text="Age:" GridPane.rowIndex="5" />
-                              <Label fx:id="viewGradeSection" layoutX="10.0" layoutY="252.0" style="-fx-font-size: 16;" styleClass="label-view" text="Grade &amp; Section: " GridPane.rowIndex="6" />
-                              <Label fx:id="viewContactNum" layoutX="10.0" layoutY="303.0" style="-fx-font-size: 16;" styleClass="label-view" text="Contact Number:" GridPane.rowIndex="7" />
-                              <Label fx:id="viewHomeAdd" layoutX="10.0" layoutY="354.0" style="-fx-font-size: 16;" styleClass="label-view" text="Home Address: " GridPane.rowIndex="8" />
-                              <Label fx:id="viewEmailAdd" layoutX="10.0" layoutY="406.0" style="-fx-font-size: 16;" styleClass="label-view" text="Email Address: " GridPane.rowIndex="10" />
+                              <Label fx:id="viewLrn" style="-fx-font-size: 16;" styleClass="label-view" text="LRN:" GridPane.rowIndex="2" />
+                              <Label fx:id="viewFname" style="-fx-font-size: 16;" styleClass="label-view" text="First Name: " GridPane.rowIndex="3" />
+                              <Label fx:id="viewLname" style="-fx-font-size: 16;" styleClass="label-view" text="Last Name:" GridPane.rowIndex="4" />
+                              <Label fx:id="viewSex" style="-fx-font-size: 16;" styleClass="label-view" text="Sex:" GridPane.rowIndex="5" />
+                              <Label fx:id="viewAge" style="-fx-font-size: 16;" styleClass="label-view" text="Age:" GridPane.rowIndex="6" />
+                              <Label fx:id="viewGradeSection" layoutX="10.0" layoutY="252.0" style="-fx-font-size: 16;" styleClass="label-view" text="Grade &amp; Section: " GridPane.rowIndex="7" />
+                              <Label fx:id="viewContactNum" layoutX="10.0" layoutY="303.0" style="-fx-font-size: 16;" styleClass="label-view" text="Contact Number:" GridPane.rowIndex="8" />
+                              <Label fx:id="viewHomeAdd" layoutX="10.0" layoutY="354.0" style="-fx-font-size: 16;" styleClass="label-view" text="Home Address: " GridPane.rowIndex="9" />
+                              <Label fx:id="viewEmailAdd" layoutX="10.0" layoutY="406.0" style="-fx-font-size: 16;" styleClass="label-view" text="Email Address: " GridPane.rowIndex="11" />
                                   </children>
                               </GridPane>
                      </children>
@@ -92,7 +97,7 @@
                               <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Label fx:id="viewVitalSigns" style="-fx-font-size: 22; -fx-font-weight: bold;" styleClass="view-label-student-info" stylesheets="@../styles/fonts.css" text="Vital Signs">
+                              <Label fx:id="viewVitalSigns" styleClass="ViewLabelVitalSignsInfo" text="Vital Signs">
                                  <padding>
                                     <Insets bottom="20.0" right="10.0" top="20.0" />
                                  </padding>
@@ -128,7 +133,7 @@
                               <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Label fx:id="viewOther" style="-fx-font-size: 22; -fx-font-weight: bold;" styleClass="view-label-student-info" stylesheets="@../styles/fonts.css" text="Other">
+                              <Label fx:id="viewOther" styleClass="ViewLabelOtherInfo" text="Other">
                                  <padding>
                                     <Insets bottom="20.0" right="10.0" top="20.0" />
                                  </padding>
@@ -141,7 +146,7 @@
                               <Label fx:id="viewSymptoms" style="-fx-font-size: 16;" styleClass="label-view" text="Symptoms: " GridPane.rowIndex="4" />
                               <Label fx:id="viewDispensingIn" style="-fx-font-size: 16;" styleClass="label-view" text="Dispensing In: " GridPane.rowIndex="5" />
                               <Label fx:id="viewDispensingOut" layoutX="10.0" layoutY="252.0" style="-fx-font-size: 16;" styleClass="label-view" text="Dispensing Out: " GridPane.rowIndex="6" />
-                              <Label fx:id="viewTotalVisit" layoutX="10.0" layoutY="303.0" style="-fx-font-size: 16;" styleClass="label-view" text="Total Visit: " GridPane.rowIndex="7" />
+                              <Label fx:id="viewTotalVisit" layoutX="10.0" layoutY="303.0" style="-fx-font-size: 16;" styleClass="label-view" text="Time of Visit: " GridPane.rowIndex="7" />
                            </children>
                         </GridPane>
                      </children>
@@ -184,10 +189,6 @@
                                     <GridPane.margin>
                                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                     </GridPane.margin>
-                           <stylesheets>
-                              <URL value="@../styles/buttons.css" />
-                              <URL value="@../styles/fonts.css" />
-                           </stylesheets>
                                 </ToggleButton>
                             </children>
                             <HBox.margin>
