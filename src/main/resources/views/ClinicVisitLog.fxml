@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
@@ -84,7 +85,7 @@
    <center>
       <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <BorderPane.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+            <Insets bottom="10.0" left="10.0" right="5.0" top="10.0" />
          </BorderPane.margin>
          <content>
             <VBox prefHeight="969.0" prefWidth="1100.0">
@@ -101,8 +102,7 @@
                      </rowConstraints>
                      <children>
                         <Label prefHeight="23.0" prefWidth="137.0" style="-fx-font-size: 18;" stylesheets="@../styles/fonts.css" text="Search Name" />
-                        <TextField fx:id="searchTextField" opacity="0.39" prefHeight="35.0" prefWidth="356.0" style="-fx-border-radius: 5;" styleClass="search-text-field" text="Search" GridPane.columnIndex="1">
-                        <TextField fx:id="searchTextField" opacity="0.39" prefHeight="26.0" prefWidth="362.0" style="-fx-border-radius: 5;" styleClass="search-text-field" text="Search" GridPane.columnIndex="1">
+                        <TextField fx:id="searchTextField" opacity="0.39" prefHeight="40.0" prefWidth="356.0" style="-fx-border-radius: 10;" styleClass="search-text-field" stylesheets="@../styles/textfield.css" text="Search" GridPane.columnIndex="1">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
@@ -110,7 +110,6 @@
                         <VBox prefHeight="67.0" prefWidth="179.0" GridPane.columnIndex="3">
                            <children>
                               <ToggleButton fx:id="toggleAddEntry" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="67.0" prefWidth="125.0" style="-fx-background-color: #1976D2;" styleClass="add-entry-btn" stylesheets="@../styles/buttons.css" text="Add Entry" textFill="WHITE">
-                              <ToggleButton fx:id="toggleAddEntry" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="67.0" prefWidth="125.0" style="-fx-font-size: 18; -fx-background-color: #1976D2; -fx-border-radius: 5;" styleClass="add-entry-btn" text="Add Entry" textFill="WHITE">
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
@@ -133,102 +132,85 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <VBox prefHeight="706.0" prefWidth="1080.0">
+                        <VBox prefHeight="801.0" prefWidth="1080.0">
                            <children>
-                              <ScrollPane>
-                                 <VBox.margin>
-                                    <Insets right="5.0" />
-                                 </VBox.margin>
-                                 <content>
-                                    <TableView fx:id="LogTable" prefHeight="908.0" prefWidth="1075.0" styleClass="clinic-visit-table-view" stylesheets="@../styles/table.css">
+                              <Pane>
+                                 <children>
+                                    <TableView fx:id="VisitLogTable" prefHeight="908.0" prefWidth="1075.0" styleClass="clinic-visit-table-view" stylesheets="@../styles/table.css">
                                       <columns>
-                                        <TableColumn prefWidth="146.0" text="Name" />
-                                        <TableColumn prefWidth="115.0" text="Grade &amp; Section" />
-                                          <TableColumn prefWidth="94.0" text="Temperature" />
-                                          <TableColumn prefWidth="78.0" text="Pulse" />
-                                          <TableColumn prefWidth="108.0" text="Respiratory Rate" />
-                                          <TableColumn prefWidth="105.0" text="Blood Pressure" />
-                                          <TableColumn prefWidth="94.0" text="Symptoms" />
-                                          <TableColumn prefWidth="122.0" text="Nurse Intervention" />
-                                          <TableColumn prefWidth="89.0" text="Dispensing IN" />
-                                          <TableColumn minWidth="0.0" prefWidth="122.0" text="Dispensing OUT" />
+                                        <TableColumn prefWidth="155.0" text="Name" />
+                                        <TableColumn prefWidth="104.0" text="Grade &amp; Section" />
+                                          <TableColumn prefWidth="118.0" text="Temperature" />
+                                          <TableColumn prefWidth="96.0" text="Pulse" />
+                                          <TableColumn prefWidth="126.0" text="Blood Pressure" />
+                                          <TableColumn prefWidth="149.0" text="Symptoms" />
+                                          <TableColumn minWidth="6.0" prefWidth="98.0" text="Dispensing IN" />
+                                          <TableColumn minWidth="0.0" prefWidth="104.0" text="Dispensing OUT" />
+                                          <TableColumn prefWidth="102.0" text="XX" />
                                       </columns>
                                     </TableView>
-                                 </content>
-                              </ScrollPane>
-                              <TableView fx:id="LogTable" prefHeight="908.0" prefWidth="1075.0">
-                                <columns>
-                                  <TableColumn prefWidth="188.0" text="Name" />
-                                  <TableColumn prefWidth="115.0" text="Grade &amp; Section" />
-                                    <TableColumn prefWidth="90.0" text="Temperature" />
-                                    <TableColumn prefWidth="65.0" text="Pulse" />
-                                    <TableColumn prefWidth="103.0" text="Respiratory Rate" />
-                                    <TableColumn prefWidth="97.0" text="Blood Pressure" />
-                                    <TableColumn prefWidth="105.0" text="Symptoms" />
-                                    <TableColumn prefWidth="120.0" text="Nurse Intervention" />
-                                    <TableColumn prefWidth="89.0" text="Dispensing IN" />
-                                    <TableColumn minWidth="0.0" prefWidth="101.0" text="Dispensing OUT" />
-                                </columns>
-                                 <VBox.margin>
-                                    <Insets right="5.0" />
-                                 </VBox.margin>
-                              </TableView>
-                              <HBox prefHeight="115.0" prefWidth="1080.0">
-                                 <children>
-                                    <GridPane alignment="TOP_RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="37.0" prefWidth="401.0">
-                                      <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="156.0" minWidth="10.0" prefWidth="112.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="116.0" minWidth="2.0" prefWidth="23.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="243.0" minWidth="10.0" prefWidth="62.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="299.0" minWidth="10.0" prefWidth="75.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="272.0" minWidth="10.0" prefWidth="56.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="272.0" minWidth="10.0" prefWidth="45.0" />
-                                      </columnConstraints>
-                                      <rowConstraints>
-                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                      </rowConstraints>
-                                       <HBox.margin>
-                                          <Insets left="680.0" />
-                                       </HBox.margin>
-                                       <children>
-                                          <Label style="-fx-font-size: 14;" styleClass="label-rows-page" stylesheets="@../styles/fonts.css" text="Rows per Page:" />
-                                          <Label contentDisplay="CENTER" style="-fx-font-size: 14;" styleClass="label-rows" stylesheets="@../styles/fonts.css" text="10" GridPane.columnIndex="1">
-                                             <opaqueInsets>
-                                                <Insets />
-                                             </opaqueInsets>
-                                          </Label>
-                                          <ToggleButton fx:id="toggleDropdownRow" minWidth="40.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="40.0" style="-fx-background-color: #ffffff;" GridPane.columnIndex="2">
-                                             <graphic>
-                                                <ImageView accessibleRole="TOGGLE_BUTTON" fitHeight="29.0" fitWidth="20.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../assets/dropdown-icon.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </ToggleButton>
-                                          <Label style="-fx-font-size: 14;" stylesheets="@../styles/fonts.css" text="1-5 of 13" GridPane.columnIndex="3" />
-                                          <ToggleButton fx:id="toggleLeft" minWidth="44.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="54.0" style="-fx-background-color: #ffffff;" GridPane.columnIndex="4">
-                                             <graphic>
-                                                <ImageView accessibleRole="TOGGLE_BUTTON" fitHeight="29.0" fitWidth="20.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../assets/left-icon.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </ToggleButton>
-                                          <ToggleButton fx:id="toggleRight" minWidth="44.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="54.0" style="-fx-background-color: #ffffff;" GridPane.columnIndex="5">
-                                             <graphic>
-                                                <ImageView accessibleRole="TOGGLE_BUTTON" fitHeight="29.0" fitWidth="20.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../assets/right-icon.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </ToggleButton>
-                                       </children>
-                                    </GridPane>
                                  </children>
-                              </HBox>
+                              </Pane>
+                              <VBox prefHeight="128.0" prefWidth="1080.0">
+                                 <children>
+                                    <HBox prefHeight="41.0" prefWidth="1080.0">
+                                       <children>
+                                          <GridPane alignment="TOP_RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="37.0" prefWidth="401.0">
+                                            <columnConstraints>
+                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="156.0" minWidth="10.0" prefWidth="112.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="116.0" minWidth="2.0" prefWidth="23.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="243.0" minWidth="10.0" prefWidth="62.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="299.0" minWidth="10.0" prefWidth="75.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="272.0" minWidth="10.0" prefWidth="56.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="272.0" minWidth="10.0" prefWidth="45.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                             <HBox.margin>
+                                                <Insets left="680.0" />
+                                             </HBox.margin>
+                                             <children>
+                                                <Label style="-fx-font-size: 14;" styleClass="label-rows-page" stylesheets="@../styles/fonts.css" text="Rows per Page:" />
+                                                <Label contentDisplay="CENTER" style="-fx-font-size: 14;" styleClass="label-rows" stylesheets="@../styles/fonts.css" text="10" GridPane.columnIndex="1">
+                                                   <opaqueInsets>
+                                                      <Insets />
+                                                   </opaqueInsets>
+                                                </Label>
+                                                <ToggleButton fx:id="toggleDropdownRow" minWidth="40.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="40.0" style="-fx-background-color: #ffffff;" GridPane.columnIndex="2">
+                                                   <graphic>
+                                                      <ImageView accessibleRole="TOGGLE_BUTTON" fitHeight="29.0" fitWidth="20.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../assets/dropdown-icon.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </ToggleButton>
+                                                <Label style="-fx-font-size: 14;" stylesheets="@../styles/fonts.css" text="1-5 of 13" GridPane.columnIndex="3" />
+                                                <ToggleButton fx:id="toggleLeft" minWidth="44.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="54.0" style="-fx-background-color: #ffffff;" GridPane.columnIndex="4">
+                                                   <graphic>
+                                                      <ImageView accessibleRole="TOGGLE_BUTTON" fitHeight="29.0" fitWidth="20.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../assets/left-icon.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </ToggleButton>
+                                                <ToggleButton fx:id="toggleRight" minWidth="44.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="54.0" style="-fx-background-color: #ffffff;" GridPane.columnIndex="5">
+                                                   <graphic>
+                                                      <ImageView accessibleRole="TOGGLE_BUTTON" fitHeight="29.0" fitWidth="20.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../assets/right-icon.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </graphic>
+                                                </ToggleButton>
+                                             </children>
+                                          </GridPane>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
                            </children>
                         </VBox>
                      </children>
