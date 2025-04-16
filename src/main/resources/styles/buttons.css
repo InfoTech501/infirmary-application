@@ -211,8 +211,9 @@ fx-font-weight: 400;
     -fx-text-alignment: center;
       -fx-translate-x: 10px;
         -fx-translate-y: 1px;
-
 }
+
+
 
 
 #SexComboBox .text-field,
@@ -231,4 +232,40 @@ fx-font-weight: 400;
     -fx-font-size: 18px;
 
 }
+
+#Inventory_Filter_Button_A,#Inventory_Filter_Button_Z {
+    -fx-background-color: #FFFFFF;
+    -fx-border-radius: 10px;
+    -fx-padding: 10px;
+    -fx-text-fill: #737791;
+    -fx-border-width: 1px;
+    -fx-border-color: #d3d3d3;
+}
+
+#QuantityButton{
+ -fx-background-color: #FFFFFF;
+    -fx-border-radius: 10px;
+    -fx-padding: 10px;
+    -fx-text-fill: #737791;
+    -fx-border-width: 1px;
+    -fx-border-color: #d3d3d3;
+}
+
+
+#InventoryAddItemButton{
+-fx-border-color: #A7C7E7;
+-fx-border-width: 2px;
+-fx-border-radius: 5px;
+-fx-text-fill: 	#4169E1;
+-fx-font-size:Large;
+-fx-background-radius: 15px;
+}
+
+
+#InventoryRemoveItemsButton{
+-fx-border-color: #D3D3D3;
+ -fx-text-fill: #A9A9A9;
+ -fx-border-radius: 5px;
+}
+
 

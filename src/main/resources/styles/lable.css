@@ -104,3 +104,63 @@
 #NursePromptLabel {
 -fx-font-size:11px;
 }
+
+
+
+
+#InventoryPageLabel {
+-fx-font-weight: 1000;
+-fx-font-size: 35px;
+}
+
+
+
+
+#LabelAddItemsInventory{
+ -fx-font-weight: 700;
+ -fx-font-size: 35px;
+}
+
+
+
+
+#RemoveItemsLabel{
+ -fx-font-weight: 700;
+ -fx-font-size: 45px;
+}
+
+
+#InventoryDeleteLabel_A{
+-fx-font-weight: 400;
+-fx-font-size: 25px;
+}
+
+#InventoryDeleteLabel_B{
+-fx-font-weight: 400;
+-fx-font-size: 25px;
+}
+
+#InventoryEditItemLabel{
+ -fx-font-weight: 700;
+ -fx-font-size: 35px;
+}
+
+#ItemToEditLabel{
+ -fx-font-weight: 700;
+ -fx-font-size: 35px;
+}
+
+
+#ListLabel {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+}
+
+
+#ProductNameLabel, #QuantityLabel, #ExpirationDateLabel, #BatchNoLable, #DosageLabel{
+ -fx-text-fill: #A9A9A9;
+}
+
+
+
+
