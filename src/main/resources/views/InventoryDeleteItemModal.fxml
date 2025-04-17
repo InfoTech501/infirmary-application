@@ -15,9 +15,9 @@
 
     <stylesheets>
         <URL value="@../styles/buttons.css" />
-        <URL value="@../styles/lable.css" />
+        <URL value="@../styles/label.css" />
         <URL value="@../styles/table.css" />
-        <URL value="@../styles/lable.css" />
+        <URL value="@../styles/label.css" />
     </stylesheets>
 
     <center>
@@ -36,8 +36,34 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label fx:id="InventoryDeleteLabel_A" alignment="CENTER" prefHeight="73.0" prefWidth="175.0" text="Paracetamol" />
-                        <Label fx:id="InventoryDeleteLabel_B" alignment="CENTER" prefHeight="73.0" prefWidth="169.0" text="Medicine 2" GridPane.rowIndex="1" />
+                        <GridPane prefHeight="103.0" prefWidth="441.0">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="219.66668701171875" minWidth="10.0" prefWidth="33.66666030883789" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="446.3333377838135" minWidth="10.0" prefWidth="428.3333396911621" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints maxHeight="27.333328247070312" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="68.0" minHeight="10.0" prefHeight="68.0" vgrow="SOMETIMES" />
+                            <RowConstraints maxHeight="29.666656494140625" minHeight="10.0" prefHeight="14.33331298828125" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <Label fx:id="InventoryDeleteLabel_A" alignment="CENTER" prefHeight="73.0" prefWidth="220.0" text="Paracetamol" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           </children>
+                        </GridPane>
+                        <GridPane layoutX="10.0" layoutY="10.0" prefHeight="103.0" prefWidth="441.0" GridPane.rowIndex="1">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="219.66668701171875" minWidth="10.0" prefWidth="33.66666030883789" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="446.3333377838135" minWidth="10.0" prefWidth="428.3333396911621" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="27.333328247070312" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="68.0" minHeight="10.0" prefHeight="68.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="29.666656494140625" minHeight="10.0" prefHeight="14.33331298828125" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <Label fx:id="InventoryDeleteLabel_B" alignment="CENTER" prefHeight="73.0" prefWidth="197.0" text="Medicine 2" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           </children>
+                        </GridPane>
                      </children>
                   </GridPane>
                </children>

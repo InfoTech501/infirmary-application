@@ -15,9 +15,9 @@
 
    <stylesheets>
       <URL value="@../styles/buttons.css" />
-      <URL value="@../styles/lable.css" />
+      <URL value="@../styles/label.css" />
       <URL value="@../styles/table.css" />
-      <URL value="@../styles/lable.css" />
+      <URL value="@../styles/label.css" />
    </stylesheets>
 
    <center>

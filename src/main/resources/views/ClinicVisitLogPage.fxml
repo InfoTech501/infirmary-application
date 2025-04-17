@@ -21,7 +21,7 @@
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1124.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <stylesheets>
         <URL value="@../styles/buttons.css" />
-        <URL value="@../styles/lable.css" />
+        <URL value="@../styles/label.css" />
         <URL value="@../styles/table.css" />
         <URL value="@../styles/textfield.css" />
         <URL value="@../styles/fonts.css" />
