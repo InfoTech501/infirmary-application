@@ -1,0 +1,66 @@
+name: Package and Create Artifact
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Java CI with Maven"]
+    branches: [ master ]
+    types: [ completed ]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  build-and-package:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Install WIX toolset
+        run: |
+          Invoke-WebRequest -Uri https://github.com/wixtoolset/wix3/releases/download/wix3112rtm/wix311.exe -OutFile wix311.exe
+          Start-Process -FilePath ".\wix311.exe" -ArgumentList "/install", "/quiet", "/norestart" -Wait
+          echo "C:\Program Files (x86)\WiX Toolset v3.11\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
+
+      - name: Run clean build with Maven
+        run: mvn clean package
+
+      - name: Create package directory
+        run: mkdir -p target/package
+
+      - name: Create JavaFX application installer artifact
+        run: |
+          jpackage --input target/ `
+            --name InfirmaryApplication `
+            --main-jar infirmary-application-0.1.0.jar `
+            --type exe `
+            --dest target/package `
+            --win-menu `
+            --win-shortcut `
+            --module-path "target/lib" `
+            --add-modules javafx.controls,javafx.fxml,javafx.graphics,javafx.base `
+            --app-version 0.1.0 `
+            --vendor "RoCS" `
+            --description "Infirmary Desktop Application" `
+            --win-dir-chooser `
+            --win-menu-group "RoCS" `
+            --java-options "-Dapp.name=Infirmary Application" `
+            --java-options "-Dapp.version=0.1.0" `
+            --java-options "-Dorg.name=RoCS"
+
+      - name: Upload the installer artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: InfirmaryApplication-Installer
+          path: target/package/InfirmaryApplication-*.exe
+
