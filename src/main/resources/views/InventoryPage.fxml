@@ -3,7 +3,6 @@
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
@@ -25,191 +24,130 @@
         <URL value="@../styles/table.css" />
         <URL value="@../styles/label.css" />
     </stylesheets>
-    <top>
-        <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <children>
-                <HBox prefHeight="100.0" prefWidth="500.0">
-                    <children>
-                        <Label fx:id="InventoryPageLabel" prefHeight="46.0" prefWidth="200.0" text="Inventory">
-                            <HBox.margin>
-                                <Insets left="30.0" top="30.0" />
-                            </HBox.margin>
-                            <stylesheets>
-                                <URL value="@../styles/fonts.css" />
-                                <URL value="@../styles/label.css" />
-                            </stylesheets>
-                        </Label>
-                    </children>
-                </HBox>
-                <HBox prefHeight="100.0" prefWidth="286.0" />
-                <HBox prefHeight="90.0" prefWidth="130.0">
-                    <children>
-                        <ImageView fitHeight="45.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../assets/notification-icon.png" />
-                            </image>
-                            <HBox.margin>
-                                <Insets left="38.0" top="25.0" />
-                            </HBox.margin>
-                        </ImageView>
-                    </children>
-                </HBox>
-                <GridPane>
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="49.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="163.2000732421875" minWidth="10.0" prefWidth="139.2000732421875" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="99.1999267578125" minWidth="10.0" prefWidth="99.1999267578125" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints maxHeight="28.599996948242186" minHeight="10.0" prefHeight="22.999998474121092" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="54.40000915527344" minHeight="10.0" prefHeight="54.40000915527344" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="27.59999694824218" minHeight="10.0" prefHeight="21.999990844726554" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                    <children>
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" />
-                        <ImageView fitHeight="42.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
-                            <image>
-                                <Image url="@../assets/profile-icon.png" />
-                            </image>
-                        </ImageView>
-                        <ImageView fitHeight="29.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                            <image>
-                                <Image url="@../assets/dropdown-icon.png" />
-                            </image>
-                        </ImageView>
-                        <Label fx:id="NurseNameLabel" prefHeight="19.0" prefWidth="132.0" text="Nurse @User" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                            <GridPane.margin>
-                                <Insets left="15.0" />
-                            </GridPane.margin>
-                        </Label>
-                    </children>
-                </GridPane>
-            </children>
-        </HBox>
-    </top>
-   <left>
-      <HBox prefHeight="980.0" prefWidth="1143.0" BorderPane.alignment="CENTER">
-         <children>
-            <VBox prefHeight="980.0" prefWidth="1167.0">
+   <center>
+      <ScrollPane prefHeight="680.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <content>
+            <HBox prefHeight="1079.0" prefWidth="1123.0">
                <children>
-                  <HBox prefHeight="146.0" prefWidth="1125.0">
+                  <HBox prefHeight="1079.0" prefWidth="1131.0">
                      <children>
-                        <HBox prefHeight="111.0" prefWidth="729.0">
+                        <VBox prefHeight="1079.0" prefWidth="1268.0">
                            <children>
-                              <GridPane prefHeight="131.0" prefWidth="688.0">
-                                <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="688.6666666666666" minWidth="10.0" prefWidth="688.6666666666666" />
-                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="287.33331298828125" minWidth="0.0" prefWidth="0.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints maxHeight="117.33334350585938" minHeight="10.0" prefHeight="58.0" vgrow="SOMETIMES" />
-                                  <RowConstraints maxHeight="92.0" minHeight="0.0" prefHeight="72.0" vgrow="SOMETIMES" />
-                                  <RowConstraints maxHeight="92.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
+                              <HBox prefHeight="146.0" prefWidth="1125.0">
                                  <children>
-                                    <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="58.0" prefWidth="669.0">
-                                       <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="303.79998779296875" minWidth="10.0" prefWidth="190.4000244140625" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="479.9999755859375" minWidth="10.0" prefWidth="479.9999755859375" />
-                                       </columnConstraints>
-                                       <rowConstraints>
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                       </rowConstraints>
+                                    <HBox prefHeight="111.0" prefWidth="729.0">
                                        <children>
-                                          <ImageView fitHeight="36.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../assets/filter-icon.png" />
-                                             </image>
-                                             <GridPane.margin>
-                                                <Insets left="20.0" />
-                                             </GridPane.margin>
-                                          </ImageView>
-                                          <Label text="Filter List">
-                                             <GridPane.margin>
-                                                <Insets left="70.0" />
-                                             </GridPane.margin>
-                                          </Label>
-                                          <TextField fx:id="SearchTextField" prefHeight="42.0" prefWidth="487.0" promptText="Search" GridPane.columnIndex="1">
-                                             <GridPane.margin>
-                                                <Insets />
-                                             </GridPane.margin>
-                                          </TextField>
+                                          <GridPane prefHeight="131.0" prefWidth="688.0">
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="688.6666666666666" minWidth="10.0" prefWidth="688.6666666666666" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="287.33331298828125" minWidth="0.0" prefWidth="0.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints maxHeight="117.33334350585938" minHeight="10.0" prefHeight="58.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="92.0" minHeight="0.0" prefHeight="72.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="92.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                             <children>
+                                                <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="58.0" prefWidth="669.0">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="303.79998779296875" minWidth="10.0" prefWidth="190.4000244140625" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="479.9999755859375" minWidth="10.0" prefWidth="479.9999755859375" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <ImageView fitHeight="36.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../assets/filter-icon.png" />
+                                                         </image>
+                                                         <GridPane.margin>
+                                                            <Insets left="20.0" />
+                                                         </GridPane.margin>
+                                                      </ImageView>
+                                                      <Label text="Filter List">
+                                                         <GridPane.margin>
+                                                            <Insets left="70.0" />
+                                                         </GridPane.margin>
+                                                      </Label>
+                                                      <TextField fx:id="SearchTextField" prefHeight="42.0" prefWidth="487.0" promptText="Search" GridPane.columnIndex="1">
+                                                         <GridPane.margin>
+                                                            <Insets />
+                                                         </GridPane.margin>
+                                                      </TextField>
+                                                   </children>
+                                                </GridPane>
+                                                <GridPane alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="58.0" prefWidth="689.0" GridPane.rowIndex="1">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints maxWidth="34.66667683919271" minWidth="19.99998982747396" prefWidth="19.99998982747396" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="192.66667683919272" minWidth="10.0" prefWidth="138.66668701171875" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="270.000010172526" minWidth="10.0" prefWidth="141.99997965494788" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="289.3333333333333" minWidth="10.0" prefWidth="148.33333333333337" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="304.3333638509114" minWidth="10.0" prefWidth="268.33333333333337" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints maxHeight="53.600010299682616" minHeight="10.0" prefHeight="30.4" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <Button fx:id="QuantityButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="113.0" text="Quantity" GridPane.columnIndex="1">
+                                                         <padding>
+                                                            <Insets right="15.0" />
+                                                         </padding>
+                                                      </Button>
+                                                      <Button fx:id="Inventory_Filter_Button_A" mnemonicParsing="false" prefHeight="42.0" prefWidth="113.0" text="A-Z" GridPane.columnIndex="2">
+                                                         <padding>
+                                                            <Insets right="15.0" />
+                                                         </padding>
+                                                      </Button>
+                                                      <Button fx:id="Inventory_Filter_Button_Z" mnemonicParsing="false" prefHeight="42.0" prefWidth="113.0" text="Z-A" GridPane.columnIndex="3" />
+                                                      <Button fx:id="ClearFilterButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="113.0" text="Clear Filter" GridPane.columnIndex="4" />
+                                                      <HBox prefHeight="54.0" prefWidth="39.0" />
+                                                   </children>
+                                                </GridPane>
+                                             </children>
+                                          </GridPane>
                                        </children>
-                                    </GridPane>
-                                    <GridPane alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="58.0" prefWidth="754.0" GridPane.rowIndex="1">
-                                       <columnConstraints>
-                                          <ColumnConstraints maxWidth="34.66667683919271" minWidth="19.99998982747396" prefWidth="19.99998982747396" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="192.66667683919272" minWidth="10.0" prefWidth="138.66668701171875" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="270.000010172526" minWidth="10.0" prefWidth="141.99997965494788" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="289.3333333333333" minWidth="10.0" prefWidth="150.66670735677087" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="304.3333638509114" minWidth="10.0" prefWidth="291.33329264322924" />
-                                       </columnConstraints>
-                                       <rowConstraints>
-                                          <RowConstraints maxHeight="53.600010299682616" minHeight="10.0" prefHeight="30.4" vgrow="SOMETIMES" />
-                                       </rowConstraints>
+                                    </HBox>
+                                    <HBox prefHeight="111.0" prefWidth="475.0">
                                        <children>
-                                          <Button fx:id="QuantityButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="113.0" text="Quantity" GridPane.columnIndex="1">
-                                             <padding>
-                                                <Insets right="15.0" />
-                                             </padding>
-                                          </Button>
-                                          <Button fx:id="Inventory_Filter_Button_A" mnemonicParsing="false" prefHeight="42.0" prefWidth="113.0" text="A-Z" GridPane.columnIndex="2">
-                                             <padding>
-                                                <Insets right="15.0" />
-                                             </padding>
-                                          </Button>
-                                          <Button fx:id="Inventory_Filter_Button_Z" mnemonicParsing="false" prefHeight="42.0" prefWidth="113.0" text="Z-A" GridPane.columnIndex="3" />
-                                          <Button fx:id="ClearFilterButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="113.0" text="Clear Filter" GridPane.columnIndex="4" />
-                                          <HBox prefHeight="54.0" prefWidth="39.0" />
+                                          <GridPane prefHeight="146.0" prefWidth="555.0">
+                                             <columnConstraints>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                             </columnConstraints>
+                                             <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="51.0" minHeight="10.0" prefHeight="51.0" vgrow="SOMETIMES" />
+                                                <RowConstraints maxHeight="32.333343505859375" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
+                                             </rowConstraints>
+                                             <children>
+                                                <Button fx:id="InventoryAddItemButton" mnemonicParsing="false" prefHeight="52.0" prefWidth="181.0" text="ADD ITEM" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                             </children>
+                                          </GridPane>
                                        </children>
-                                    </GridPane>
+                                    </HBox>
                                  </children>
-                              </GridPane>
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="111.0" prefWidth="475.0">
-                           <children>
-                              <GridPane prefHeight="111.0" prefWidth="465.0">
-                                <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints maxHeight="51.0" minHeight="10.0" prefHeight="51.0" vgrow="SOMETIMES" />
-                                  <RowConstraints maxHeight="32.333343505859375" minHeight="10.0" prefHeight="23.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
+                              </HBox>
+                              <HBox prefHeight="943.0" prefWidth="1123.0">
                                  <children>
-                                    <Button fx:id="InventoryAddItemButton" mnemonicParsing="false" prefHeight="52.0" prefWidth="181.0" text="ADD ITEM" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <TableView fx:id="MedDetailsTable" prefHeight="835.0" prefWidth="1123.0">
+                                       <columns>
+                                          <TableColumn fx:id="SelectColumn" prefWidth="75.33334350585938" text="Select" />
+                                          <TableColumn fx:id="ProductNameColumn" prefWidth="286.0" text="Product Name" />
+                                          <TableColumn fx:id="QuantityColumn" prefWidth="193.33331298828125" text="Quantity" />
+                                          <TableColumn fx:id="DosageColumn" prefWidth="256.666748046875" text="Dosage &amp; Dosage Form" />
+                                          <TableColumn fx:id="ExpiryDateColumn" prefWidth="244.66668701171875" text="Expiry Date" />
+                                          <TableColumn fx:id="BatchNoColumn" prefWidth="214.66656494140625" text="Batch No." />
+                                       </columns>
+                                    </TableView>
                                  </children>
-                              </GridPane>
-                           </children>
-                        </HBox>
-                     </children></HBox>
-                  <ScrollPane prefHeight="885.0" prefWidth="1125.0">
-                     <content>
-                        <VBox prefHeight="854.0" prefWidth="1123.0">
-                           <children>
-                              <TableView fx:id="MedDetailsTable" prefHeight="835.0" prefWidth="1123.0">
-                                 <columns>
-                                    <TableColumn fx:id="ProductNameColumn" prefWidth="180.66665649414062" text="Product Name">
-                                       <graphic>
-                                          <CheckBox mnemonicParsing="false" />
-                                       </graphic>
-                                    </TableColumn>
-                                    <TableColumn fx:id="QuantityColumn" prefWidth="193.33331298828125" text="Quantity" />
-                                    <TableColumn fx:id="DosageColumn" prefWidth="256.666748046875" text="Dosage &amp; Dosage Form" />
-                                    <TableColumn fx:id="ExpiryDateColumn" prefWidth="244.66668701171875" text="Expiry Date" />
-                                    <TableColumn fx:id="BatchNoColumn" prefWidth="214.66656494140625" text="Batch No." />
-                                 </columns>
-                              </TableView>
+                              </HBox>
                            </children>
                         </VBox>
-                     </content>
-                  </ScrollPane>
-               </children>
-            </VBox>
-         </children>
-      </HBox>
-   </left>
+                     </children>
+                  </HBox>
+               </children></HBox>
+         </content>
+      </ScrollPane>
+   </center>
 </BorderPane>
