@@ -35,6 +35,15 @@ jobs:
       - name: Run clean build with Maven
         run: mvn clean package
 
+      - name: Extract version from pom.xml file
+        id: version-extractor
+        uses: dostonhamrakulov/maven-artifact-version-extractor@v1.0
+        with:
+          file_path: ${{ github.workspace }}/pom.xml
+
+      - name: Project version
+        run: echo "Version ${{ steps.version-extractor.outputs.version }}"
+
       - name: Create package directory
         run: mkdir -p target/package
 
@@ -42,21 +51,18 @@ jobs:
         run: |
           jpackage --input target/ `
             --name InfirmaryApplication `
-            --main-jar infirmary-application-0.1.0.jar `
+            --main-jar "infirmary-application-${{ steps.version-extractor.outputs.version }}.jar" `
             --type exe `
             --dest target/package `
             --win-menu `
             --win-shortcut `
             --module-path "target/lib" `
             --add-modules javafx.controls,javafx.fxml,javafx.graphics,javafx.base `
-            --app-version 0.1.0 `
+            --app-version "${{ steps.version-extractor.outputs.version }}" `
             --vendor "RoCS" `
             --description "Infirmary Desktop Application" `
             --win-dir-chooser `
-            --win-menu-group "RoCS" `
-            --java-options "-Dapp.name=Infirmary Application" `
-            --java-options "-Dapp.version=0.1.0" `
-            --java-options "-Dorg.name=RoCS"
+            --verbose `
 
       - name: Upload the installer artifact
         uses: actions/upload-artifact@v4
