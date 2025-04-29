@@ -237,7 +237,16 @@ fx-font-weight: 400;
     -fx-background-color: #FFFFFF;
     -fx-border-radius: 10px;
     -fx-padding: 10px;
-    -fx-text-fill: #737791;
+    -fx-text-fill: #000000;
+    -fx-border-width: 1px;
+    -fx-border-color: #d3d3d3;
+}
+
+#InventoryClearFilterButton{
+    -fx-background-color: #FFFFFF;
+    -fx-border-radius: 10px;
+    -fx-padding: 10px;
+    -fx-text-fill: #000000;
     -fx-border-width: 1px;
     -fx-border-color: #d3d3d3;
 }
@@ -246,7 +255,7 @@ fx-font-weight: 400;
  -fx-background-color: #FFFFFF;
     -fx-border-radius: 10px;
     -fx-padding: 10px;
-    -fx-text-fill: #737791;
+    -fx-text-fill: #000000;
     -fx-border-width: 1px;
     -fx-border-color: #d3d3d3;
 }

@@ -100,7 +100,7 @@
                                                          </padding>
                                                       </Button>
                                                       <Button fx:id="Inventory_Filter_Button_Z" mnemonicParsing="false" prefHeight="42.0" prefWidth="113.0" text="Z-A" GridPane.columnIndex="3" />
-                                                      <Button fx:id="ClearFilterButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="113.0" text="Clear Filter" GridPane.columnIndex="4" />
+                                                      <Button fx:id="InventoryClearFilterButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="113.0" text="Clear Filter" GridPane.columnIndex="4" />
                                                       <HBox prefHeight="54.0" prefWidth="39.0" />
                                                    </children>
                                                 </GridPane>
