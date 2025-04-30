@@ -25,9 +25,9 @@
     </stylesheets>
 
     <center>
-        <HBox prefHeight="100.0" prefWidth="1331.0" BorderPane.alignment="CENTER">
+        <HBox prefHeight="100.0" prefWidth="1400.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="484.0" prefWidth="316.0">
+            <VBox prefHeight="496.0" prefWidth="377.0">
                <children>
                   <HBox alignment="TOP_CENTER" prefHeight="79.0" prefWidth="364.0">
                      <children>
@@ -166,23 +166,23 @@
                         <TableView prefHeight="435.0" prefWidth="983.0">
                            <columns>
                               <TableColumn fx:id="SelectColumn" prefWidth="75.33334350585938" text="Select" />
-                              <TableColumn prefWidth="225.33343982696533" text="Product Name" />
-                              <TableColumn minWidth="4.000030517578125" prefWidth="164.6666259765625" text="Quantity" />
-                              <TableColumn prefWidth="250.66680908203125" text="Dosage &amp; Dosage Form" />
-                              <TableColumn prefWidth="154.0" text="Expiry Date" />
-                              <TableColumn fx:id="SelectColumn1" prefWidth="97.3333740234375" text="Batch No." />
+                              <TableColumn prefWidth="196.6666717529297" text="Product Name" />
+                              <TableColumn minWidth="4.000030517578125" prefWidth="181.33331298828125" text="Quantity" />
+                              <TableColumn prefWidth="232.0" text="Dosage &amp; Dosage Form" />
+                              <TableColumn prefWidth="168.0001220703125" text="Expiry Date" />
+                              <TableColumn fx:id="SelectColumn1" prefWidth="116.6666259765625" text="Batch No." />
                            </columns>
                         </TableView>
                      </content>
                   </ScrollPane>
                </children>
             </VBox>
-            <HBox prefHeight="484.0" prefWidth="159.0" />
+            <HBox prefHeight="484.0" prefWidth="185.0" />
          </children></HBox>
 
     </center>
     <top>
-        <HBox prefHeight="116.0" prefWidth="1400.0" BorderPane.alignment="CENTER">
+        <HBox prefHeight="104.0" prefWidth="1400.0" BorderPane.alignment="CENTER">
             <children>
                 <HBox prefHeight="116.0" prefWidth="761.0">
                     <children>

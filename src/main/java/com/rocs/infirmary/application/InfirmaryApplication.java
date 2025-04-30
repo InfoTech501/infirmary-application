@@ -12,7 +12,7 @@ public class InfirmaryApplication extends Application {
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader();
 
-        loader.setLocation(getClass().getResource("/views/mainpage.fxml"));
+        loader.setLocation(getClass().getResource("/views/InventoryPage.fxml"));
 
         BorderPane mainLayout;
         mainLayout = loader.load();

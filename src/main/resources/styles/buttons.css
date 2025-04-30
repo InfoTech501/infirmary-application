@@ -302,11 +302,7 @@ fx-font-weight: 400;
  -fx-border-radius: 5px;
 }
 
-#InventoryRemoveItemsButton: hover{
--fx-background-color: #FFFFFF;
--fx-border-color: #FF0000;
--fx-text-fill: #FF0000;
-}
+
 
 
 
