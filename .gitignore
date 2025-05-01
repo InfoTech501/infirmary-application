@@ -4,7 +4,7 @@ target/
 !**/src/test/**/target/
 
 *.idea/
-
+/logs
 /lib/
 /build/
 

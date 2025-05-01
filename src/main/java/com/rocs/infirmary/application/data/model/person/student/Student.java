@@ -15,6 +15,14 @@ public class Student extends Person {
     private Date visitDate;
     private String treatment;
 
+    public int getStudentId() {
+        return studentId;
+    }
+
+    public long getLrn() {
+        return lrn;
+    }
+
     public void setStudentId(int studentId) {
         this.studentId = studentId;
     }

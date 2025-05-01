@@ -3,13 +3,17 @@ import com.rocs.infirmary.application.data.dao.medicine.inventory.MedicineInvent
 import com.rocs.infirmary.application.data.connection.ConnectionHelper;
 import com.rocs.infirmary.application.data.dao.utils.queryconstants.medicine.inventory.QueryConstants;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
 public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MedicineInventoryDaoImpl.class);
     @Override
     public List<Medicine> getAllMedicine() {
+        LOGGER.info("get all medicine started");
         List<Medicine> MedicineInventoryList = new ArrayList<>();
 
 
@@ -21,7 +25,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
         try (Connection con = ConnectionHelper.getConnection();
              PreparedStatement stmt = con.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
-
+            LOGGER.info("Query in use"+sql);
 
             while (rs.next()) {
 
@@ -35,15 +39,24 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                 medicine.setDescription(rs.getString("DESCRIPTION"));
                 medicine.setExpirationDate(rs.getTimestamp("EXPIRATION_DATE"));
 
-
+                LOGGER.info("Data retrieved: "+"\n"
+                        +"Inventory ID: "+medicine.getInventoryId()+"\n"
+                        +"Medicine  ID: "+medicine.getMedicineId()+"\n"
+                        +"Item type   : "+medicine.getItemType()+"\n"
+                        +"Quantity    : "+medicine.getQuantity()+"\n"
+                        +"Item Name   : "+medicine.getItemName()+"\n"
+                        +"Description : "+medicine.getDescription()+"\n"
+                        +"Expiration  : "+medicine.getExpirationDate()
+                );
 
                 MedicineInventoryList.add(medicine);
             }
 
         } catch (SQLException e) {
+            LOGGER.error("SQLException Occurred: " + e.getMessage());
             System.out.println("An SQL Exception occurred: " + e.getMessage());
         }
-
+        LOGGER.info("Data retrieved successfully");
         return  MedicineInventoryList;
     }
 }
