@@ -59,6 +59,59 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
         LOGGER.info("Data retrieved successfully");
         return  MedicineInventoryList;
     }
+
+    @Override
+    public boolean deleteMedicineByItemName(String itemName) {
+        LOGGER.info("Delete medicine started");
+        try (Connection con = ConnectionHelper.getConnection()) {
+            QueryConstants queryConstants = new QueryConstants();
+
+            String sql = queryConstants.getDeleteMedicineQuery();
+            PreparedStatement stmt = con.prepareStatement(sql);
+            LOGGER.info("Query in use"+sql);
+            LOGGER.info("data inserted: "+"Item Name: "+itemName);
+            if(isAvailable(itemName)) {
+
+                stmt.setString(1,itemName);
+
+                int affectedRows = stmt.executeUpdate();
+                LOGGER.info(itemName+" successfully deleted");
+                return affectedRows > 0;
+
+            } else {
+                LOGGER.info(itemName+" Failed to delete");
+                return false;
+            }
+
+
+        }catch (SQLException e) {
+            LOGGER.error("SqlException Occurred: "+e.getMessage());
+            throw new RuntimeException();
+        }
+
+    }
+
+    @Override
+    public boolean isAvailable(String itemName) {
+        LOGGER.info("availability check started");
+        try(Connection con = ConnectionHelper.getConnection()){
+            QueryConstants queryConstants = new QueryConstants();
+
+            String sql = queryConstants.filterDeletedMedicine();
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setString(1,itemName);
+
+            ResultSet rs =  stmt.executeQuery();
+            return rs.next();
+
+        }catch (SQLException e ) {
+            LOGGER.error("SqlException Occurred: "+e.getMessage());
+            System.out.println("SQL error " + e.getMessage());
+        }
+        LOGGER.info("availability check ended successfully");
+        return false;
+    }
 }
 
 

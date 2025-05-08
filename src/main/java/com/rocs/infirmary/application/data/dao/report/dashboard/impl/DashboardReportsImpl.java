@@ -23,8 +23,7 @@ import java.util.List;
  * It includes methods for notification of stock level of medicine and reports on common ailments, frequent visit, and medication trend.
  */
 public class DashboardReportsImpl implements DashboardReports {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DashboardReportsImpl.class);
-
+    private static Logger LOGGER = LoggerFactory.getLogger(DashboardReportsImpl.class);
     @Override
     public List<LowStockReport> getAllLowStockMedicine() {
         LOGGER.info("Check low stock medicine started");
@@ -32,19 +31,20 @@ public class DashboardReportsImpl implements DashboardReports {
 
         QueryConstants queryConstants = new QueryConstants();
         String query = queryConstants.getAllLowStockMedicineQuery();
-
         try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
-            LOGGER.info("Query in use: {}", query);
+            LOGGER.info("Query in use: "+query);
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 LowStockReport item = new LowStockReport(resultSet.getString("item_name"), resultSet.getInt("quantity"));
-                LOGGER.info("retrieved data: \nItem Name: {}\nQuantity : {}", resultSet.getString("item_name"), resultSet.getString("quantity"));
+                LOGGER.info("retrieved data: "+"\n"
+                        +"Item Name: "+resultSet.getString("item_name")+"\n"
+                        +"Quantity : "+resultSet.getString("quantity"));
                 lowStockItems.add(item);
             }
         } catch (SQLException e) {
-            LOGGER.error("SQLExeption Occured: {}", e.getMessage());
+            LOGGER.error("SQLExeption Occured: "+e.getMessage());
             e.printStackTrace();
         }
         return lowStockItems;
@@ -56,17 +56,17 @@ public class DashboardReportsImpl implements DashboardReports {
         List<CommonAilmentsReport> reportList = new ArrayList<>();
         QueryConstants queryConstants = new QueryConstants();
         String sql = queryConstants.getAllCommonAilmentReportQuery();
-
         try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
-            LOGGER.info("Query in use: {}",sql);
+            LOGGER.info("Query in use: "+sql);
+
             statement.setTimestamp(1, new java.sql.Timestamp(startDate.getTime()));
             statement.setTimestamp(2, new java.sql.Timestamp(endDate.getTime()));
             statement.setString(3, gradeLevel);
             statement.setString(4, gradeLevel);
             statement.setString(5, section);
             statement.setString(6, section);
-            LOGGER.info("data inserted:\n"+"Start Date: {}\n"+"End Date: {}\n"+"Grade level: {}\n"+"Section: "+section+"\n",startDate,endDate,gradeLevel);
+            LOGGER.info("data inserted:\n"+"Start Date: "+startDate+"\n"+"End Date: "+endDate+"\n"+"Grade level: "+gradeLevel+"\n"+"Section: "+section+"\n");
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 CommonAilmentsReport report = new CommonAilmentsReport();
@@ -80,7 +80,15 @@ public class DashboardReportsImpl implements DashboardReports {
                 person.setLastName(resultSet.getString("LAST_NAME"));
                 person.setAge(resultSet.getInt("AGE"));
 
-                LOGGER.info("retrieved data:\nAilment: {}\nOccurrence: {}\nGrade level: {}\nStrand: {}\nName: {} {}\nAge: {}\n", report.getAilment(), report.getOccurrences(), report.getGradeLevel(), report.getStrand(), person.getFirstName(), person.getLastName(), person.getAge());
+                LOGGER.info("retrieved data:\n"
+                        +"Ailment: "+report.getAilment()+"\n"
+                        +"Occurrence: "+report.getOccurrences()+"\n"
+                        +"Grade level: "+report.getGradeLevel()+"\n"
+                        +"Strand: "+report.getStrand()+"\n"
+                        +"Name: "+person.getFirstName() + " " +person.getLastName()+"\n"
+                        +"Age: "+person.getAge()+"\n"
+                );
+
 
                 List<Person> people = new ArrayList<>();
                 people.add(person);
@@ -89,10 +97,9 @@ public class DashboardReportsImpl implements DashboardReports {
                 reportList.add(report);
             }
         } catch (SQLException e) {
-            LOGGER.error("SQLExeption Occured: {}",e.getMessage());
+            LOGGER.error("SQLExeption Occured: "+e.getMessage());
             System.err.println("Error generating the common ailments report: " + e.getMessage());
         }
-
         return reportList;
     }
 
@@ -112,8 +119,7 @@ public class DashboardReportsImpl implements DashboardReports {
             stmt.setString(1, gradeLevel);
             stmt.setTimestamp(2, new java.sql.Timestamp(startDate.getTime()));
             stmt.setTimestamp(3, new java.sql.Timestamp(endDate.getTime()));
-            LOGGER.info("data inserted:\nStart Date: {}\nEnd Date: {}\nGrade level: {}", startDate, endDate, gradeLevel);
-
+            LOGGER.info("data inserted:\n"+"Start Date: "+startDate+"\n"+"End Date: "+endDate+"\n"+"Grade level: "+gradeLevel);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 FrequentVisitReport report = new FrequentVisitReport();
@@ -124,11 +130,18 @@ public class DashboardReportsImpl implements DashboardReports {
                 report.setVisitDate(rs.getDate("visit_date"));
                 report.setSymptoms(rs.getString("symptoms"));
                 report.setVisitCount(rs.getInt("visit_count"));
-                LOGGER.info("retrieved data:\nStudent ID: {}\nName: {} {}\nGrade level: {}\nVisit Date: {}\nSymptoms: {}\nVisit Count {}\n", rs.getInt("student_id"), report.getFirstName(), report.getLastName(), report.getGradeLevel(), report.getVisitDate(), report.getSymptoms(), report.getVisitCount());
+                LOGGER.info("retrieved data:\n"
+                        +"Student ID: "+rs.getInt("student_id")+"\n"
+                        +"Name: "+report.getFirstName()+" "+report.getLastName()+"\n"
+                        +"Grade level: "+report.getGradeLevel()+"\n"
+                        +"Visit Date: "+report.getVisitDate()+"\n"
+                        +"Symptoms: "+report.getSymptoms()+"\n"
+                        +"Visit Count "+report.getVisitCount()+"\n"
+                );
                 reportsList.add(report);
             }
         } catch (SQLException e) {
-            LOGGER.error("SqlException Occurred {}",e.getMessage());
+            LOGGER.error("SqlException Occurred "+e.getMessage());
             System.out.println("An SQL Exception Occurred. " + e.getMessage());
         }
         return reportsList;
@@ -145,23 +158,26 @@ public class DashboardReportsImpl implements DashboardReports {
 
         try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)){
-            LOGGER.info("Query in use: {}",sql);
+            LOGGER.info("Query in use: "+sql);
             stmt.setTimestamp(1, new java.sql.Timestamp(startDate.getTime()));
             stmt.setTimestamp(2, new java.sql.Timestamp(endDate.getTime()));
-            LOGGER.info("data inserted:\nStart Date: {}\nEnd Date: {}", startDate, endDate);
-
+            LOGGER.info("data inserted:\n"+"Start Date: "+startDate+"\n"+"End Date: "+endDate);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()){
                 MedicationTrendReport report = new MedicationTrendReport();
                 report.setUsage(rs.getInt("usage"));
                 report.setMedicineName(rs.getString("item_name"));
                 report.setStocks(rs.getInt("quantity"));
-                LOGGER.info("retrieved data:\nUsage: {}\nMedication Name: {}\nStocks: {}\n", report.getUsage(), report.getMedicineName(), report.getStocks());
+                LOGGER.info("retrieved data:\n"
+                        +"Usage: "+report.getUsage()+"\n"
+                        +"Medication Name: "+report.getMedicineName()+"\n"
+                        +"Stocks: "+report.getStocks()+"\n"
+                );
                 reportList.add(report);
             }
 
         } catch (SQLException e) {
-            LOGGER.error("SqlException Occurred {}",e.getMessage());
+            LOGGER.error("SqlException Occurred "+e.getMessage());
             System.out.println("An SQL Exception Occurred. " + e.getMessage());
         }
 

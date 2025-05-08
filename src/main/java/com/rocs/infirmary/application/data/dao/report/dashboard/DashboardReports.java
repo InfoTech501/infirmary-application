@@ -9,7 +9,11 @@ import java.util.Date;
 import java.util.List;
 
 public interface DashboardReports {
-
+    /**
+     * Retrieves a list of inventory items that are low in stock.
+     *
+     * @return a list of LowStockItem objects that are low in stock.
+     */
     List<LowStockReport> getAllLowStockMedicine();
 
     /**
@@ -41,5 +45,6 @@ public interface DashboardReports {
      * @return list of MedicationTrendReports object such as medication usage, medicine name and medication stocks.
      */
     List<MedicationTrendReport> getMedicationTrendReport(Date startDate, Date endDate);
+
 
 }

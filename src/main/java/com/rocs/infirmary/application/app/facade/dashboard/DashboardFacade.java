@@ -13,6 +13,11 @@ import java.util.List;
  */
 public interface DashboardFacade {
 
+    /**
+     * Checks for low stock items and sends notifications for each item.
+     *
+     * @return a list of LowStockItem objects that are low in stock.
+     */
     List<LowStockReport> findAllLowStockMedicine();
 
     /**
