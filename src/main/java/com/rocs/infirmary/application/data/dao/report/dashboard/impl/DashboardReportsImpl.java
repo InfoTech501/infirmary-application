@@ -25,7 +25,7 @@ import java.util.List;
 public class DashboardReportsImpl implements DashboardReports {
     private static Logger LOGGER = LoggerFactory.getLogger(DashboardReportsImpl.class);
     @Override
-    public List<LowStockReport> getAllLowStockMedicine() {
+    public List<LowStockReport> findAllLowStockMedicine() {
         LOGGER.info("Check low stock medicine started");
         List<LowStockReport> lowStockItems = new ArrayList<>();
 
@@ -51,7 +51,7 @@ public class DashboardReportsImpl implements DashboardReports {
     }
 
     @Override
-    public List<CommonAilmentsReport> getCommonAilmentReport(Date startDate, Date endDate, String gradeLevel, String section) {
+    public List<CommonAilmentsReport> findCommonAilmentReport(Date startDate, Date endDate, String gradeLevel, String section) {
         LOGGER.info("Common ailment report started");
         List<CommonAilmentsReport> reportList = new ArrayList<>();
         QueryConstants queryConstants = new QueryConstants();
@@ -105,7 +105,7 @@ public class DashboardReportsImpl implements DashboardReports {
 
 
     @Override
-    public List<FrequentVisitReport> getFrequentVisitReports(String gradeLevel, Date startDate, Date endDate) {
+    public List<FrequentVisitReport> findFrequentVisit(String gradeLevel, Date startDate, Date endDate) {
         LOGGER.info("Frequent Visit Report started");
         List<FrequentVisitReport> reportsList = new ArrayList<>();
 
@@ -148,7 +148,7 @@ public class DashboardReportsImpl implements DashboardReports {
     }
 
     @Override
-    public List<MedicationTrendReport> getMedicationTrendReport(Date startDate, Date endDate) {
+    public List<MedicationTrendReport> findMedicationTrend(Date startDate, Date endDate) {
         LOGGER.info("Medication Trend Report started");
         List<MedicationTrendReport> reportList = new ArrayList<>();
 

@@ -14,7 +14,7 @@ public interface DashboardReports {
      *
      * @return a list of LowStockItem objects that are low in stock.
      */
-    List<LowStockReport> getAllLowStockMedicine();
+    List<LowStockReport> findAllLowStockMedicine();
 
     /**
      * Retrieves common ailments report by start date, end date, grade level, and section of student.
@@ -25,7 +25,7 @@ public interface DashboardReports {
      * @param section    The section to filter the report and can be null.
      * @return list of CommonAilmentsReport object such as common ailments, occurrences, affected people, grade level, and strand.
      */
-    List<CommonAilmentsReport> getCommonAilmentReport(Date startDate, Date endDate, String gradeLevel, String section);
+    List<CommonAilmentsReport> findCommonAilmentReport(Date startDate, Date endDate, String gradeLevel, String section);
 
     /**
      * * This retrieves the Frequent visit report using the grade level of the student, start date, and end date.
@@ -35,7 +35,7 @@ public interface DashboardReports {
      * @param endDate - The end of the report date period.
      * @return list of FrequentVisitReport object like studentId, firstName, lastName, gradeLevel, symptoms, visitCount, and visitDate.
      * */
-    List<FrequentVisitReport> getFrequentVisitReports(String gradeLevel, Date startDate, Date endDate);
+    List<FrequentVisitReport> findFrequentVisit(String gradeLevel, Date startDate, Date endDate);
 
     /**
      * Retrieves medication trend report by start date, end date.
@@ -44,7 +44,7 @@ public interface DashboardReports {
      * @param endDate    The end date of the report period.
      * @return list of MedicationTrendReports object such as medication usage, medicine name and medication stocks.
      */
-    List<MedicationTrendReport> getMedicationTrendReport(Date startDate, Date endDate);
+    List<MedicationTrendReport> findMedicationTrend(Date startDate, Date endDate);
 
 
 }

@@ -11,11 +11,11 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
 
     @Override
     public List<Medicine> findAllMedicine() {
-        return this.medicineInventoryDao.getAllMedicine();
+        return this.medicineInventoryDao.findAllMedicine();
     }
     @Override
     public boolean deleteMedicineByItemName(String itemName) {
-        return medicineInventoryDao.deleteMedicineByItemName(itemName);
+        return medicineInventoryDao.deleteMedicine(itemName);
     }
 
     @Override

@@ -17,13 +17,13 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
     /** The data access object for Student Medical Record. */
     private final StudentMedicalRecordDao studentMedRecord = new StudentMedicalRecordDaoImpl();
 
-    public Student findMedicalInformationByLRN(long LRN) {
-        return this.studentMedRecord.getMedicalInformationByLRN(LRN);
+    public Student getMedicalInformationByLRN(long LRN) {
+        return this.studentMedRecord.findMedicalInformation(LRN);
     }
 
     @Override
-    public List<Student> readAllStudentMedicalRecords() {
-        List<Student> medicalRecords = this.studentMedRecord.getAllStudentMedicalRecords();
+    public List<Student> getAllStudentMedicalRecords() {
+        List<Student> medicalRecords = this.studentMedRecord.findAllStudentMedicalRecords();
 
         return medicalRecords;
     }
@@ -35,7 +35,7 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
      */
     @Override
     public boolean deleteStudentMedicalRecordByLrn(long LRN) {
-        return this.studentMedRecord.deleteStudentMedicalRecordByLrn(LRN);
+        return this.studentMedRecord.deleteStudentMedicalRecord(LRN);
     }
     @Override
     public boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate, String treatement, long LRN) {

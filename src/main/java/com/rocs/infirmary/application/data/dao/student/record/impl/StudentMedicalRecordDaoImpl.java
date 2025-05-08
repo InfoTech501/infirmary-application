@@ -24,7 +24,7 @@ import java.util.List;
 public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentMedicalRecordDaoImpl.class);
 
-    public Student getMedicalInformationByLRN(long LRN) {
+    public Student findMedicalInformation(long LRN) {
         LOGGER.info("get medical record started");
         Student studentMedicalRecord = null;
         try (Connection con = ConnectionHelper.getConnection()) {
@@ -77,7 +77,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
     }
 
     @Override
-    public List<Student> getAllStudentMedicalRecords() {
+    public List<Student> findAllStudentMedicalRecords() {
         LOGGER.info("get all medical records started");
         List<Student> medicalRecords = new ArrayList<>();
         try (Connection con = ConnectionHelper.getConnection()) {
@@ -132,7 +132,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
      * while a status of 1 means the record is still active and present in the system.
      */
     @Override
-    public boolean deleteStudentMedicalRecordByLrn(long LRN) {
+    public boolean deleteStudentMedicalRecord(long LRN) {
         LOGGER.info("Delete medical records started");
         Student studentMedicalRecord = getStudent(LRN);
 

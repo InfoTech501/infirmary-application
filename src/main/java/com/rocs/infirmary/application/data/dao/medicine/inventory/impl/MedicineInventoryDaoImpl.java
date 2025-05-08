@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(MedicineInventoryDaoImpl.class);
     @Override
-    public List<Medicine> getAllMedicine() {
+    public List<Medicine> findAllMedicine() {
         LOGGER.info("get all medicine started");
         List<Medicine> MedicineInventoryList = new ArrayList<>();
 
@@ -61,7 +61,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     }
 
     @Override
-    public boolean deleteMedicineByItemName(String itemName) {
+    public boolean deleteMedicine(String itemName) {
         LOGGER.info("Delete medicine started");
         try (Connection con = ConnectionHelper.getConnection()) {
             QueryConstants queryConstants = new QueryConstants();

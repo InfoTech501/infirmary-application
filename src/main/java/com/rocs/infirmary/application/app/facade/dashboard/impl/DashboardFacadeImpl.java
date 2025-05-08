@@ -21,25 +21,25 @@ public class DashboardFacadeImpl implements DashboardFacade {
     private final DashboardReports dashboard = new DashboardReportsImpl();
 
     @Override
-    public List<LowStockReport> findAllLowStockMedicine() {
-        List<LowStockReport> lowStockItems = dashboard.getAllLowStockMedicine();
+    public List<LowStockReport> getAllLowStockMedicine() {
+        List<LowStockReport> lowStockItems = dashboard.findAllLowStockMedicine();
         return lowStockItems;
     }
 
     @Override
     public List<CommonAilmentsReport> generateCommonAilmentReport(Date startDate, Date endDate, String gradeLevel, String section) {
-        return this.dashboard.getCommonAilmentReport(startDate, endDate, gradeLevel, section);
+        return this.dashboard.findCommonAilmentReport(startDate, endDate, gradeLevel, section);
     }
 
     @Override
     public List<FrequentVisitReport> generateFrequentVisitReport(Date startDate, Date endDate, String gradeLevel) {
-        List<FrequentVisitReport> frequentVisitReportList = this.dashboard.getFrequentVisitReports(gradeLevel, startDate, endDate);
+        List<FrequentVisitReport> frequentVisitReportList = this.dashboard.findFrequentVisit(gradeLevel, startDate, endDate);
         return frequentVisitReportList;
     }
 
     @Override
     public List<MedicationTrendReport> generateMedicationReport(Date startDate, Date endDate) {
-        List<MedicationTrendReport> medicationTrendReportList = dashboard.getMedicationTrendReport(startDate, endDate);
+        List<MedicationTrendReport> medicationTrendReportList = dashboard.findMedicationTrend(startDate, endDate);
         return medicationTrendReportList;
     }
 }

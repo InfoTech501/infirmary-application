@@ -16,14 +16,14 @@ public interface StudentMedicalRecordFacade {
      *
      * @param LRN The LRN (Learner Reference Number) of the student.
      */
-    Student findMedicalInformationByLRN(long LRN);
+    Student getMedicalInformationByLRN(long LRN);
 
     /**
      * Retrieves all student medical records from the database.
      *
      * @return A list of student medical records, or an empty list if no records are found.
      */
-    List<Student> readAllStudentMedicalRecords();
+    List<Student> getAllStudentMedicalRecords();
 
     /**
      * This intended to delete a student's medical record based on their Learner Reference Number (LRN).
