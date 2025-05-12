@@ -1,9 +1,8 @@
 name: Package and Create Artifact
 
 on:
-  workflow_dispatch:
   workflow_run:
-    workflows: ["Java CI with Maven"]
+    workflows: ["Semantic Release"]
     branches: [ master ]
     types: [ completed ]
 

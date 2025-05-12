@@ -1,0 +1,25 @@
+name: Semantic Release
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  semantic_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+      - name: Install semantic-release
+        run: npm install semantic-release @semantic-release/git @semantic-release/changelog @semantic-release/github @semantic-release/exec @semantic-release/commit-analyzer conventional-changelog-conventionalcommits
+      - name: Semantic release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: npx semantic-release
