@@ -1,7 +1,6 @@
 name: Package and Create Artifact
 
 on:
-  workflow_dispatch:
   workflow_run:
     workflows: ["Semantic Release"]
     branches: [ master ]
