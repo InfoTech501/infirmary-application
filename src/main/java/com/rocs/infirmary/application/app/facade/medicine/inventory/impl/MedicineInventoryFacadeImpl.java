@@ -5,22 +5,36 @@ import com.rocs.infirmary.application.data.dao.medicine.inventory.impl.MedicineI
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
 
     private MedicineInventoryDao medicineInventoryDao = new MedicineInventoryDaoImpl();
+    private static final Logger logger = LoggerFactory.getLogger(MedicineInventoryFacadeImpl.class);
 
     @Override
     public List<Medicine> findAllMedicine() {
-        return this.medicineInventoryDao.findAllMedicine();
+        logger.info("Entering findAllMedicine");
+        List<Medicine> medicines = this.medicineInventoryDao.findAllMedicine();
+        logger.info("Exiting findAllMedicine with {} medicines found.", medicines.size());
+        return medicines;
     }
     @Override
     public boolean deleteMedicineByItemName(String itemName) {
-        return medicineInventoryDao.deleteMedicine(itemName);
+        logger.warn("Entering deleteMedicineByItemName with itemName: {}", itemName);
+        boolean isDeleted = medicineInventoryDao.deleteMedicine(itemName);
+        logger.warn("Exiting deleteMedicineByItemName with result: {}", isDeleted);
+        return isDeleted;
     }
 
     @Override
     public boolean IsAvailable(String itemName) {
-        return medicineInventoryDao.isAvailable(itemName);
+        logger.debug("Entering IsAvailable with itemName: {}", itemName);
+        boolean available = medicineInventoryDao.isAvailable(itemName);
+        logger.debug("Exiting IsAvailable with result: {}", available);
+        return available;
     }
 
 
