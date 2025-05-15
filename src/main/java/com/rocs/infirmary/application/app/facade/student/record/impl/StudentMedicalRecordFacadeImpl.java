@@ -50,8 +50,11 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
     }
     @Override
     public boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate, String treatement, long LRN) {
-        logger.info("Entering updateStudentMedicalRecord");
-        return this.studentMedRecord.updateStudentMedicalRecord(symptoms,temperatureReadings,visitDate,treatement, LRN);
+        logger.debug("Entering updateStudentMedicalRecord with LRN: {}, symptoms: {}, temperature: {}, visitDate: {}, treatment: {}",
+                LRN, symptoms, temperatureReadings, visitDate, treatement);
+        Boolean updated =  this.studentMedRecord.updateStudentMedicalRecord(symptoms,temperatureReadings,visitDate,treatement, LRN);
+        logger.debug("Exiting updateStudentMedicalRecord, update successful: {}", updated);
+        return updated;
     }
 }
 
