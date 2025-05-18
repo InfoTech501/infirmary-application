@@ -9,6 +9,13 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
 
     private MedicineInventoryDao medicineInventoryDao = new MedicineInventoryDaoImpl();
 
+    public MedicineInventoryFacadeImpl() {
+
+    }
+    public MedicineInventoryFacadeImpl(MedicineInventoryDao medicineInventoryDao) {
+        this.medicineInventoryDao = medicineInventoryDao;
+    }
+
     @Override
     public List<Medicine> findAllMedicine() {
         return this.medicineInventoryDao.findAllMedicine();
