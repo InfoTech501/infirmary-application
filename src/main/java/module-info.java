@@ -9,9 +9,14 @@ module com.rocs.infirmaryapplication {
 
     opens com.rocs.infirmary.application.controller.inventory to javafx.fxml;
     opens com.rocs.infirmary.application to javafx.fxml;
+    opens com.rocs.infirmary.application.app.controller.page to javafx.fxml;
+    opens com.rocs.infirmary.application.data.model.report to javafx.fxml;
+
     opens com.rocs.infirmary.application.data.model.inventory.medicine to javafx.base;
 
     exports com.rocs.infirmary.application;
+    exports com.rocs.infirmary.application.app.controller.page;
+    exports com.rocs.infirmary.application.data.model.report;
     exports com.rocs.infirmary.application.data.model.inventory;
     exports com.rocs.infirmary.application.data.model.inventory.medicine;
 }
