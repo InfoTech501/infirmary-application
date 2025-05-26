@@ -51,7 +51,7 @@ public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
             }
             LOGGER.info("successfully retrieved profiles: {}",studentList.size());
         } catch (SQLException e) {
-            LOGGER.error("Sql exceptin occured {}",e.getMessage());
+            LOGGER.error("Sql exception occurred {}",e.getMessage());
             throw new RuntimeException(e);
         }
 
