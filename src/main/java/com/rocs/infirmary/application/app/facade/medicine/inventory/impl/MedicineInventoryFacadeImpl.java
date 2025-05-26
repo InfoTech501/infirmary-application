@@ -37,5 +37,25 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
         return available;
     }
 
+    @Override
+    public boolean addMedicine(Medicine medicine) {
+        return this.medicineInventoryDao.addMedicine(medicine);
+
+    }
+
+    @Override
+    public boolean addInventory(String medicineId, String itemType, int quantity) {
+        return this.medicineInventoryDao.addInventory(medicineId, itemType, quantity);
+    }
+    @Override
+    public List<Medicine>  findAllMedicineFromMedicineTable() {
+        return this.medicineInventoryDao.findAllMedicine();
+    }
+
+    @Override
+    public boolean deleteInventory(int inventoryID) {
+        return this.medicineInventoryDao.deleteInventory(inventoryID);
+    }
+
 
 }

@@ -14,27 +14,25 @@ public class Medicine extends Inventory{
 
     private Timestamp expirationDate;
 
+    private String isAvailable;
 
-
-
+    public String getIsAvailable() {
+        return isAvailable;
+    }
 
     public String getMedicineId(){ return medicineId; }
-
     public void setMedicineId(String medicineId) { this.medicineId = medicineId; }
 
 
     public String getItemName(){ return itemName; }
     public void setItemName(String itemName) { this.itemName = itemName; }
 
-
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) {
         this.description = description;
     }
-
 
     public Timestamp getExpirationDate(){ return expirationDate; }
     public void setExpirationDate(Timestamp expirationDate) {
@@ -42,4 +40,5 @@ public class Medicine extends Inventory{
     }
 
 }
+
 
