@@ -21,6 +21,7 @@ public class Medicine extends Inventory{
     public Medicine() {
 
     }
+    private String isAvailable;
 
     public Medicine(String medicineId, String itemName, String description, Timestamp expirationDate,BooleanProperty isSelected) {
         this.medicineId = medicineId;
@@ -41,24 +42,23 @@ public class Medicine extends Inventory{
     public void setIsSelected(boolean isSelected) {
         this.isSelected.set(isSelected);
     }
+    public String getIsAvailable() {
+        return isAvailable;
+    }
 
     public String getMedicineId(){ return medicineId; }
-
     public void setMedicineId(String medicineId) { this.medicineId = medicineId; }
 
 
     public String getItemName(){ return itemName; }
     public void setItemName(String itemName) { this.itemName = itemName; }
 
-
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) {
         this.description = description;
     }
-
 
     public Timestamp getExpirationDate(){ return expirationDate; }
     public void setExpirationDate(Timestamp expirationDate) {
@@ -66,4 +66,5 @@ public class Medicine extends Inventory{
     }
 
 }
+
 

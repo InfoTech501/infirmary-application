@@ -49,10 +49,10 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
         return isDeleted;
     }
     @Override
-    public boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate, String treatement, long LRN) {
+    public boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate, String treatment, long LRN) {
         logger.debug("Entering updateStudentMedicalRecord with LRN: {}, symptoms: {}, temperature: {}, visitDate: {}, treatment: {}",
-                LRN, symptoms, temperatureReadings, visitDate, treatement);
-        Boolean updated =  this.studentMedRecord.updateStudentMedicalRecord(symptoms,temperatureReadings,visitDate,treatement, LRN);
+                LRN, symptoms, temperatureReadings, visitDate, treatment);
+        Boolean updated =  this.studentMedRecord.updateStudentMedicalRecord(symptoms,temperatureReadings,visitDate,treatment, LRN);
         logger.debug("Exiting updateStudentMedicalRecord, update successful: {}", updated);
         return updated;
     }

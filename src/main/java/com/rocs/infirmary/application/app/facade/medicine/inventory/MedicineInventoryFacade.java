@@ -15,4 +15,12 @@ public interface MedicineInventoryFacade {
     boolean deleteMedicineByItemName(String itemName);
 
     boolean IsAvailable(String itemName);
+
+    boolean addMedicine(Medicine newMedicine);
+
+    boolean addInventory(String medicineId , String itemType, int quantity );
+
+    List<Medicine> findAllMedicineFromMedicineTable();
+
+    boolean deleteInventory(int InventoryID);
 }
