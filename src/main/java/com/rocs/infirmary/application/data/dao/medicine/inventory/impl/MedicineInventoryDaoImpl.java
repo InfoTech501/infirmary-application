@@ -169,32 +169,6 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     }
 
     @Override
-    public List<Medicine> findAllMedicine() {
-        LOGGER.info("Accessing Find Medicine");
-        List<Medicine> medicineList = new ArrayList<>();
-
-        try (Connection con = ConnectionHelper.getConnection()) {
-            QueryConstants queryConstants = new QueryConstants();
-            String sql = queryConstants.retrieveAllMedicine();
-            PreparedStatement stmt = con.prepareStatement(sql);
-            LOGGER.info("Query in use  : {}",sql);
-            ResultSet rs = stmt.executeQuery();
-
-            while (rs.next()) {
-                Medicine medicine = new Medicine();
-                medicine.setMedicineId(rs.getString("MEDICINE_ID"));
-                medicine.setItemName(rs.getString("ITEM_NAME"));
-                medicineList.add(medicine);
-            }
-
-        } catch (SQLException e) {
-            LOGGER.info("SQL Exception Occurred " + e.getMessage());
-        }
-        LOGGER.info("Retrieved Successfully");
-        return medicineList;
-    }
-
-    @Override
     public boolean deleteInventory(int inventoryID) {
         LOGGER.info("Accessing Delete Inventory on DAO ");
         try (Connection con = ConnectionHelper.getConnection()) {
