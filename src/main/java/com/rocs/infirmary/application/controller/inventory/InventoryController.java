@@ -4,6 +4,8 @@ import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import com.rocs.infirmary.application.InventoryManagementApplication;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
@@ -36,6 +39,8 @@ public class InventoryController implements Initializable {
     private TableColumn<Medicine, Integer> QuantityColumn;
     @FXML
     private TableColumn<Medicine, String> ExpiryDateColumn;
+    @FXML
+    private TextField SearchTextField;
 
     private ObservableList<Medicine> medicine;
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
@@ -44,6 +49,7 @@ public class InventoryController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setup();
         refresh();
+        itemSearch();
     }
 
     private void setup() {
@@ -78,7 +84,55 @@ public class InventoryController implements Initializable {
     public void onShowAddModalBtnClick(ActionEvent actionEvent) throws IOException {
         showModal(actionEvent,"/views/InventoryAddItemModal.fxml");
     }
+    private void itemSearch(){
+        FilteredList<Medicine> filteredList = new FilteredList<>(medicine, b -> true);
 
+        SearchTextField.textProperty().addListener((observable,oldValue , newValue)->
+                        filteredList.setPredicate(medicine -> {
+                            if(newValue.isEmpty()||newValue.isBlank()||newValue == null){
+                                return true;
+                            }
+                            String searchKeyword = newValue.toLowerCase();
+                            if(medicine.getItemName().toLowerCase().contains(searchKeyword)){
+                                return true;
+                            }
+                            return false;
+                        })
+                );
+        SortedList<Medicine> sortedList = new SortedList<>(filteredList);
+        sortedList.comparatorProperty().bind(MedDetailsTable.comparatorProperty());
+        MedDetailsTable.setItems(sortedList);
+    }
+
+    public void onFilterButtonAClick(ActionEvent actionEvent) {
+        ProductNameColumn.setSortable(true);
+        ProductNameColumn.setSortType(TableColumn.SortType.ASCENDING);
+        MedDetailsTable.getSortOrder().setAll(ProductNameColumn);
+        MedDetailsTable.sort();
+
+    }
+
+    public void onFilterButtonZClick(ActionEvent actionEvent) {
+        ProductNameColumn.setSortable(true);
+        ProductNameColumn.setSortType(TableColumn.SortType.DESCENDING);
+        MedDetailsTable.getSortOrder().setAll(ProductNameColumn);
+        MedDetailsTable.sort();
+    }
+
+    public void onClearFilterClick(ActionEvent actionEvent) {
+        ProductNameColumn.setSortable(true);
+        ProductNameColumn.setSortType(TableColumn.SortType.ASCENDING);
+        MedDetailsTable.getSortOrder().setAll(ProductNameColumn);
+        MedDetailsTable.sort();
+        SearchTextField.clear();
+    }
+
+    public void onQuantityFilterClick(ActionEvent actionEvent) {
+        QuantityColumn.setSortable(true);
+        QuantityColumn.setSortType(TableColumn.SortType.ASCENDING);
+        MedDetailsTable.getSortOrder().setAll(QuantityColumn);
+        MedDetailsTable.sort();
+    }
 }
 
 

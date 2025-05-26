@@ -78,18 +78,18 @@
                                                       <RowConstraints maxHeight="53.600010299682616" minHeight="10.0" prefHeight="30.4" vgrow="SOMETIMES" />
                                                    </rowConstraints>
                                                    <children>
-                                                      <Button fx:id="QuantityButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="113.0" text="Quantity" GridPane.columnIndex="1">
+                                                      <Button fx:id="QuantityButton" mnemonicParsing="false" onAction="#onQuantityFilterClick" prefHeight="42.0" prefWidth="113.0" text="Quantity" GridPane.columnIndex="1">
                                                          <padding>
                                                             <Insets right="15.0" />
                                                          </padding>
                                                       </Button>
-                                                      <Button fx:id="Inventory_Filter_Button_A" mnemonicParsing="false" prefHeight="42.0" prefWidth="113.0" text="A-Z" GridPane.columnIndex="2">
+                                                      <Button fx:id="Inventory_Filter_Button_A" mnemonicParsing="false" onAction="#onFilterButtonAClick" prefHeight="42.0" prefWidth="113.0" text="A-Z" GridPane.columnIndex="2">
                                                          <padding>
                                                             <Insets right="15.0" />
                                                          </padding>
                                                       </Button>
-                                                      <Button fx:id="Inventory_Filter_Button_Z" mnemonicParsing="false" prefHeight="42.0" prefWidth="113.0" text="Z-A" GridPane.columnIndex="3" />
-                                                      <Button fx:id="InventoryClearFilterButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="113.0" text="Clear Filter" GridPane.columnIndex="4" />
+                                                      <Button fx:id="Inventory_Filter_Button_Z" mnemonicParsing="false" onAction="#onFilterButtonZClick" prefHeight="42.0" prefWidth="113.0" text="Z-A" GridPane.columnIndex="3" />
+                                                      <Button fx:id="InventoryClearFilterButton" mnemonicParsing="false" onAction="#onClearFilterClick" prefHeight="42.0" prefWidth="113.0" text="Clear Filter" GridPane.columnIndex="4" />
                                                       <HBox prefHeight="54.0" prefWidth="39.0" />
                                                    </children>
                                                 </GridPane>
