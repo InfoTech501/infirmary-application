@@ -9,11 +9,23 @@ public class LowStockReport {
         this.quantityAvailable = quantityAvailable;
     }
 
+    public LowStockReport() {
+
+    }
+
     public String getDescription() {
         return description;
     }
 
     public int getQuantityAvailable() {
         return quantityAvailable;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setQuantityAvailable(int quantityAvailable) {
+        this.quantityAvailable = quantityAvailable;
     }
 }

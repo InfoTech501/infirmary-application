@@ -112,6 +112,84 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
         LOGGER.info("availability check ended successfully");
         return false;
     }
+
+    @Override
+    public boolean addMedicine(Medicine medicine) {
+        QueryConstants queryConstants = new QueryConstants();
+        String sql = queryConstants.addMedicine();
+
+        try (Connection con = ConnectionHelper.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+
+            stmt.setString(1, medicine.getMedicineId());
+            stmt.setString(2, medicine.getItemName());
+            stmt.setString(3, medicine.getDescription());
+            stmt.setTimestamp(4, new java.sql.Timestamp(medicine.getExpirationDate().getTime()));
+            stmt.setInt(5, 1);
+            int affectedRow = stmt.executeUpdate();
+
+            return affectedRow > 0;
+
+        } catch (SQLException e) {
+            System.out.println("Medicine ID already exist");
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean addInventory(String medicineId, String itemType, int quantity) {
+        LOGGER.info("Accessing Add Inventory DAO");
+        QueryConstants queryConstants = new QueryConstants();
+
+        try {
+            Connection con = ConnectionHelper.getConnection();
+            String sql = queryConstants.addMedicineToInventory();
+            LOGGER.info("query in use : {}", sql);
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+
+            stmt.setString(1, medicineId);
+            stmt.setString(2, itemType);
+            stmt.setInt(3, quantity);
+
+            LOGGER.info("Retrieved Data : " + " \n"
+                    + "Medicine ID : " + medicineId + "\n"
+                    + "ItemType   : " + itemType + "\n"
+                    + "Quantity  : " + quantity
+            );
+
+            int affectedRows = stmt.executeUpdate();
+            return affectedRows > 0;
+
+        } catch (SQLException e) {
+            LOGGER.error("SQL Exception Occurred {}", e.getMessage());
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteInventory(int inventoryID) {
+        LOGGER.info("Accessing Delete Inventory on DAO ");
+        try (Connection con = ConnectionHelper.getConnection()) {
+            QueryConstants queryConstants = new QueryConstants();
+            String sql = queryConstants.deleteInventory();
+            LOGGER.info("Query : " + sql);
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1,inventoryID);
+            int affectRows = stmt.executeUpdate();
+
+            LOGGER.info("Deleted Date :   " + inventoryID);
+
+            return affectRows > 0 ;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
 }
 
 

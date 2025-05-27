@@ -16,4 +16,10 @@ public interface MedicineInventoryDao {
      */
     boolean deleteMedicine(String itemName);
     boolean isAvailable(String itemName);
+    boolean addMedicine(Medicine medicine);
+
+    boolean addInventory(String medicineId , String itemType, int quantity );
+
+
+    boolean deleteInventory(int inventoryID);
 }

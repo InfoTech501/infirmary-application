@@ -13,6 +13,7 @@ public class Person {
     private String email;
     private String address;
     private int contactNumber;
+    private String section;
 
     public Person(long id, String firstName, String middleName, String lastName, int age, Date birthdate, String gender, String email, String address, int contactNumber) {
         this.id = id;
@@ -68,6 +69,39 @@ public class Person {
     public void setGender(String gender) {
         this.gender = gender;
     }
+
+    public String getSection() {
+        return section;
+    }
+
+    public void setSection(String section) {
+        this.section = section;
+    }
+
+    public void setContactNumber(int contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public int getContactNumber() {
+        return contactNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public String toString() {
         return "Person{" +
@@ -83,4 +117,5 @@ public class Person {
                 ", contactNumber=" + contactNumber +
                 '}';
     }
+
 }

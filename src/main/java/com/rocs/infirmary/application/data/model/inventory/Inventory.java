@@ -6,7 +6,9 @@ public class Inventory {
     private String medicineId;
     private String itemType;
 
-
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
     public int getInventoryId() {
         return inventoryId;
@@ -15,7 +17,6 @@ public class Inventory {
     public void setInventoryId(int inventoryId) {
         this.inventoryId = inventoryId;
     }
-
 
     public int getQuantity() {
         return quantity;
