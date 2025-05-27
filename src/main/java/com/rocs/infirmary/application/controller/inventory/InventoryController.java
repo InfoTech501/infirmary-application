@@ -69,6 +69,11 @@ public class InventoryController implements Initializable {
 
     private void refresh() {
         List<Medicine> medicineList = inventoryManagementApplication.getMedicineInventoryFacade().findAllMedicine();
+        for (Medicine med : medicineList) {
+            if (med.isSelectedProperty() == null) {
+                med.setIsSelected(false);
+            }
+        }
         medicine = FXCollections.observableArrayList(medicineList);
         MedDetailsTable.setItems(medicine);
     }
