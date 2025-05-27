@@ -31,7 +31,7 @@ public class Medicine extends Inventory{
         this.isSelected = isSelected;
     }
 
-    public boolean isIsSelected() {
+    public boolean isSelected() {
         return isSelected.get();
     }
 

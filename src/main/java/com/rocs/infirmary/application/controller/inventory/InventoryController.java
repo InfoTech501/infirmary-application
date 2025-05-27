@@ -125,6 +125,7 @@ public class InventoryController implements Initializable {
         MedDetailsTable.getSortOrder().setAll(ProductNameColumn);
         MedDetailsTable.sort();
         SearchTextField.clear();
+        refresh();
     }
 
     public void onQuantityFilterClick(ActionEvent actionEvent) {
