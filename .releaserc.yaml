@@ -1,5 +1,7 @@
 branches:
   - master
+  - name: release-staging
+    prerelease: staging
 plugins:
   - - "@semantic-release/commit-analyzer"
     - preset: conventionalcommits
@@ -30,20 +32,8 @@ plugins:
           - type: refactoring
             section: "Refactoring"
   - - "@semantic-release/exec"
-    - prepareCmd: >
-        mvn versions:set -DnewVersion=${nextRelease.version} &&
-        echo 'NEXT_VERSION=${nextRelease.version}' >> build.env
+    - prepareCmd: "mvn versions:set -DnewVersion=${nextRelease.version} && echo 'NEXT_VERSION=${nextRelease.version}' >> build.env"
   - - "@semantic-release/changelog"
     - changelogFile: CHANGELOG.md
       changelogTitle: "# Changelogs"
-  - - "@semantic-release/exec"
-    - prepareCmd: >
-        git checkout -b release-${nextRelease.version} &&
-        git add pom.xml CHANGELOG.md &&
-        git commit -m "chore(release): ${nextRelease.version} [skip ci]" &&
-        git push origin release-${nextRelease.version} &&
-        gh pr create --title "RELEASE ${nextRelease.version}" --body "New release for version ${nextRelease.version}" --base master
   - - "@semantic-release/github"
-    - assets:
-        - path: "target/package"
-          label: "Windows Distribution"
