@@ -10,7 +10,7 @@ public class DashboardInfoApplication {
     private DashboardReports dashboardReportsDao = new DashboardReportsImpl();
 
     public DashboardInfoApplication() {
-        this.dashboardFacade = new DashboardFacadeImpl(dashboardReportsDao);
+        this.dashboardFacade = new DashboardFacadeImpl();
     }
     public DashboardFacade getDashboardFacade() {
         return  dashboardFacade;

@@ -11,7 +11,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -19,13 +21,12 @@ import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
 
 public class DashboardPageController implements Initializable {
-    @FXML
-    private Label admittedStudTodayRprt;
 
     @FXML
     private AnchorPane chartForm;
@@ -37,7 +38,7 @@ public class DashboardPageController implements Initializable {
     TableView<MedicationTrendReport> medTrendRptTable;
 
     @FXML
-    private TableColumn<MedicationTrendReport, String> rankColumnMedTrend;
+    private TableColumn<MedicationTrendReport, String> numberedColumnMedTrend;
 
     @FXML
     private TableColumn<MedicationTrendReport, String> medicineColumnMedTrend;
@@ -52,7 +53,7 @@ public class DashboardPageController implements Initializable {
     TableView<CommonAilmentsReport> commonAilmentsRptTable;
 
     @FXML
-    private TableColumn<CommonAilmentsReport, String> rankColumnCommonAilment;
+    private TableColumn<CommonAilmentsReport, String> numberedColumnCommonAilment;
 
     @FXML
     private TableColumn<CommonAilmentsReport, String> illnessColumnCommonAilment;
@@ -61,16 +62,17 @@ public class DashboardPageController implements Initializable {
     private TableColumn<CommonAilmentsReport, String> numOfStudCommonAilment;
 
     @FXML
-    private Label stillAdmittedStudTodayRprt;
+    private Label grade11ClinicVisitTodayRprt;
 
     @FXML
-    private Label totalClinicVisitTodayRprt;
+    private Label grade12ClinicVisitTodayRprt;
 
     @FXML
     private Label usernameDisplay;
 
     @FXML
-    private BarChart<String, Double> studentVisitBarChart;
+    private BarChart<String, Number> studentVisitBarChart;
+
 
     private DashboardFacade dashboardFacade;
     private DashboardInfoApplication dashboardInfoApplication;
@@ -84,9 +86,10 @@ public class DashboardPageController implements Initializable {
         dashboardFacade = dashboardInfoApplication.getDashboardFacade();
 
         setDateDisplay();
-        setAdmittedStudTodayRprt();
+        setGrade11ClinicVisitTodayRprt();
+        setGrade12ClinicVisitTodayRprt();
         setMedDistributtedTodayRprt();
-        setTotalClinicVisitTodayRprt();
+        populateBarChartWklyVisit();
         initializeCommonAilmentsRptTable();
         populateTableCommonAilmentsRpt();
         initializeMedTrendRptTable();
@@ -103,153 +106,171 @@ public class DashboardPageController implements Initializable {
         dateDisplay.setText(datenow);
     }
 
-    /**
-     * This is to display the number value of Admitted Students for Today's Report
-     *
-     * I declared a date for while just to check if it displays the correct amount of admitted students
-     * (my problem with this is it counts the size of the generated frequent visit and not the report itself,
-     * but whenever
-     * */
-    private void setAdmittedStudTodayRprt(){
-        Date startDate = new Date(2001-01-01);
-        Date endDate = new Date(2025-01-01);
-        String gradeLevel = "ALL";
+    private void setGrade11ClinicVisitTodayRprt(){
+        LocalDate today = LocalDate.now();
+        Date startDate = Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date endDate = Date.from(today.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+        String gradeLevel = "Grade 11";
+
+        List<FrequentVisitReport> clinicVisitorTodayRpt = dashboardFacade.generateFrequentVisitReport(startDate, endDate, gradeLevel);
+        int clinicVisitorToday = clinicVisitorTodayRpt.size();
+        grade11ClinicVisitTodayRprt.setText(String.valueOf(clinicVisitorToday));
+
+    }
+
+    private void setGrade12ClinicVisitTodayRprt(){
+        LocalDate today = LocalDate.now();
+        Date startDate = Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date endDate = Date.from(today.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
+        String gradeLevel = "Grade 12";
 
         List<FrequentVisitReport> admittedTodayRpt = dashboardFacade.generateFrequentVisitReport(startDate, endDate, gradeLevel);
         int admittedToday = admittedTodayRpt.size();
-        admittedStudTodayRprt.setText(String.valueOf(admittedToday));
+        grade12ClinicVisitTodayRprt.setText(String.valueOf(admittedToday));
     }
 
-    /**
-     * This is to display the number value of Distributed Medicine for Today's Report
-     *
-     * I declared a date for while just to check if it displays the correct amount of distributed medicine
-     * */
-    private void setMedDistributtedTodayRprt(){
-        Date startDate = new Date(2001-01-01);
-        Date endDate = new Date(2025-01-01);
+    private void setMedDistributtedTodayRprt() {
+        LocalDate today = LocalDate.now();
+        Date startDate = Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date endDate = Date.from(today.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
 
         List<MedicationTrendReport> medDistributtedTodayRpt = dashboardFacade.generateMedicationReport(startDate, endDate);
-        for (MedicationTrendReport report : medDistributtedTodayRpt) {
-            int medDistributtedToday = report.getUsage();
-            medDistributtedTodayRprt.setText(String.valueOf(medDistributtedToday));
-        }
+            int usage = medDistributtedTodayRpt.stream().mapToInt(MedicationTrendReport::getUsage).sum();
+            medDistributtedTodayRprt.setText(String.valueOf(usage));
+
     }
 
-    /**
-     * This is to display the number value of the Total Admitted Students for Today's Report
-     *
-     * I declared a date for while just to check if it displays the correct amount of admitted students
-     * */
-    private void setTotalClinicVisitTodayRprt(){
-        Date startDate = new Date(2001-01-01);
-        Date endDate = new Date(2025-01-01);
-        String gradeLevel = "ALL";
+    private void populateBarChartWklyVisit() {
+        LocalDate today = LocalDate.now();
+        LocalDate startOfWeek = today.with(DayOfWeek.MONDAY);
+        LocalDate endOfWeek = startOfWeek.plusDays(6);
+        Date startDate = Date.from(startOfWeek.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date endDate = Date.from(endOfWeek.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-        List<FrequentVisitReport> clinicVisitorTodayRpt = dashboardFacade.generateFrequentVisitReport(startDate, endDate, gradeLevel);
-        for (FrequentVisitReport report : clinicVisitorTodayRpt) {
-            int clinicVisitorToday = report.getVisitCount();
-            totalClinicVisitTodayRprt.setText(String.valueOf(clinicVisitorToday));
+        studentVisitBarChart.getData().clear();
+        studentVisitBarChart.getXAxis().setLabel("");
+        studentVisitBarChart.getYAxis().setLabel("Visits");
+
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEEE");
+
+        List<FrequentVisitReport> grade11Reports = dashboardFacade.generateFrequentVisitReport(startDate, endDate, "Grade 11");
+        List<FrequentVisitReport> grade12Reports = dashboardFacade.generateFrequentVisitReport(startDate, endDate, "Grade 12");
+
+        Map<String, Integer> combinedVisitCounts = new HashMap<>();
+
+        for (FrequentVisitReport report : grade11Reports) {
+            String day = sdf.format(report.getVisitDate());
+            combinedVisitCounts.merge(day, report.getVisitCount(), Integer::sum);
         }
+
+        for (FrequentVisitReport report : grade12Reports) {
+            String day = sdf.format(report.getVisitDate());
+            combinedVisitCounts.merge(day, report.getVisitCount(), Integer::sum);
+        }
+
+        XYChart.Series<String, Number> combinedSeries = new XYChart.Series<>();
+        combinedSeries.setName("Grade 11 & 12 Weekly Visits");
+
+        List<String> orderedDays = List.of("Monday", "Tuesday", "Wednesday", "Thursday", "Friday");
+
+        for (String day : orderedDays) {
+            int visits = combinedVisitCounts.getOrDefault(day, 0);
+            combinedSeries.getData().add(new XYChart.Data<>(day, visits));
+        }
+
+        studentVisitBarChart.getData().add(combinedSeries);
     }
 
-    /**
-     * disregard this for a while since I'm still working for it.
-     * */
-//    private void populateBarChartWklyStudVisit() {
-////        Date dateNow = new Date();
-//        Date startDate = new Date(2001 - 01 - 01);
-//        Date endDate = new Date(2025 - 03 - 03);
-//        String gradeLevel = "";
-//
-//        XYChart.Series<String, Number> series = new XYChart.Series<>();
-//
-//        List<FrequentVisitReport> visitReport = dashboardFacade.generateFrequentVisitReport(startDate, endDate, gradeLevel);
-//        CategoryAxis xAxis = new CategoryAxis();
-//
-//        xAxis.setCategories(FXCollections.<String>observableArrayList(String.valueOf(Arrays.asList(visitReport))));
-//        xAxis.setLabel("week");
-//
-//
-//        NumberAxis yAxis = new NumberAxis();
-//        yAxis.setLabel("total");
-//    }
 
-    /**
-     * This is to initialize the Common Ailments Report table
-     * */
     private void initializeCommonAilmentsRptTable() {
-
-        rankColumnCommonAilment.setCellValueFactory(cellData -> {
-                int rankAilments = cellData.getTableView().getItems().size();
-                return new SimpleStringProperty(String.valueOf(rankAilments));
+        numberedColumnCommonAilment.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || getIndex() >= getTableView().getItems().size()) {
+                    setText(null);
+                } else {
+                    setText(String.valueOf(getIndex() + 1));
+                }
+            }
         });
+        numberedColumnCommonAilment.setStyle("-fx-alignment: CENTER;");
 
-        illnessColumnCommonAilment.setCellValueFactory(new PropertyValueFactory<>("illness"));
+        illnessColumnCommonAilment.setCellValueFactory(cellData -> {
+            String illness = cellData.getValue().getAilment();
+            return new SimpleStringProperty(illness);
+        });
 
         numOfStudCommonAilment.setCellValueFactory(cellData -> {
             int numOfStudents = cellData.getValue().getOccurrences();
             return new SimpleStringProperty(String.valueOf(numOfStudents));
         });
-
     }
 
-    /**
-     * This is to populate the data of the Common Ailments Report table
-     *
-     * I declared a date for while just to check if it displays the correct illness and the amount of the common ailments
-     * */
     public void populateTableCommonAilmentsRpt() {
-//        Calendar c = Calendar.getInstance();
-//        c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
-        Date startDate = new Date(2015-01-01);
-        Date endDate = new Date(2025-01-01);
-        String gradeLevel = "";
-        String section = "";
+        LocalDate start = LocalDate.now().withDayOfMonth(1);
+        LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
+        Date startDate = java.sql.Date.valueOf(start);
+        Date endDate = java.sql.Date.valueOf(end);
+        String section = "ALL";
 
-        List<CommonAilmentsReport> commonAilmentsReports = dashboardInfoApplication.getDashboardFacade().generateCommonAilmentReport(startDate, endDate, gradeLevel, section);
-        observableCommonAilmentTable = FXCollections.observableArrayList(commonAilmentsReports);
+        List<CommonAilmentsReport> grade11Reports = dashboardFacade.generateCommonAilmentReport(startDate, endDate, "Grade 11", section);
+        List<CommonAilmentsReport> grade12Reports = dashboardFacade.generateCommonAilmentReport(startDate, endDate, "Grade 12", section);
+        Map<String, Integer> ailmentMap = new HashMap<>();
+        for (CommonAilmentsReport report : grade11Reports) {
+            ailmentMap.put(report.getAilment(), report.getOccurrences());
+        }
+
+        for (CommonAilmentsReport report : grade12Reports) {
+            ailmentMap.merge(report.getAilment(), report.getOccurrences(), Integer::sum);
+        }
+
+        List<CommonAilmentsReport> mergedReports = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : ailmentMap.entrySet()) {
+            mergedReports.add(new CommonAilmentsReport());
+        }
+
+        ObservableList<CommonAilmentsReport> observableCommonAilmentTable = FXCollections.observableArrayList(mergedReports);
         commonAilmentsRptTable.setItems(observableCommonAilmentTable);
     }
 
-    /**
-     * This is to initialize the Medication Trend table
-     * */
     private void initializeMedTrendRptTable() {
-
-        rankColumnMedTrend.setCellValueFactory(cellData -> {
-            int rankMed = cellData.getTableView().getItems().size();
-            return new SimpleStringProperty(String.valueOf(rankMed));
+        numberedColumnMedTrend.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || getIndex() >= getTableView().getItems().size()) {
+                    setText(null);
+                } else {
+                    setText(String.valueOf(getIndex() + 1));
+                }
+            }
         });
-
+        numberedColumnMedTrend.setStyle("-fx-alignment: CENTER;");
 
         medicineColumnMedTrend.setCellValueFactory(cellData -> {
-            String medName = cellData.getValue().getMedicineName();
-            return new SimpleStringProperty(medName);
+            String medicine = cellData.getValue().getMedicineName();
+            return new SimpleStringProperty(medicine);
         });
+        medicineColumnMedTrend.setStyle("-fx-alignment: CENTER;");
 
         totalDistributedMedTrend.setCellValueFactory(cellData -> {
             int distributed = cellData.getValue().getUsage();
             return new SimpleStringProperty(String.valueOf(distributed));
     });
+        totalDistributedMedTrend.setStyle("-fx-alignment: CENTER;");
     }
 
-    /**
-     * This is to populate the data of the Medication Trend table
-     *
-     * I declared a date for while just to check if it displays the correct medicine and its amount that is used of the month
-     * */
     private void populateTableMedTrendRpt() {
-//            Date dateNow = new Date();
-        Date startDate = new Date(2001 - 01 - 01);
-        Date endDate = new Date(2025 - 03 - 03);
+        LocalDate start = LocalDate.now().withDayOfMonth(1);
+        LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
+        Date startDate = java.sql.Date.valueOf(start);
+        Date endDate = java.sql.Date.valueOf(end);
 
         List<MedicationTrendReport> medicationTrendReports = dashboardFacade.generateMedicationReport(startDate, endDate);
         ObservableList<MedicationTrendReport> dataMedTrend = FXCollections.observableArrayList(medicationTrendReports);
         medTrendRptTable.setItems(dataMedTrend);
     }
-
-
 }
 
 
