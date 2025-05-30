@@ -46,6 +46,7 @@ public class AddInventoryController implements Initializable {
     private TextField ExpirationDateTextField;
 
     private ObservableList<Medicine> medicine;
+
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     Medicine medicineModel = new Medicine();
 
@@ -73,10 +74,16 @@ public class AddInventoryController implements Initializable {
     }
 
     private void refresh() {
-        List<Medicine> medicineList = inventoryManagementApplication.getMedicineInventoryFacade().findAllMedicine();
+        List<Medicine> medicineList; medicineList = inventoryManagementApplication.getMedicineInventoryFacade().findAllMedicine();
         for (Medicine med : medicineList) {
             if (med.isSelectedProperty() == null) {
                 med.setIsSelected(false);
+                System.out.println(med.isSelected());
+            }
+            if(!med.isSelected()){
+                medicineModel.setHasSelect(false);
+            }else{
+               medicineModel.setHasSelect(true);
             }
         }
         medicine = FXCollections.observableArrayList(medicineList);
@@ -104,7 +111,7 @@ public class AddInventoryController implements Initializable {
         }
         return medicineID;
     }
-    private List<Medicine> getSelectedMedicines() {
+    public List<Medicine> getSelectedMedicines() {
         List<Medicine> selectedMedicine = medicine.stream()
                 .filter(Medicine::isSelected)
                 .toList();
@@ -165,19 +172,26 @@ public class AddInventoryController implements Initializable {
     }
 
     public void onRemoveBtnClick(ActionEvent actionEvent) throws IOException {
-        List<Medicine> selectedMedicine = getSelectedMedicines();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/InventoryDeleteItemModal.fxml"));
-        Parent root = loader.load();
-        DeleteInventoryController deleteInventoryController = loader.getController();
-        for(Medicine med:selectedMedicine){
-            deleteInventoryController.showMedicine(med.getItemName(),med.getInventoryId(),med.getMedicineId());
-            System.out.println(med.getItemName());
+        if(getSelectedMedicines().isEmpty()){
+            Dialog dialog = new Dialog();
+            dialog.setTitle("Warning");
+            ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+            dialog.setContentText("No Items selected");
+            dialog.getDialogPane().getButtonTypes().add(type);
+            dialog.showAndWait();
+        }else {
+            List<Medicine> selectedMedicine = getSelectedMedicines();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/InventoryDeleteItemModal.fxml"));
+            Parent root = loader.load();
+            DeleteInventoryController deleteInventoryController = loader.getController();
+            deleteInventoryController.showMedicineList(selectedMedicine);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
+            stage.show();
         }
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
-        stage.show();
     }
 
     public void onCancelBtnClick(ActionEvent actionEvent) {

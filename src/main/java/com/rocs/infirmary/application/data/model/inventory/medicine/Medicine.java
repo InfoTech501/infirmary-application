@@ -17,11 +17,12 @@ public class Medicine extends Inventory{
     private Timestamp expirationDate;
 
     private BooleanProperty isSelected = new SimpleBooleanProperty();
+    private boolean hasSelect;
+
 
     public Medicine() {
 
     }
-    private String isAvailable;
 
     public Medicine(String medicineId, String itemName, String description, Timestamp expirationDate,BooleanProperty isSelected) {
         this.medicineId = medicineId;
@@ -29,6 +30,16 @@ public class Medicine extends Inventory{
         this.description = description;
         this.expirationDate = expirationDate;
         this.isSelected = isSelected;
+    }
+
+    private String isAvailable;
+
+    public boolean getHasSelect() {
+        return hasSelect;
+    }
+
+    public void setHasSelect(boolean hasSelect) {
+        this.hasSelect = hasSelect;
     }
 
     public boolean isSelected() {
