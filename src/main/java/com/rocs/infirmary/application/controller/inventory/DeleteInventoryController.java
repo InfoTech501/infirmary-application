@@ -4,6 +4,7 @@ import com.rocs.infirmary.application.InventoryManagementApplication;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -15,9 +16,11 @@ import java.util.List;
 
 public class DeleteInventoryController{
     @FXML
-    private GridPane medicineListContainer;
-    @FXML
     private Label InventoryDeleteLabel_A;
+
+    private Label InventoryDeleteLabel_B;
+    @FXML
+    private GridPane medicineListContainer;
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     private List<Medicine> medicineList = new ArrayList<>();
 
