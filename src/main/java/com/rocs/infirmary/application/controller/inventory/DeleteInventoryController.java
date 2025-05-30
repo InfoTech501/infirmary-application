@@ -4,7 +4,6 @@ import com.rocs.infirmary.application.InventoryManagementApplication;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
