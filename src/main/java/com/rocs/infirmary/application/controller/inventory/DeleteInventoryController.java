@@ -23,10 +23,10 @@ public class DeleteInventoryController{
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     private Medicine medicine;
     private int inventoryId;
-    public void showMedicine(String medicineName,int invetoryId,String medicineId){
+    public void showMedicine(String medicineName,int inventoryId,String medicineId){
         InventoryDeleteLabel_A.setText(medicineName);
         InventoryDeleteLabel_B.setText("Medicine ID: "+medicineId);
-        this.inventoryId = invetoryId;
+        this.inventoryId = inventoryId;
     }
     private void deleteMedicine(){
         boolean isDeleted = inventoryManagementApplication.getMedicineInventoryFacade().deleteInventory(inventoryId);
@@ -40,11 +40,23 @@ public class DeleteInventoryController{
     }
 
     public void onConfirmButtonClick(ActionEvent actionEvent) {
+        String medicineName = InventoryDeleteLabel_A.getText();
+        if (!isValidString(medicineName)) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid Input");
+            alert.setHeaderText(null);
+            alert.setContentText("Medicine name must be a string.");
+            alert.showAndWait();return;
+        }
         deleteMedicine();
     }
 
     public void onCancelBtnClick(ActionEvent actionEvent) {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
+    }
+
+    private boolean isValidString(String input) {
+        return input != null && input.matches("[a-zA-Z\\s]+");
     }
 }
