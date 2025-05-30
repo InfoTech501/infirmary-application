@@ -6,7 +6,8 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1124.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:controller="com.rocs.infirmary.application.controller.page.StudentHealthProfilePageController"
+            maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1124.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
     <stylesheets>
         <URL value="@../styles/buttons.css" />
         <URL value="@../styles/label.css" />
@@ -118,14 +119,14 @@
                         <Insets left="-750.0" top="150.0" />
                      </HBox.margin>
                      <children>
-                        <TableView prefHeight="782.0" prefWidth="1154.0">
+                        <TableView fx:id="tableView" prefHeight="782.0" prefWidth="1154.0">
                           <columns>
                             <TableColumn fx:id="SelectColumn" prefWidth="104.00002479553223" text="Select" />
                             <TableColumn fx:id="lrnColumn" prefWidth="143.1999740600586" text="LRN" />
                               <TableColumn fx:id="firstNameColumn" prefWidth="190.4000244140625" text="Firstname" />
                               <TableColumn fx:id="lastNameColumn" prefWidth="208.79998779296875" text="Lastname" />
                               <TableColumn fx:id="gradeSectionColumn" prefWidth="229.5999755859375" text="Grade &amp; Section" />
-                              <TableColumn fx:id="AdviserColumn" prefWidth="207.9998779296875" text="Adviser" />
+                              <TableColumn fx:id="adviserColumn" prefWidth="207.9998779296875" text="Adviser" />
                           </columns>
                            <HBox.margin>
                               <Insets right="100.0" />

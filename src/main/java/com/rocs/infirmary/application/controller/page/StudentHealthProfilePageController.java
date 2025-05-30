@@ -21,7 +21,25 @@ public class StudentHealthProfilePageController implements Initializable {
     private TextField searchField;
 
     @FXML
-    private ComboBox<String> filterComboBox;
+    private ComboBox<String> SectionComboBox;
+
+    @FXML
+    private ComboBox<String> SexComboBox;
+
+    @FXML
+    private Button AgeFilterBtn;
+
+    @FXML
+    private Button Filter_Button_A;
+
+    @FXML
+    private Button Filter_Button_Z;
+
+    @FXML
+    private Button ClearFilterButton;
+
+    @FXML
+    private Button ShowInformationButton;
 
     @FXML
     private TableView<Student> tableView;
@@ -43,11 +61,10 @@ public class StudentHealthProfilePageController implements Initializable {
 
     private StudentHealthProfileFacade studentHealthProfileFacade;
     private ObservableList<Student> studentObservableList;
-    private Object LRN;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Initialize the facade via module
+        // Initialize the facade from the module
         StudentHealthProfileInfoApplication app = new StudentHealthProfileInfoApplication();
         studentHealthProfileFacade = app.getStudentHealthProfileFacade();
 
@@ -55,56 +72,78 @@ public class StudentHealthProfilePageController implements Initializable {
         initializeTableColumns();
         loadStudentProfiles();
 
-        // Initialize filter combo box
-        filterComboBox.setItems(FXCollections.observableArrayList(
-                "Section", "Sex", "Age", "A-Z", "Z-A"
-        ));
+        // Initialize ComboBoxes (can load from DB)
+        SectionComboBox.setItems(FXCollections.observableArrayList("All Sections", "A", "B", "C"));
+        SexComboBox.setItems(FXCollections.observableArrayList("All", "Male", "Female"));
+
+        // Filter buttons
+        Filter_Button_A.setOnAction(e -> sortProfilesAZ());
+        Filter_Button_Z.setOnAction(e -> sortProfilesZA());
+        AgeFilterBtn.setOnAction(e -> filterByAge());
+        ClearFilterButton.setOnAction(e -> loadStudentProfiles());
+        ShowInformationButton.setOnAction(e -> handleShowMoreInformation());
+
+        // Search
+        searchField.setOnAction(e -> handleSearch());
     }
 
     private void initializeTableColumns() {
-        lrnColumn.setCellValueFactory(cellData -> new SimpleStringProperty());
+        lrnColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(String.valueOf(cellData.getValue().getLrn())));
         firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        gradeSectionColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getGrade() + " - " + cellData.getValue().getSection()));
+        gradeSectionColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getGrade() + " - " + cellData.getValue().getSection()));
         adviserColumn.setCellValueFactory(new PropertyValueFactory<>("adviser"));
     }
 
     private void loadStudentProfiles() {
-        List<Student> studentList = studentHealthProfileFacade.getAllStudentHealthProfile();
-        studentObservableList = FXCollections.observableArrayList(studentList);
+        List<Student> students = studentHealthProfileFacade.getAllStudentHealthProfile();
+        studentObservableList = FXCollections.observableArrayList(students);
         tableView.setItems(studentObservableList);
     }
 
     @FXML
     private void handleSearch() {
         String searchQuery = searchField.getText().trim();
-        String filter = filterComboBox.getValue();
+        if (searchQuery.isEmpty()) {
+            loadStudentProfiles();
+            return;
+        }
 
-        List<Student> filteredStudents = studentHealthProfileFacade.getStudentHealthProfileByLRN(Long LRN);
-        studentObservableList.setAll(filteredStudents);
+        try {
+            Long lrn = Long.parseLong(searchQuery);
+            List<Student> result = studentHealthProfileFacade.getStudentHealthProfileByLRN(lrn);
+            studentObservableList.setAll(result);
+        } catch (NumberFormatException e) {
+            showAlert("Invalid LRN", "Please enter a numeric LRN.");
+        }
     }
 
-//    @FXML
-//    private void handleViewDetails() {
-//        Student selectedStudent = tableView.getSelectionModel().getSelectedItem();
-//        if (selectedStudent != null) {
-//            studentHealthProfileFacade.showStudentDetailsModal(selectedStudent);
-//        } else {
-//            showAlert("No Student Selected", "Please select a student to view details.");
-//        }
-//    }
-//
-//    @FXML
-//    private void handleEditProfile() {
-//        Student selectedStudent = tableView.getSelectionModel().getSelectedItem();
-//        if (selectedStudent != null) {
-//            studentHealthProfileFacade.showEditStudentProfileModal(selectedStudent);
-//            // After editing, refresh the table
-//            loadStudentProfiles();
-//        } else {
-//            showAlert("No Student Selected", "Please select a student to edit.");
-//        }
-//    }
+    private void sortProfilesAZ() {
+        FXCollections.sort(studentObservableList,
+                (s1, s2) -> s1.getFirstName().compareToIgnoreCase(s2.getFirstName()));
+    }
+
+    private void sortProfilesZA() {
+        FXCollections.sort(studentObservableList,
+                (s1, s2) -> s2.getFirstName().compareToIgnoreCase(s1.getFirstName()));
+    }
+
+    private void filterByAge() {
+        // Placeholder for age filter logic
+        showAlert("Filter by Age", "Filtering by age is not implemented yet.");
+    }
+
+    private void handleShowMoreInformation() {
+        Student selectedStudent = tableView.getSelectionModel().getSelectedItem();
+        if (selectedStudent != null) {
+            showAlert("Student Details", "More information for: " + selectedStudent.getFirstName());
+            // Optionally open a new window/modal to show more data
+        } else {
+            showAlert("No Student Selected", "Please select a student to view more information.");
+        }
+    }
 
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
