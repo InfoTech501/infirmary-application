@@ -1,6 +1,6 @@
-package com.rocs.infirmary.application.app.controller.page;
+package com.rocs.infirmary.application.controller.page;
 
-import com.rocs.infirmary.application.app.DashboardInfoApplication;
+import com.rocs.infirmary.application.DashboardInfoApplication;
 import com.rocs.infirmary.application.app.facade.dashboard.DashboardFacade;
 import com.rocs.infirmary.application.data.model.report.ailment.CommonAilmentsReport;
 import com.rocs.infirmary.application.data.model.report.medication.MedicationTrendReport;

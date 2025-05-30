@@ -1,4 +1,4 @@
-package com.rocs.infirmary.application.app;
+package com.rocs.infirmary.application;
 
 import com.rocs.infirmary.application.app.facade.dashboard.DashboardFacade;
 import com.rocs.infirmary.application.app.facade.dashboard.impl.DashboardFacadeImpl;
