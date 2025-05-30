@@ -80,11 +80,6 @@ public class AddInventoryController implements Initializable {
                 med.setIsSelected(false);
                 System.out.println(med.isSelected());
             }
-            if(!med.isSelected()){
-                medicineModel.setHasSelect(false);
-            }else{
-               medicineModel.setHasSelect(true);
-            }
         }
         medicine = FXCollections.observableArrayList(medicineList);
         MedDetailsTable.setItems(medicine);
