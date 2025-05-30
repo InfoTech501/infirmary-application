@@ -1,6 +1,7 @@
 package com.rocs.infirmary.application.data.model.person.student;
 
 import com.rocs.infirmary.application.data.model.person.Person;
+import javafx.beans.value.ObservableValue;
 
 import java.util.Date;
 
@@ -118,5 +119,29 @@ public class Student extends Person {
 
     public int getMedicalRecordStatus() {
         return getMedicaRecordStatus;
+    }
+
+    public ObservableValue<String> lrnProperty() {
+        return null;
+    }
+
+    public ObservableValue<String> firstNameProperty() {
+        return null;
+    }
+
+    public ObservableValue<String> lastNameProperty() {
+        return null;
+    }
+
+    public ObservableValue<String> gradeSectionProperty() {
+        return null;
+    }
+
+    public ObservableValue<String> adviserProperty() {
+        return null;
+    }
+
+    public String getGrade() {
+        return gradeLevel;
     }
 }

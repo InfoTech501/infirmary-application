@@ -12,6 +12,10 @@ import java.util.List;
 public class StudentHealthProfileFacadeImpl implements StudentHealthProfileFacade {
     StudentHealthProfileDao studentHealthProfileDao = new StudentHealthProfileDaoImpl();
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentHealthProfileFacadeImpl.class);
+
+    public StudentHealthProfileFacadeImpl(StudentHealthProfileDao studentHealthProfileDao) {
+    }
+
     @Override
     public List<Student> getAllStudentHealthProfile() {
         List<Student> studentList = studentHealthProfileDao.findAllStudentHealthProfile();
