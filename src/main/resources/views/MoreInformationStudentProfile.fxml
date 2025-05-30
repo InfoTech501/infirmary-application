@@ -1,21 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="700.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:controller="com.rocs.infirmary.application.controller.page.MoreInformationStudentProfileController" prefHeight="700.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
     <AnchorPane />
    <stylesheets>
       <URL value="@../styles/buttons.css" />
@@ -86,10 +76,10 @@
                <content>
                   <TableView prefHeight="287.0" prefWidth="1403.0">
                     <columns>
-                      <TableColumn prefWidth="157.60000038146973" text="Illness" />
-                      <TableColumn prefWidth="448.00006103515625" text="DATE (YYYY/MM/DD" />
-                        <TableColumn prefWidth="356.79998779296875" text="Given Medication" />
-                        <TableColumn prefWidth="403.199951171875" text="Nurse" />
+                      <TableColumn fx:id="illnessColumn" prefWidth="157.60000038146973" text="Illness" />
+                      <TableColumn fx:id="dateColumn" prefWidth="448.00006103515625" text="DATE (YYYY/MM/DD" />
+                        <TableColumn fx:id="medicationColumn" prefWidth="356.79998779296875" text="Given Medication" />
+                        <TableColumn fx:id="nurseColumn" prefWidth="403.199951171875" text="Nurse" />
                     </columns>
                   </TableView>
                </content>

@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:controller="com.rocs.infirmary.application.controller.page.EditStudentHealthProfileController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
 
    <stylesheets>
       <URL value="@../styles/buttons.css" />
@@ -79,7 +79,7 @@
                      </children>
                   </HBox>
                   <Label text="Health Problem" GridPane.rowIndex="1" />
-                  <Button fx:id="ButtonAddField" mnemonicParsing="false" text="Add Field" GridPane.rowIndex="1">
+                  <Button fx:id="ButtonAddField"  mnemonicParsing="false" text="Add Field" GridPane.rowIndex="1">
                      <GridPane.margin>
                         <Insets left="125.0" />
                      </GridPane.margin>
