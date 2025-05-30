@@ -16,7 +16,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
@@ -90,9 +89,10 @@ public class DashboardPageController implements Initializable {
         setGrade12ClinicVisitTodayRprt();
         setMedDistributtedTodayRprt();
         populateBarChartWklyVisit();
-        initializeCommonAilmentsRptTable();
-        populateTableCommonAilmentsRpt();
         initializeMedTrendRptTable();
+        initializeCommonAilmentsRptTable();
+
+        populateTableCommonAilmentsRpt();
         populateTableMedTrendRpt();
     }
 
@@ -150,9 +150,7 @@ public class DashboardPageController implements Initializable {
         studentVisitBarChart.getData().clear();
         studentVisitBarChart.getXAxis().setLabel("");
         studentVisitBarChart.getYAxis().setLabel("Visits");
-
         SimpleDateFormat sdf = new SimpleDateFormat("EEEEE");
-
         List<FrequentVisitReport> grade11Reports = dashboardFacade.generateFrequentVisitReport(startDate, endDate, "Grade 11");
         List<FrequentVisitReport> grade12Reports = dashboardFacade.generateFrequentVisitReport(startDate, endDate, "Grade 12");
 
@@ -168,17 +166,17 @@ public class DashboardPageController implements Initializable {
             combinedVisitCounts.merge(day, report.getVisitCount(), Integer::sum);
         }
 
-        XYChart.Series<String, Number> combinedSeries = new XYChart.Series<>();
-        combinedSeries.setName("Grade 11 & 12 Weekly Visits");
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Grade 11 & 12 Weekly Visits");
 
         List<String> orderedDays = List.of("Monday", "Tuesday", "Wednesday", "Thursday", "Friday");
 
         for (String day : orderedDays) {
             int visits = combinedVisitCounts.getOrDefault(day, 0);
-            combinedSeries.getData().add(new XYChart.Data<>(day, visits));
+            series.getData().add(new XYChart.Data<>(day, visits));
         }
 
-        studentVisitBarChart.getData().add(combinedSeries);
+        studentVisitBarChart.getData().add(series);
     }
 
 
@@ -197,8 +195,8 @@ public class DashboardPageController implements Initializable {
         numberedColumnCommonAilment.setStyle("-fx-alignment: CENTER;");
 
         illnessColumnCommonAilment.setCellValueFactory(cellData -> {
-            String illness = cellData.getValue().getAilment();
-            return new SimpleStringProperty(illness);
+            String ailment = cellData.getValue().getAilment();
+            return new SimpleStringProperty(ailment);
         });
 
         numOfStudCommonAilment.setCellValueFactory(cellData -> {
@@ -225,13 +223,14 @@ public class DashboardPageController implements Initializable {
             ailmentMap.merge(report.getAilment(), report.getOccurrences(), Integer::sum);
         }
 
-        List<CommonAilmentsReport> mergedReports = new ArrayList<>();
+        List<CommonAilmentsReport> result = new ArrayList<>();
         for (Map.Entry<String, Integer> entry : ailmentMap.entrySet()) {
-            mergedReports.add(new CommonAilmentsReport());
+            result.add(new CommonAilmentsReport());
         }
 
-        ObservableList<CommonAilmentsReport> observableCommonAilmentTable = FXCollections.observableArrayList(mergedReports);
+        ObservableList<CommonAilmentsReport> observableCommonAilmentTable = FXCollections.observableArrayList(result);
         commonAilmentsRptTable.setItems(observableCommonAilmentTable);
+
     }
 
     private void initializeMedTrendRptTable() {
