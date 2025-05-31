@@ -64,7 +64,7 @@ public class InventoryController implements Initializable {
         QuantityColumn.setStyle("-fx-alignment: CENTER;");
         ExpiryDateColumn.setCellValueFactory(new PropertyValueFactory<>("expirationDate"));
         ExpiryDateColumn.setStyle("-fx-alignment: CENTER;");
-        
+
     }
 
     private void refresh() {
