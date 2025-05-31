@@ -13,9 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
@@ -23,6 +21,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -44,7 +43,7 @@ public class InventoryController implements Initializable {
 
     private ObservableList<Medicine> medicine;
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
-
+    private List<Medicine> medicineList = new ArrayList<>();
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setup();
@@ -53,6 +52,7 @@ public class InventoryController implements Initializable {
     }
 
     private void setup() {
+        MedDetailsTable.setEditable(true);
         SelectColumn.setCellValueFactory(cellData -> cellData.getValue().isSelectedProperty());
         SelectColumn.setCellFactory(CheckBoxTableCell.forTableColumn(SelectColumn));
         SelectColumn.setEditable(true);
@@ -103,7 +103,7 @@ public class InventoryController implements Initializable {
                             }
                             return false;
                         })
-                );
+        );
         SortedList<Medicine> sortedList = new SortedList<>(filteredList);
         sortedList.comparatorProperty().bind(MedDetailsTable.comparatorProperty());
         MedDetailsTable.setItems(sortedList);
@@ -123,7 +123,15 @@ public class InventoryController implements Initializable {
         MedDetailsTable.getSortOrder().setAll(ProductNameColumn);
         MedDetailsTable.sort();
     }
-
+    private List<Medicine> getSelectedMedicines() {
+        List<Medicine> selectedMedicine = medicine.stream()
+                .filter(Medicine::isSelected)
+                .toList();
+        for(Medicine med: selectedMedicine){
+            medicineList.add(med);
+        }
+        return selectedMedicine;
+    }
     public void onClearFilterClick(ActionEvent actionEvent) {
         ProductNameColumn.setSortable(true);
         ProductNameColumn.setSortType(TableColumn.SortType.ASCENDING);
@@ -139,6 +147,50 @@ public class InventoryController implements Initializable {
         QuantityColumn.setSortType(TableColumn.SortType.ASCENDING);
         MedDetailsTable.getSortOrder().setAll(QuantityColumn);
         MedDetailsTable.sort();
+    }
+    private boolean deleteMedicine(){
+        boolean deleted = false;
+        for (Medicine med : medicineList) {
+            deleted = inventoryManagementApplication.getMedicineInventoryFacade().deleteInventory(med.getInventoryId());
+        }
+        return deleted;
+    }
+    public void onRemoveBtnClick(ActionEvent actionEvent) throws IOException {
+        System.out.println("clicked");
+        if(getSelectedMedicines().isEmpty()){
+            Dialog dialog = new Dialog();
+            dialog.setTitle("Warning");
+            ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+            dialog.setContentText("No Items selected");
+            dialog.getDialogPane().getButtonTypes().add(type);
+            dialog.showAndWait();
+        }
+        if(getSelectedMedicines().size() >= 2){
+            List<Medicine> selectedMedicine = getSelectedMedicines();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/InventoryDeleteItemModal.fxml"));
+            Parent root = loader.load();
+            DeleteInventoryController deleteInventoryController = loader.getController();
+            deleteInventoryController.showMedicineList(selectedMedicine);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
+            stage.show();
+        }
+        if(getSelectedMedicines().size() == 1 ) {
+            deleteMedicine();
+            Dialog dialog = new Dialog();
+            dialog.setTitle("Notification");
+            ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+            dialog.setContentText("Deleted Successfully!");
+            dialog.getDialogPane().getButtonTypes().add(type);
+            dialog.showAndWait();
+            if(type.getButtonData().isDefaultButton()){
+                refresh();
+                itemSearch();
+            }
+        }
     }
 }
 

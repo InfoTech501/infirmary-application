@@ -112,7 +112,8 @@ public class AddInventoryController implements Initializable {
                 .toList();
         return selectedMedicine;
     }
-    private void addMedicine() throws ParseException {
+    private boolean addMedicine() throws ParseException {
+        boolean isAdded = false;
         String medicineId = getMedicineId(ProductNameTextField);
         int quantity = Integer.parseInt(QuantityTextField.getText());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
@@ -120,6 +121,7 @@ public class AddInventoryController implements Initializable {
             if(Objects.equals(med.getItemName(), ProductNameTextField.getText())){
                 System.out.println("existing");
                 inventoryManagementApplication.getMedicineInventoryFacade().addInventory(med.getMedicineId(),med.getItemType(),quantity);
+                isAdded = true;
                 break;
             }else{
                 System.out.println("new");
@@ -132,10 +134,12 @@ public class AddInventoryController implements Initializable {
                 medicineModel.setExpirationDate(new Timestamp(expirationDate.getTime()));
                 inventoryManagementApplication.getMedicineInventoryFacade().addMedicine(medicineModel);
                 inventoryManagementApplication.getMedicineInventoryFacade().addInventory(medicineId,"medicine",quantity);
+                isAdded = true;
                 break;
             }
         }
         refresh();
+        return isAdded;
     }
 
     public void onConfirmBtnClick(ActionEvent actionEvent) throws ParseException {
@@ -162,7 +166,13 @@ public class AddInventoryController implements Initializable {
             dialog.showAndWait();
         }
         else {
-            addMedicine();
+            if(addMedicine()){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Notification");
+                alert.setHeaderText(null);
+                alert.setContentText("Successfully Added");
+                alert.showAndWait();
+            }
         }
     }
 
