@@ -144,7 +144,7 @@ public class StudentHealthProfilePageController implements Initializable {
                 Parent root = loader.load();
 
                 MoreInformationStudentProfileController controller = loader.getController();
-                controller.setMedicalRecordFacade(this.medicalRecordFacade);  // or however you get it!
+                controller.setMedicalRecordFacade(this.medicalRecordFacade);
                 controller.loadStudentProfileData(selectedStudent.getLrn());
 
                 Stage stage = new Stage();

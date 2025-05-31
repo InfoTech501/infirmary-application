@@ -51,7 +51,7 @@ public class EditStudentHealthProfileController {
 
     private Student student;
 
-    // Application instance to access the facade
+
     private final StudentHealthProfileInfoApplication application = new StudentHealthProfileInfoApplication();
     private String studentHealthProblem;
 
@@ -86,7 +86,7 @@ public class EditStudentHealthProfileController {
     private void handleAddField() {
         String healthProblem = TextfieldHealthProblem.getText().trim();
         if (!healthProblem.isEmpty()) {
-            // For demonstration: Add to student's health problems (assuming student has such a field!)
+
             student.setSymptoms(healthProblem);
             showAlert("Added", "Health problem \"" + healthProblem + "\" added!");
             TextfieldHealthProblem.clear();
@@ -96,13 +96,13 @@ public class EditStudentHealthProfileController {
     }
 
     private void handleConfirm() {
-        // Save updated student health profile via the facade
+
         StudentHealthProfileFacade facade = application.getStudentHealthProfileFacade();
 
-        // Example: fetching updated data to simulate persistence
+
         List<Student> updatedProfile = facade.getStudentHealthProfileByLRN(student.getLrn());
 
-        // In a real implementation: update the student’s profile (you might have a separate save/update method)
+
         System.out.println("Updated profile: " + updatedProfile);
 
         showAlert("Confirmed", "Student health profile has been updated.");

@@ -80,7 +80,7 @@ public class MoreInformationStudentProfileController implements Initializable {
 
         initializeTableColumns();
 
-        // Connect the edit button to open the edit window
+
         ButtonEditHealthInfo.setOnAction(e -> openEditStudentHealthProfile());
     }
 
@@ -97,14 +97,12 @@ public class MoreInformationStudentProfileController implements Initializable {
                 new SimpleStringProperty(cellData.getValue().getNurseInCharge()));
     }
 
-    /**
-     * This method can be called externally to load data for a specific student.
-     */
+
     public void loadStudentProfileData(long lrn) {
         Student student = medicalRecordFacade.getMedicalInformationByLRN(lrn);
 
         if (student != null) {
-            this.currentStudent = student; // store current student
+            this.currentStudent = student;
 
             MoreInformationLabel.setText("Student Health Profile - " + student.getFirstName() + " " + student.getLastName());
             ContactInfoLabel.setText("Contact Info for: " + student.getFirstName() + " " + student.getLastName());
@@ -125,21 +123,19 @@ public class MoreInformationStudentProfileController implements Initializable {
         }
     }
 
-    /**
-     * Opens the EditStudentHealthProfile.fxml and passes the student's health data.
-     */
+
     private void openEditStudentHealthProfile() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/rocs/infirmary/application/resources/views/EditStudentHealthProfile.fxml"));
             Parent root = loader.load();
 
-            // Get the controller of the edit profile
+
             EditStudentHealthProfileController editController = loader.getController();
 
-            // Pass the student's current health data
+
             if (currentStudent != null) {
                 editController.setStudentHealthProblem(currentStudent.getSymptoms());
-                editController.setStudent(currentStudent); // Optional: if you want the whole student
+                editController.setStudent(currentStudent);
             }
 
             Stage stage = new Stage();
