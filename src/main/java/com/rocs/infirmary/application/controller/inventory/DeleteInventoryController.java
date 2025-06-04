@@ -16,6 +16,8 @@ import java.util.List;
 public class DeleteInventoryController{
     @FXML
     private GridPane medicineListContainer;
+    @FXML
+    private Label InventoryDeleteLabel_A;
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     private List<Medicine> medicineList = new ArrayList<>();
 
