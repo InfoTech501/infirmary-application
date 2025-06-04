@@ -165,6 +165,12 @@ public class AddInventoryController implements Initializable {
             dialog.getDialogPane().getButtonTypes().add(type);
             dialog.showAndWait();
         }
+        else if (!isValidTextInput(ProductNameTextField.getText())) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid Input In Product Name");
+            alert.setContentText("Product Name must only contain letters.");
+            alert.showAndWait();
+        }
         else {
             if(addMedicine()){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -203,4 +209,8 @@ public class AddInventoryController implements Initializable {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
     }
+    private boolean isValidTextInput(String input) {
+        return input.matches("[a-zA-Z\\s]+");
+    }
+
 }
