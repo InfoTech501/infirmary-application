@@ -16,11 +16,10 @@ import java.util.List;
 public class DeleteInventoryController{
     @FXML
     private Label InventoryDeleteLabel_A;
-
+    @FXML
     private Label InventoryDeleteLabel_B;
     @FXML
     private GridPane medicineListContainer;
-    @FXML Label InventoryDeleteLabel_A;
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     private List<Medicine> medicineList = new ArrayList<>();
 
