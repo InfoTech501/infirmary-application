@@ -30,8 +30,7 @@ class InfirmaryApplicationTest extends ApplicationTest {
     public void inventoryPageTest() {
 
 
-
-        //check searhcing and filtering of items
+        //Test searching and filtering of items
         clickOn("#QuantityButton");
         sleep(1000);
         clickOn("#Inventory_Filter_Button_A");
@@ -44,36 +43,12 @@ class InfirmaryApplicationTest extends ApplicationTest {
         sleep(1000);
         clickOn("#InventoryClearFilterButton");
         sleep(1000);
-//
-//        //check adding of items
-        clickOn("#InventoryAddItemButton");
+        clickOn("#SearchTextField");
         sleep(1000);
-        clickOn("#ProductNameTextField");
+        write("Aspirin");
         sleep(1000);
-        write("Acetaminophen");
+        clickOn("#InventoryClearFilterButton");
         sleep(1000);
-        clickOn("#QuantityTextField");
-        sleep(1000);
-        write("60");
-        sleep(1000);
-        clickOn("#ExpirationDateTextField");
-        write("2026-05-02");
-        sleep(1000);
-
-//
-//
-//        //check removing of items
-
-//        Node firstRow = lookup(".table-row-cell").nth(0).query();
-//        moveTo(firstRow).moveBy(-345, 12).clickOn();
-//        sleep(1000);
-//        clickOn("#InventoryRemoveItemsButton");
-//        sleep(1000);
-//        clickOn("#ButtonConfirm");
-//        sleep(1000);
-//
-//
-//
 
     }
 
