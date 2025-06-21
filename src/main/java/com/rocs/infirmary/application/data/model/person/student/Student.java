@@ -1,6 +1,8 @@
 package com.rocs.infirmary.application.data.model.person.student;
 
 import com.rocs.infirmary.application.data.model.person.Person;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 
 import java.util.Date;
 
@@ -23,6 +25,8 @@ public class Student extends Person {
     private String gradeLevel;
     private String studentAdviser;
     private String nurseInCharge;
+
+    private final BooleanProperty isSelected = new SimpleBooleanProperty();
 
     public String getNurseInCharge() {
         return nurseInCharge;
@@ -118,5 +122,13 @@ public class Student extends Person {
 
     public int getMedicalRecordStatus() {
         return getMedicaRecordStatus;
+    }
+
+    public BooleanProperty isSelectedProperty() {
+        return isSelected;
+    }
+
+    public void setIsSelected(boolean isSelected) {
+        this.isSelected.set(isSelected);
     }
 }
