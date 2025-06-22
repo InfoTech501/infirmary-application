@@ -19,7 +19,7 @@
          <children>
             <VBox prefHeight="484.0" prefWidth="921.0">
                <children>
-                  <GridPane prefHeight="335.0" prefWidth="921.0">
+                  <GridPane fx:id="medicineListContainer" prefHeight="335.0" prefWidth="921.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

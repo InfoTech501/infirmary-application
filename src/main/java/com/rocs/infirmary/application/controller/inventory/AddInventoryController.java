@@ -46,6 +46,7 @@ public class AddInventoryController implements Initializable {
     private TextField ExpirationDateTextField;
 
     private ObservableList<Medicine> medicine;
+
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     Medicine medicineModel = new Medicine();
 
@@ -73,10 +74,17 @@ public class AddInventoryController implements Initializable {
     }
 
     private void refresh() {
-        List<Medicine> medicineList = inventoryManagementApplication.getMedicineInventoryFacade().findAllMedicine();
+        List<Medicine> medicineList; medicineList = inventoryManagementApplication.getMedicineInventoryFacade().findAllMedicine();
         for (Medicine med : medicineList) {
             if (med.isSelectedProperty() == null) {
                 med.setIsSelected(false);
+                System.out.println(med.isSelected());
+            }
+            if(!med.isSelected()){
+                medicineModel.setHasSelect(false);
+            }else{
+               medicineModel.setHasSelect(true);
+                System.out.println(med.isSelected());
             }
         }
         medicine = FXCollections.observableArrayList(medicineList);
@@ -104,13 +112,14 @@ public class AddInventoryController implements Initializable {
         }
         return medicineID;
     }
-    private List<Medicine> getSelectedMedicines() {
+    public List<Medicine> getSelectedMedicines() {
         List<Medicine> selectedMedicine = medicine.stream()
                 .filter(Medicine::isSelected)
                 .toList();
         return selectedMedicine;
     }
-    private void addMedicine() throws ParseException {
+    private boolean addMedicine() throws ParseException {
+        boolean isAdded = false;
         String medicineId = getMedicineId(ProductNameTextField);
         int quantity = Integer.parseInt(QuantityTextField.getText());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
@@ -118,6 +127,7 @@ public class AddInventoryController implements Initializable {
             if(Objects.equals(med.getItemName(), ProductNameTextField.getText())){
                 System.out.println("existing");
                 inventoryManagementApplication.getMedicineInventoryFacade().addInventory(med.getMedicineId(),med.getItemType(),quantity);
+                isAdded = true;
                 break;
             }else{
                 System.out.println("new");
@@ -130,10 +140,12 @@ public class AddInventoryController implements Initializable {
                 medicineModel.setExpirationDate(new Timestamp(expirationDate.getTime()));
                 inventoryManagementApplication.getMedicineInventoryFacade().addMedicine(medicineModel);
                 inventoryManagementApplication.getMedicineInventoryFacade().addInventory(medicineId,"medicine",quantity);
+                isAdded = true;
                 break;
             }
         }
         refresh();
+        return isAdded;
     }
 
     public void onConfirmBtnClick(ActionEvent actionEvent) throws ParseException {
@@ -159,29 +171,52 @@ public class AddInventoryController implements Initializable {
             dialog.getDialogPane().getButtonTypes().add(type);
             dialog.showAndWait();
         }
+        else if (!isValidTextInput(ProductNameTextField.getText())) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid Input In Product Name");
+            alert.setContentText("Product Name must only contain letters.");
+            alert.showAndWait();
+        }
         else {
-            addMedicine();
+            if(addMedicine()){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Notification");
+                alert.setHeaderText(null);
+                alert.setContentText("Successfully Added");
+                alert.showAndWait();
+            }
         }
     }
 
     public void onRemoveBtnClick(ActionEvent actionEvent) throws IOException {
-        List<Medicine> selectedMedicine = getSelectedMedicines();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/InventoryDeleteItemModal.fxml"));
-        Parent root = loader.load();
-        DeleteInventoryController deleteInventoryController = loader.getController();
-        for(Medicine med:selectedMedicine){
-            deleteInventoryController.showMedicine(med.getItemName(),med.getInventoryId(),med.getMedicineId());
-            System.out.println(med.getItemName());
+        if(getSelectedMedicines().isEmpty()){
+            Dialog dialog = new Dialog();
+            dialog.setTitle("Warning");
+            ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+            dialog.setContentText("No Items selected");
+            dialog.getDialogPane().getButtonTypes().add(type);
+            dialog.showAndWait();
+        }else {
+            List<Medicine> selectedMedicine = getSelectedMedicines();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/InventoryDeleteItemModal.fxml"));
+            Parent root = loader.load();
+            DeleteInventoryController deleteInventoryController = loader.getController();
+            deleteInventoryController.showMedicineList(selectedMedicine);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
+            stage.show();
         }
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
-        stage.show();
     }
 
     public void onCancelBtnClick(ActionEvent actionEvent) {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
     }
+    private boolean isValidTextInput(String input) {
+        return input.matches("[a-zA-Z\\s]+");
+    }
+
 }
