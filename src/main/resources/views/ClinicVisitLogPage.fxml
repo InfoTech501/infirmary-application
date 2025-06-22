@@ -1,24 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1124.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1124.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.dashboard.ClinicVisitLogPageController">
     <stylesheets>
         <URL value="@../styles/buttons.css" />
         <URL value="@../styles/label.css" />
@@ -117,7 +105,7 @@
                         </TextField>
                         <VBox prefHeight="67.0" prefWidth="179.0" GridPane.columnIndex="3">
                            <children>
-                              <ToggleButton fx:id="toggleAddEntry" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="67.0" prefWidth="125.0" style="-fx-background-color: #1976D2;" styleClass="add-entry-btn" text="Add Entry" textFill="WHITE">
+                              <ToggleButton fx:id="toggleAddEntry" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleAddEntryButton" prefHeight="67.0" prefWidth="125.0" style="-fx-background-color: #1976D2;" styleClass="add-entry-btn" text="Add Entry" textFill="WHITE">
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
@@ -144,17 +132,17 @@
                            <children>
                               <Pane>
                                  <children>
-                                    <TableView fx:id="VisitLogTable" prefHeight="908.0" prefWidth="1075.0" styleClass="clinic-visit-table-view" >
+                                    <TableView fx:id="VisitLogTable" prefHeight="908.0" prefWidth="1075.0" styleClass="clinic-visit-table-view">
                                       <columns>
-                                        <TableColumn prefWidth="155.0" text="Name" />
-                                        <TableColumn prefWidth="104.0" text="Grade &amp; Section" />
-                                          <TableColumn prefWidth="118.0" text="Temperature" />
-                                          <TableColumn prefWidth="96.0" text="Pulse" />
-                                          <TableColumn prefWidth="126.0" text="Blood Pressure" />
-                                          <TableColumn prefWidth="149.0" text="Symptoms" />
-                                          <TableColumn minWidth="6.0" prefWidth="98.0" text="Dispensing IN" />
-                                          <TableColumn minWidth="0.0" prefWidth="104.0" text="Dispensing OUT" />
-                                          <TableColumn prefWidth="102.0" text="XX" />
+                                        <TableColumn fx:id="NameColumn" prefWidth="155.0" text="Name" />
+                                        <TableColumn fx:id="GradeSectionColumn" prefWidth="104.0" text="Grade &amp; Section" />
+                                          <TableColumn fx:id="TempReadingsColumn" prefWidth="118.0" text="Temperature" />
+                                          <TableColumn fx:id="PulseRateColumn" prefWidth="96.0" text="Pulse" />
+                                          <TableColumn fx:id="BloodPressureColumn" prefWidth="126.0" text="Blood Pressure" />
+                                          <TableColumn fx:id="SymptomsColumn" prefWidth="149.0" text="Symptoms" />
+                                          <TableColumn fx:id="MedicineNameColumn" minWidth="6.0" prefWidth="98.0" text="Medicine Name" />
+                                          <TableColumn fx:id="DispensingOutColumn" minWidth="0.0" prefWidth="104.0" text="Dispensing OUT" />
+                                          <TableColumn fx:id="VisitDateColumn" prefWidth="102.0" text="Visit Date" />
                                       </columns>
                                     </TableView>
                                  </children>

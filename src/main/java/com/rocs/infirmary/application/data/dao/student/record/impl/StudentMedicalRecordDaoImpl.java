@@ -52,6 +52,9 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                 studentMedicalRecord.setGender(rs.getString("gender"));
                 studentMedicalRecord.setSymptoms(rs.getString("symptoms"));
                 studentMedicalRecord.setTemperatureReadings(rs.getString("temperature_readings"));
+                studentMedicalRecord.setBloodPressure(rs.getString("blood_pressure"));
+                studentMedicalRecord.setPulseRate(rs.getInt("pulse_rate"));
+                studentMedicalRecord.setRespiratoryRate(rs.getInt("respiratory_rate"));
                 studentMedicalRecord.setVisitDate(rs.getDate("visit_date"));
                 studentMedicalRecord.setTreatment(rs.getString("treatment"));
 
@@ -63,6 +66,9 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                         +"Gender   : "+studentMedicalRecord.getGender()+"\n"
                         +"Symptoms : "+studentMedicalRecord.getSymptoms()+"\n"
                         +"Temperature Reading  : "+studentMedicalRecord.getTemperatureReadings()+"\n"
+                        +"Blood Pressure : "+studentMedicalRecord.getBloodPressure()+"\n"
+                        +"Pulse Rate : "+studentMedicalRecord.getPulseRate()+"\n"
+                        +"Respiratory Rate : "+studentMedicalRecord.getRespiratoryRate()+"\n"
                         +"Visit Date  : "+studentMedicalRecord.getVisitDate()+"\n"
                         +"Treatment  : "+studentMedicalRecord.getTreatment()
                 );
@@ -100,6 +106,9 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                 studentMedicalRecord.setGender(rs.getString("gender"));
                 studentMedicalRecord.setSymptoms(rs.getString("symptoms"));
                 studentMedicalRecord.setTemperatureReadings(rs.getString("temperature_readings"));
+                studentMedicalRecord.setBloodPressure(rs.getString("blood_pressure"));
+                studentMedicalRecord.setPulseRate(rs.getInt("pulse_rate"));
+                studentMedicalRecord.setRespiratoryRate(rs.getInt("respiratory_rate"));
                 studentMedicalRecord.setVisitDate(rs.getDate("visit_date"));
                 studentMedicalRecord.setTreatment(rs.getString("treatment"));
 
@@ -109,6 +118,9 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                         +"Gender   : "+studentMedicalRecord.getGender()+"\n"
                         +"Symptoms : "+studentMedicalRecord.getSymptoms()+"\n"
                         +"Temperature Reading  : "+studentMedicalRecord.getTemperatureReadings()+"\n"
+                        +"Blood Pressure  : "+studentMedicalRecord.getBloodPressure()+"\n"
+                        +"Pulse Rate  : "+studentMedicalRecord.getPulseRate()+"\n"
+                        +"Respiratory Rate  : "+studentMedicalRecord.getRespiratoryRate()+"\n"
                         +"Visit Date  : "+studentMedicalRecord.getVisitDate()+"\n"
                         +"Treatment  : "+studentMedicalRecord.getTreatment()
                 );

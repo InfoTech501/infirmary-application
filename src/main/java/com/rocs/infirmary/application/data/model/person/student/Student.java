@@ -23,6 +23,10 @@ public class Student extends Person {
     private String gradeLevel;
     private String studentAdviser;
     private String nurseInCharge;
+    private String bloodPressure;
+    private int pulseRate;
+    private int respiratoryRate;
+    private String chiefComplaint;
 
     public String getNurseInCharge() {
         return nurseInCharge;
@@ -68,9 +72,7 @@ public class Student extends Person {
         return temperatureReadings;
     }
 
-    public void setTemperatureReadings(String temperatureReadings) {
-        this.temperatureReadings = temperatureReadings;
-    }
+    public void setTemperatureReadings(String temperatureReadings) { this.temperatureReadings = temperatureReadings; }
 
     public Date getVisitDate() {
         return visitDate;
@@ -119,4 +121,20 @@ public class Student extends Person {
     public int getMedicalRecordStatus() {
         return getMedicaRecordStatus;
     }
+
+    public String getBloodPressure() { return bloodPressure; }
+
+    public void setBloodPressure(String bloodPressure) { this.bloodPressure = bloodPressure; }
+
+    public int getPulseRate() { return pulseRate; }
+
+    public void setPulseRate(int pulseRate) { this.pulseRate = pulseRate; }
+
+    public int getRespiratoryRate() { return respiratoryRate; }
+
+    public void setRespiratoryRate(int respiratoryRate) { this.respiratoryRate = respiratoryRate; }
+
+    public void setChiefComplaint(String chiefComplaint) { this.chiefComplaint = chiefComplaint; }
+
+    public String getChiefComplaint() { return chiefComplaint; }
 }

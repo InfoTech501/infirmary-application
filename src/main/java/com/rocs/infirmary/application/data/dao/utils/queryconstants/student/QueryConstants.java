@@ -28,12 +28,14 @@ public class QueryConstants {
             "person.gender, " +
             "medical_record.symptoms, " +
             "medical_record.temperature_readings, " +
+            "medical_record.blood_pressure, " +
+            "medical_record.pulse_rate, " +
+            "medical_record.respiratory_rate, " +
             "medical_record.visit_date, " +
             "medical_record.treatment " +
             "FROM medical_record " +
             "JOIN person ON medical_record.student_id = person.id " +
-            "LEFT JOIN student ON medical_record.student_id = student.id";
-
+            "LEFT JOIN student ON medical_record.student_id = student.id ";
 
     private final String DELETE_STUDENT_MEDICAL_RECORD = "UPDATE MEDICAL_RECORD SET IS_ACTIVE = 0 WHERE STUDENT_ID = ?";
 

@@ -155,7 +155,7 @@ public class AddInventoryController implements Initializable {
             Dialog dialog = new Dialog();
             dialog.setTitle("Warning");
             ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            dialog.setContentText("Expiration date cannot be empty");
+            dialog.setContentText("Expiration date cannot be empty"); 
             dialog.getDialogPane().getButtonTypes().add(type);
             dialog.showAndWait();
         }

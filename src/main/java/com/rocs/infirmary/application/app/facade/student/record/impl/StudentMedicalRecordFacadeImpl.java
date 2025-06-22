@@ -18,8 +18,16 @@ import org.slf4j.LoggerFactory;
 public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacade {
 
     /** The data access object for Student Medical Record. */
-    private final StudentMedicalRecordDao studentMedRecord = new StudentMedicalRecordDaoImpl();
+    private StudentMedicalRecordDao studentMedRecord = new StudentMedicalRecordDaoImpl();
     private static final Logger logger = LoggerFactory.getLogger(StudentMedicalRecordFacadeImpl.class);
+
+    public StudentMedicalRecordFacadeImpl() {
+
+    }
+
+    public StudentMedicalRecordFacadeImpl(StudentMedicalRecordDao studentMedicalRecordDao) {
+        this.studentMedRecord = studentMedicalRecordDao;
+    }
 
     public Student getMedicalInformationByLRN(long LRN) {
         logger.debug("Entering getMedicalInformationByLRN with LRN: {}", LRN);
@@ -56,6 +64,7 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
         logger.debug("Exiting updateStudentMedicalRecord, update successful: {}", updated);
         return updated;
     }
+
 }
 
 
