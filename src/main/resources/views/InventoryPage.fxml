@@ -112,6 +112,9 @@
                                              <children>
                                                 <Button fx:id="InventoryAddItemButton" mnemonicParsing="false" onAction="#onShowAddModalBtnClick" prefHeight="52.0" prefWidth="181.0" text="ADD ITEM" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                              </children>
+                                             <children>
+                                                <Button fx:id="InventoryRemoveItemsButton" mnemonicParsing="false" onAction="#onRemoveBtnClick" prefHeight="51.0" prefWidth="203.0" text="REMOVE ITEMS" GridPane.rowIndex="1" />
+                                             </children>
                                           </GridPane>
                                        </children>
                                     </HBox>
