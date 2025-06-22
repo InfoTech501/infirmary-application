@@ -7,10 +7,7 @@ import com.rocs.infirmary.application.data.dao.student.record.StudentMedicalReco
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -48,8 +45,13 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                 studentMedicalRecord.setFirstName(rs.getString("first_name"));
                 studentMedicalRecord.setMiddleName(rs.getString("middle_name"));
                 studentMedicalRecord.setLastName(rs.getString("last_name"));
+                studentMedicalRecord.setGradeLevel(rs.getString("grade_level"));
+                studentMedicalRecord.setSection("section");
                 studentMedicalRecord.setAge(rs.getInt("age"));
                 studentMedicalRecord.setGender(rs.getString("gender"));
+                studentMedicalRecord.setEmail(rs.getString("email"));
+                studentMedicalRecord.setAddress(rs.getString("address"));
+                studentMedicalRecord.setContactNumber(rs.getInt("contact_number"));
                 studentMedicalRecord.setSymptoms(rs.getString("symptoms"));
                 studentMedicalRecord.setTemperatureReadings(rs.getString("temperature_readings"));
                 studentMedicalRecord.setBloodPressure(rs.getString("blood_pressure"));
@@ -62,8 +64,13 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                         +"Student ID: "+studentMedicalRecord.getStudentId()+"\n"
                         +"LRN  ID: "+studentMedicalRecord.getLrn()+"\n"
                         +"Name   : "+studentMedicalRecord.getFirstName()+" "+studentMedicalRecord.getLastName()+"\n"
+                        +"Grade Level   : "+studentMedicalRecord.getGradeLevel()+"\n"
+                        +"Section   : "+studentMedicalRecord.getSection()+"\n"
                         +"Age    : "+studentMedicalRecord.getAge()+"\n"
                         +"Gender   : "+studentMedicalRecord.getGender()+"\n"
+                        +"Email   : "+studentMedicalRecord.getEmail()+"\n"
+                        +"Address   : "+studentMedicalRecord.getAddress()+"\n"
+                        +"Contact Number   : "+studentMedicalRecord.getContactNumber()+"\n"
                         +"Symptoms : "+studentMedicalRecord.getSymptoms()+"\n"
                         +"Temperature Reading  : "+studentMedicalRecord.getTemperatureReadings()+"\n"
                         +"Blood Pressure : "+studentMedicalRecord.getBloodPressure()+"\n"
@@ -99,11 +106,17 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
             while (rs.next()) {
                 Student studentMedicalRecord = new Student();
 
+                studentMedicalRecord.setLrn(rs.getLong("LRN"));
                 studentMedicalRecord.setFirstName(rs.getString("first_name"));
                 studentMedicalRecord.setMiddleName(rs.getString("middle_name"));
                 studentMedicalRecord.setLastName(rs.getString("last_name"));
+                studentMedicalRecord.setGradeLevel(rs.getString("grade_level"));
+                studentMedicalRecord.setSection("section");
                 studentMedicalRecord.setAge(rs.getInt("age"));
                 studentMedicalRecord.setGender(rs.getString("gender"));
+                studentMedicalRecord.setEmail(rs.getString("email"));
+                studentMedicalRecord.setAddress(rs.getString("address"));
+                studentMedicalRecord.setContactNumber(rs.getInt("contact_number"));
                 studentMedicalRecord.setSymptoms(rs.getString("symptoms"));
                 studentMedicalRecord.setTemperatureReadings(rs.getString("temperature_readings"));
                 studentMedicalRecord.setBloodPressure(rs.getString("blood_pressure"));
@@ -113,9 +126,15 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                 studentMedicalRecord.setTreatment(rs.getString("treatment"));
 
                 LOGGER.info("Data retrieved: "+"\n"
+                        +"LRN   : "+studentMedicalRecord.getLrn()+"\n"
                         +"Name   : "+studentMedicalRecord.getFirstName()+" "+studentMedicalRecord.getLastName()+"\n"
+                        +"Grade Level   : "+studentMedicalRecord.getGradeLevel()+"\n"
+                        +"Section   : "+studentMedicalRecord.getSection()+"\n"
                         +"Age    : "+studentMedicalRecord.getAge()+"\n"
                         +"Gender   : "+studentMedicalRecord.getGender()+"\n"
+                        +"Email   : "+studentMedicalRecord.getEmail()+"\n"
+                        +"Address   : "+studentMedicalRecord.getAddress()+"\n"
+                        +"Contact Number   : "+studentMedicalRecord.getContactNumber()+"\n"
                         +"Symptoms : "+studentMedicalRecord.getSymptoms()+"\n"
                         +"Temperature Reading  : "+studentMedicalRecord.getTemperatureReadings()+"\n"
                         +"Blood Pressure  : "+studentMedicalRecord.getBloodPressure()+"\n"
@@ -252,8 +271,6 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
             throw new RuntimeException(e);
         }
     }
-
-
 
     private static Student getStudent(long LRN) {
         Student studentMedicalRecord = null;

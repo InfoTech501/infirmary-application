@@ -1,6 +1,7 @@
 package com.rocs.infirmary.application.controller.modal;
 
 import com.rocs.infirmary.application.MedicalRecordInfoMgtApplication;
+import com.rocs.infirmary.application.controller.dashboard.ClinicVisitLogPageController;
 import com.rocs.infirmary.application.data.model.person.student.Student;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -44,10 +45,9 @@ public class AddDailyTreatmentRecord implements Initializable {
     @FXML
     public TextField dateTimeField;
 
-    private ObservableList<Student> student;
-
+    private ObservableList<Student> studentList;
     private final MedicalRecordInfoMgtApplication medicalRecordInfoMgtApplication = new MedicalRecordInfoMgtApplication();
-    Student studentModel = new Student();
+    private ClinicVisitLogPageController clinicVisitLogPageController;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -55,69 +55,77 @@ public class AddDailyTreatmentRecord implements Initializable {
     }
 
     @FXML
-    private void addDailyRecord() {
-        try {
-            Student record = createStudentMedicalRecordFromForm();
-            //medicalRecordInfoMgtApplication.getStudentMedicalRecordFacade().save(record);
-            showAlert("Success", "Record added successfully");
-
-            Stage stage = (Stage) LrnField.getScene().getWindow();
-            stage.close();
-
-        } catch (Exception e) {
-            showAlert("Error", "Failed to save record: " + e.getMessage());
-            e.printStackTrace();
+    private void handleConfirmButton(ActionEvent actionEvent) {
+        if (validateFields()) {
+//            addDailyRecord();
         }
     }
 
-    @FXML
-    private void handleConfirmButton(ActionEvent actionEvent) {
+    private boolean validateFields() {
         if (LrnField.getText() == null || LrnField.getText().isBlank()) {
             showWarning("LRN cannot be empty");
+            return false;
         } else if (nameField.getText() == null || nameField.getText().isBlank()) {
             showWarning("Name cannot be empty");
+            return false;
         } else if (gradeSectionField.getText() == null || gradeSectionField.getText().isBlank()) {
             showWarning("Grade & Section cannot be empty");
+            return false;
         } else if (bodyTempField.getText() == null || bodyTempField.getText().isBlank()) {
             showWarning("Body temperature is required");
+            return false;
         } else if (pulseRateField.getText() == null || pulseRateField.getText().isBlank()) {
             showWarning("Pulse rate is required");
+            return false;
         } else if (respiratoryRateField.getText() == null || respiratoryRateField.getText().isBlank()) {
             showWarning("Respiratory rate is required");
+            return false;
         } else if (bloodPressureField.getText() == null || bloodPressureField.getText().isBlank()) {
             showWarning("Blood pressure is required");
+            return false;
         } else if (chiefComplaintField.getText() == null || chiefComplaintField.getText().isBlank()) {
             showWarning("Chief complaint is required");
+            return false;
         } else if (nurseInterventionField.getText() == null || nurseInterventionField.getText().isBlank()) {
             showWarning("Nurse intervention cannot be empty");
+            return false;
         } else if (symptomsField.getText() == null || symptomsField.getText().isBlank()) {
             showWarning("Symptoms field cannot be empty");
+            return false;
         } else if (medicineName.getText() == null || medicineName.getText().isBlank()) {
             showWarning("Medicine name is required");
+            return false;
         } else if (invDispensingOutField.getText() == null || invDispensingOutField.getText().isBlank()) {
             showWarning("Dispensing Out field cannot be empty");
+            return false;
         } else if (dateTimeField.getText() == null || dateTimeField.getText().isBlank()) {
             showWarning("Date and Time must be specified");
-        } else {
-            addDailyRecord();
+            return false;
         }
+        return true;
     }
 
-        private void showWarning(String message) {
-            Dialog<String> dialog = new Dialog<>();
-            dialog.setTitle("Warning");
-            dialog.setContentText(message);
-            ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            dialog.getDialogPane().getButtonTypes().add(okButton);
-            dialog.showAndWait();
-        }
+//    @FXML
+//    private void addDailyRecord() {
+//        try {
+//            Student record = createStudentMedicalRecordFromForm();
+//            medicalRecordInfoMgtApplication.getStudentMedicalRecordFacade().save(record);
+//
+//            if (clinicVisitLogPageController != null) {
+//                clinicVisitLogPageController.addStudentRecord(record);
+//            }
+//
+//            showAlert("Success", "Record added successfully");
+//
+//            Stage stage = (Stage) LrnField.getScene().getWindow();
+//            stage.close();
+//
+//        } catch (Exception e) {
+//            showAlert("Error", "Failed to save record: " + e.getMessage());
+//            e.printStackTrace();
+//        }
+//    }
 
-    @FXML
-    private void handleCancelButton(ActionEvent event) {
-        ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
-
-    }
-    @FXML
     private Student createStudentMedicalRecordFromForm() {
         Student student = new Student();
         student.setLrn(Long.parseLong(LrnField.getText()));
@@ -130,19 +138,26 @@ public class AddDailyTreatmentRecord implements Initializable {
         student.setChiefComplaint(chiefComplaintField.getText());
         student.setNurseInCharge(nurseInterventionField.getText());
         student.setSymptoms(symptomsField.getText());
-        //student.setMedicineName(medicineName.getText());
-        //student.setMedicineDispensed(Integer.parseInt(invDispensingOutField.getText()));
-        //student.setDateTime(dateTimeField.getText());
+//        student.setMedicineName(medicineName.getText());
+//        student.setMedicineDispensed(Integer.parseInt(invDispensingOutField.getText()));
+//        student.setVisitDate(dateTimeField.getText());
         return student;
     }
 
-    private void showAlert(String title, String message) {
+    private void showWarning(String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle(title);
+        alert.setTitle("Warning");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
 
+    @FXML
+    private void handleCancelButton(ActionEvent event) {
+        ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
+    }
+
+    public void setClinicVisitLogPageController(ClinicVisitLogPageController controller) {
+        this.clinicVisitLogPageController = controller;
     }
 }
-

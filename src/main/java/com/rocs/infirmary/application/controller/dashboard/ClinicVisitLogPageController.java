@@ -3,6 +3,7 @@ package com.rocs.infirmary.application.controller.dashboard;
 import com.rocs.infirmary.application.MedicalRecordInfoMgtApplication;
 import com.rocs.infirmary.application.controller.modal.ViewStudentVisitLog;
 import com.rocs.infirmary.application.data.model.person.student.Student;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -58,6 +59,7 @@ public class ClinicVisitLogPageController implements Initializable {
         setup();
         refresh();
         studentSearch();
+
         VisitLogTable.setRowFactory(tv -> {
             TableRow<Student> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
@@ -72,7 +74,11 @@ public class ClinicVisitLogPageController implements Initializable {
     }
 
     private void setup() {
-        NameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        NameColumn.setCellValueFactory(cellData -> {
+            Student student = cellData.getValue();
+            String fullName = student.getFirstName() + " " + student.getMiddleName() + " " + student.getLastName();
+            return new SimpleStringProperty(fullName);
+        });
         NameColumn.setStyle("-fx-alignment: CENTER;");
         GradeSectionColumn.setCellValueFactory(new PropertyValueFactory<>("gradeLevel"));
         GradeSectionColumn.setStyle("-fx-alignment: CENTER;");
@@ -155,6 +161,12 @@ public class ClinicVisitLogPageController implements Initializable {
             e.printStackTrace();
         }
     }
+
+//    public void addStudentRecord(Student student) {
+//        studentList.add(student);
+//        VisitLogTable.refresh();
+//    }
+
 
 }
 

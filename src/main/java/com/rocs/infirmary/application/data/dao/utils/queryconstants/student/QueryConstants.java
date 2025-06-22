@@ -19,23 +19,34 @@ public class QueryConstants {
             "LEFT JOIN medical_record mr ON s.id = mr.student_id " +
             "WHERE s.LRN = ?";
 
-    private final String GET_ALL_STUDENTS_MEDICAL_RECORDS = "SELECT " +
-            "student.id, " +
-            "person.first_name, " +
-            "person.middle_name, " +
-            "person.last_name, " +
-            "person.age, " +
-            "person.gender, " +
-            "medical_record.symptoms, " +
-            "medical_record.temperature_readings, " +
-            "medical_record.blood_pressure, " +
-            "medical_record.pulse_rate, " +
-            "medical_record.respiratory_rate, " +
-            "medical_record.visit_date, " +
-            "medical_record.treatment " +
-            "FROM medical_record " +
-            "JOIN person ON medical_record.student_id = person.id " +
-            "LEFT JOIN student ON medical_record.student_id = student.id ";
+    private final String GET_ALL_STUDENTS_MEDICAL_RECORDS = "SELECT \n" +
+            "    student.id, \n" +
+            "    student.lrn, \n" +
+            "    person.first_name, \n" +
+            "    person.middle_name, \n" +
+            "    person.last_name, \n" +
+            "    section.grade_level, \n" +
+            "    section.section, \n" +
+            "    person.age, \n" +
+            "    person.gender, \n" +
+            "    person.email, \n" +
+            "    person.address, \n" +
+            "    person.contact_number, \n" +
+            "    medical_record.symptoms, \n" +
+            "    medical_record.temperature_readings, \n" +
+            "    medical_record.blood_pressure, \n" +
+            "    medical_record.pulse_rate, \n" +
+            "    medical_record.respiratory_rate, \n" +
+            "    medical_record.visit_date, \n" +
+            "    medical_record.treatment, \n" +
+            "    medicine.item_name AS medicine_name, \n" +
+            "    medicine_administered.quantity AS medicine_quantity\n" +
+            "FROM medical_record  \n" +
+            "JOIN student ON medical_record.student_id = student.id  \n" +
+            "JOIN person ON student.person_id = person.id  \n" +
+            "LEFT JOIN section ON student.section_section_id = section.section_id  \n" +
+            "LEFT JOIN medicine_administered ON medical_record.id = medicine_administered.med_record_id  \n" +
+            "LEFT JOIN medicine ON medicine_administered.medicine_id = medicine.medicine_id ";
 
     private final String DELETE_STUDENT_MEDICAL_RECORD = "UPDATE MEDICAL_RECORD SET IS_ACTIVE = 0 WHERE STUDENT_ID = ?";
 
@@ -63,7 +74,6 @@ public class QueryConstants {
             "JOIN Person nurse ON mr.nurse_in_charge_id = nurse.id\n" +
             "LEFT JOIN PERSON adviser ON section.ADVISER_ID = adviser.ID\n" +
             "WHERE LRN = ?";
-
 
     public String getAllStudentMedicalRecords() { return GET_ALL_STUDENTS_MEDICAL_RECORDS;
     }
