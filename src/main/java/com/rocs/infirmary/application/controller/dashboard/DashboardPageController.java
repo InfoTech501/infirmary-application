@@ -5,7 +5,9 @@ import com.rocs.infirmary.application.app.facade.dashboard.DashboardFacade;
 import com.rocs.infirmary.application.data.model.report.ailment.CommonAilmentsReport;
 import com.rocs.infirmary.application.data.model.report.medication.MedicationTrendReport;
 import com.rocs.infirmary.application.data.model.report.visit.FrequentVisitReport;
-import javafx.beans.property.SimpleStringProperty;
+import com.rocs.infirmary.application.service.dashboard.DashboardDataService;
+import com.rocs.infirmary.application.service.dashboard.DateRange;
+import com.rocs.infirmary.application.service.dashboard.TableColumnHelper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,19 +15,21 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.*;
 
 public class DashboardPageController implements Initializable {
+
+    private static final String GRADE_11 = "Grade 11";
+    private static final String GRADE_12 = "Grade 12";
+    private static final String DATE_FORMAT = "MMMMM dd, yyyy";
+    private static final LocalDate DEFAULT_START_DATE = LocalDate.of(2000, 1, 1);
 
     @FXML
     private AnchorPane chartForm;
@@ -72,212 +76,140 @@ public class DashboardPageController implements Initializable {
     @FXML
     private BarChart<String, Number> studentVisitBarChart;
 
-
     private DashboardFacade dashboardFacade;
-    private DashboardInfoApplication dashboardInfoApplication;
 
-    ObservableList<CommonAilmentsReport> observableCommonAilmentTable;
+    private DashboardDataService dataService;
 
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        DashboardInfoApplication dashboardInfoApplication = new DashboardInfoApplication();
-        dashboardFacade = dashboardInfoApplication.getDashboardFacade();
-
-        setDateDisplay();
-        setGrade11ClinicVisitTodayRprt();
-        setGrade12ClinicVisitTodayRprt();
-        setMedDistributtedTodayRprt();
-        populateBarChartWklyVisit();
-        initializeMedTrendRptTable();
-        populateTableMedTrendRpt();
-        initializeCommonAilmentsRptTable();
-        populateTableCommonAilmentsRpt();
+        initializeServices();
+        initializeUI();
+        loadDashboardData();
     }
 
-    public AnchorPane getChartForm() {
-        return chartForm;
+    private void initializeServices() {
+        DashboardInfoApplication dashboardInfoApplication = new DashboardInfoApplication();
+        dashboardFacade = dashboardInfoApplication.getDashboardFacade();
+        dataService = new DashboardDataService(dashboardFacade);
+    }
+
+    private void initializeUI() {
+        setDateDisplay();
+        initializeTableColumns();
     }
 
     private void setDateDisplay() {
-        SimpleDateFormat sdf = new SimpleDateFormat("MMMMM dd, yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
         String datenow = sdf.format(new Date());
         dateDisplay.setText(datenow);
     }
 
-    private void setGrade11ClinicVisitTodayRprt(){
-//        LocalDate today = LocalDate.now();
-//        Date startDate = Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant());
-//        Date endDate = Date.from(today.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-        LocalDate start = LocalDate.of(2000, 01, 01);
-        LocalDate end = LocalDate.of(2025, 01, 01);
-        Date startDate = java.sql.Date.valueOf(start);
-        Date endDate = java.sql.Date.valueOf(end);
-        String gradeLevel = "Grade 11";
+    private void loadDashboardData() {
+        try {
+            DateRange dateRange = DateRange.daily();
 
-        List<FrequentVisitReport> clinicVisitorTodayRpt = dashboardFacade.generateFrequentVisitReport(startDate, endDate, gradeLevel);
-        int clinicVisitorToday = clinicVisitorTodayRpt.size();
-        grade11ClinicVisitTodayRprt.setText(String.valueOf(clinicVisitorToday));
+            setClinicVisitReports(dateRange);
+            setMedicationDistributionReport(dateRange);
+            populateCharts();
+            populateTables();
 
-    }
-
-    private void setGrade12ClinicVisitTodayRprt(){
-//        LocalDate today = LocalDate.now();
-//        Date startDate = Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant());
-//        Date endDate = Date.from(today.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-        LocalDate start = LocalDate.of(2000, 01, 01);
-        LocalDate end = LocalDate.of(2025, 01, 01);
-        Date startDate = java.sql.Date.valueOf(start);
-        Date endDate = java.sql.Date.valueOf(end);
-        String gradeLevel = "Grade 12";
-
-        List<FrequentVisitReport> admittedTodayRpt = dashboardFacade.generateFrequentVisitReport(startDate, endDate, gradeLevel);
-        int admittedToday = admittedTodayRpt.size();
-        grade12ClinicVisitTodayRprt.setText(String.valueOf(admittedToday));
-    }
-
-    private void setMedDistributtedTodayRprt() {
-//        LocalDate today = LocalDate.now();
-//        Date startDate = Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant());
-//        Date endDate = Date.from(today.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
-        LocalDate start = LocalDate.of(2000, 01, 01);
-        LocalDate end = LocalDate.of(2025, 01, 01);
-        Date startDate = java.sql.Date.valueOf(start);
-        Date endDate = java.sql.Date.valueOf(end);
-
-        List<MedicationTrendReport> medDistributtedTodayRpt = dashboardFacade.generateMedicationReport(startDate, endDate);
-        int usage = medDistributtedTodayRpt.stream().mapToInt(MedicationTrendReport::getUsage).sum();
-        medDistributtedTodayRprt.setText(String.valueOf(usage));
-
-    }
-
-    private void populateBarChartWklyVisit() {
-        LocalDate today = LocalDate.now();
-//        LocalDate startOfWeek = today.with(DayOfWeek.MONDAY);
-//        LocalDate endOfWeek = startOfWeek.plusDays(6);
-//        Date startDate = Date.from(startOfWeek.atStartOfDay(ZoneId.systemDefault()).toInstant());
-//        Date endDate = Date.from(endOfWeek.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        LocalDate start = LocalDate.of(2019, 12, 30);
-        LocalDate end = LocalDate.of(2020, 01, 04);
-        Date startDate = java.sql.Date.valueOf(start);
-        Date endDate = java.sql.Date.valueOf(end);
-
-        studentVisitBarChart.getData().clear();
-        studentVisitBarChart.getXAxis().setLabel("");
-        studentVisitBarChart.getYAxis().setLabel("Visits");
-        SimpleDateFormat sdf = new SimpleDateFormat("EEEEE");
-        List<FrequentVisitReport> grade11Reports = dashboardFacade.generateFrequentVisitReport(startDate, endDate, "Grade 11");
-        List<FrequentVisitReport> grade12Reports = dashboardFacade.generateFrequentVisitReport(startDate, endDate, "Grade 12");
-
-        Map<String, Integer> combinedVisitCounts = new HashMap<>();
-
-        for (FrequentVisitReport report : grade11Reports) {
-            String day = sdf.format(report.getVisitDate());
-            combinedVisitCounts.merge(day, report.getVisitCount(), Integer::sum);
+        } catch (Exception e) {
+            showErrorMessage("Failed to load dashboard data: " + e.getMessage());
         }
-
-        for (FrequentVisitReport report : grade12Reports) {
-            String day = sdf.format(report.getVisitDate());
-            combinedVisitCounts.merge(day, report.getVisitCount(), Integer::sum);
-        }
-
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName("Grade 11 & 12 Weekly Visits");
-
-        List<String> orderedDays = List.of("Monday", "Tuesday", "Wednesday", "Thursday", "Friday");
-
-        for (String day : orderedDays) {
-            int visits = combinedVisitCounts.getOrDefault(day, 0);
-            series.getData().add(new XYChart.Data<>(day, visits));
-        }
-
-        studentVisitBarChart.getData().add(series);
     }
 
-
-    private void initializeCommonAilmentsRptTable() {
-        numberedColumnCommonAilment.setCellFactory(col -> new TableCell<>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || getIndex() >= getTableView().getItems().size()) {
-                    setText(null);
-                } else {
-                    setText(String.valueOf(getIndex() + 1));
-                }
-            }
-        });
-        numberedColumnCommonAilment.setStyle("-fx-alignment: CENTER;");
-
-        illnessColumnCommonAilment.setCellValueFactory(cellData -> {
-            String ailment = cellData.getValue().getAilment();
-            return new SimpleStringProperty(ailment);
-        });
-        illnessColumnCommonAilment.setStyle("-fx-alignment: CENTER;");
-
-        numOfStudCommonAilment.setCellValueFactory(cellData -> {
-            int numOfStudents = cellData.getValue().getOccurrences();
-            return new SimpleStringProperty(String.valueOf(numOfStudents));
-        });
-        numOfStudCommonAilment.setStyle("-fx-alignment: CENTER;");
+    private void showErrorMessage(String message) {
+        System.err.println("Dashboard Error: " + message);
     }
 
-    public void populateTableCommonAilmentsRpt() {
-//        LocalDate start = LocalDate.now().withDayOfMonth(1);
-//        LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
-        LocalDate start = LocalDate.of(2000, 01, 01);
-        LocalDate end = LocalDate.of(2025, 01, 01);
-        Date startDate = java.sql.Date.valueOf(start);
-        Date endDate = java.sql.Date.valueOf(end);
+    private void populateCharts() {
+        DateRange dateRange = DateRange.weekly();
+        try {
+            studentVisitBarChart.getData().clear();
+            studentVisitBarChart.getYAxis().setLabel("Visits");
+            initializeBarChartWeeklyVisitByGrade(dateRange, GRADE_11);
+            initializeBarChartWeeklyVisitByGrade(dateRange, GRADE_12);
+        } catch (Exception e) {
+            System.err.println("Failed to populate charts: " + e.getMessage());
+        }
+    }
+
+    private void populateTables() {
+        DateRange dateRange = DateRange.monthly();
+        try {
+            populateTableMedicationTrendReport(dateRange);
+            populateTableCommonAilmentsReport(dateRange);
+        } catch (Exception e) {
+            System.err.println("Failed to populate tables: " + e.getMessage());
+        }
+    }
+
+    private void populateTableMedicationTrendReport(DateRange dateRange) {
+        List<MedicationTrendReport> medicationTrendReports =
+                dashboardFacade.generateMedicationReport(dateRange.getStartDate(), dateRange.getEndDate());
+        ObservableList<MedicationTrendReport> dataMedTrend =
+                FXCollections.observableArrayList(medicationTrendReports);
+        medTrendRptTable.setItems(dataMedTrend);
+    }
+
+    private void populateTableCommonAilmentsReport(DateRange dateRange) {
         String gradeLevel = "";
         String section = "";
 
-        List<CommonAilmentsReport> reports = dashboardFacade.generateCommonAilmentReport(startDate, endDate, gradeLevel, section);
-        ObservableList<CommonAilmentsReport> observableCommonAilmentTable = FXCollections.observableArrayList(reports);
+        List<CommonAilmentsReport> reports = dashboardFacade.generateCommonAilmentReport(
+                dateRange.getStartDate(), dateRange.getEndDate(), gradeLevel, section);
+        ObservableList<CommonAilmentsReport> observableCommonAilmentTable =
+                FXCollections.observableArrayList(reports);
         commonAilmentsRptTable.setItems(observableCommonAilmentTable);
-
     }
 
-    private void initializeMedTrendRptTable() {
-        numberedColumnMedTrend.setCellFactory(col -> new TableCell<>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || getIndex() >= getTableView().getItems().size()) {
-                    setText(null);
-                } else {
-                    setText(String.valueOf(getIndex() + 1));
-                }
-            }
-        });
-        numberedColumnMedTrend.setStyle("-fx-alignment: CENTER;");
+    private void setClinicVisitReports(DateRange dateRange) {
+        int grade11Visits = dataService.getVisitCount(dateRange, GRADE_11);
+        int grade12Visits = dataService.getVisitCount(dateRange, GRADE_12);
 
-        medicineColumnMedTrend.setCellValueFactory(cellData -> {
-            String medicine = cellData.getValue().getMedicineName();
-            return new SimpleStringProperty(medicine);
-        });
-        medicineColumnMedTrend.setStyle("-fx-alignment: CENTER;");
-
-        totalDistributedMedTrend.setCellValueFactory(cellData -> {
-            int distributed = cellData.getValue().getUsage();
-            return new SimpleStringProperty(String.valueOf(distributed));
-        });
-        totalDistributedMedTrend.setStyle("-fx-alignment: CENTER;");
+        grade11ClinicVisitTodayRprt.setText(String.valueOf(grade11Visits));
+        grade12ClinicVisitTodayRprt.setText(String.valueOf(grade12Visits));
     }
 
-    private void populateTableMedTrendRpt() {
-//        LocalDate start = LocalDate.now().withDayOfMonth(1);
-//        LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
-        LocalDate start = LocalDate.of(2021, 01, 01);
-        LocalDate end = LocalDate.of(2025, 01, 01);
-        Date startDate = java.sql.Date.valueOf(start);
-        Date endDate = java.sql.Date.valueOf(end);
+    private void setMedicationDistributionReport(DateRange dateRange) {
+        int totalUsage = dataService.getTotalMedicationUsage(dateRange);
+        medDistributtedTodayRprt.setText(String.valueOf(totalUsage));
+    }
 
-        List<MedicationTrendReport> medicationTrendReports = dashboardFacade.generateMedicationReport(startDate, endDate);
-        ObservableList<MedicationTrendReport> dataMedTrend = FXCollections.observableArrayList(medicationTrendReports);
-        medTrendRptTable.setItems(dataMedTrend);
+    private void initializeBarChartWeeklyVisitByGrade(DateRange dateRange, String gradeLevel) {
+        SimpleDateFormat sdf = new SimpleDateFormat("EEEEE");
+        List<FrequentVisitReport> reports = dashboardFacade.generateFrequentVisitReport(
+                dateRange.getStartDate(), dateRange.getEndDate(), gradeLevel);
+        Map<String, Integer> visitsPerDay = new HashMap<>();
+
+        for (FrequentVisitReport report : reports) {
+            String day = sdf.format(report.getVisitDate());
+            visitsPerDay.merge(day, report.getVisitCount(), Integer::sum);
+        }
+
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName(gradeLevel);
+        List<String> orderedDays = List.of("Monday", "Tuesday", "Wednesday", "Thursday", "Friday");
+
+        for (String day : orderedDays) {
+            int visits = visitsPerDay.getOrDefault(day, 0);
+            series.getData().add(new XYChart.Data<>(day, visits));
+        }
+        studentVisitBarChart.getData().add(series);
+    }
+
+    private void initializeTableColumns() {
+        TableColumnHelper.setupNumberedColumn(numberedColumnMedTrend);
+        TableColumnHelper.setupCenteredColumn(medicineColumnMedTrend,
+                MedicationTrendReport::getMedicineName);
+        TableColumnHelper.setupCenteredColumn(totalDistributedMedTrend,
+                reports -> String.valueOf(reports.getUsage()));
+
+        TableColumnHelper.setupNumberedColumn(numberedColumnCommonAilment);
+        TableColumnHelper.setupCenteredColumn(illnessColumnCommonAilment,
+                CommonAilmentsReport::getAilment);
+        TableColumnHelper.setupCenteredColumn(numOfStudCommonAilment,
+                report -> String.valueOf(report.getOccurrences()));
     }
 }
-
-
-
