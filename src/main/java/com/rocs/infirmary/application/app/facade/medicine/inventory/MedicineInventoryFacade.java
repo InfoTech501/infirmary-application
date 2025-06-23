@@ -2,6 +2,7 @@ package com.rocs.infirmary.application.app.facade.medicine.inventory;
 
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 
+import java.sql.Date;
 import java.util.List;
 
 public interface MedicineInventoryFacade {
@@ -23,4 +24,6 @@ public interface MedicineInventoryFacade {
     List<Medicine> findAllMedicineFromMedicineTable();
 
     boolean deleteInventory(int InventoryID);
+
+    boolean updateMedicineInventory(String medicineID, int Quantity, String description, Date expirationDate);
 }

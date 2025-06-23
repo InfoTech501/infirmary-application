@@ -4,6 +4,7 @@ import com.rocs.infirmary.application.app.facade.medicine.inventory.MedicineInve
 import com.rocs.infirmary.application.data.dao.medicine.inventory.impl.MedicineInventoryDaoImpl;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -62,6 +63,11 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
     @Override
     public boolean deleteInventory(int inventoryID) {
         return this.medicineInventoryDao.deleteInventory(inventoryID);
+    }
+
+    @Override
+    public boolean updateMedicineInventory(String medicineID, int quantity, String description, Date expirationDate) {
+        return this.medicineInventoryDao.updateMedicine(medicineID,quantity,description,expirationDate);
     }
 
 

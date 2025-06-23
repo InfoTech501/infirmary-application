@@ -18,6 +18,7 @@ import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
@@ -39,6 +40,8 @@ public class InventoryController implements Initializable {
     @FXML
     private TableColumn<Medicine, String> ExpiryDateColumn;
     @FXML
+    private TableColumn<Medicine,String> DosageColumn;
+    @FXML
     private TextField SearchTextField;
 
     private ObservableList<Medicine> medicine;
@@ -49,6 +52,7 @@ public class InventoryController implements Initializable {
         setup();
         refresh();
         itemSearch();
+        initalizeEditClick();
     }
 
     private void setup() {
@@ -62,11 +66,28 @@ public class InventoryController implements Initializable {
         ProductNameColumn.setStyle("-fx-alignment: CENTER;");
         QuantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         QuantityColumn.setStyle("-fx-alignment: CENTER;");
+        DosageColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        DosageColumn.setStyle("-fx-alignment: CENTER;");
         ExpiryDateColumn.setCellValueFactory(new PropertyValueFactory<>("expirationDate"));
         ExpiryDateColumn.setStyle("-fx-alignment: CENTER;");
 
     }
-
+    private void initalizeEditClick(){
+        MedDetailsTable.setRowFactory(t->{
+            TableRow<Medicine>tableRow = new TableRow<>();
+            tableRow.setOnMouseClicked(event->{
+                if(!tableRow.isEmpty() && event.getClickCount() == 1){
+                    Medicine selectedMedicine = tableRow.getItem();
+                    try {
+                        showEditInventory(selectedMedicine);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+            return tableRow;
+        });
+    }
     private void refresh() {
         List<Medicine> medicineList = inventoryManagementApplication.getMedicineInventoryFacade().findAllMedicine();
         for (Medicine med : medicineList) {
@@ -85,7 +106,18 @@ public class InventoryController implements Initializable {
         stage.initOwner(((Node)actionEvent.getSource()).getScene().getWindow() );
         stage.show();
     }
+    private void showEditInventory(Medicine medicine) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/InventoryEditItemModal.fxml"));
+        Parent root = loader.load();
+        UpdateInventoryController updateInventoryController = loader.getController();
+        updateInventoryController.showItemToEdit(medicine);
 
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initStyle(StageStyle.UTILITY);
+        stage.show();
+    }
     public void onShowAddModalBtnClick(ActionEvent actionEvent) throws IOException {
         showModal(actionEvent,"/views/InventoryAddItemModal.fxml");
     }
@@ -192,6 +224,7 @@ public class InventoryController implements Initializable {
             }
         }
     }
+
 }
 
 

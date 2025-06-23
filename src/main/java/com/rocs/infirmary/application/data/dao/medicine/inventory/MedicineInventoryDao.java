@@ -1,6 +1,7 @@
 package com.rocs.infirmary.application.data.dao.medicine.inventory;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 
+import java.util.Date;
 import java.util.List;
 public interface MedicineInventoryDao {
 
@@ -17,7 +18,7 @@ public interface MedicineInventoryDao {
     boolean deleteMedicine(String itemName);
     boolean isAvailable(String itemName);
     boolean addMedicine(Medicine medicine);
-
+    boolean updateMedicine(String medicineID, int quantity, String description, Date expirationDate);
     boolean addInventory(String medicineId , String itemType, int quantity );
 
 

@@ -3,10 +3,14 @@ import com.rocs.infirmary.application.data.dao.medicine.inventory.MedicineInvent
 import com.rocs.infirmary.application.data.connection.ConnectionHelper;
 import com.rocs.infirmary.application.data.dao.utils.queryconstants.medicine.inventory.QueryConstants;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
+import oracle.jdbc.proxy.annotation.Pre;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
@@ -135,6 +139,55 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
         }
 
         return false;
+    }
+
+    @Override
+    public boolean updateMedicine(String medicineID, int quantity, String description, Date expirationDate) {
+        LOGGER.info("update medicine started");
+        boolean isDeleted = false;
+        QueryConstants queryConstants = new QueryConstants();
+        try(Connection connection = ConnectionHelper.getConnection()){
+            if(quantity != 0){
+                String updateQuantityQuery = queryConstants.UPDATE_MEDICINE_QUANTITY_QUERY();
+                try(PreparedStatement preparedStatement = connection.prepareStatement(updateQuantityQuery)) {
+                    preparedStatement.setInt(1,quantity);
+                    preparedStatement.setString(2, medicineID);
+
+                    int affectedRows = preparedStatement.executeUpdate();
+                    isDeleted = affectedRows > 0;
+                }catch (SQLException e){
+                    LOGGER.error("Error during update quantity"+e);
+                }
+            }
+            if(description != null){
+                LOGGER.info("Description Updated");
+                String updateDescriptionQuery = queryConstants.UPDATE_MEDICINE_DESCRIPTION_QUERY();
+                try (PreparedStatement preparedStatement = connection.prepareStatement(updateDescriptionQuery)){
+                    preparedStatement.setString(1,description);
+                    preparedStatement.setString(2,medicineID);
+                    int affectedRows = preparedStatement.executeUpdate();
+                    isDeleted = affectedRows > 0;
+                }catch (SQLException e){
+                    LOGGER.error("Error during update description "+e);
+                }
+            }
+            if(expirationDate != null){
+                LOGGER.info("Date Updated");
+                String updateDescriptionQuery = queryConstants.UPDATE_MEDICINE_EXPIRATIONDATE_QUERY();
+                try (PreparedStatement preparedStatement = connection.prepareStatement(updateDescriptionQuery)){
+                    preparedStatement.setTimestamp(1, new Timestamp(expirationDate.getTime()));
+                    preparedStatement.setString(2,medicineID);
+                    int affectedRows = preparedStatement.executeUpdate();
+                    isDeleted = affectedRows > 0;
+                }catch (SQLException e){
+                    LOGGER.error("Error during update expirationdate"+e);
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return isDeleted;
     }
 
     @Override
