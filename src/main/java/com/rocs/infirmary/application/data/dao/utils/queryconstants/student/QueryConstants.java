@@ -48,6 +48,14 @@ public class QueryConstants {
             "LEFT JOIN medicine_administered ON medical_record.id = medicine_administered.med_record_id  \n" +
             "LEFT JOIN medicine ON medicine_administered.medicine_id = medicine.medicine_id ";
 
+    private final String ADD_STUDENT_MEDICAL_RECORD = "INSERT INTO MEDICAL RECORD (SYMPTOMS, TEMPERATURE_READINGS, BLOOD_PRESSURE, PULSE_RATE, RESPIRATORY_RATE, VISIT_DATE, TREATMENT) VALUES(?,?,?,?,?,?,?)";
+
+    private final String ADD_STUDENT_LRN = "INSERT INTO STUDENT (LRN) VALUES(?) ";
+
+    private final String ADD_PERSON_INFORMATION = "INSERT INTO PERSON (LAST_NAME, AGE) VALUES(?,?)";
+
+    private final String ADD_STUDENT_GRADEANDSECTION = "INSERT INTO SECTION(GRADE_LEVEL, SECTION) VALUES(?,?)";
+
     private final String DELETE_STUDENT_MEDICAL_RECORD = "UPDATE MEDICAL_RECORD SET IS_ACTIVE = 0 WHERE STUDENT_ID = ?";
 
     private final String UPDATE_STUDENT_SYMPTOMS = "UPDATE MEDICAL_RECORD mr SET mr.SYMPTOMS = ? WHERE mr.ID = (SELECT s.ID FROM STUDENT s WHERE s.LRN = ?)";
@@ -97,5 +105,13 @@ public class QueryConstants {
     public String selectStudentHealthProfileByLrn() {
         return SELECT_STUDENT_HEALTH_PROFILE_BY_LRN;
     }
+
+    public String addStudentMedicalRecord() { return ADD_STUDENT_MEDICAL_RECORD; }
+
+    public String addStudentLrn() { return ADD_STUDENT_LRN; }
+
+    public String addPersonInformation() { return ADD_PERSON_INFORMATION; }
+
+    public String addStudentGradeAndSection() { return ADD_STUDENT_GRADEANDSECTION; }
 
 }

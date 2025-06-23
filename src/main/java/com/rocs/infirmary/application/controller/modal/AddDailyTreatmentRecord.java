@@ -23,8 +23,6 @@ public class AddDailyTreatmentRecord implements Initializable {
     @FXML
     public TextField gradeSectionField;
     @FXML
-    public Label vitalSignsLabel;
-    @FXML
     public TextField bodyTempField;
     @FXML
     public TextField pulseRateField;
@@ -33,11 +31,11 @@ public class AddDailyTreatmentRecord implements Initializable {
     @FXML
     public TextField bloodPressureField;
     @FXML
-    public TextField chiefComplaintField;
-    @FXML
-    public TextField nurseInterventionField;
-    @FXML
     public TextField symptomsField;
+    @FXML
+    public TextField nurseInChargeField;
+    @FXML
+    public TextField treatmentField;
     @FXML
     public TextField medicineName;
     @FXML
@@ -57,7 +55,7 @@ public class AddDailyTreatmentRecord implements Initializable {
     @FXML
     private void handleConfirmButton(ActionEvent actionEvent) {
         if (validateFields()) {
-//            addDailyRecord();
+           addDailyRecord();
         }
     }
 
@@ -83,20 +81,19 @@ public class AddDailyTreatmentRecord implements Initializable {
         } else if (bloodPressureField.getText() == null || bloodPressureField.getText().isBlank()) {
             showWarning("Blood pressure is required");
             return false;
-        } else if (chiefComplaintField.getText() == null || chiefComplaintField.getText().isBlank()) {
-            showWarning("Chief complaint is required");
-            return false;
-        } else if (nurseInterventionField.getText() == null || nurseInterventionField.getText().isBlank()) {
-            showWarning("Nurse intervention cannot be empty");
-            return false;
         } else if (symptomsField.getText() == null || symptomsField.getText().isBlank()) {
             showWarning("Symptoms field cannot be empty");
+            return false;
+        } else if (nurseInChargeField.getText() == null || nurseInChargeField.getText().isBlank()) {
+            showWarning("Nurse intervention cannot be empty");
+            return false;
+        } else if (treatmentField.getText() == null || treatmentField.getText().isBlank()) {
+            showWarning("Treatment cannot be empty");
             return false;
         } else if (medicineName.getText() == null || medicineName.getText().isBlank()) {
             showWarning("Medicine name is required");
             return false;
         } else if (invDispensingOutField.getText() == null || invDispensingOutField.getText().isBlank()) {
-            showWarning("Dispensing Out field cannot be empty");
             return false;
         } else if (dateTimeField.getText() == null || dateTimeField.getText().isBlank()) {
             showWarning("Date and Time must be specified");
@@ -105,26 +102,26 @@ public class AddDailyTreatmentRecord implements Initializable {
         return true;
     }
 
-//    @FXML
-//    private void addDailyRecord() {
-//        try {
-//            Student record = createStudentMedicalRecordFromForm();
-//            medicalRecordInfoMgtApplication.getStudentMedicalRecordFacade().save(record);
-//
-//            if (clinicVisitLogPageController != null) {
-//                clinicVisitLogPageController.addStudentRecord(record);
-//            }
-//
-//            showAlert("Success", "Record added successfully");
-//
-//            Stage stage = (Stage) LrnField.getScene().getWindow();
-//            stage.close();
-//
-//        } catch (Exception e) {
-//            showAlert("Error", "Failed to save record: " + e.getMessage());
-//            e.printStackTrace();
-//        }
-//    }
+    @FXML
+    private void addDailyRecord() {
+        try {
+            Student record = createStudentMedicalRecordFromForm();
+            medicalRecordInfoMgtApplication.getStudentMedicalRecordFacade().addStudentMedicalRecord(record);
+
+            if (clinicVisitLogPageController != null) {
+                clinicVisitLogPageController.addStudentMedicalRecord(record);
+            }
+
+            showWarning("Success, Record Added Successfully.");
+
+            Stage stage = (Stage) LrnField.getScene().getWindow();
+            stage.close();
+
+        } catch (Exception e) {
+            showWarning("Error, Failed to save record: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
     private Student createStudentMedicalRecordFromForm() {
         Student student = new Student();
@@ -135,9 +132,9 @@ public class AddDailyTreatmentRecord implements Initializable {
         student.setPulseRate(Integer.parseInt(pulseRateField.getText()));
         student.setRespiratoryRate(Integer.parseInt(respiratoryRateField.getText()));
         student.setBloodPressure(bloodPressureField.getText());
-        student.setChiefComplaint(chiefComplaintField.getText());
-        student.setNurseInCharge(nurseInterventionField.getText());
         student.setSymptoms(symptomsField.getText());
+        student.setNurseInCharge(nurseInChargeField.getText());
+        student.setChiefComplaint(treatmentField.getText());
 //        student.setMedicineName(medicineName.getText());
 //        student.setMedicineDispensed(Integer.parseInt(invDispensingOutField.getText()));
 //        student.setVisitDate(dateTimeField.getText());
@@ -157,7 +154,4 @@ public class AddDailyTreatmentRecord implements Initializable {
         ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
     }
 
-    public void setClinicVisitLogPageController(ClinicVisitLogPageController controller) {
-        this.clinicVisitLogPageController = controller;
-    }
 }

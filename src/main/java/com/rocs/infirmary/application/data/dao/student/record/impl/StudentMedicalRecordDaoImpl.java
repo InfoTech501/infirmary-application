@@ -301,6 +301,75 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
         return studentMedicalRecord;
     }
 
+    @Override
+    public boolean addStudentMedicalRecord(Student record) {
+        QueryConstants queryConstants = new QueryConstants();
+
+        String personSql = queryConstants.addPersonInformation();
+        String studentSql = queryConstants.addStudentLrn();
+        String gradeSectionSql = queryConstants.addStudentGradeAndSection();
+        String medicalRecordSql = queryConstants.addStudentMedicalRecord();
+
+        try (Connection con = ConnectionHelper.getConnection()) {
+            con.setAutoCommit(false);
+
+            try (PreparedStatement personStmt = con.prepareStatement(personSql, Statement.RETURN_GENERATED_KEYS)) {
+                personStmt.setString(1, record.getFirstName());
+                personStmt.setString(2, record.getMiddleName());
+                personStmt.setString(3, record.getLastName());
+                personStmt.setInt(4, record.getAge());
+                personStmt.setString(5, record.getGender());
+                personStmt.setString(6, record.getEmail());
+                personStmt.setString(7, record.getAddress());
+                personStmt.executeUpdate();
+
+                ResultSet personKeys = personStmt.getGeneratedKeys();
+                if (!personKeys.next()) throw new SQLException("Failed to retrieve person ID");
+                long personId = personKeys.getLong(1);
+
+                try (PreparedStatement studentStmt = con.prepareStatement(studentSql, Statement.RETURN_GENERATED_KEYS)) {
+                    studentStmt.setLong(1, personId);
+                    studentStmt.setLong(2, record.getLrn());
+                    studentStmt.executeUpdate();
+
+                    ResultSet studentKeys = studentStmt.getGeneratedKeys();
+                    if (!studentKeys.next()) throw new SQLException("Failed to retrieve student ID");
+                    long studentId = studentKeys.getLong(1);
+
+                    if (gradeSectionSql != null && !gradeSectionSql.isBlank()) {
+                        try (PreparedStatement gsStmt = con.prepareStatement(gradeSectionSql)) {
+                            gsStmt.setLong(1, studentId);
+                            gsStmt.setString(2, record.getGradeLevel());
+                            gsStmt.setString(3, record.getSection());
+                            gsStmt.executeUpdate();
+                        }
+                    }
+
+                    try (PreparedStatement medStmt = con.prepareStatement(medicalRecordSql)) {
+                        medStmt.setLong(1, studentId);
+                        medStmt.setString(2, record.getSymptoms());
+                        medStmt.setString(3, record.getNurseInCharge());
+                        medStmt.setString(4, record.getTemperatureReadings());
+                        medStmt.setString(5, record.getBloodPressure());
+                        medStmt.setInt(6, record.getPulseRate());
+                        medStmt.setInt(7, record.getRespiratoryRate());
+                        medStmt.setString(8, record.getTreatment());
+                        medStmt.setTimestamp(9, new Timestamp(record.getVisitDate().getTime()));
+                        medStmt.setString(10, record.getTreatment());
+                        medStmt.executeUpdate();
+                    }
+                }
+            }
+
+            con.commit();
+            return true;
+
+        } catch (SQLException e) {
+            System.out.println("Transaction failed: " + e.getMessage());
+            return false;
+        }
+    }
+
 }
 
 

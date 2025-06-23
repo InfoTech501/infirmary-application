@@ -59,6 +59,7 @@ public class ClinicVisitLogPageController implements Initializable {
         setup();
         refresh();
         studentSearch();
+        VisitLogTable.setItems(student);
 
         VisitLogTable.setRowFactory(tv -> {
             TableRow<Student> row = new TableRow<>();
@@ -161,12 +162,13 @@ public class ClinicVisitLogPageController implements Initializable {
             e.printStackTrace();
         }
     }
+    
+    public void addStudentMedicalRecord(Student record) {
+        if (record == null) return;
 
-//    public void addStudentRecord(Student student) {
-//        studentList.add(student);
-//        VisitLogTable.refresh();
-//    }
-
+        student.add(record);
+        VisitLogTable.refresh(); 
+    }
 
 }
 

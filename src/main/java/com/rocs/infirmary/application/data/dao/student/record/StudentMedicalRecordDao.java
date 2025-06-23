@@ -20,5 +20,5 @@ public interface StudentMedicalRecordDao {
 
     boolean deleteStudentMedicalRecord(long LRN);
     boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate , String treatment, long LRN  );
-
+    boolean addStudentMedicalRecord(Student record);
 }

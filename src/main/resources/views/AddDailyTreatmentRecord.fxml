@@ -162,21 +162,21 @@
                               <Insets />
                            </GridPane.margin>
                         </Label>
-                        <TextField fx:id="chiefComplaintField" opacity="0.6" prefHeight="55.0" prefWidth="486.0" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="chief-complait-text-field" text="Chief Complait" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <TextField fx:id="symptomsField" opacity="0.6" prefHeight="55.0" prefWidth="486.0" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="chief-complait-text-field" text="Symptoms" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding></TextField>
-                        <TextField fx:id="nurseInterventionField" opacity="0.6" prefHeight="55.0" prefWidth="300.0" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="nurse-intervention-text-field" text="Nurse Intervention" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                        <TextField fx:id="nurseInChargeField" opacity="0.6" prefHeight="55.0" prefWidth="300.0" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="nurse-intervention-text-field" text="Nurse In-Chrage" GridPane.columnIndex="3" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding></TextField>
-                        <TextField fx:id="symptomsField" layoutX="400.0" layoutY="77.0" opacity="0.6" prefHeight="55.0" prefWidth="300.0" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="symptoms-text-field" text="Symptoms" GridPane.columnIndex="5" GridPane.rowIndex="1">
+                        <TextField fx:id="treatmentField" layoutX="400.0" layoutY="77.0" opacity="0.6" prefHeight="55.0" prefWidth="300.0" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="symptoms-text-field" text="Treatment" GridPane.columnIndex="5" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
