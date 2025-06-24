@@ -1,0 +1,31 @@
+#AlertContainer {
+      -fx-background-color: rgba(255, 255, 255, 0.98);
+          -fx-border-radius: 10;
+          -fx-background-radius: 10;
+          -fx-padding: 20;
+          -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 12, 0.3, 3, 3);
+}
+
+#AlertHeader {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #000000;
+}
+
+#AlertCard {
+    -fx-background-color: #FFE1CC;
+    -fx-background-radius: 12;
+    -fx-padding: 25;
+}
+
+#AlertTitle {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #000000;
+}
+
+#AlertMessage {
+    -fx-font-size: 12.5px;
+    -fx-text-fill: #000000;
+    -fx-line-spacing: 0.5em;
+}

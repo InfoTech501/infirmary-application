@@ -28,4 +28,6 @@ public class LowStockReport {
     public void setQuantityAvailable(int quantityAvailable) {
         this.quantityAvailable = quantityAvailable;
     }
+
+
 }

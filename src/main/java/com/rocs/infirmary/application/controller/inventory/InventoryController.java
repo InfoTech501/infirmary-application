@@ -1,7 +1,10 @@
 package com.rocs.infirmary.application.controller.inventory;
 
+import com.rocs.infirmary.application.LowStockNotificationServiceApplication;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import com.rocs.infirmary.application.InventoryManagementApplication;
+import com.rocs.infirmary.application.data.model.report.lowstock.LowStockReport;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -10,17 +13,25 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.stage.*;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -41,14 +52,23 @@ public class InventoryController implements Initializable {
     @FXML
     private TextField SearchTextField;
 
+
     private ObservableList<Medicine> medicine;
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     private List<Medicine> medicineList = new ArrayList<>();
+
+    private LowStockNotificationServiceApplication lowStockNotificationServiceApplication = new LowStockNotificationServiceApplication();
+     private List<LowStockReport> lowStockItems = new ArrayList<>();
+
+
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setup();
         refresh();
         itemSearch();
+        checkLowStockAndShowAlert();
     }
 
     private void setup() {
@@ -190,6 +210,62 @@ public class InventoryController implements Initializable {
                 refresh();
                 itemSearch();
             }
+        }
+    }
+
+
+    public void showLowStockModal(Stage ownerStage, List<String> lowStockProducts) {
+
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("/views/LowStockNotificationModal.fxml"));
+            VBox root = loader.load();
+
+            LowStockNotificationController controller = loader.getController();
+
+            String message = String.format(
+                    "%d product(s) have low stock. Check those products to re-order\nbefore the stock reaches zero.\nProduct(s): %s",
+                    lowStockProducts.size(),
+                    String.join(", ", lowStockProducts)
+            );
+
+            controller.setAlertDetails("Low Stock Alert", message);
+
+            root.setEffect(new DropShadow(10, Color.rgb(0, 0, 0, 0.25)));
+
+            Scene scene = new Scene(root);
+            Stage modalStage = new Stage();
+            modalStage.setScene(scene);
+            modalStage.initOwner(ownerStage);
+            modalStage.initModality(Modality.NONE);
+            modalStage.initStyle(StageStyle.UNDECORATED);
+            modalStage.setAlwaysOnTop(true);
+
+            double x = ownerStage.getX() + ownerStage.getWidth() - 472 - 20;
+            double y = ownerStage.getY() + ownerStage.getHeight() - 580 - 20;
+            modalStage.setX(x);
+            modalStage.setY(y);
+
+            modalStage.show();
+
+        } catch (IOException e) {
+            System.out.println(" Error Occurred" +  e.getMessage());
+        }
+    }
+
+
+    private void checkLowStockAndShowAlert() {
+        lowStockItems = lowStockNotificationServiceApplication.getDashboardFacade().getAllLowStockMedicine();
+
+        if (!lowStockItems.isEmpty()) {
+            List<String> productInfo = lowStockItems.stream()
+                    .map(LowStockReport::getDescription)
+                    .toList();
+
+            Platform.runLater(() -> {
+                Stage stage = (Stage) MedDetailsTable.getScene().getWindow();
+                showLowStockModal(stage, productInfo);
+            });
         }
     }
 }

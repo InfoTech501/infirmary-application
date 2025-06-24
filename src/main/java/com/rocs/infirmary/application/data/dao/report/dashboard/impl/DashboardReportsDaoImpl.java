@@ -1,6 +1,6 @@
 package com.rocs.infirmary.application.data.dao.report.dashboard.impl;
 import com.rocs.infirmary.application.data.connection.ConnectionHelper;
-import com.rocs.infirmary.application.data.dao.report.dashboard.DashboardReports;
+import com.rocs.infirmary.application.data.dao.report.dashboard.DashboardReportsDao;
 import com.rocs.infirmary.application.data.dao.utils.queryconstants.report.dashboard.QueryConstants;
 import com.rocs.infirmary.application.data.model.person.Person;
 import com.rocs.infirmary.application.data.model.report.ailment.CommonAilmentsReport;
@@ -22,8 +22,8 @@ import java.util.List;
  * The DashboardReportsImpl class implements the DashboardReports interface
  * It includes methods for notification of stock level of medicine and reports on common ailments, frequent visit, and medication trend.
  */
-public class DashboardReportsImpl implements DashboardReports {
-    private static Logger LOGGER = LoggerFactory.getLogger(DashboardReportsImpl.class);
+public class DashboardReportsDaoImpl implements DashboardReportsDao {
+    private static Logger LOGGER = LoggerFactory.getLogger(DashboardReportsDaoImpl.class);
     @Override
     public List<LowStockReport> findAllLowStockMedicine() {
         LOGGER.info("Check low stock medicine started");

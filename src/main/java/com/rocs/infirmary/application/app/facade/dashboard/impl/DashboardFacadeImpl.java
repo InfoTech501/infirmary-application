@@ -1,8 +1,8 @@
 package com.rocs.infirmary.application.app.facade.dashboard.impl;
 
 import com.rocs.infirmary.application.app.facade.dashboard.DashboardFacade;
-import com.rocs.infirmary.application.data.dao.report.dashboard.DashboardReports;
-import com.rocs.infirmary.application.data.dao.report.dashboard.impl.DashboardReportsImpl;
+import com.rocs.infirmary.application.data.dao.report.dashboard.DashboardReportsDao;
+import com.rocs.infirmary.application.data.dao.report.dashboard.impl.DashboardReportsDaoImpl;
 import com.rocs.infirmary.application.data.model.report.ailment.CommonAilmentsReport;
 import com.rocs.infirmary.application.data.model.report.lowstock.LowStockReport;
 import com.rocs.infirmary.application.data.model.report.visit.FrequentVisitReport;
@@ -18,10 +18,21 @@ import org.slf4j.LoggerFactory;
  * The DashboardFacadeImpl class is an implementation of the DashboardFacade interface.
  * It provides methods for managing reports and notification.
  */
+
+
 public class DashboardFacadeImpl implements DashboardFacade {
+    private DashboardReportsDao dashboardReportsDao = new DashboardReportsDaoImpl();
+
+    public DashboardFacadeImpl () {
+
+    }
+
+    public DashboardFacadeImpl(DashboardReportsDao dashboardReports) {
+        this.dashboardReportsDao = dashboardReports;
+    }
 
     /** The data access object for Dashboard. */
-    private final DashboardReports dashboard = new DashboardReportsImpl();
+    private final DashboardReportsDao dashboard = new DashboardReportsDaoImpl();
     private static final Logger logger = LoggerFactory.getLogger(DashboardFacadeImpl.class);
 
     @Override
