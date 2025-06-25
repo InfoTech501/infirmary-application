@@ -4,7 +4,7 @@ import com.rocs.infirmary.application.app.facade.medicine.inventory.MedicineInve
 import com.rocs.infirmary.application.data.dao.medicine.inventory.impl.MedicineInventoryDaoImpl;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;

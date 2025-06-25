@@ -2,7 +2,7 @@ package com.rocs.infirmary.application.app.facade.medicine.inventory;
 
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 public interface MedicineInventoryFacade {

@@ -17,27 +17,28 @@ import java.util.Optional;
 
 public class UpdateInventoryController {
     @FXML
-    private Label ItemToEditLabel;
+    private Label itemToEditLabel;
     @FXML
-    private TextField ProductNameTextField;
+    private TextField productNameTextField;
     @FXML
-    private TextField QuantityTextField;
+    private TextField quantityTextField;
     @FXML
-    private TextField ExpirationDateTextField;
+    private TextField expirationDateTextField;
     @FXML
     private TextField descriptionTextField;
 
     private String medicineId;
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
-    private final Logger LOGGER = LoggerFactory.getLogger("UpdateInventoryController");
+    private final Logger LOGGER = LoggerFactory.getLogger(UpdateInventoryController.class);
+    private static final String prompt = "  Cannot be edit as of now due to conflicts";
 
     public void showItemToEdit(Medicine medicine){
-        LOGGER.info("Edit Inventory Controller");
-        ItemToEditLabel.setText(medicine.getItemName());
-        ProductNameTextField.setText(medicine.getItemName()+" Cannot be edit as of now due to conflicts");
-        ProductNameTextField.setEditable(false);
-        QuantityTextField.setText(String.valueOf(medicine.getQuantity()));
-        ExpirationDateTextField.setText(String.valueOf(medicine.getExpirationDate()));
+        LOGGER.info("Edit Inventory Controller started");
+        itemToEditLabel.setText(medicine.getItemName());
+        productNameTextField.setText(medicine.getItemName()+prompt);
+        productNameTextField.setEditable(false);
+        quantityTextField.setText(String.valueOf(medicine.getQuantity()));
+        expirationDateTextField.setText(String.valueOf(medicine.getExpirationDate()));
         descriptionTextField.setText(medicine.getDescription());
         medicineId = medicine.getMedicineId();
     }
@@ -45,47 +46,53 @@ public class UpdateInventoryController {
     private boolean updateMedicine()throws ParseException{
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-mm-dd");
         boolean isUpdated = false;
-        if(!ProductNameTextField.getText().isEmpty()||!QuantityTextField.getText().isEmpty()||!ExpirationDateTextField.getText().isEmpty()){
-            String inputDate = ExpirationDateTextField.getText();
+        if(!productNameTextField.getText().isEmpty()||!quantityTextField.getText().isEmpty()||!expirationDateTextField.getText().isEmpty()){
+            String inputDate = expirationDateTextField.getText();
             simpleDateFormat.setLenient(false);
             Date date = simpleDateFormat.parse(inputDate);
-            java.sql.Date parseDate = new java.sql.Date(date.getTime());
+            Date parseDate = new Date(date.getTime());
 
-            isUpdated = inventoryManagementApplication.getMedicineInventoryFacade().updateMedicineInventory(medicineId,Integer.parseInt(QuantityTextField.getText()),descriptionTextField.getText(),parseDate );
+            isUpdated = inventoryManagementApplication.getMedicineInventoryFacade().updateMedicineInventory(medicineId,Integer.parseInt(quantityTextField.getText()),descriptionTextField.getText(), parseDate);
         }
         return isUpdated;
     }
     public void onCancelButtonClick(ActionEvent actionEvent) {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
+        LOGGER.info("Exiting Update Inventory Modal");
     }
     public void onConfirmButtonClick(ActionEvent actionEvent) throws ParseException {
-        if(ProductNameTextField.getText().isEmpty()||ProductNameTextField.getText().isBlank()||ProductNameTextField.getText()==null){
+        LOGGER.warn("This action cannot be undone");
+        if(productNameTextField.getText().isEmpty()|| productNameTextField.getText().isBlank()|| productNameTextField.getText()==null){
             Dialog dialog = new Dialog();
             dialog.setTitle("Warning");
             ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
             dialog.setContentText("Product Name cannot be empty");
+            LOGGER.warn("Product name field is empty");
             dialog.getDialogPane().getButtonTypes().add(type);
             dialog.showAndWait();
-        }else if(QuantityTextField.getText().isEmpty()||QuantityTextField.getText().isBlank()||QuantityTextField.getText()==null){
+        }else if(quantityTextField.getText().isEmpty()|| quantityTextField.getText().isBlank()|| quantityTextField.getText()==null){
             Dialog dialog = new Dialog();
             dialog.setTitle("Warning");
             ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
             dialog.setContentText("Quantity cannot be empty");
+            LOGGER.warn("Quantity field is empty");
             dialog.getDialogPane().getButtonTypes().add(type);
             dialog.showAndWait();
-        }else if(ExpirationDateTextField.getText().isEmpty()||ExpirationDateTextField.getText().isBlank()||ExpirationDateTextField.getText()==null){
+        }else if(expirationDateTextField.getText().isEmpty()|| expirationDateTextField.getText().isBlank()|| expirationDateTextField.getText()==null){
             Dialog dialog = new Dialog();
             dialog.setTitle("Warning");
             ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
             dialog.setContentText("Expiration date cannot be empty");
+            LOGGER.warn("Expiration field is empty");
             dialog.getDialogPane().getButtonTypes().add(type);
             dialog.showAndWait();
         }
-        else if (!isValidTextInput(ProductNameTextField.getText())) {
+        else if (!isValidTextInput(productNameTextField.getText())) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Invalid Input In Product Name");
             alert.setContentText("Product Name must only contain letters.");
+            LOGGER.warn("Product name contains number or symbols");
             alert.showAndWait();
         }
         else {
@@ -93,7 +100,7 @@ public class UpdateInventoryController {
             confirmDialog.setTitle("Update Confirmation");
             ButtonType okayButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
             ButtonType cancelButton = new ButtonType("Cancel",ButtonBar.ButtonData.CANCEL_CLOSE);
-            confirmDialog.setContentText("Are you sure about this update?");
+            confirmDialog.setContentText("This action cannot be undone. Are you sure about this update?");
             confirmDialog.getDialogPane().getButtonTypes().addAll(okayButton,cancelButton);
             Optional<ButtonType> result = confirmDialog.showAndWait();
 
