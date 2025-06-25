@@ -35,15 +35,25 @@ public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
                 studentMedicalRecord.setLastName(resultSet.getString("last_name"));
                 studentMedicalRecord.setSection(resultSet.getString("section"));
                 studentMedicalRecord.setGradeLevel(resultSet.getString("grade_level"));
+                studentMedicalRecord.setGender(resultSet.getString("gender"));
+                studentMedicalRecord.setContactNumber(resultSet.getString("contact_number"));
+                studentMedicalRecord.setAddress(resultSet.getString("address"));
+                studentMedicalRecord.setBirthdate(resultSet.getDate("birthdate"));
+                studentMedicalRecord.setAge(resultSet.getInt("age"));
                 studentMedicalRecord.setStudentAdviser(resultSet.getString("adviser_first_name"));
 
-                LOGGER.info("Retrieved Data: LRN: {}\nFirst Name: {}\nMiddle Name: {}\n Last Name: {}\nSection: {}\n Grade Level: {}\n Adviser: {}",
+                LOGGER.info("Retrieved Data: LRN: {}\nFirst Name: {}\nMiddle Name: {}\n Last Name: {}\nSection: {}\n Grade Level: {}\n Gender: {}\n Contact Number: {}\n Address: {}\n Birthdate: {}\n Age: {}\n Adviser: {}",
                         studentMedicalRecord.getLrn(),
                         studentMedicalRecord.getFirstName(),
                         studentMedicalRecord.getMiddleName(),
                         studentMedicalRecord.getLastName(),
                         studentMedicalRecord.getSection(),
                         studentMedicalRecord.getGradeLevel(),
+                        studentMedicalRecord.getGender(),
+                        studentMedicalRecord.getContactNumber(),
+                        studentMedicalRecord.getAddress(),
+                        studentMedicalRecord.getBirthdate(),
+                        studentMedicalRecord.getAge(),
                         studentMedicalRecord.getStudentAdviser()
                 );
 
@@ -69,7 +79,7 @@ public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next()){
                 Student studentMedicalRecord = new Student();
-                studentMedicalRecord.setContactNumber(resultSet.getInt("contact_number"));
+                studentMedicalRecord.setContactNumber(resultSet.getString("contact_number"));
                 studentMedicalRecord.setEmail(resultSet.getString("email"));
                 studentMedicalRecord.setAddress(resultSet.getString("address"));
                 studentMedicalRecord.setFirstName(resultSet.getString("first_name"));

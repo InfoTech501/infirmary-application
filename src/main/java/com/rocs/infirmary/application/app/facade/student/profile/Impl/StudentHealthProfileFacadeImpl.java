@@ -14,6 +14,7 @@ public class StudentHealthProfileFacadeImpl implements StudentHealthProfileFacad
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentHealthProfileFacadeImpl.class);
 
     public StudentHealthProfileFacadeImpl(StudentHealthProfileDao studentHealthProfileDao) {
+        this.studentHealthProfileDao = studentHealthProfileDao;
     }
 
     @Override

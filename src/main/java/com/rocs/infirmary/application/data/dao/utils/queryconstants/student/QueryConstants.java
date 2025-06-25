@@ -45,7 +45,7 @@ public class QueryConstants {
 
     private final String UPDATE_STUDENT_TREATMENT = "UPDATE MEDICAL_RECORD mr SET mr.TREATMENT = ? WHERE mr.ID = (SELECT s.ID FROM STUDENT s WHERE s.LRN = ?)";
 
-    private final String SELECT_STUDENT_HEALTH_PROFILE_QUERY = "SELECT p.first_name, p.middle_name,p.last_name,section.section,student.lrn,section.grade_level,adviser.first_name AS adviser_first_name,mr.symptoms,mr.temperature_readings,visit_date,nurse.first_name as NURSE_IN_CHARGE\n" +
+    private final String SELECT_STUDENT_HEALTH_PROFILE_QUERY = "SELECT p.first_name, p.middle_name, p.last_name, p.gender, p.age, p.contact_number, p.birthdate, p.address,section.section,student.lrn,section.grade_level,adviser.first_name AS adviser_first_name,mr.symptoms,mr.temperature_readings,visit_date,nurse.first_name as NURSE_IN_CHARGE\n" +
             "FROM MEDICAL_RECORD mr\n" +
             "JOIN PERSON p ON mr.STUDENT_ID = p.ID\n" +
             "JOIN STUDENT ON mr.STUDENT_ID = student.ID\n" +

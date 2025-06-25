@@ -5,15 +5,26 @@ import com.rocs.infirmary.application.app.facade.student.profile.StudentHealthPr
 import com.rocs.infirmary.application.data.model.person.student.Student;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class StudentHealthProfileController implements Initializable {
@@ -21,8 +32,6 @@ public class StudentHealthProfileController implements Initializable {
     // table
     @FXML
     public TableView<Student> StudentTable;
-    @FXML
-    public TableColumn<Student, Boolean> SelectColumn;
     @FXML
     public TableColumn<Student, String> LRNColumn;
     @FXML
@@ -46,11 +55,13 @@ public class StudentHealthProfileController implements Initializable {
 
     // control buttons
     @FXML
-    public ComboBox<String> SectionComboBox;
-    @FXML
-    public ComboBox<String> SexComboBox;
+    public ComboBox<String> SectionComboBox, SexComboBox;
     @FXML
     public Button AgeFilterBtn, AToZFilterBtn, ZToAFilterBtn, ClearFilterBtn;
+    @FXML
+    public StackPane rootStackPane;
+    @FXML
+    public BorderPane mainBorderPane;
 
     private StudentHealthProfileFacade studentHealthProfileFacade;
     private final StudentHealthProfileApplication studentHealthProfileApplication = new StudentHealthProfileApplication();
@@ -64,11 +75,6 @@ public class StudentHealthProfileController implements Initializable {
 
     public void populateTableList() {
         StudentTable.setEditable(true);
-
-        SelectColumn.setCellValueFactory(cellData -> cellData.getValue().isSelectedProperty());
-        SelectColumn.setCellFactory(CheckBoxTableCell.forTableColumn(SelectColumn));
-        SelectColumn.setEditable(true);
-        SelectColumn.setStyle("-fx-alignment: CENTER;");
 
         LRNColumn.setCellValueFactory(new PropertyValueFactory<>("lrn"));
         FirstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
@@ -88,12 +94,45 @@ public class StudentHealthProfileController implements Initializable {
 
     private void fetch() {
         List<Student> studentList = studentHealthProfileApplication.getStudentHealthProfileFacade().getAllStudentHealthProfile();
-        for (Student student : studentList) {
-            if (student.isSelectedProperty() == null) {
-                student.setIsSelected(false);
-            }
-        }
+
+        StudentTable.setRowFactory(tv -> {
+            TableRow<Student> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (!row.isEmpty() && event.getClickCount() == 1) {
+                    Student clikedStudent = row.getItem();
+                    try {
+                        onClickShowMoreInformation(clikedStudent);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+            return row;
+        });
+
         ObservableList<Student> studentObservableList = FXCollections.observableArrayList(studentList);
         StudentTable.setItems(studentObservableList);
+    }
+
+    private void onClickShowMoreInformation(Student selectedStudent) throws IOException {
+        if (selectedStudent == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Select a student first.");
+            alert.showAndWait();
+            return;
+        }
+
+//        Stage stage = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/StudentHealthMoreInfoModal.fxml"));
+        Parent root = loader.load();
+
+        SHPMoreInfoModalController controller = loader.getController();
+        controller.setSelectedStudent(selectedStudent);
+
+        rootStackPane.getChildren().add(root);
+        mainBorderPane.setDisable(true);
+//
+//        stage.setScene(new Scene(root));
+//        stage.initModality(Modality.APPLICATION_MODAL);
+//        stage.show();
     }
 }

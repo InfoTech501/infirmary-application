@@ -27,6 +27,7 @@ public class Student extends Person {
     private String nurseInCharge;
 
     private final BooleanProperty isSelected = new SimpleBooleanProperty();
+    private boolean hasSelect;
 
     public String getNurseInCharge() {
         return nurseInCharge;
@@ -130,5 +131,17 @@ public class Student extends Person {
 
     public void setIsSelected(boolean isSelected) {
         this.isSelected.set(isSelected);
+    }
+
+    public boolean isHasSelect() {
+        return hasSelect;
+    }
+
+    public void setHasSelect(boolean hasSelect) {
+        this.hasSelect = hasSelect;
+    }
+
+    public boolean isIsSelected() {
+        return isSelected.get();
     }
 }
