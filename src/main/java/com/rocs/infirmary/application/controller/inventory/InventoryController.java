@@ -231,8 +231,6 @@ public class InventoryController implements Initializable {
 
             controller.setAlertDetails("Low Stock Alert", message);
 
-            root.setEffect(new DropShadow(10, Color.rgb(0, 0, 0, 0.25)));
-
             Scene scene = new Scene(root);
             Stage modalStage = new Stage();
             modalStage.setScene(scene);

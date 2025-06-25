@@ -301,27 +301,6 @@ fx-font-weight: 400;
  -fx-text-fill: #A9A9A9;
  -fx-border-radius: 5px;
 }
-#ExitButton{
-   -fx-background-color: transparent;
-    -fx-text-fill: #ff4d4d;
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-    -fx-cursor: hand;
-    -fx-padding: 2 8;
-    -fx-background-radius: 8;
-    -fx-border-radius: 8;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 3, 0.2, 0, 1);
-}
-
-#ExitButton:hover {
-    -fx-background-color: #ff4d4d;
-    -fx-text-fill: white;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0.2, 0, 2);
-}
-
-#ExitButton:pressed {
-    -fx-background-color: #cc0000;
-}
 
 
 
