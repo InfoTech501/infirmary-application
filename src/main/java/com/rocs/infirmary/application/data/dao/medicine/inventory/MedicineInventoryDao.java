@@ -18,9 +18,14 @@ public interface MedicineInventoryDao {
     /**
      * This is used to check if the medicine is already existing in the database
      * @param itemName is used to specify the name of the medicine that needs to be checked
-     * @return true if the medicine is already existing, false if the medicine is new
+     * @return true if the medicine is already existing, false otherwise
      **/
     boolean isAvailable(String itemName);
+    /**
+     * Adds a new medicine to the database.
+     * @param medicine the model containing all attributes of the medicine to be added
+     * @return true if the medicine is successfully added; false if the addition fails
+     **/
     boolean addMedicine(Medicine medicine);
     /**
      * This is used to update the specified medicine record in the inventory.
