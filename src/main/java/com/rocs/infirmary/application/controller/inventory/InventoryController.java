@@ -1,7 +1,7 @@
 package com.rocs.infirmary.application.controller.inventory;
 
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
-import com.rocs.infirmary.application.InventoryManagementApplication;
+import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;

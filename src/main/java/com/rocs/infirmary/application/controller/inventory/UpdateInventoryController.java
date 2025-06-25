@@ -1,6 +1,6 @@
 package com.rocs.infirmary.application.controller.inventory;
 
-import com.rocs.infirmary.application.InventoryManagementApplication;
+import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -115,6 +115,7 @@ public class UpdateInventoryController {
                     if(type.getButtonData().isDefaultButton()){
                         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
                         stage.close();
+                        LOGGER.info("Exiting Update Inventory Modal");
                     }
                 }
             }else{

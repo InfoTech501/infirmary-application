@@ -1,6 +1,6 @@
 package com.rocs.infirmary.application.controller.inventory;
 
-import com.rocs.infirmary.application.InventoryManagementApplication;
+import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
