@@ -24,6 +24,9 @@ public class UpdateInventoryController {
     private TextField QuantityTextField;
     @FXML
     private TextField ExpirationDateTextField;
+    @FXML
+    private TextField descriptionTextField;
+
     private String medicineId;
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     private final Logger LOGGER = LoggerFactory.getLogger("UpdateInventoryController");
@@ -35,6 +38,7 @@ public class UpdateInventoryController {
         ProductNameTextField.setEditable(false);
         QuantityTextField.setText(String.valueOf(medicine.getQuantity()));
         ExpirationDateTextField.setText(String.valueOf(medicine.getExpirationDate()));
+        descriptionTextField.setText(medicine.getDescription());
         medicineId = medicine.getMedicineId();
     }
 
@@ -47,7 +51,7 @@ public class UpdateInventoryController {
             Date date = simpleDateFormat.parse(inputDate);
             java.sql.Date parseDate = new java.sql.Date(date.getTime());
 
-            isUpdated = inventoryManagementApplication.getMedicineInventoryFacade().updateMedicineInventory(medicineId,Integer.parseInt(QuantityTextField.getText()),null,parseDate );
+            isUpdated = inventoryManagementApplication.getMedicineInventoryFacade().updateMedicineInventory(medicineId,Integer.parseInt(QuantityTextField.getText()),descriptionTextField.getText(),parseDate );
         }
         return isUpdated;
     }
