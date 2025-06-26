@@ -10,20 +10,34 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * The MedicineInventoryFacadeImpl class is an implementation of the Medicine Inventory Facade Interface.
+ * It provides methods for managing the create, update and delete functionality.
+ */
 public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
 
     private MedicineInventoryDao medicineInventoryDao = new MedicineInventoryDaoImpl();
     private static final Logger logger = LoggerFactory.getLogger(MedicineInventoryFacadeImpl.class);
 
+    /**
+     * MedicineInventoryFacadeImpl()
+     * is a no argument constructor that provides an option to access the Medicine Inventory Facade without needing to provide parameters
+     */
     public MedicineInventoryFacadeImpl() {
 
     }
+    /**
+     * {@code MedicineInventoryFacadeImpl()} is a constructor that requires parameter
+     * @param medicineInventoryDao DAO implementation of Medicine Inventory
+     * this provides the business logic of the Medicine Inventory
+     * {@code this.medicineInventoryDao = medicineInventoryDao} is used to initialize the MedicineInventoryDao
+     */
     public MedicineInventoryFacadeImpl(MedicineInventoryDao medicineInventoryDao) {
         this.medicineInventoryDao = medicineInventoryDao;
     }
 
     @Override
-    public List<Medicine> findAllMedicine() {
+    public List<Medicine> getAllMedicine() {
         logger.info("Entering findAllMedicine");
         List<Medicine> medicines = this.medicineInventoryDao.findAllMedicine();
         logger.info("Exiting findAllMedicine with {} medicines found.", medicines.size());
@@ -56,7 +70,7 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
         return this.medicineInventoryDao.addInventory(medicineId, itemType, quantity);
     }
     @Override
-    public List<Medicine>  findAllMedicineFromMedicineTable() {
+    public List<Medicine> getAllMedicineFromMedicineTable() {
         return this.medicineInventoryDao.findAllMedicine();
     }
 

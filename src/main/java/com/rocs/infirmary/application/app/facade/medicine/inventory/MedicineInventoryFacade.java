@@ -5,12 +5,16 @@ import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * {@code MedicineInventoryFacade} is used to facilitate medicine-related operations within the system.
+ * this handles operations such as retrieving, adding, updating, and deleting medicines and inventory records.
+ **/
 public interface MedicineInventoryFacade {
     /**
      *Displays all available medical supplies and details.
      * Displays a list of Inventory Items(medicine) with details such as medicine name, stocks and Expiration date.
      */
-    List<Medicine> findAllMedicine();
+    List<Medicine> getAllMedicine();
     /**
      * This used for the delete functionality of medicine
      * @param itemName the name of the medicine to be removed must correspond to an existing entry
@@ -41,7 +45,7 @@ public interface MedicineInventoryFacade {
      * This display all the medicine retrieved From the Medicine Table
      * @return a List of Medicine that is available on the database
      **/
-    List<Medicine> findAllMedicineFromMedicineTable();
+    List<Medicine> getAllMedicineFromMedicineTable();
     /**
      * Deletes a specific inventory record using its unique identifier.
      * @param inventoryId the ID of the inventory item to be deleted

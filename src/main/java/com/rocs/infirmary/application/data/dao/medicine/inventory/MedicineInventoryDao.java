@@ -3,6 +3,10 @@ import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 
 import java.util.Date;
 import java.util.List;
+/**
+ * {@code MedicineInventoryDao} is used to facilitate medicine-related operations within the system.
+ * this handles the business logic for retrieving, adding, updating, and deleting medicines and inventory records.
+ **/
 public interface MedicineInventoryDao {
     /**
      * this is used to find all medicine in the inventory

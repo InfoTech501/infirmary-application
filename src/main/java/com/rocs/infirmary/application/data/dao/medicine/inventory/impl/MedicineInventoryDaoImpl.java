@@ -10,6 +10,10 @@ import java.sql.*;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
+/**
+ * The MedicineInventoryDaoImpl class is an implementation of the Medicine Inventory Dao Interface.
+ * It provides methods that handles the business logics of create, update and delete functionality.
+ */
 public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(MedicineInventoryDaoImpl.class);
     @Override
@@ -58,6 +62,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
             System.out.println("An SQL Exception occurred: " + e.getMessage());
         }
         LOGGER.info("Data retrieved successfully");
+        LOGGER.info("Retrieved Date :   " + new Date());
         return  MedicineInventoryList;
     }
 
@@ -134,14 +139,14 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
         } catch (SQLException e) {
             System.out.println("Medicine ID already exist");
         }
-
+        LOGGER.info("Added Date :   " + new Date());
         return false;
     }
 
     @Override
     public boolean updateMedicine(String medicineId, int quantity, String description, Date expirationDate) {
         LOGGER.info("update medicine started");
-        boolean isDeleted = false;
+        boolean isUpdated = false;
         QueryConstants queryConstants = new QueryConstants();
         try(Connection connection = ConnectionHelper.getConnection()){
             if(quantity != 0){
@@ -150,7 +155,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                     preparedStatement.setInt(1,quantity);
                     preparedStatement.setString(2, medicineId);
                     int affectedRows = preparedStatement.executeUpdate();
-                    isDeleted = affectedRows > 0;
+                    isUpdated = affectedRows > 0;
                     LOGGER.info("Data inserted:\n" +
                                 "Medicine ID : {}\n" +
                                 "Quantity    : {}", medicineId,quantity);
@@ -168,7 +173,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                             "Medicine ID : {}\n" +
                             "Description : {}", medicineId,description);
                     int affectedRows = preparedStatement.executeUpdate();
-                    isDeleted = affectedRows > 0;
+                    isUpdated = affectedRows > 0;
                     LOGGER.info("Description Updated Successfully");
                 }catch (SQLException e){
                     LOGGER.error("Error during update description "+e);
@@ -183,7 +188,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                             "Medicine ID     : {}\n" +
                             "Expiration Date : {}", medicineId,expirationDate);
                     int affectedRows = preparedStatement.executeUpdate();
-                    isDeleted = affectedRows > 0;
+                    isUpdated = affectedRows > 0;
                     LOGGER.info("Date Updated Successfully");
                 }catch (SQLException e){
                     LOGGER.error("Error during update expirationdate"+e);
@@ -192,9 +197,9 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
 
         } catch (SQLException e) {
             LOGGER.error("SQLException Occurred: " + e.getMessage());
-            throw new RuntimeException(e);
         }
-        return isDeleted;
+        LOGGER.info("Updated Date :   " + new Date());
+        return isUpdated;
     }
 
     @Override
@@ -212,14 +217,12 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
             stmt.setString(1, medicineId);
             stmt.setString(2, itemType);
             stmt.setInt(3, quantity);
-
+            int affectedRows = stmt.executeUpdate();
             LOGGER.info("Retrieved Data : " + " \n"
                     + "Medicine ID : " + medicineId + "\n"
                     + "ItemType   : " + itemType + "\n"
                     + "Quantity  : " + quantity
             );
-
-            int affectedRows = stmt.executeUpdate();
             return affectedRows > 0;
 
         } catch (SQLException e) {
@@ -240,7 +243,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
             stmt.setInt(1,inventoryID);
             int affectRows = stmt.executeUpdate();
 
-            LOGGER.info("Deleted Date :   " + inventoryID);
+            LOGGER.info("Deleted Date :   " + new Date());
 
             return affectRows > 0 ;
 
