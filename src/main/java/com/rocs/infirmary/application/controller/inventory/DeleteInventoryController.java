@@ -17,9 +17,9 @@ import java.util.List;
  **/
 public class DeleteInventoryController{
     @FXML
-    private Label inventoryDeleteLabel_A;
+    private Label inventoryDeleteLabelA;
     @FXML
-    private Label inventoryDeleteLabel_B;
+    private Label inventoryDeleteLabelB;
     @FXML
     private GridPane medicineListContainer;
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
@@ -110,7 +110,7 @@ public class DeleteInventoryController{
      * @param actionEvent the event triggered by the confirm button click
      */
     public void onConfirmButtonClick(ActionEvent actionEvent) {
-        String medicineName = inventoryDeleteLabel_A.getText();
+        String medicineName = inventoryDeleteLabelA.getText();
         if (!isValidString(medicineName)) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Invalid Input");

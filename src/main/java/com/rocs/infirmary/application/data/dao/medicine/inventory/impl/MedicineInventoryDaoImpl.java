@@ -169,11 +169,11 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                 try (PreparedStatement preparedStatement = connection.prepareStatement(updateDescriptionQuery)){
                     preparedStatement.setString(1,description);
                     preparedStatement.setString(2, medicineId);
+                    int affectedRows = preparedStatement.executeUpdate();
+                    isUpdated = affectedRows > 0;
                     LOGGER.info("Data inserted:\n" +
                             "Medicine ID : {}\n" +
                             "Description : {}", medicineId,description);
-                    int affectedRows = preparedStatement.executeUpdate();
-                    isUpdated = affectedRows > 0;
                     LOGGER.info("Description Updated Successfully");
                 }catch (SQLException e){
                     LOGGER.error("Error during update description "+e);
@@ -184,11 +184,11 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                 try (PreparedStatement preparedStatement = connection.prepareStatement(updateDescriptionQuery)){
                     preparedStatement.setTimestamp(1, new Timestamp(expirationDate.getTime()));
                     preparedStatement.setString(2, medicineId);
+                    int affectedRows = preparedStatement.executeUpdate();
+                    isUpdated = affectedRows > 0;
                     LOGGER.info("Data inserted:\n" +
                             "Medicine ID     : {}\n" +
                             "Expiration Date : {}", medicineId,expirationDate);
-                    int affectedRows = preparedStatement.executeUpdate();
-                    isUpdated = affectedRows > 0;
                     LOGGER.info("Date Updated Successfully");
                 }catch (SQLException e){
                     LOGGER.error("Error during update expirationdate"+e);
