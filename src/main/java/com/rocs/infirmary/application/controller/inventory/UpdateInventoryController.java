@@ -59,7 +59,6 @@ public class UpdateInventoryController {
     public void onCancelButtonClick(ActionEvent actionEvent) {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
-        LOGGER.info("Exiting Update Inventory Modal");
     }
     public void onConfirmButtonClick(ActionEvent actionEvent) throws ParseException {
         LOGGER.warn("This action cannot be undone");
