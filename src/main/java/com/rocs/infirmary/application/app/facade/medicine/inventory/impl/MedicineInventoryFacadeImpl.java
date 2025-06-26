@@ -61,13 +61,13 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
     }
 
     @Override
-    public boolean deleteInventory(int inventoryID) {
-        return this.medicineInventoryDao.deleteInventory(inventoryID);
+    public boolean deleteInventory(int inventoryId) {
+        return this.medicineInventoryDao.deleteInventory(inventoryId);
     }
 
     @Override
-    public boolean updateMedicineInventory(String medicineID, int quantity, String description, Date expirationDate) {
-        return this.medicineInventoryDao.updateMedicine(medicineID,quantity,description,expirationDate);
+    public boolean updateMedicineInventory(String medicineId, int quantity, String description, Date expirationDate) {
+        return this.medicineInventoryDao.updateMedicine(medicineId,quantity,description,expirationDate);
     }
 
 

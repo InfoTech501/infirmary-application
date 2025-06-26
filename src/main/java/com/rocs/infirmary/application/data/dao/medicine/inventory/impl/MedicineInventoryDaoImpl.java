@@ -149,11 +149,11 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                 try(PreparedStatement preparedStatement = connection.prepareStatement(updateQuantityQuery)) {
                     preparedStatement.setInt(1,quantity);
                     preparedStatement.setString(2, medicineId);
+                    int affectedRows = preparedStatement.executeUpdate();
+                    isDeleted = affectedRows > 0;
                     LOGGER.info("Data inserted:\n" +
                                 "Medicine ID : {}\n" +
                                 "Quantity    : {}", medicineId,quantity);
-                    int affectedRows = preparedStatement.executeUpdate();
-                    isDeleted = affectedRows > 0;
                     LOGGER.info("Quantity Updated Successfully");
                 }catch (SQLException e){
                     LOGGER.error("Error during update quantity"+e);
