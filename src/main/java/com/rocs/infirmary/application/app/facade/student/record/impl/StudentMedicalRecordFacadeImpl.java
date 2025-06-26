@@ -19,7 +19,12 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
 
     /** The data access object for Student Medical Record. */
     private final StudentMedicalRecordDao studentMedRecord = new StudentMedicalRecordDaoImpl();
+    StudentMedicalRecordDao studentMedicalRecordDao = new StudentMedicalRecordDaoImpl();
     private static final Logger logger = LoggerFactory.getLogger(StudentMedicalRecordFacadeImpl.class);
+
+    public StudentMedicalRecordFacadeImpl(StudentMedicalRecordDao studentMedRecord) {
+        this.studentMedicalRecordDao = studentMedRecord;
+    }
 
     public Student getMedicalInformationByLRN(long LRN) {
         logger.debug("Entering getMedicalInformationByLRN with LRN: {}", LRN);

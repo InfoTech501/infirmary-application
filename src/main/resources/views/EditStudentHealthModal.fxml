@@ -20,7 +20,7 @@
 
    <center>
        <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-           <VBox prefHeight="620.0" prefWidth="514.0" spacing="10.0">
+           <VBox prefHeight="320.0" prefWidth="344.0" spacing="10.0">
                <HBox.margin>
                    <Insets />
                </HBox.margin>

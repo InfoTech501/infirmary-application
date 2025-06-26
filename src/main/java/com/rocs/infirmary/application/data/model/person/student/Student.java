@@ -14,6 +14,9 @@ public class Student extends Person {
     private long lrn;
     private String symptoms;
     private String temperatureReadings;
+    private String bloodPressure;
+    private int pulseRate;
+    private int respiratoryRate;
     private Date visitDate;
     private String treatment;
     private long id;
@@ -25,9 +28,8 @@ public class Student extends Person {
     private String gradeLevel;
     private String studentAdviser;
     private String nurseInCharge;
-
-    private final BooleanProperty isSelected = new SimpleBooleanProperty();
-    private boolean hasSelect;
+    private String nurseInChargeFirstName;
+    private String nurseInChargeLastName;
 
     public String getNurseInCharge() {
         return nurseInCharge;
@@ -125,23 +127,43 @@ public class Student extends Person {
         return getMedicaRecordStatus;
     }
 
-    public BooleanProperty isSelectedProperty() {
-        return isSelected;
+    public String getNurseInChargeLastName() {
+        return nurseInChargeLastName;
     }
 
-    public void setIsSelected(boolean isSelected) {
-        this.isSelected.set(isSelected);
+    public void setNurseInChargeLastName(String nurseInChargeLastName) {
+        this.nurseInChargeLastName = nurseInChargeLastName;
     }
 
-    public boolean isHasSelect() {
-        return hasSelect;
+    public String getNurseInChargeFirstName() {
+        return nurseInChargeFirstName;
     }
 
-    public void setHasSelect(boolean hasSelect) {
-        this.hasSelect = hasSelect;
+    public void setNurseInChargeFirstName(String nurseInChargeFirstName) {
+        this.nurseInChargeFirstName = nurseInChargeFirstName;
     }
 
-    public boolean isIsSelected() {
-        return isSelected.get();
+    public String getBloodPressure() {
+        return bloodPressure;
+    }
+
+    public void setBloodPressure(String bloodPressure) {
+        this.bloodPressure = bloodPressure;
+    }
+
+    public int getPulseRate() {
+        return pulseRate;
+    }
+
+    public void setPulseRate(int pulseRate) {
+        this.pulseRate = pulseRate;
+    }
+
+    public int getRespiratoryRate() {
+        return respiratoryRate;
+    }
+
+    public void setRespiratoryRate(int respiratoryRate) {
+        this.respiratoryRate = respiratoryRate;
     }
 }

@@ -86,10 +86,14 @@ public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
                 studentMedicalRecord.setMiddleName(resultSet.getString("middle_name"));
                 studentMedicalRecord.setLastName(resultSet.getString("last_name"));
                 studentMedicalRecord.setSymptoms(resultSet.getString("symptoms"));
+                studentMedicalRecord.setPulseRate(resultSet.getInt("pulse_rate"));
+                studentMedicalRecord.setRespiratoryRate(resultSet.getInt("respiratory_rate"));
+                studentMedicalRecord.setBloodPressure(resultSet.getString("blood_pressure"));
                 studentMedicalRecord.setTemperatureReadings(resultSet.getString("temperature_readings"));
                 studentMedicalRecord.setTreatment(resultSet.getString("treatment"));
                 studentMedicalRecord.setVisitDate(resultSet.getTimestamp("visit_date"));
-                studentMedicalRecord.setNurseInCharge(resultSet.getString("nurse_in_charge"));
+                studentMedicalRecord.setNurseInChargeFirstName(resultSet.getString("nurse_first_name"));
+                studentMedicalRecord.setNurseInChargeLastName(resultSet.getString("nurse_last_name"));
                 studentListProfile.add(studentMedicalRecord);
             }
         } catch (SQLException e) {

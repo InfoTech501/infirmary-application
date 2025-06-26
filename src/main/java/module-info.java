@@ -2,6 +2,8 @@ module com.rocs.infirmaryapplication {
     requires javafx.fxml;
     requires javafx.controls;
     requires java.sql;
+    requires javafx.graphics;
+    requires javafx.base;
     requires org.slf4j;
     requires org.apache.logging.log4j.slf4j2.impl;
     requires com.oracle.database.jdbc;
@@ -20,4 +22,9 @@ module com.rocs.infirmaryapplication {
     exports com.rocs.infirmary.application.data.model.person.student;
     exports com.rocs.infirmary.application.controller.student.profile;
     exports com.rocs.infirmary.application.app.facade.student.profile;
+
+    exports com.rocs.infirmary.application.app.facade.student.record;
+    exports com.rocs.infirmary.application.app.facade.student.record.impl;
+    exports com.rocs.infirmary.application.data.dao.student.record;
+    exports com.rocs.infirmary.application.data.dao.student.record.impl;
 }

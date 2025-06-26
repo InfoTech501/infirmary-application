@@ -11,6 +11,9 @@ public class QueryConstants {
             "p.age, " +
             "p.gender, " +
             "mr.symptoms, " +
+            "mr.pulse_rate, " +
+            "mr.respiratory_rate," + 
+            "mr.blood_pressure," +
             "mr.temperature_readings, " +
             "mr.visit_date AS visit_date, " +
             "mr.treatment " +
@@ -45,7 +48,7 @@ public class QueryConstants {
 
     private final String UPDATE_STUDENT_TREATMENT = "UPDATE MEDICAL_RECORD mr SET mr.TREATMENT = ? WHERE mr.ID = (SELECT s.ID FROM STUDENT s WHERE s.LRN = ?)";
 
-    private final String SELECT_STUDENT_HEALTH_PROFILE_QUERY = "SELECT p.first_name, p.middle_name, p.last_name, p.gender, p.age, p.contact_number, p.birthdate, p.address,section.section,student.lrn,section.grade_level,adviser.first_name AS adviser_first_name,mr.symptoms,mr.temperature_readings,visit_date,nurse.first_name as NURSE_IN_CHARGE\n" +
+    private final String SELECT_STUDENT_HEALTH_PROFILE_QUERY = "SELECT p.first_name, p.middle_name, p.last_name, p.gender, p.age, p.contact_number, p.birthdate, p.address, section.section,student.lrn,section.grade_level,adviser.first_name AS adviser_first_name,visit_date,nurse.first_name as NURSE_IN_CHARGE, nurse.last_name as NURSE_LAST_NAME\n" +
             "FROM MEDICAL_RECORD mr\n" +
             "JOIN PERSON p ON mr.STUDENT_ID = p.ID\n" +
             "JOIN STUDENT ON mr.STUDENT_ID = student.ID\n" +
@@ -53,7 +56,7 @@ public class QueryConstants {
             "JOIN Person nurse ON mr.nurse_in_charge_id = nurse.id\n" +
             "LEFT JOIN PERSON adviser ON section.ADVISER_ID = adviser.ID";
 
-    private final String SELECT_STUDENT_HEALTH_PROFILE_BY_LRN = "SELECT p.first_name, p.middle_name,p.last_name,p.contact_number,p.email,p.address,mr.symptoms,mr.temperature_readings,visit_date,nurse.first_name as NURSE_IN_CHARGE,mr.treatment\n" +
+    private final String SELECT_STUDENT_HEALTH_PROFILE_BY_LRN = "SELECT p.first_name, p.middle_name,p.last_name,p.contact_number,p.email,p.address,mr.symptoms,mr.temperature_readings,visit_date,nurse.first_name as NURSE_FIRST_NAME, nurse.last_name as NURSE_LAST_NAME,mr.treatment\n" +
             "FROM MEDICAL_RECORD mr\n" +
             "JOIN PERSON p ON mr.STUDENT_ID = p.ID\n" +
             "JOIN STUDENT ON mr.STUDENT_ID = student.ID\n" +
