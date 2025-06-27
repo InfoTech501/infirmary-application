@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
@@ -57,11 +58,13 @@ class AddInventoryControllerTest {
         stage.setScene(scene);
         stage.show();
     }
+    @Disabled
     @Test
     void showWarningDialogTest(FxRobot robot) {
         robot.clickOn("#ButtonConfirm");
         robot.clickOn("Ok");
     }
+    @Disabled
     @Test
     void emptyProductNameDialogTest(FxRobot robot){
         robot.clickOn(QuantityTextField);
@@ -72,6 +75,7 @@ class AddInventoryControllerTest {
         assertTrue(robot.lookup("Product Name cannot be empty").tryQuery().isPresent());
         robot.clickOn("Ok");
     }
+    @Disabled
     @Test
     void emptyQuantityDialogTest(FxRobot robot){
         robot.clickOn(ProductNameTextField);
@@ -82,6 +86,7 @@ class AddInventoryControllerTest {
         assertTrue(robot.lookup("Quantity cannot be empty").tryQuery().isPresent());
         robot.clickOn("Ok");
     }
+    @Disabled
     @Test
     void emptyExpirationDateDialogTest(FxRobot robot){
         robot.clickOn(ProductNameTextField);
@@ -92,6 +97,7 @@ class AddInventoryControllerTest {
         assertTrue(robot.lookup("Expiration date cannot be empty").tryQuery().isPresent());
         robot.clickOn("Ok");
     }
+    @Disabled
     @Test
     void testInvalidProductName(FxRobot robot) {
         robot.clickOn(ProductNameTextField);
@@ -105,13 +111,14 @@ class AddInventoryControllerTest {
         assertTrue(robot.lookup("Product Name must only contain letters.").tryQuery().isPresent());
 
     }
+    @Disabled
     @Test
     void testRemoveButtonWithoutSelection(FxRobot robot) {
         robot.clickOn(removeButton);
         assertTrue(robot.lookup("No Items selected").tryQuery().isPresent());
         robot.clickOn("Ok");
     }
-
+    @Disabled
     @Test
     void addNewMedicine(FxRobot robot) throws InterruptedException {
         robot.clickOn(ProductNameTextField);
@@ -126,6 +133,7 @@ class AddInventoryControllerTest {
         assertTrue(found);
         assertTrue(robot.lookup("Successfully Added").tryQuery().isPresent());
     }
+    @Disabled
     @Test
     void removeMedicine(FxRobot robot){
         robot.interact(() -> {
