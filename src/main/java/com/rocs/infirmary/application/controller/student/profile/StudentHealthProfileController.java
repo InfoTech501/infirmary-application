@@ -2,9 +2,12 @@ package com.rocs.infirmary.application.controller.student.profile;
 
 import com.rocs.infirmary.application.StudentHealthProfileApplication;
 import com.rocs.infirmary.application.app.facade.student.profile.StudentHealthProfileFacade;
+import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import com.rocs.infirmary.application.data.model.person.student.Student;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -56,14 +59,22 @@ public class StudentHealthProfileController implements Initializable {
     @FXML
     public BorderPane mainBorderPane;
 
-    private StudentHealthProfileFacade studentHealthProfileFacade;
+    private ObservableList<Student> students;
     private final StudentHealthProfileApplication studentHealthProfileApplication = new StudentHealthProfileApplication();
-    private final List<Student> students = new ArrayList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        students = FXCollections.observableArrayList();
+
+        AToZFilterBtn.setOnAction(event -> sortAToZ());
+        ZToAFilterBtn.setOnAction(event -> sortZToA());
+        AgeFilterBtn.setOnAction(event -> sortByAge());
+        ClearFilterBtn.setOnAction(event -> clearFilter());
+
         populateTableList();
         fetch();
+        search();
+        sortBySex();
     }
 
     public void populateTableList() {
@@ -85,8 +96,9 @@ public class StudentHealthProfileController implements Initializable {
         SexComboBox.setItems(genders);
     }
 
-    private void fetch() {
+    public void fetch() {
         List<Student> studentList = studentHealthProfileApplication.getStudentHealthProfileFacade().getAllStudentHealthProfile();
+        List<Student> activeRecords = studentList.stream().filter(student -> student.getMedicalRecordStatus() == 1).toList();
 
         StudentTable.setRowFactory(tv -> {
             TableRow<Student> row = new TableRow<>();
@@ -103,8 +115,7 @@ public class StudentHealthProfileController implements Initializable {
             return row;
         });
 
-        ObservableList<Student> studentObservableList = FXCollections.observableArrayList(studentList);
-        StudentTable.setItems(studentObservableList);
+        students.setAll(activeRecords);
     }
 
     private void onClickShowMoreInformation(Student selectedStudent) throws IOException {
@@ -119,7 +130,80 @@ public class StudentHealthProfileController implements Initializable {
 
         SHPMoreInfoModalController controller = loader.getController();
         controller.setSelectedStudent(selectedStudent);
+        controller.setParentController(this);
 
         rootStackPane.getChildren().add(root);
+    }
+
+    private void search(){
+        FilteredList<Student> filteredList = new FilteredList<>(students, b -> true);
+
+        SearchTextField.textProperty().addListener((observable,oldValue , newValue)->
+                        filteredList.setPredicate(student -> {
+                            if(newValue.isEmpty()||newValue.isBlank()||newValue == null){
+                                return true;
+                            }
+                            String searchKeyword = newValue.toLowerCase();
+
+                            if(student.getFirstName().toLowerCase().contains(searchKeyword)){
+                                return true;
+                            }
+                            if(student.getLastName().toLowerCase().contains(searchKeyword)){
+                                return true;
+                            }
+                            if(String.valueOf(student.getLrn()).contains(searchKeyword)){
+                                return true;
+                            }
+                            return false;
+                        })
+        );
+        SortedList<Student> sortedList = new SortedList<>(filteredList);
+        sortedList.comparatorProperty().bind(StudentTable.comparatorProperty());
+        StudentTable.setItems(sortedList);
+    }
+
+    private void sortAToZ() {
+        StudentTable.getSortOrder().clear();
+        LastNameColumn.setSortType(TableColumn.SortType.ASCENDING);
+        StudentTable.getSortOrder().add(LastNameColumn);
+        StudentTable.sort();
+    }
+
+    private void sortZToA() {
+        StudentTable.getSortOrder().clear();
+        LastNameColumn.setSortType(TableColumn.SortType.DESCENDING);
+        StudentTable.getSortOrder().add(LastNameColumn);
+        StudentTable.sort();
+    }
+
+    private void sortByAge() {
+        StudentTable.getSortOrder().clear();
+        AgeColumn.setSortType(TableColumn.SortType.ASCENDING);
+        StudentTable.getSortOrder().add(AgeColumn);
+        StudentTable.sort();
+    }
+
+    private void sortBySex() {
+        FilteredList<Student> filteredList = new FilteredList<>(students, b -> true);
+
+        SexComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                filteredList.setPredicate(student -> student.getGender().equalsIgnoreCase(newValue));
+            } else {
+                filteredList.setPredicate(b -> true);
+            }
+        });
+
+        SortedList<Student> sortedList = new SortedList<>(filteredList);
+        sortedList.comparatorProperty().bind(StudentTable.comparatorProperty());
+        StudentTable.setItems(sortedList);
+    }
+
+    private void clearFilter() {
+        SectionComboBox.getSelectionModel().clearSelection();
+        SexComboBox.getSelectionModel().clearSelection();
+        SearchTextField.clear();
+        fetch();
+        search();
     }
 }

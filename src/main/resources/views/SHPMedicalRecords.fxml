@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="446.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.student.profile.SHPMedicalRecordsController">
+
+   <stylesheets>
+      <URL value="@../styles/buttons.css" />
+      <URL value="@../styles/label.css" />
+      <URL value="@../styles/table.css" />
+      <URL value="@../styles/label.css" />
+   </stylesheets>
+
+   <center>
+       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+           <VBox prefHeight="246.0" prefWidth="330.0" spacing="10.0">
+               <HBox.margin>
+                   <Insets />
+               </HBox.margin>
+                <Label fx:id="illnessLabel" text="Illness/ Symptoms:" />
+                <Label fx:id="visitDateLabel" text="Visit Date:" />
+                <Label fx:id="givenMedicationLabel" text="Given Medication:" />
+                <Label fx:id="temperatureLabel" text="Temperature:" />
+                <Label fx:id="bloodPressureLabel" text="Blood Pressure:" />
+                <Label fx:id="pulseRateLabel" text="Pulse Rate:" />
+                <Label fx:id="respiratoryRate" text="Respiratory Rate:" />
+               <Label fx:id="treatmentLabel" text="Treatment:" />
+           </VBox>
+
+
+           <VBox prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+               <VBox prefHeight="90.0" prefWidth="1070.0">
+                   <Label text="Illness/ Symptoms" />
+                   <TextField fx:id="updateIllnessTextField" prefHeight="45.0" prefWidth="1070.0" />
+               </VBox>
+               <VBox prefHeight="90.0" prefWidth="1070.0">
+                   <Label text="Temperature" />
+                   <TextField fx:id="updateTemperatureTextField" prefHeight="45.0" prefWidth="1070.0" />
+               </VBox>
+               <VBox prefHeight="90.0" prefWidth="1070.0">
+                   <Label text="Treatment" />
+                   <TextField fx:id="updateTreatmentTextField" prefHeight="45.0" prefWidth="1070.0" />
+               </VBox>
+               <VBox prefHeight="90.0" prefWidth="1070.0">
+                   <Label text="Visit Date" />
+                   <DatePicker fx:id="updateVisitDatePicker" prefHeight="45.0" prefWidth="312.0" />
+               </VBox>
+           </VBox>
+       </HBox>
+
+   </center>
+   <bottom>
+      <ButtonBar prefHeight="73.0" prefWidth="1400.0" BorderPane.alignment="CENTER">
+        <buttons>
+          <Button fx:id="confirmChangesBtn" mnemonicParsing="false" text="Confirm Changes" />
+            <Button fx:id="deleteMedicalRecordBtn" mnemonicParsing="false" text="Delete Medical Record">
+                    <HBox.margin>
+                        <Insets right="20.0" />
+                    </HBox.margin>
+                </Button>
+        </buttons>
+         <padding>
+            <Insets bottom="5.0" left="30.0" right="30.0" top="5.0" />
+         </padding>
+      </ButtonBar>
+   </bottom>
+   <top>
+       <VBox prefHeight="42.0" prefWidth="1400.0" BorderPane.alignment="CENTER">
+           <Label text="UPDATE MEDICAL RECORDS" />
+       </VBox>
+   </top>
+</BorderPane>

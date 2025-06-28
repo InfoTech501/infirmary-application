@@ -30,6 +30,7 @@ public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
             while (resultSet.next()){
                 Student studentMedicalRecord = new Student();
                 studentMedicalRecord.setLrn(resultSet.getLong("LRN"));
+                studentMedicalRecord.setMedicalRecordStatus(resultSet.getInt("is_active"));
                 studentMedicalRecord.setFirstName(resultSet.getString("first_name"));
                 studentMedicalRecord.setMiddleName(resultSet.getString("middle_name"));
                 studentMedicalRecord.setLastName(resultSet.getString("last_name"));
@@ -42,7 +43,8 @@ public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
                 studentMedicalRecord.setAge(resultSet.getInt("age"));
                 studentMedicalRecord.setStudentAdviser(resultSet.getString("adviser_first_name"));
 
-                LOGGER.info("Retrieved Data: LRN: {}\nFirst Name: {}\nMiddle Name: {}\n Last Name: {}\nSection: {}\n Grade Level: {}\n Gender: {}\n Contact Number: {}\n Address: {}\n Birthdate: {}\n Age: {}\n Adviser: {}",
+                LOGGER.info("Retrieved Data: IS_ACTIVE: {}\nFirst Name: LRN: {}\nFirst Name: {}\nMiddle Name: {}\n Last Name: {}\nSection: {}\n Grade Level: {}\n Gender: {}\n Contact Number: {}\n Address: {}\n Birthdate: {}\n Age: {}\n Adviser: {}",
+                        studentMedicalRecord.getMedicalRecordStatus(),
                         studentMedicalRecord.getLrn(),
                         studentMedicalRecord.getFirstName(),
                         studentMedicalRecord.getMiddleName(),
@@ -80,6 +82,7 @@ public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
             while (resultSet.next()){
                 Student studentMedicalRecord = new Student();
                 studentMedicalRecord.setContactNumber(resultSet.getString("contact_number"));
+                studentMedicalRecord.setMedicalRecordStatus(resultSet.getInt("is_active"));
                 studentMedicalRecord.setEmail(resultSet.getString("email"));
                 studentMedicalRecord.setAddress(resultSet.getString("address"));
                 studentMedicalRecord.setFirstName(resultSet.getString("first_name"));

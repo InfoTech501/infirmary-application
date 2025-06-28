@@ -26,15 +26,6 @@
           <URL value="@../styles/table.css" />
           <URL value="@../styles/label.css" />
         </stylesheets>
-        <bottom>
-            <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" prefHeight="82.0" prefWidth="1400.0" BorderPane.alignment="CENTER">
-                <Button fx:id="EditHealthInfoBtn" mnemonicParsing="false" prefHeight="48.0" prefWidth="255.0" text="Edit Health Info">
-                  <HBox.margin>
-                      <Insets right="20.0" />
-                  </HBox.margin>
-                </Button>
-            </HBox>
-        </bottom>
         <top>
             <VBox prefWidth="1400.0" BorderPane.alignment="CENTER">
                 <HBox alignment="CENTER_LEFT" prefHeight="39.0" prefWidth="1400.0">
@@ -49,27 +40,38 @@
             </VBox>
         </top>
       <center>
-             <HBox prefHeight="369.0" prefWidth="1400.0" BorderPane.alignment="CENTER">
-                 <VBox prefHeight="514.0" prefWidth="500.0">
-                     <padding>
-                         <Insets left="20.0" right="20.0" />
-                     </padding>
-                     <VBox>
-                         <HBox prefHeight="55.0" prefWidth="354.0" spacing="20.0">
-                             <Label fx:id="AgeLabel" text="Age" />
-                             <Label fx:id="SexLabel" text="Sex" />
-                             <Label fx:id="BirthdateLabel" text="Birthdate" />
-                         </HBox>
-                     </VBox>
-                     <Label text="Contact Information:" />
-                     <Label fx:id="AddressLabel" text="Address" />
-                     <Label fx:id="ContactNumberLabel" text="Contact Number" />
-                 </VBox>
+              <VBox prefHeight="514.0" prefWidth="500.0" BorderPane.alignment="CENTER">
+                  <padding>
+                      <Insets left="20.0" right="20.0" />
+                  </padding>
+                  <VBox>
+                      <HBox prefHeight="79.0" prefWidth="1360.0" spacing="40.0">
+                          <Label fx:id="AgeLabel" text="Age" />
+                          <Label fx:id="SexLabel" text="Sex" />
+                          <Label fx:id="BirthdateLabel" text="Birthdate" />
+                          <VBox prefHeight="79.0" prefWidth="706.0">
+                              <Label text="Contact Information:" />
+                              <Label fx:id="AddressLabel" text="Address" />
+                              <Label fx:id="ContactNumberLabel" text="Contact Number" />
+                          </VBox>
+                      </HBox>
+                  </VBox>
 
-                <!-- recent clinic history table-->
-                 <VBox spacing="10.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
-                     <Label text="Recent Clinic History" />
-                     <TableView fx:id="ClinicHistoryTable" editable="true" prefHeight="572.0" prefWidth="1301.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
+                         <!-- recent clinic history table-->
+                 <VBox fx:id="tableViewWrapper" prefHeight="446.0" prefWidth="1360.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                  <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="82.0" prefWidth="1400.0" VBox.vgrow="ALWAYS">
+                        <Label text="Recent Clinic History" />
+                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                     <children>
+                            <Button fx:id="EditHealthInfoBtn" mnemonicParsing="false" prefHeight="48.0" prefWidth="255.0" text="Update Medical Record">
+                              <HBox.margin>
+                                  <Insets right="20.0" />
+                              </HBox.margin>
+                            </Button>
+                     </children>
+                  </HBox>
+                  </HBox>
+                     <TableView fx:id="ClinicHistoryTable" editable="true" prefHeight="572.0" prefWidth="1360.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
                          <columns>
                              <TableColumn fx:id="IllnessColumn" minWidth="200.0" text="Illness" />
                              <TableColumn fx:id="DateColumn" minWidth="200.0" text="Visit Date (YYYY/MM/DD)" />
@@ -81,8 +83,11 @@
                              <TableColumn fx:id="NurseColumn" minWidth="200.0" text="Nurse" />
                          </columns>
                      </TableView>
+               <padding>
+                  <Insets bottom="20.0" />
+               </padding>
                  </VBox>
-             </HBox>
+              </VBox>
       </center>
 
     </BorderPane>

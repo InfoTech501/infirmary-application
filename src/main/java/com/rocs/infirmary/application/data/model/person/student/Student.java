@@ -24,7 +24,7 @@ public class Student extends Person {
     private String medHistoryId;
     private int nurseInChargeId;
     private int setMedicalRecordId ;
-    private int getMedicaRecordStatus;
+    private int MedicalRecordStatus;
     private String gradeLevel;
     private String studentAdviser;
     private String nurseInCharge;
@@ -124,7 +124,11 @@ public class Student extends Person {
     }
 
     public int getMedicalRecordStatus() {
-        return getMedicaRecordStatus;
+        return MedicalRecordStatus;
+    }
+
+    public void setMedicalRecordStatus(int medicalRecordStatus) {
+        MedicalRecordStatus = medicalRecordStatus;
     }
 
     public String getNurseInChargeLastName() {

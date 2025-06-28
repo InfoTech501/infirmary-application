@@ -1,8 +1,6 @@
 package com.rocs.infirmary.application.controller.student.profile;
 
-import com.rocs.infirmary.application.StudentHealthProfileApplication;
 import com.rocs.infirmary.application.StudentMedicalRecordApplication;
-import com.rocs.infirmary.application.app.facade.student.profile.StudentHealthProfileFacade;
 import com.rocs.infirmary.application.data.model.person.student.Student;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,14 +10,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class SHPMoreInfoModalController implements Initializable {
@@ -41,9 +36,10 @@ public class SHPMoreInfoModalController implements Initializable {
     @FXML
     public StackPane rootModal;
     @FXML
-    public Button CloseModalBtn;
+    public VBox tableViewWrapper;
     @FXML
-    public TableColumn<Student, String> MedHistoryColumn;
+    public Button CloseModalBtn;
+
     @FXML
     public TableColumn<Student, String> TemperatureColumn;
     @FXML
@@ -53,8 +49,13 @@ public class SHPMoreInfoModalController implements Initializable {
     @FXML
     public TableColumn<Student, String> RespiratoryRateColumn;
 
-    private final StudentHealthProfileApplication studentHealthProfileApplication = new StudentHealthProfileApplication();
     private final StudentMedicalRecordApplication studentMedicalRecordApplication = new StudentMedicalRecordApplication();
+    private Student selectedStudentRecord;
+    private StudentHealthProfileController parentController;
+
+    public void setParentController(StudentHealthProfileController parentController) {
+        this.parentController = parentController;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -66,6 +67,8 @@ public class SHPMoreInfoModalController implements Initializable {
     public void setSelectedStudent(Student student) {
         getMedicalRecords(student);
         setStudentLabelData(student);
+        EditHealthInfoBtn.setDisable(true);
+        EditHealthInfoBtn.setOpacity(0);
     }
 
     public void populateClinicHistoryTable() {
@@ -93,16 +96,35 @@ public class SHPMoreInfoModalController implements Initializable {
 
     private void getMedicalRecords(Student studentLRN) {
         Student studentList = studentMedicalRecordApplication.getStudentMedicalRecordFacade().getMedicalInformationByLRN(studentLRN.getLrn());
+
+        ClinicHistoryTable.setRowFactory(tv -> {
+            TableRow<Student> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (!row.isEmpty() && event.getClickCount() == 1) {
+                    selectedStudentRecord = row.getItem();
+                    EditHealthInfoBtn.setDisable(false);
+                    EditHealthInfoBtn.setOpacity(1.0);
+                }
+            });
+            return row;
+        });
+
+
         ObservableList<Student> studentObservableList = FXCollections.observableArrayList(studentList);
         ClinicHistoryTable.setItems(studentObservableList);
     }
 
     public void switchSceneToEditHealthInfo() {
        try {
-           FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/EditStudentHealthModal.fxml"));
+           FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/SHPMedicalRecords.fxml"));
            Parent root = loader.load();
 
-           rootModal.getChildren().setAll(root);
+           tableViewWrapper.getChildren().setAll(root);
+
+           SHPMedicalRecordsController controller = loader.getController();
+           controller.setSelectedStudentRecord(selectedStudentRecord);
+           controller.setParentController(this.parentController);
+
        } catch (IOException e) {
            throw new RuntimeException(e);
        }
