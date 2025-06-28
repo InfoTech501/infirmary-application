@@ -17,8 +17,8 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
 import java.io.IOException;
-
 import static org.junit.jupiter.api.Assertions.*;
+
 @ExtendWith(ApplicationExtension.class)
 class AddInventoryControllerTest {
 
