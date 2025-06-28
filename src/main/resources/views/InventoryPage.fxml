@@ -59,7 +59,7 @@
                                                             <Insets left="70.0" />
                                                          </GridPane.margin>
                                                       </Label>
-                                                      <TextField fx:id="SearchTextField" prefHeight="42.0" prefWidth="487.0" promptText="Search" GridPane.columnIndex="1">
+                                                      <TextField fx:id="searchTextField" prefHeight="42.0" prefWidth="487.0" promptText="Search" GridPane.columnIndex="1">
                                                          <GridPane.margin>
                                                             <Insets />
                                                          </GridPane.margin>
@@ -122,13 +122,13 @@
                               </HBox>
                               <HBox prefHeight="943.0" prefWidth="1123.0">
                                  <children>
-                                    <TableView fx:id="MedDetailsTable" prefHeight="835.0" prefWidth="1123.0">
+                                    <TableView fx:id="medDetailsTable" prefHeight="835.0" prefWidth="1123.0">
                                        <columns>
-                                          <TableColumn fx:id="SelectColumn" prefWidth="75.33334350585938" text="Select" />
-                                          <TableColumn fx:id="ProductNameColumn" prefWidth="286.0" text="Product Name" />
-                                          <TableColumn fx:id="QuantityColumn" prefWidth="193.33331298828125" text="Quantity" />
-                                          <TableColumn fx:id="DosageColumn" prefWidth="256.666748046875" text="Dosage &amp; Dosage Form" />
-                                          <TableColumn fx:id="ExpiryDateColumn" prefWidth="244.66668701171875" text="Expiry Date" />
+                                          <TableColumn fx:id="selectColumn" prefWidth="75.33334350585938" text="Select" />
+                                          <TableColumn fx:id="productNameColumn" prefWidth="286.0" text="Product Name" />
+                                          <TableColumn fx:id="quantityColumn" prefWidth="193.33331298828125" text="Quantity" />
+                                          <TableColumn fx:id="descriptionColumn" prefWidth="256.666748046875" text="Description" />
+                                          <TableColumn fx:id="expiryDateColumn" prefWidth="244.66668701171875" text="Expiry Date" />
                                           <TableColumn fx:id="BatchNoColumn" prefWidth="214.66656494140625" text="Batch No." />
                                        </columns>
                                     </TableView>

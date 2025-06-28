@@ -1,6 +1,6 @@
 package com.rocs.infirmary.application.controller.inventory;
 
-import com.rocs.infirmary.application.InventoryManagementApplication;
+import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,17 +12,22 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * {@code AddInventoryController} is used to handle event processes of the Inventory when deleting Items
+ **/
 public class DeleteInventoryController{
     @FXML
-    private Label InventoryDeleteLabel_A;
+    private Label inventoryDeleteLabelA;
     @FXML
-    private Label InventoryDeleteLabel_B;
+    private Label inventoryDeleteLabelB;
     @FXML
     private GridPane medicineListContainer;
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     private List<Medicine> medicineList = new ArrayList<>();
-
+    /**
+     * this method display the medicine to be deleted
+     * @param selectedMedicines is a list that provide attributes the selected medicine
+     **/
     public void showMedicineList(List<Medicine> selectedMedicines) {
         medicineListContainer.getChildren().clear();
         medicineListContainer.getRowConstraints().clear();
@@ -100,9 +105,12 @@ public class DeleteInventoryController{
         }
         return deleted;
     }
-
+    /**
+     * this method handles the action triggered when the confirm button is clicked.
+     * @param actionEvent the event triggered by the confirm button click
+     */
     public void onConfirmButtonClick(ActionEvent actionEvent) {
-        String medicineName = InventoryDeleteLabel_A.getText();
+        String medicineName = inventoryDeleteLabelA.getText();
         if (!isValidString(medicineName)) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Invalid Input");
@@ -122,7 +130,10 @@ public class DeleteInventoryController{
             stage.close();
         }
     }
-
+    /**
+     * this method handles the action triggered when the cancel button is clicked.
+     * @param actionEvent the event triggered by the confirm button click
+     */
     public void onCancelBtnClick(ActionEvent actionEvent) {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
