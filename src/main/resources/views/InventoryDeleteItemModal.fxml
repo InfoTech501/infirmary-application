@@ -41,7 +41,7 @@
                             <RowConstraints maxHeight="29.666656494140625" minHeight="10.0" prefHeight="14.33331298828125" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Label fx:id="InventoryDeleteLabel_A" alignment="CENTER" prefHeight="73.0" prefWidth="220.0" text="Paracetamol" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label fx:id="inventoryDeleteLabelA" alignment="CENTER" prefHeight="73.0" prefWidth="220.0" text="Paracetamol" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
                         <GridPane layoutX="10.0" layoutY="10.0" prefHeight="103.0" prefWidth="441.0" GridPane.rowIndex="1">
@@ -55,7 +55,7 @@
                               <RowConstraints maxHeight="29.666656494140625" minHeight="10.0" prefHeight="14.33331298828125" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Label fx:id="InventoryDeleteLabel_B" alignment="CENTER" prefHeight="73.0" prefWidth="197.0" text="Medicine 2" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label fx:id="inventoryDeleteLabelB" alignment="CENTER" prefHeight="73.0" prefWidth="197.0" text="Medicine 2" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
                      </children>

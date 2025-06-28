@@ -32,7 +32,7 @@
                             <RowConstraints maxHeight="27.66668701171875" minHeight="0.0" prefHeight="21.333343505859375" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <TextField fx:id="ProductNameTextField" prefHeight="55.0" prefWidth="280.0" GridPane.rowIndex="1" />
+                              <TextField fx:id="productNameTextField" prefHeight="55.0" prefWidth="280.0" GridPane.rowIndex="1" />
                               <Label fx:id="ProductNameLabel" text="Product Name" />
                            </children>
                         </GridPane>
@@ -51,7 +51,7 @@
                             <RowConstraints maxHeight="34.666690826416016" minHeight="0.0" prefHeight="22.66668701171875" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <TextField fx:id="QuantityTextField" alignment="CENTER" prefHeight="53.0" prefWidth="280.0" GridPane.rowIndex="1" />
+                              <TextField fx:id="quantityTextField" alignment="CENTER" prefHeight="53.0" prefWidth="280.0" GridPane.rowIndex="1" />
                               <Label fx:id="QuantityLabel" text="Quantity" />
                            </children>
                         </GridPane>
@@ -70,7 +70,7 @@
                               <RowConstraints maxHeight="39.333309173583984" minHeight="0.0" prefHeight="16.333323160807296" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <TextField fx:id="ExpirationDateTextField" alignment="CENTER" prefHeight="57.0" prefWidth="280.0" GridPane.rowIndex="1" />
+                              <TextField fx:id="expirationDateTextField" alignment="CENTER" prefHeight="57.0" prefWidth="280.0" GridPane.rowIndex="1" />
                               <Label fx:id="ExpirationDateLabel" text="Lot/Expiration Date" />
                            </children>
                         </GridPane>
@@ -153,13 +153,13 @@
                   </HBox>
                   <ScrollPane prefHeight="432.0" prefWidth="1033.0">
                      <content>
-                        <TableView fx:id="MedDetailsTable" prefHeight="435.0" prefWidth="983.0">
+                        <TableView fx:id="medDetailsTable" prefHeight="435.0" prefWidth="983.0">
                            <columns>
-                              <TableColumn fx:id="SelectColumn" prefWidth="75.33334350585938" text="Select" />
-                              <TableColumn fx:id="ProductNameColumn" prefWidth="196.6666717529297" text="Product Name" />
-                              <TableColumn fx:id="QuantityColumn" minWidth="4.000030517578125" prefWidth="181.33331298828125" text="Quantity" />
-                              <TableColumn prefWidth="232.0" text="Dosage &amp; Dosage Form" />
-                              <TableColumn fx:id="ExpiryDateColumn" prefWidth="168.0001220703125" text="Expiry Date" />
+                              <TableColumn fx:id="selectColumn" prefWidth="75.33334350585938" text="Select" />
+                              <TableColumn fx:id="productNameColumn" prefWidth="196.6666717529297" text="Product Name" />
+                              <TableColumn fx:id="quantityColumn" minWidth="4.000030517578125" prefWidth="181.33331298828125" text="Quantity" />
+                              <TableColumn fx:id="descriptionColumn" prefWidth="232.0" text="Description" />
+                              <TableColumn fx:id="expiryDateColumn" prefWidth="168.0001220703125" text="Expiry Date" />
                               <TableColumn fx:id="SelectColumn1" prefWidth="116.6666259765625" text="Batch No." />
                            </columns>
                         </TableView>
