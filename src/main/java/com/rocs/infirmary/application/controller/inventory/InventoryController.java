@@ -280,11 +280,10 @@ public class InventoryController implements Initializable {
 
             LowStockNotificationController controller = loader.getController();
 
-            String message = String.format(
-                    "%d product(s) have low stock. Check those products to re-order\nbefore the stock reaches zero.\nProduct(s): %s",
-                    lowStockProducts.size(),
-                    String.join(", ", lowStockProducts)
-            );
+            String message = lowStockProducts.size() + " product(s) have low stock. Check those products to re-order\n" +
+                    "before the stock reaches zero.\nProduct(s): " + String.join(", ", lowStockProducts);
+
+
 
             controller.setAlertDetails("Low Stock Alert", message);
 
