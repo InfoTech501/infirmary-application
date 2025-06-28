@@ -16,33 +16,32 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
-import javax.swing.text.TabableView;
 import java.io.IOException;
-
 import static org.junit.jupiter.api.Assertions.*;
+
 @ExtendWith(ApplicationExtension.class)
 class AddInventoryControllerTest {
 
     private Button confirmButton;
     private Button removeButton;
-    private TextField ProductNameTextField;
-    private TextField QuantityTextField;
-    private TextField ExpirationDateTextField;
-    private TableView<Medicine> MedDetailsTable;
+    private TextField productNameTextField;
+    private TextField quantityTextField;
+    private TextField expirationDateTextField;
+    private TableView<Medicine> medDetailsTable;
 
     @BeforeEach
     void setup(FxRobot robot){
-        ProductNameTextField = robot.lookup("#ProductNameTextField").queryAs(TextField.class);
-        QuantityTextField = robot.lookup("#QuantityTextField").queryAs(TextField.class);
-        ExpirationDateTextField = robot.lookup("#ExpirationDateTextField").queryAs(TextField.class);
-        MedDetailsTable = robot.lookup("#MedDetailsTable").queryAs(TableView.class);
+        productNameTextField = robot.lookup("#productNameTextField").queryAs(TextField.class);
+        quantityTextField = robot.lookup("#quantityTextField").queryAs(TextField.class);
+        expirationDateTextField = robot.lookup("#expirationDateTextField").queryAs(TextField.class);
+        medDetailsTable = robot.lookup("#medDetailsTable").queryAs(TableView.class);
         confirmButton = robot.lookup("#ButtonConfirm").queryAs(Button.class);
         removeButton = robot.lookup("#InventoryRemoveItemsButton").queryAs(Button.class);
 
-        assertNotNull(MedDetailsTable);
-        assertNotNull(ProductNameTextField);
-        assertNotNull(QuantityTextField);
-        assertNotNull(ExpirationDateTextField);
+        assertNotNull(medDetailsTable);
+        assertNotNull(productNameTextField);
+        assertNotNull(quantityTextField);
+        assertNotNull(expirationDateTextField);
         assertNotNull(confirmButton);
         assertNotNull(removeButton);
 
@@ -67,9 +66,9 @@ class AddInventoryControllerTest {
     @Disabled
     @Test
     void emptyProductNameDialogTest(FxRobot robot){
-        robot.clickOn(QuantityTextField);
+        robot.clickOn(quantityTextField);
         robot.write("50");
-        robot.clickOn(ExpirationDateTextField);
+        robot.clickOn(expirationDateTextField);
         robot.write("2027-01-01");
         robot.clickOn(confirmButton);
         assertTrue(robot.lookup("Product Name cannot be empty").tryQuery().isPresent());
@@ -78,9 +77,9 @@ class AddInventoryControllerTest {
     @Disabled
     @Test
     void emptyQuantityDialogTest(FxRobot robot){
-        robot.clickOn(ProductNameTextField);
+        robot.clickOn(productNameTextField);
         robot.write("Mefenamic Acid");
-        robot.clickOn(ExpirationDateTextField);
+        robot.clickOn(expirationDateTextField);
         robot.write("2027-01-01");
         robot.clickOn(confirmButton);
         assertTrue(robot.lookup("Quantity cannot be empty").tryQuery().isPresent());
@@ -89,9 +88,9 @@ class AddInventoryControllerTest {
     @Disabled
     @Test
     void emptyExpirationDateDialogTest(FxRobot robot){
-        robot.clickOn(ProductNameTextField);
+        robot.clickOn(productNameTextField);
         robot.write("Mefenamic Acid");
-        robot.clickOn(QuantityTextField);
+        robot.clickOn(quantityTextField);
         robot.write("50");
         robot.clickOn(confirmButton);
         assertTrue(robot.lookup("Expiration date cannot be empty").tryQuery().isPresent());
@@ -100,11 +99,11 @@ class AddInventoryControllerTest {
     @Disabled
     @Test
     void testInvalidProductName(FxRobot robot) {
-        robot.clickOn(ProductNameTextField);
+        robot.clickOn(productNameTextField);
         robot.write("''123ABC''");
-        robot.clickOn(QuantityTextField);
+        robot.clickOn(quantityTextField);
         robot.write("10");
-        robot.clickOn(ExpirationDateTextField);
+        robot.clickOn(expirationDateTextField);
         robot.write("2026-01-01");
         robot.clickOn(confirmButton);
 
@@ -121,15 +120,15 @@ class AddInventoryControllerTest {
     @Disabled
     @Test
     void addNewMedicine(FxRobot robot) throws InterruptedException {
-        robot.clickOn(ProductNameTextField);
+        robot.clickOn(productNameTextField);
         robot.write("Mefenamic Acid");
-        robot.clickOn(QuantityTextField);
+        robot.clickOn(quantityTextField);
         robot.write("50");
-        robot.clickOn(ExpirationDateTextField);
+        robot.clickOn(expirationDateTextField);
         robot.write("2027-01-01");
         robot.clickOn(confirmButton);
 
-        boolean found = MedDetailsTable.getItems().stream().anyMatch(med -> "Mefenamic Acid".equals(med.getItemName()));
+        boolean found = medDetailsTable.getItems().stream().anyMatch(med -> "Mefenamic Acid".equals(med.getItemName()));
         assertTrue(found);
         assertTrue(robot.lookup("Successfully Added").tryQuery().isPresent());
     }
@@ -137,7 +136,7 @@ class AddInventoryControllerTest {
     @Test
     void removeMedicine(FxRobot robot){
         robot.interact(() -> {
-            MedDetailsTable.getItems().get(0).setIsSelected(true);
+            medDetailsTable.getItems().get(0).setIsSelected(true);
         });
         robot.clickOn(removeButton);
         robot.clickOn("#ButtonConfirm");
