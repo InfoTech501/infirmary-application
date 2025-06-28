@@ -27,6 +27,8 @@ public class Student extends Person {
     private int pulseRate;
     private int respiratoryRate;
     private String chiefComplaint;
+    private String medicineName;
+    private int dispensingOut;
 
     public String getNurseInCharge() {
         return nurseInCharge;
@@ -137,4 +139,12 @@ public class Student extends Person {
     public void setChiefComplaint(String chiefComplaint) { this.chiefComplaint = chiefComplaint; }
 
     public String getChiefComplaint() { return chiefComplaint; }
+
+    public int getDispensingOut() { return dispensingOut; }
+
+    public void setDispensingOut(int dispensingOut) { this.dispensingOut = dispensingOut; }
+
+    public String getMedicineName() { return medicineName; }
+
+    public void setMedicineName(String medicineName) { this.medicineName = medicineName; }
 }

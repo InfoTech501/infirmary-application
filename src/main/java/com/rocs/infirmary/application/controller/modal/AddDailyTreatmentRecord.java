@@ -12,12 +12,15 @@ import javafx.stage.Stage;
 import javafx.scene.Node;
 
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 public class AddDailyTreatmentRecord implements Initializable {
 
     @FXML
-    public TextField LrnField;
+    public TextField lrnField;
     @FXML
     public TextField nameField;
     @FXML
@@ -41,7 +44,7 @@ public class AddDailyTreatmentRecord implements Initializable {
     @FXML
     public TextField invDispensingOutField;
     @FXML
-    public TextField dateTimeField;
+    public DatePicker datePickerTextField;
 
     private ObservableList<Student> studentList;
     private final MedicalRecordInfoMgtApplication medicalRecordInfoMgtApplication = new MedicalRecordInfoMgtApplication();
@@ -49,63 +52,33 @@ public class AddDailyTreatmentRecord implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        LrnField.requestFocus();
+        lrnField.requestFocus();
+    }
+
+    public void setClinicVisitLogPageController(ClinicVisitLogPageController controller) {
+        this.clinicVisitLogPageController = controller;
     }
 
     @FXML
     private void handleConfirmButton(ActionEvent actionEvent) {
-        if (validateFields()) {
            addDailyRecord();
         }
-    }
-
-    private boolean validateFields() {
-        if (LrnField.getText() == null || LrnField.getText().isBlank()) {
-            showWarning("LRN cannot be empty");
-            return false;
-        } else if (nameField.getText() == null || nameField.getText().isBlank()) {
-            showWarning("Name cannot be empty");
-            return false;
-        } else if (gradeSectionField.getText() == null || gradeSectionField.getText().isBlank()) {
-            showWarning("Grade & Section cannot be empty");
-            return false;
-        } else if (bodyTempField.getText() == null || bodyTempField.getText().isBlank()) {
-            showWarning("Body temperature is required");
-            return false;
-        } else if (pulseRateField.getText() == null || pulseRateField.getText().isBlank()) {
-            showWarning("Pulse rate is required");
-            return false;
-        } else if (respiratoryRateField.getText() == null || respiratoryRateField.getText().isBlank()) {
-            showWarning("Respiratory rate is required");
-            return false;
-        } else if (bloodPressureField.getText() == null || bloodPressureField.getText().isBlank()) {
-            showWarning("Blood pressure is required");
-            return false;
-        } else if (symptomsField.getText() == null || symptomsField.getText().isBlank()) {
-            showWarning("Symptoms field cannot be empty");
-            return false;
-        } else if (nurseInChargeField.getText() == null || nurseInChargeField.getText().isBlank()) {
-            showWarning("Nurse intervention cannot be empty");
-            return false;
-        } else if (treatmentField.getText() == null || treatmentField.getText().isBlank()) {
-            showWarning("Treatment cannot be empty");
-            return false;
-        } else if (medicineName.getText() == null || medicineName.getText().isBlank()) {
-            showWarning("Medicine name is required");
-            return false;
-        } else if (invDispensingOutField.getText() == null || invDispensingOutField.getText().isBlank()) {
-            return false;
-        } else if (dateTimeField.getText() == null || dateTimeField.getText().isBlank()) {
-            showWarning("Date and Time must be specified");
-            return false;
-        }
-        return true;
-    }
 
     @FXML
     private void addDailyRecord() {
         try {
             Student record = createStudentMedicalRecordFromForm();
+            Student existing = medicalRecordInfoMgtApplication
+                    .getStudentMedicalRecordFacade()
+                    .getMedicalInformationByLRN(record.getLrn());
+
+            if (existing != null) {
+                record.setStudentId(existing.getStudentId()); // This must match PERSON.ID
+            } else {
+                showWarning("Student with this LRN was not found. Please register the student first.");
+                return;
+            }
+
             medicalRecordInfoMgtApplication.getStudentMedicalRecordFacade().addStudentMedicalRecord(record);
 
             if (clinicVisitLogPageController != null) {
@@ -114,7 +87,7 @@ public class AddDailyTreatmentRecord implements Initializable {
 
             showWarning("Success, Record Added Successfully.");
 
-            Stage stage = (Stage) LrnField.getScene().getWindow();
+            Stage stage = (Stage) lrnField.getScene().getWindow();
             stage.close();
 
         } catch (Exception e) {
@@ -125,19 +98,36 @@ public class AddDailyTreatmentRecord implements Initializable {
 
     private Student createStudentMedicalRecordFromForm() {
         Student student = new Student();
-        student.setLrn(Long.parseLong(LrnField.getText()));
-        student.setFirstName(nameField.getText());
-        student.setGradeLevel(gradeSectionField.getText());
+        student.setLrn(Long.parseLong(lrnField.getText()));
+        String[] nameParts = nameField.getText().trim().split("\\s+");
+        String firstName = nameParts.length > 0 ? nameParts[0] : "";
+        String middleName = nameParts.length == 3 ? nameParts[1] : "";
+        String lastName = nameParts.length == 3 ? nameParts[2] :
+                (nameParts.length == 2 ? nameParts[1] : "");
+        student.setFirstName(firstName);
+        student.setMiddleName(middleName);
+        student.setLastName(lastName);
+
+        String[] parts = gradeSectionField.getText().split(" - ");
+        String grade = parts.length > 0 ? parts[0].trim() : "";
+        String section = parts.length > 1 ? parts[1].trim() : "";
+        student.setGradeLevel(grade);
+        student.setSection(section);
+
         student.setTemperatureReadings(String.valueOf(Double.parseDouble(bodyTempField.getText())));
         student.setPulseRate(Integer.parseInt(pulseRateField.getText()));
         student.setRespiratoryRate(Integer.parseInt(respiratoryRateField.getText()));
         student.setBloodPressure(bloodPressureField.getText());
         student.setSymptoms(symptomsField.getText());
         student.setNurseInCharge(nurseInChargeField.getText());
-        student.setChiefComplaint(treatmentField.getText());
-//        student.setMedicineName(medicineName.getText());
-//        student.setMedicineDispensed(Integer.parseInt(invDispensingOutField.getText()));
-//        student.setVisitDate(dateTimeField.getText());
+        student.setTreatment(treatmentField.getText());
+        student.setMedicineName(medicineName.getText());
+        student.setDispensingOut(Integer.parseInt(invDispensingOutField.getText()));
+        LocalDate selectedDate = datePickerTextField.getValue();
+        if (selectedDate != null) {
+            Date convertedDate = Date.from(selectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            student.setVisitDate(convertedDate);
+        }
         return student;
     }
 

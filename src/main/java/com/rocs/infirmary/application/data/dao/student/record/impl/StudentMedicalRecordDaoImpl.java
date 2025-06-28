@@ -45,18 +45,10 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                 studentMedicalRecord.setFirstName(rs.getString("first_name"));
                 studentMedicalRecord.setMiddleName(rs.getString("middle_name"));
                 studentMedicalRecord.setLastName(rs.getString("last_name"));
-                studentMedicalRecord.setGradeLevel(rs.getString("grade_level"));
-                studentMedicalRecord.setSection("section");
                 studentMedicalRecord.setAge(rs.getInt("age"));
                 studentMedicalRecord.setGender(rs.getString("gender"));
-                studentMedicalRecord.setEmail(rs.getString("email"));
-                studentMedicalRecord.setAddress(rs.getString("address"));
-                studentMedicalRecord.setContactNumber(rs.getInt("contact_number"));
                 studentMedicalRecord.setSymptoms(rs.getString("symptoms"));
                 studentMedicalRecord.setTemperatureReadings(rs.getString("temperature_readings"));
-                studentMedicalRecord.setBloodPressure(rs.getString("blood_pressure"));
-                studentMedicalRecord.setPulseRate(rs.getInt("pulse_rate"));
-                studentMedicalRecord.setRespiratoryRate(rs.getInt("respiratory_rate"));
                 studentMedicalRecord.setVisitDate(rs.getDate("visit_date"));
                 studentMedicalRecord.setTreatment(rs.getString("treatment"));
 
@@ -64,18 +56,10 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                         +"Student ID: "+studentMedicalRecord.getStudentId()+"\n"
                         +"LRN  ID: "+studentMedicalRecord.getLrn()+"\n"
                         +"Name   : "+studentMedicalRecord.getFirstName()+" "+studentMedicalRecord.getLastName()+"\n"
-                        +"Grade Level   : "+studentMedicalRecord.getGradeLevel()+"\n"
-                        +"Section   : "+studentMedicalRecord.getSection()+"\n"
                         +"Age    : "+studentMedicalRecord.getAge()+"\n"
                         +"Gender   : "+studentMedicalRecord.getGender()+"\n"
-                        +"Email   : "+studentMedicalRecord.getEmail()+"\n"
-                        +"Address   : "+studentMedicalRecord.getAddress()+"\n"
-                        +"Contact Number   : "+studentMedicalRecord.getContactNumber()+"\n"
                         +"Symptoms : "+studentMedicalRecord.getSymptoms()+"\n"
                         +"Temperature Reading  : "+studentMedicalRecord.getTemperatureReadings()+"\n"
-                        +"Blood Pressure : "+studentMedicalRecord.getBloodPressure()+"\n"
-                        +"Pulse Rate : "+studentMedicalRecord.getPulseRate()+"\n"
-                        +"Respiratory Rate : "+studentMedicalRecord.getRespiratoryRate()+"\n"
                         +"Visit Date  : "+studentMedicalRecord.getVisitDate()+"\n"
                         +"Treatment  : "+studentMedicalRecord.getTreatment()
                 );
@@ -106,17 +90,18 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
             while (rs.next()) {
                 Student studentMedicalRecord = new Student();
 
+                studentMedicalRecord.setStudentId(rs.getInt("person_id"));
                 studentMedicalRecord.setLrn(rs.getLong("LRN"));
                 studentMedicalRecord.setFirstName(rs.getString("first_name"));
                 studentMedicalRecord.setMiddleName(rs.getString("middle_name"));
                 studentMedicalRecord.setLastName(rs.getString("last_name"));
                 studentMedicalRecord.setGradeLevel(rs.getString("grade_level"));
-                studentMedicalRecord.setSection("section");
+                studentMedicalRecord.setSection(rs.getString("section"));
                 studentMedicalRecord.setAge(rs.getInt("age"));
                 studentMedicalRecord.setGender(rs.getString("gender"));
                 studentMedicalRecord.setEmail(rs.getString("email"));
                 studentMedicalRecord.setAddress(rs.getString("address"));
-                studentMedicalRecord.setContactNumber(rs.getInt("contact_number"));
+                studentMedicalRecord.setContactNumber((rs.getString("contact_number")));
                 studentMedicalRecord.setSymptoms(rs.getString("symptoms"));
                 studentMedicalRecord.setTemperatureReadings(rs.getString("temperature_readings"));
                 studentMedicalRecord.setBloodPressure(rs.getString("blood_pressure"));
@@ -124,8 +109,14 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                 studentMedicalRecord.setRespiratoryRate(rs.getInt("respiratory_rate"));
                 studentMedicalRecord.setVisitDate(rs.getDate("visit_date"));
                 studentMedicalRecord.setTreatment(rs.getString("treatment"));
+                String nurseFirst = rs.getString("nurse_first_name");
+                String nurseLast = rs.getString("nurse_last_name");
+                studentMedicalRecord.setNurseInCharge((nurseFirst + " " + nurseLast).trim());
+                studentMedicalRecord.setMedicineName(rs.getString("medicine_name"));
+                studentMedicalRecord.setDispensingOut(rs.getInt("medicine_quantity"));
 
                 LOGGER.info("Data retrieved: "+"\n"
+                        +"Student ID   : "+studentMedicalRecord.getStudentId()+"\n"
                         +"LRN   : "+studentMedicalRecord.getLrn()+"\n"
                         +"Name   : "+studentMedicalRecord.getFirstName()+" "+studentMedicalRecord.getLastName()+"\n"
                         +"Grade Level   : "+studentMedicalRecord.getGradeLevel()+"\n"
@@ -141,7 +132,10 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                         +"Pulse Rate  : "+studentMedicalRecord.getPulseRate()+"\n"
                         +"Respiratory Rate  : "+studentMedicalRecord.getRespiratoryRate()+"\n"
                         +"Visit Date  : "+studentMedicalRecord.getVisitDate()+"\n"
-                        +"Treatment  : "+studentMedicalRecord.getTreatment()
+                        +"Treatment  : "+studentMedicalRecord.getTreatment()+"\n"
+                        +"Nurse In-Charge : " + studentMedicalRecord.getNurseInCharge()+"\n"
+                        +"Medicine Name : " + studentMedicalRecord.getMedicineName()+"\n"
+                        +"Dispensing Out : " + studentMedicalRecord.getDispensingOut()+"\n"
                 );
                 medicalRecords.add(studentMedicalRecord);
             }
@@ -304,65 +298,25 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
     @Override
     public boolean addStudentMedicalRecord(Student record) {
         QueryConstants queryConstants = new QueryConstants();
-
-        String personSql = queryConstants.addPersonInformation();
-        String studentSql = queryConstants.addStudentLrn();
-        String gradeSectionSql = queryConstants.addStudentGradeAndSection();
         String medicalRecordSql = queryConstants.addStudentMedicalRecord();
 
         try (Connection con = ConnectionHelper.getConnection()) {
             con.setAutoCommit(false);
 
-            try (PreparedStatement personStmt = con.prepareStatement(personSql, Statement.RETURN_GENERATED_KEYS)) {
-                personStmt.setString(1, record.getFirstName());
-                personStmt.setString(2, record.getMiddleName());
-                personStmt.setString(3, record.getLastName());
-                personStmt.setInt(4, record.getAge());
-                personStmt.setString(5, record.getGender());
-                personStmt.setString(6, record.getEmail());
-                personStmt.setString(7, record.getAddress());
-                personStmt.executeUpdate();
+            try (PreparedStatement medStmt = con.prepareStatement(medicalRecordSql)) {
+                medStmt.setInt(1, record.getStudentId());
+                medStmt.setString(2, record.getSymptoms());
+                medStmt.setString(3, record.getTemperatureReadings());
+                medStmt.setString(4, record.getBloodPressure());
+                medStmt.setInt(5, record.getPulseRate());
+                medStmt.setInt(6, record.getRespiratoryRate());
+                medStmt.setTimestamp(7, new Timestamp(record.getVisitDate().getTime()));
+                medStmt.setString(8, record.getTreatment());
+                medStmt.setInt(9, 1);
 
-                ResultSet personKeys = personStmt.getGeneratedKeys();
-                if (!personKeys.next()) throw new SQLException("Failed to retrieve person ID");
-                long personId = personKeys.getLong(1);
-
-                try (PreparedStatement studentStmt = con.prepareStatement(studentSql, Statement.RETURN_GENERATED_KEYS)) {
-                    studentStmt.setLong(1, personId);
-                    studentStmt.setLong(2, record.getLrn());
-                    studentStmt.executeUpdate();
-
-                    ResultSet studentKeys = studentStmt.getGeneratedKeys();
-                    if (!studentKeys.next()) throw new SQLException("Failed to retrieve student ID");
-                    long studentId = studentKeys.getLong(1);
-
-                    if (gradeSectionSql != null && !gradeSectionSql.isBlank()) {
-                        try (PreparedStatement gsStmt = con.prepareStatement(gradeSectionSql)) {
-                            gsStmt.setLong(1, studentId);
-                            gsStmt.setString(2, record.getGradeLevel());
-                            gsStmt.setString(3, record.getSection());
-                            gsStmt.executeUpdate();
-                        }
-                    }
-
-                    try (PreparedStatement medStmt = con.prepareStatement(medicalRecordSql)) {
-                        medStmt.setLong(1, studentId);
-                        medStmt.setString(2, record.getSymptoms());
-                        medStmt.setString(3, record.getNurseInCharge());
-                        medStmt.setString(4, record.getTemperatureReadings());
-                        medStmt.setString(5, record.getBloodPressure());
-                        medStmt.setInt(6, record.getPulseRate());
-                        medStmt.setInt(7, record.getRespiratoryRate());
-                        medStmt.setString(8, record.getTreatment());
-                        medStmt.setTimestamp(9, new Timestamp(record.getVisitDate().getTime()));
-                        medStmt.setString(10, record.getTreatment());
-                        medStmt.executeUpdate();
-                    }
-                }
+                int affectedRow = medStmt.executeUpdate();
+                return affectedRow > 0;
             }
-
-            con.commit();
-            return true;
 
         } catch (SQLException e) {
             System.out.println("Transaction failed: " + e.getMessage());

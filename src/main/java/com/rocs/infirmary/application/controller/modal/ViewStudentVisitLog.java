@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
 
 public class ViewStudentVisitLog implements Initializable {
@@ -71,20 +72,25 @@ public class ViewStudentVisitLog implements Initializable {
         viewLastname.setText(formatValue(student.getLastName()));
         viewSex.setText(formatValue(student.getGender()));
         viewAge.setText(formatValue(student.getAge()));
-        viewGradeSection.setText(formatValue(student.getGradeLevel()));
+        viewGradeSection.setText(formatValue(student.getGradeLevel() + " - " + student.getSection()));
         viewContactNum.setText(formatValue(student.getContactNumber()));
         viewHomeAdd.setText(formatValue(student.getAddress()));
         viewEmailAdd.setText(formatValue(student.getEmail()));
         viewBodyTemp.setText(formatValue(student.getTemperatureReadings()));
         viewPulseRate.setText(formatValue(student.getPulseRate()));
         viewRespiratoryRate.setText(formatValue(student.getRespiratoryRate()));
-        viewBloodPressure.setText(formatValue(student.getBloodPressure()));
+        viewBloodPressure.setText(formatValue(student.getBloodPressure()) + " mmHg");
         viewSymptoms.setText(formatValue(student.getSymptoms()));
         viewNurseIntervention.setText(formatValue(student.getNurseInCharge()));
         viewTreatment.setText(formatValue(student.getTreatment()));
-//        viewMedicineName.setText(formatValue(viewMedicineName));
-//        viewDispensingOut.setText(formatValue(viewDispensingOut));
-        viewVisitDate.setText(formatValue(student.getVisitDate()));
+        viewMedicineName.setText(formatValue(student.getMedicineName()));
+        viewDispensingOut.setText(formatValue(student.getDispensingOut()));
+        if (student.getVisitDate() != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy");
+            viewVisitDate.setText(sdf.format(student.getVisitDate()));
+        } else {
+            viewVisitDate.setText("N/A");
+        }
     }
 
     private String formatValue(Object value) {

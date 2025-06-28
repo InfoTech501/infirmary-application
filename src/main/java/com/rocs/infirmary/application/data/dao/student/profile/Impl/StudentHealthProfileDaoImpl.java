@@ -69,7 +69,7 @@ public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next()){
                 Student studentMedicalRecord = new Student();
-                studentMedicalRecord.setContactNumber(resultSet.getInt("contact_number"));
+                studentMedicalRecord.setContactNumber(resultSet.getString("contact_number"));
                 studentMedicalRecord.setEmail(resultSet.getString("email"));
                 studentMedicalRecord.setAddress(resultSet.getString("address"));
                 studentMedicalRecord.setFirstName(resultSet.getString("first_name"));

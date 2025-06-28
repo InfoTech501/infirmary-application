@@ -168,7 +168,7 @@
                                              </HBox.margin>
                                              <children>
                                                 <Label style="-fx-font-size: 14;" styleClass="label-rows-page" text="Rows per Page:" />
-                                                <Label contentDisplay="CENTER" style="-fx-font-size: 14;" styleClass="label-rows" text="10" GridPane.columnIndex="1">
+                                                <Label fx:id="rowsPageLabel" contentDisplay="CENTER" style="-fx-font-size: 14;" styleClass="label-rows" text="10" GridPane.columnIndex="1">
                                                    <opaqueInsets>
                                                       <Insets />
                                                    </opaqueInsets>
@@ -182,7 +182,7 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </ToggleButton>
-                                                <Label style="-fx-font-size: 14;" stylesheets="@../styles/fonts.css" text="1-5 of 13" GridPane.columnIndex="3" />
+                                                <Label fx:id="paginationLabel" style="-fx-font-size: 14;" stylesheets="@../styles/fonts.css" text="1-5 of 13" GridPane.columnIndex="3" />
                                                 <ToggleButton fx:id="toggleLeft" minWidth="44.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="54.0" style="-fx-background-color: #ffffff;" GridPane.columnIndex="4">
                                                    <graphic>
                                                       <ImageView accessibleRole="TOGGLE_BUTTON" fitHeight="29.0" fitWidth="20.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">

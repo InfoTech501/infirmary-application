@@ -19,42 +19,41 @@ public class QueryConstants {
             "LEFT JOIN medical_record mr ON s.id = mr.student_id " +
             "WHERE s.LRN = ?";
 
-    private final String GET_ALL_STUDENTS_MEDICAL_RECORDS = "SELECT \n" +
-            "    student.id, \n" +
-            "    student.lrn, \n" +
-            "    person.first_name, \n" +
-            "    person.middle_name, \n" +
-            "    person.last_name, \n" +
-            "    section.grade_level, \n" +
-            "    section.section, \n" +
-            "    person.age, \n" +
-            "    person.gender, \n" +
-            "    person.email, \n" +
-            "    person.address, \n" +
-            "    person.contact_number, \n" +
-            "    medical_record.symptoms, \n" +
-            "    medical_record.temperature_readings, \n" +
-            "    medical_record.blood_pressure, \n" +
-            "    medical_record.pulse_rate, \n" +
-            "    medical_record.respiratory_rate, \n" +
-            "    medical_record.visit_date, \n" +
-            "    medical_record.treatment, \n" +
-            "    medicine.item_name AS medicine_name, \n" +
-            "    medicine_administered.quantity AS medicine_quantity\n" +
-            "FROM medical_record  \n" +
-            "JOIN student ON medical_record.student_id = student.id  \n" +
-            "JOIN person ON student.person_id = person.id  \n" +
-            "LEFT JOIN section ON student.section_section_id = section.section_id  \n" +
-            "LEFT JOIN medicine_administered ON medical_record.id = medicine_administered.med_record_id  \n" +
-            "LEFT JOIN medicine ON medicine_administered.medicine_id = medicine.medicine_id ";
+    private final String GET_ALL_STUDENTS_MEDICAL_RECORDS = "SELECT\n" +
+            "    student.id,\n" +
+            "    student.person_id,\n" +
+            "    student.lrn,\n" +
+            "    person.first_name,\n" +
+            "    person.middle_name,\n" +
+            "    person.last_name,\n" +
+            "    section.grade_level,\n" +
+            "    section.section,\n" +
+            "    person.age,\n" +
+            "    person.gender,\n" +
+            "    person.email,\n" +
+            "    person.address,\n" +
+            "    person.contact_number,\n" +
+            "    medical_record.symptoms,\n" +
+            "    medical_record.temperature_readings,\n" +
+            "    medical_record.blood_pressure,\n" +
+            "    medical_record.pulse_rate,\n" +
+            "    medical_record.respiratory_rate,\n" +
+            "    medical_record.visit_date,\n" +
+            "    medical_record.treatment,\n" +
+            "    medicine.item_name AS medicine_name,\n" +
+            "    medicine_administered.quantity AS medicine_quantity,\n" +
+            "    nurse_person.first_name AS nurse_first_name,\n" +
+            "    nurse_person.last_name AS nurse_last_name\n" +
+            "FROM medical_record\n" +
+            "JOIN student ON medical_record.student_id = student.id\n" +
+            "JOIN person ON student.person_id = person.id\n" +
+            "LEFT JOIN section ON student.section_section_id = section.section_id\n" +
+            "LEFT JOIN medicine_administered ON medical_record.id = medicine_administered.med_record_id\n" +
+            "LEFT JOIN medicine ON medicine_administered.medicine_id = medicine.medicine_id\n" +
+            "LEFT JOIN employee ON medical_record.nurse_in_charge_id = employee.id\n" +
+            "LEFT JOIN person nurse_person ON employee.id = nurse_person.id ";
 
-    private final String ADD_STUDENT_MEDICAL_RECORD = "INSERT INTO MEDICAL RECORD (SYMPTOMS, TEMPERATURE_READINGS, BLOOD_PRESSURE, PULSE_RATE, RESPIRATORY_RATE, VISIT_DATE, TREATMENT) VALUES(?,?,?,?,?,?,?)";
-
-    private final String ADD_STUDENT_LRN = "INSERT INTO STUDENT (LRN) VALUES(?) ";
-
-    private final String ADD_PERSON_INFORMATION = "INSERT INTO PERSON (LAST_NAME, AGE) VALUES(?,?)";
-
-    private final String ADD_STUDENT_GRADEANDSECTION = "INSERT INTO SECTION(GRADE_LEVEL, SECTION) VALUES(?,?)";
+    private final String ADD_STUDENT_MEDICAL_RECORD = "INSERT INTO MEDICAL_RECORD (STUDENT_ID, SYMPTOMS, TEMPERATURE_READINGS, BLOOD_PRESSURE, PULSE_RATE, RESPIRATORY_RATE, VISIT_DATE, TREATMENT, IS_ACTIVE) VALUES(?,?,?,?,?,?,?,?,?)";
 
     private final String DELETE_STUDENT_MEDICAL_RECORD = "UPDATE MEDICAL_RECORD SET IS_ACTIVE = 0 WHERE STUDENT_ID = ?";
 
@@ -107,11 +106,5 @@ public class QueryConstants {
     }
 
     public String addStudentMedicalRecord() { return ADD_STUDENT_MEDICAL_RECORD; }
-
-    public String addStudentLrn() { return ADD_STUDENT_LRN; }
-
-    public String addPersonInformation() { return ADD_PERSON_INFORMATION; }
-
-    public String addStudentGradeAndSection() { return ADD_STUDENT_GRADEANDSECTION; }
 
 }

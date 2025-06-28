@@ -1,6 +1,7 @@
 package com.rocs.infirmary.application.controller.dashboard;
 
 import com.rocs.infirmary.application.MedicalRecordInfoMgtApplication;
+import com.rocs.infirmary.application.controller.modal.AddDailyTreatmentRecord;
 import com.rocs.infirmary.application.controller.modal.ViewStudentVisitLog;
 import com.rocs.infirmary.application.data.model.person.student.Student;
 import javafx.beans.property.SimpleStringProperty;
@@ -22,8 +23,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class ClinicVisitLogPageController implements Initializable {
@@ -50,6 +52,10 @@ public class ClinicVisitLogPageController implements Initializable {
     private TableColumn<Student, String> VisitDateColumn;
     @FXML
     private TextField searchTextField;
+    @FXML
+    public Label rowsPageLabel;
+    @FXML
+    public Label paginationLabel;
 
     private ObservableList<Student> student;
     private final MedicalRecordInfoMgtApplication medicalRecordInfoMgtApplication = new MedicalRecordInfoMgtApplication();
@@ -59,7 +65,6 @@ public class ClinicVisitLogPageController implements Initializable {
         setup();
         refresh();
         studentSearch();
-        VisitLogTable.setItems(student);
 
         VisitLogTable.setRowFactory(tv -> {
             TableRow<Student> row = new TableRow<>();
@@ -80,8 +85,11 @@ public class ClinicVisitLogPageController implements Initializable {
             String fullName = student.getFirstName() + " " + student.getMiddleName() + " " + student.getLastName();
             return new SimpleStringProperty(fullName);
         });
-        NameColumn.setStyle("-fx-alignment: CENTER;");
-        GradeSectionColumn.setCellValueFactory(new PropertyValueFactory<>("gradeLevel"));
+        GradeSectionColumn.setCellValueFactory(cellData -> {
+            String grade = cellData.getValue().getGradeLevel();
+            String section = cellData.getValue().getSection();
+            return new javafx.beans.property.SimpleStringProperty(grade + " - " + section);
+        });
         GradeSectionColumn.setStyle("-fx-alignment: CENTER;");
         TempReadingsColumn.setCellValueFactory(new PropertyValueFactory<>("temperatureReadings"));
         TempReadingsColumn.setStyle("-fx-alignment: CENTER;");
@@ -95,8 +103,15 @@ public class ClinicVisitLogPageController implements Initializable {
         MedicineNameColumn.setStyle("-fx-alignment: CENTER;");
         DispensingOutColumn.setCellValueFactory(new PropertyValueFactory<>("dispensingOut"));
         DispensingOutColumn.setStyle("-fx-alignment: CENTER;");
-        VisitDateColumn.setCellValueFactory(new PropertyValueFactory<>("visitDate"));
+        VisitDateColumn.setCellValueFactory(cellData -> {
+            Date visitDate = cellData.getValue().getVisitDate();
+            String formatted = visitDate != null
+                    ? new SimpleDateFormat("MMMM dd, yyyy").format(visitDate)
+                    : "N/A";
+            return new SimpleStringProperty(formatted);
+        });
         VisitDateColumn.setStyle("-fx-alignment: CENTER;");
+
 
     }
     private void refresh() {
@@ -105,16 +120,21 @@ public class ClinicVisitLogPageController implements Initializable {
                 .getAllStudentMedicalRecords();
 
         student = FXCollections.observableArrayList(studentList);
-        VisitLogTable.setItems(student);
     }
 
-    private void showModalAddEntry(ActionEvent actionEvent,String location) throws IOException {
+    private void showModalAddEntry(ActionEvent actionEvent, String location) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(location));
+        Parent root = loader.load();
+
+        AddDailyTreatmentRecord controller = loader.getController();
+        controller.setClinicVisitLogPageController(this);
+
         Stage stage = new Stage();
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(location)));
-        stage.setScene(new Scene(root));
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(((Node)actionEvent.getSource()).getScene().getWindow() );
-        stage.show();
+        stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
+        stage.setScene(new Scene(root));
+        stage.setTitle("Add Daily Treatment Record");
+        stage.showAndWait();
     }
 
     public void handleAddEntryButton(ActionEvent actionEvent) throws IOException {
@@ -122,7 +142,9 @@ public class ClinicVisitLogPageController implements Initializable {
     }
 
     private void studentSearch() {
-        FilteredList<Student> filteredList = new FilteredList<>(student, student -> true);
+        if (student == null) return;
+
+        FilteredList<Student> filteredList = new FilteredList<>(student, s -> true);
 
         searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredList.setPredicate(student -> {
@@ -130,12 +152,21 @@ public class ClinicVisitLogPageController implements Initializable {
                     return true;
                 }
 
-                String searchKeyword = newValue.toLowerCase();
+                String keyword = newValue.toLowerCase();
 
-                return (String.valueOf(student.getStudentId()).toLowerCase().contains(searchKeyword)
-                        || student.getFirstName().toLowerCase().contains(searchKeyword)
-                        || student.getLastName().toLowerCase().contains(searchKeyword)
-                        || student.getGradeLevel().toLowerCase().contains(searchKeyword));
+                String fullName = (student.getFirstName() + " "
+                        + student.getMiddleName() + " "
+                        + student.getLastName()).toLowerCase();
+
+                String grade = student.getGradeLevel() != null ? student.getGradeLevel().toLowerCase() : "";
+                String section = student.getSection() != null ? student.getSection().toLowerCase() : "";
+                String visitDate = student.getVisitDate() != null ? student.getVisitDate().toString().toLowerCase() : "";
+
+                return String.valueOf(student.getStudentId()).contains(keyword)
+                        || fullName.contains(keyword)
+                        || grade.contains(keyword)
+                        || section.contains(keyword)
+                        || visitDate.contains(keyword);
             });
         });
 
@@ -148,9 +179,22 @@ public class ClinicVisitLogPageController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ViewStudentVisitLog.fxml"));
             Parent root = loader.load();
-
             ViewStudentVisitLog controller = loader.getController();
-            controller.setStudentData(student);
+
+            List<Student> allRecords = medicalRecordInfoMgtApplication
+                    .getStudentMedicalRecordFacade()
+                    .getAllStudentMedicalRecords();
+
+            Student enriched = allRecords.stream()
+                    .filter(s -> s.getLrn() == student.getLrn())
+                    .findFirst()
+                    .orElse(null);
+
+            if (enriched != null) {
+                controller.setStudentData(enriched);
+            } else {
+                controller.setStudentData(student);
+            }
 
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -162,13 +206,14 @@ public class ClinicVisitLogPageController implements Initializable {
             e.printStackTrace();
         }
     }
-    
-    public void addStudentMedicalRecord(Student record) {
-        if (record == null) return;
 
-        student.add(record);
-        VisitLogTable.refresh(); 
+    public void addStudentMedicalRecord(Student newRecord) {
+        if (newRecord == null || student == null) return;
+        student.add(newRecord);
+        VisitLogTable.refresh();
     }
+
+
 
 }
 

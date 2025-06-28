@@ -12,10 +12,10 @@ public class Person {
     private String gender;
     private String email;
     private String address;
-    private int contactNumber;
+    private String contactNumber;
     private String section;
 
-    public Person(long id, String firstName, String middleName, String lastName, int age, Date birthdate, String gender, String email, String address, int contactNumber) {
+    public Person(long id, String firstName, String middleName, String lastName, int age, Date birthdate, String gender, String email, String address, String contactNumber) {
         this.id = id;
         this.firstName = firstName;
         this.middleName = middleName;
@@ -78,7 +78,7 @@ public class Person {
         this.section = section;
     }
 
-    public void setContactNumber(int contactNumber) {
+    public void setContactNumber(String contactNumber) {
         this.contactNumber = contactNumber;
     }
 
@@ -86,7 +86,7 @@ public class Person {
         this.address = address;
     }
 
-    public int getContactNumber() {
+    public String getContactNumber() {
         return contactNumber;
     }
 
