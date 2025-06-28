@@ -1,6 +1,7 @@
 package com.rocs.infirmary.application.controller.inventory;
 
-import com.rocs.infirmary.application.LowStockNotificationServiceApplication;
+import com.rocs.infirmary.application.controller.LowStockNotificationController;
+import com.rocs.infirmary.application.module.lowstock.notification.service.LowStockNotificationServiceApplication;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
 import com.rocs.infirmary.application.data.model.report.lowstock.LowStockReport;
@@ -24,7 +25,6 @@ import javafx.stage.StageStyle;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.stage.*;
 
 import java.io.IOException;
 import java.net.URL;

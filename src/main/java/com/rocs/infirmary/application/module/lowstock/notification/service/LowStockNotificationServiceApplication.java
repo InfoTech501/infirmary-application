@@ -1,4 +1,4 @@
-package com.rocs.infirmary.application;
+package com.rocs.infirmary.application.module.lowstock.notification.service;
 
 import com.rocs.infirmary.application.app.facade.dashboard.DashboardFacade;
 import com.rocs.infirmary.application.app.facade.dashboard.impl.DashboardFacadeImpl;

@@ -15,5 +15,9 @@ module com.rocs.infirmaryapplication {
     exports com.rocs.infirmary.application.data.model.inventory;
     exports com.rocs.infirmary.application.data.model.inventory.medicine;
     exports com.rocs.infirmary.application.module.inventory.management.application;
+    exports com.rocs.infirmary.application.module.lowstock.notification.service;
     opens com.rocs.infirmary.application.module.inventory.management.application to javafx.fxml;
+
+    opens com.rocs.infirmary.application.controller to javafx.fxml;
+    opens com.rocs.infirmary.application.module.lowstock.notification.service to javafx.fxml;
 }

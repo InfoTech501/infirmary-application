@@ -37,7 +37,3 @@
     -fx-cursor: hand;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0.3, 0, 1);
 }
-
-#NotificationImage:pressed {
-    -fx-background-color: lightgray;
-}
