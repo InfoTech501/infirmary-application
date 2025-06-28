@@ -1,6 +1,6 @@
 package com.rocs.infirmary.application.controller.inventory;
 
-import com.rocs.infirmary.application.InventoryManagementApplication;
+import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,25 +26,29 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
-
+/**
+ * {@code AddInventoryController} is used to handle event processes of the Inventory when adding new Items
+ * this implements Initializable interface
+ **/
 public class AddInventoryController implements Initializable {
     @FXML
-    private TableView<Medicine> MedDetailsTable;
+    private TableView<Medicine> medDetailsTable;
     @FXML
-    private TableColumn<Medicine, Boolean> SelectColumn;
+    private TableColumn<Medicine, Boolean> selectColumn;
     @FXML
-    private TableColumn<Medicine, String> ProductNameColumn;
+    private TableColumn<Medicine, String> productNameColumn;
     @FXML
-    private TableColumn<Medicine, Integer> QuantityColumn;
+    private TableColumn<Medicine, Integer> quantityColumn;
     @FXML
-    private TableColumn<Medicine, String> ExpiryDateColumn;
+    private TableColumn<Medicine, String> expiryDateColumn;
     @FXML
-    private TextField ProductNameTextField;
+    private TableColumn<Medicine, String> descriptionColumn;
     @FXML
-    private TextField QuantityTextField;
+    private TextField productNameTextField;
     @FXML
-    private TextField ExpirationDateTextField;
-
+    private TextField quantityTextField;
+    @FXML
+    private TextField expirationDateTextField;
     private ObservableList<Medicine> medicine;
 
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
@@ -57,24 +61,26 @@ public class AddInventoryController implements Initializable {
     }
 
     private void setup() {
-        MedDetailsTable.setEditable(true);
+        medDetailsTable.setEditable(true);
 
-        SelectColumn.setCellValueFactory(cellData -> cellData.getValue().isSelectedProperty());
-        SelectColumn.setCellFactory(CheckBoxTableCell.forTableColumn(SelectColumn));
-        SelectColumn.setEditable(true);
-        SelectColumn.setStyle("-fx-alignment: CENTER;");
+        selectColumn.setCellValueFactory(cellData -> cellData.getValue().isSelectedProperty());
+        selectColumn.setCellFactory(CheckBoxTableCell.forTableColumn(selectColumn));
+        selectColumn.setEditable(true);
+        selectColumn.setStyle("-fx-alignment: CENTER;");
 
-        ProductNameColumn.setCellValueFactory(new PropertyValueFactory<>("itemName"));
-        ProductNameColumn.setStyle("-fx-alignment: CENTER;");
-        QuantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        QuantityColumn.setStyle("-fx-alignment: CENTER;");
-        ExpiryDateColumn.setCellValueFactory(new PropertyValueFactory<>("expirationDate"));
-        ExpiryDateColumn.setStyle("-fx-alignment: CENTER;");
+        productNameColumn.setCellValueFactory(new PropertyValueFactory<>("itemName"));
+        productNameColumn.setStyle("-fx-alignment: CENTER;");
+        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        quantityColumn.setStyle("-fx-alignment: CENTER;");
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        descriptionColumn.setStyle("-fx-alignment: CENTER;");
+        expiryDateColumn.setCellValueFactory(new PropertyValueFactory<>("expirationDate"));
+        expiryDateColumn.setStyle("-fx-alignment: CENTER;");
 
     }
 
     private void refresh() {
-        List<Medicine> medicineList; medicineList = inventoryManagementApplication.getMedicineInventoryFacade().findAllMedicine();
+        List<Medicine> medicineList; medicineList = inventoryManagementApplication.getMedicineInventoryFacade().getAllMedicine();
         for (Medicine med : medicineList) {
             if (med.isSelectedProperty() == null) {
                 med.setIsSelected(false);
@@ -88,7 +94,7 @@ public class AddInventoryController implements Initializable {
             }
         }
         medicine = FXCollections.observableArrayList(medicineList);
-        MedDetailsTable.setItems(medicine);
+        medDetailsTable.setItems(medicine);
     }
     private void showModal(ActionEvent actionEvent,String location) throws IOException {
         Stage stage = new Stage();
@@ -112,6 +118,12 @@ public class AddInventoryController implements Initializable {
         }
         return medicineID;
     }
+    /**
+     * This method retrieves a list of medicines that are marked as selected.
+     * This method filters the medicine list and returns only those medicine that appeared selected,
+     * this happens when {@code isSelected} returns {@code true}
+     * @return a list of selected {@code Medicine} objects
+     */
     public List<Medicine> getSelectedMedicines() {
         List<Medicine> selectedMedicine = medicine.stream()
                 .filter(Medicine::isSelected)
@@ -120,11 +132,11 @@ public class AddInventoryController implements Initializable {
     }
     private boolean addMedicine() throws ParseException {
         boolean isAdded = false;
-        String medicineId = getMedicineId(ProductNameTextField);
-        int quantity = Integer.parseInt(QuantityTextField.getText());
+        String medicineId = getMedicineId(productNameTextField);
+        int quantity = Integer.parseInt(quantityTextField.getText());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
         for(Medicine med:medicine){
-            if(Objects.equals(med.getItemName(), ProductNameTextField.getText())){
+            if(Objects.equals(med.getItemName(), productNameTextField.getText())){
                 System.out.println("existing");
                 inventoryManagementApplication.getMedicineInventoryFacade().addInventory(med.getMedicineId(),med.getItemType(),quantity);
                 isAdded = true;
@@ -132,11 +144,11 @@ public class AddInventoryController implements Initializable {
             }else{
                 System.out.println("new");
                 Date expirationDate;
-                String inputDate = ExpirationDateTextField.getText();
+                String inputDate = expirationDateTextField.getText();
                 expirationDate = dateFormat.parse(inputDate);
 
                 medicineModel.setMedicineId(medicineId);
-                medicineModel.setItemName(ProductNameTextField.getText());
+                medicineModel.setItemName(productNameTextField.getText());
                 medicineModel.setExpirationDate(new Timestamp(expirationDate.getTime()));
                 inventoryManagementApplication.getMedicineInventoryFacade().addMedicine(medicineModel);
                 inventoryManagementApplication.getMedicineInventoryFacade().addInventory(medicineId,"medicine",quantity);
@@ -147,23 +159,26 @@ public class AddInventoryController implements Initializable {
         refresh();
         return isAdded;
     }
-
+    /**
+     * this method handles the action triggered when the confirm button is clicked.
+     * @param actionEvent the event triggered by the confirm button click
+     */
     public void onConfirmBtnClick(ActionEvent actionEvent) throws ParseException {
-        if(ProductNameTextField.getText().isEmpty()||ProductNameTextField.getText().isBlank()||ProductNameTextField.getText()==null){
+        if(productNameTextField.getText()==null||productNameTextField.getText().isEmpty()|| productNameTextField.getText().isBlank()){
             Dialog dialog = new Dialog();
             dialog.setTitle("Warning");
             ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
             dialog.setContentText("Product Name cannot be empty");
             dialog.getDialogPane().getButtonTypes().add(type);
             dialog.showAndWait();
-        }else if(QuantityTextField.getText().isEmpty()||QuantityTextField.getText().isBlank()||QuantityTextField.getText()==null){
+        }else if(quantityTextField.getText()==null||quantityTextField.getText().isEmpty()|| quantityTextField.getText().isBlank()){
             Dialog dialog = new Dialog();
             dialog.setTitle("Warning");
             ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
             dialog.setContentText("Quantity cannot be empty");
             dialog.getDialogPane().getButtonTypes().add(type);
             dialog.showAndWait();
-        }else if(ExpirationDateTextField.getText().isEmpty()||ExpirationDateTextField.getText().isBlank()||ExpirationDateTextField.getText()==null){
+        }else if(expirationDateTextField.getText()==null||expirationDateTextField.getText().isEmpty()|| expirationDateTextField.getText().isBlank()){
             Dialog dialog = new Dialog();
             dialog.setTitle("Warning");
             ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
@@ -171,7 +186,7 @@ public class AddInventoryController implements Initializable {
             dialog.getDialogPane().getButtonTypes().add(type);
             dialog.showAndWait();
         }
-        else if (!isValidTextInput(ProductNameTextField.getText())) {
+        else if (!isValidTextInput(productNameTextField.getText())) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Invalid Input In Product Name");
             alert.setContentText("Product Name must only contain letters.");
@@ -187,7 +202,10 @@ public class AddInventoryController implements Initializable {
             }
         }
     }
-
+    /**
+     * this method handles the action triggered when the remove button is clicked.
+     * @param actionEvent the event triggered by the confirm button click
+     */
     public void onRemoveBtnClick(ActionEvent actionEvent) throws IOException {
         if(getSelectedMedicines().isEmpty()){
             Dialog dialog = new Dialog();
@@ -210,7 +228,10 @@ public class AddInventoryController implements Initializable {
             stage.show();
         }
     }
-
+    /**
+     * this method handles the action triggered when the cancel button is clicked.
+     * @param actionEvent the event triggered by the confirm button click
+     */
     public void onCancelBtnClick(ActionEvent actionEvent) {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();

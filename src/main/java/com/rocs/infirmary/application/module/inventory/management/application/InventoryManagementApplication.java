@@ -1,4 +1,4 @@
-package com.rocs.infirmary.application;
+package com.rocs.infirmary.application.module.inventory.management.application;
 
 import com.rocs.infirmary.application.app.facade.medicine.inventory.MedicineInventoryFacade;
 import com.rocs.infirmary.application.app.facade.medicine.inventory.impl.MedicineInventoryFacadeImpl;

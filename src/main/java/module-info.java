@@ -27,4 +27,7 @@ module com.rocs.infirmaryapplication {
     exports com.rocs.infirmary.application.app.facade.student.record.impl;
     exports com.rocs.infirmary.application.data.dao.student.record;
     exports com.rocs.infirmary.application.data.dao.student.record.impl;
+
+    exports com.rocs.infirmary.application.module.inventory.management.application;
+    opens com.rocs.infirmary.application.module.inventory.management.application to javafx.fxml;
 }

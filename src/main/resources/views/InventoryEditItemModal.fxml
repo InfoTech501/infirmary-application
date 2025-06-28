@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="524.0" prefWidth="1091.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="524.0" prefWidth="1091.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.inventory.UpdateInventoryController">
 
     <stylesheets>
         <URL value="@../styles/buttons.css" />
@@ -38,7 +31,7 @@
                               <RowConstraints maxHeight="25.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <TextField prefHeight="53.0" prefWidth="479.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <TextField fx:id="productNameTextField" prefHeight="53.0" prefWidth="479.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <Label fx:id="ProductNameLabel" text="Product Name" GridPane.columnIndex="1" />
                            </children>
                         </GridPane>
@@ -57,7 +50,7 @@
                               <RowConstraints maxHeight="25.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <TextField prefHeight="53.0" prefWidth="332.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <TextField fx:id="expirationDateTextField" prefHeight="53.0" prefWidth="332.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <Label fx:id="ExpirationDateLabel" text="Lot/Expiration Date" GridPane.columnIndex="1" />
                            </children>
                         </GridPane>
@@ -81,7 +74,7 @@
                             <RowConstraints maxHeight="25.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <TextField prefHeight="53.0" prefWidth="332.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <TextField fx:id="quantityTextField" prefHeight="53.0" prefWidth="332.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <Label fx:id="QuantityLabel" text="Quantity" GridPane.columnIndex="1" />
                            </children>
                         </GridPane>
@@ -100,8 +93,8 @@
                               <RowConstraints maxHeight="25.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <TextField prefHeight="53.0" prefWidth="332.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <Label fx:id="DosageLabel" text="Dosage" GridPane.columnIndex="1" />
+                              <TextField fx:id="descriptionTextField" prefHeight="53.0" prefWidth="332.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label fx:id="DosageLabel" text="Description" GridPane.columnIndex="1" />
                            </children>
                         </GridPane>
                      </children>
@@ -146,7 +139,7 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label fx:id="ItemToEditLabel" prefHeight="45.0" prefWidth="237.0" text="Paracetamol" GridPane.rowIndex="1" />
+                        <Label fx:id="itemToEditLabel" prefHeight="45.0" prefWidth="237.0" text="Paracetamol" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                </children>
@@ -177,8 +170,8 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Button fx:id="ButtonConfirm" mnemonicParsing="false" prefHeight="46.0" prefWidth="182.0" text="Confirm" />
-                        <Button fx:id="ButtonCancel" mnemonicParsing="false" prefHeight="51.0" prefWidth="165.0" text="Cancel" GridPane.columnIndex="1" />
+                        <Button fx:id="ButtonConfirm" mnemonicParsing="false" onAction="#onConfirmButtonClick" prefHeight="46.0" prefWidth="182.0" text="Confirm" />
+                        <Button fx:id="ButtonCancel" mnemonicParsing="false" onAction="#onCancelButtonClick" prefHeight="51.0" prefWidth="165.0" text="Cancel" GridPane.columnIndex="1" />
                     </children>
                 </GridPane>
             </children>
