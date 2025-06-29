@@ -42,7 +42,4 @@ public class StudentHealthProfileController implements Initializable {
         alertHelper = new LowStockAlertHelper(lowStockNotificationServiceApplication,redCircle,toggleButton);
         alertHelper.checkLowStockAndShowAlert(parentHbox);
     }
-
 }
-
-
