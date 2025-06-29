@@ -1,6 +1,5 @@
 package com.rocs.infirmary.application.controller.inventory;
 
-import com.rocs.infirmary.application.controller.lowstock.LowStockNotificationController;
 import com.rocs.infirmary.application.controller.lowstock.helper.LowStockAlertHelper;
 import com.rocs.infirmary.application.module.lowstock.notification.service.LowStockNotificationServiceApplication;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
@@ -23,15 +22,12 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.scene.image.ImageView;
-
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
-
 /**
  * {@code InventoryController} is used to handle event processes of the Inventory,
  * this implements Initializable interface
@@ -127,7 +123,6 @@ public class InventoryController implements Initializable {
         medicine = FXCollections.observableArrayList(medicineList);
         medDetailsTable.setItems(medicine);
         setupAlertHelper();
-
     }
     private void showModal(ActionEvent actionEvent,String location) throws IOException {
         Stage stage = new Stage();
