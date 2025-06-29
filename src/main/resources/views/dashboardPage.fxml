@@ -98,7 +98,7 @@
 </top>
    <center>
       <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-          <VBox fx:id="ParentVbox" prefHeight="905.0" prefWidth="1097.0" BorderPane.alignment="CENTER">
+          <VBox fx:id="parentVbox" prefHeight="905.0" prefWidth="1097.0" BorderPane.alignment="CENTER">
               <children>
                <VBox prefHeight="110.0" prefWidth="1077.0">
                       <children>

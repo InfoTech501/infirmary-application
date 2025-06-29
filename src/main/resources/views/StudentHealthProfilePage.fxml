@@ -30,7 +30,7 @@
    <center>
       <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <content>
-            <HBox fx:id="ParentHbox" prefHeight="978.0" prefWidth="1122.0">
+            <HBox fx:id="parentHbox" prefHeight="978.0" prefWidth="1122.0">
                <children>
                   <HBox prefHeight="100.0" prefWidth="200.0" />
                   <HBox prefHeight="100.0" prefWidth="200.0" />
@@ -157,7 +157,7 @@
                                  </image>
                               </ImageView>
                            </graphic></ToggleButton>
-                        <ImageView fx:id="RedCircle" fitHeight="8.0" fitWidth="8.0" pickOnBounds="true" preserveRatio="true" translateX="13.0" translateY="-13.0" visible="false">
+                        <ImageView fx:id="redCircle" fitHeight="8.0" fitWidth="8.0" pickOnBounds="true" preserveRatio="true" translateX="13.0" translateY="-13.0" visible="false">
                            <image>
                               <Image url="@../assets/round-red-notification.png" />
                            </image>

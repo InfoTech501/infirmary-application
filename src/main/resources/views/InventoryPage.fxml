@@ -180,7 +180,7 @@
                                     </ImageView>
                                  </graphic>
                               </ToggleButton>
-                              <ImageView fx:id="RedCircle" fitHeight="8.0" fitWidth="8.0" pickOnBounds="true" preserveRatio="true" translateX="13.0" translateY="-13.0" visible="false">
+                              <ImageView fx:id="redCircle" fitHeight="8.0" fitWidth="8.0" pickOnBounds="true" preserveRatio="true" translateX="13.0" translateY="-13.0" visible="false">
                                  <image>
                                     <Image url="@../assets/round-red-notification.png" />
                                  </image>

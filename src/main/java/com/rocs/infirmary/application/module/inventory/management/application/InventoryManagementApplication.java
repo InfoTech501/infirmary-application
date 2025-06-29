@@ -18,7 +18,6 @@ public class InventoryManagementApplication {
         return medicineInventoryFacade;
     }
 
-
 }
 
 

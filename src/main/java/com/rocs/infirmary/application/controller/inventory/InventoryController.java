@@ -1,10 +1,10 @@
 package com.rocs.infirmary.application.controller.inventory;
 
 import com.rocs.infirmary.application.controller.lowstock.LowStockNotificationController;
+import com.rocs.infirmary.application.controller.lowstock.helper.LowStockAlertHelper;
 import com.rocs.infirmary.application.module.lowstock.notification.service.LowStockNotificationServiceApplication;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
-import com.rocs.infirmary.application.data.model.report.lowstock.LowStockReport;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -54,7 +54,7 @@ public class InventoryController implements Initializable {
     private TextField searchTextField;
 
     @FXML
-    private ImageView RedCircle;
+    private ImageView redCircle;
 
     @FXML
     private ToggleButton toggleButton;
@@ -64,10 +64,7 @@ public class InventoryController implements Initializable {
     private List<Medicine> medicineList = new ArrayList<>();
 
     private LowStockNotificationServiceApplication lowStockNotificationServiceApplication = new LowStockNotificationServiceApplication();
-    private List<LowStockReport> lowStockItems = new ArrayList<>();
-    private boolean lowLowStock = false;
-
-
+    private LowStockAlertHelper alertHelper;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -75,7 +72,16 @@ public class InventoryController implements Initializable {
         refresh();
         itemSearch();
         initalizeEditClick();
-        checkLowStockAndShowAlert();
+        setupAlertHelper();
+    }
+
+    /**
+     * Initializes and runs the low stock alert helper to display
+     * notifications and set the toggle action for the alert icon.
+     */
+    public void setupAlertHelper() {
+        alertHelper = new LowStockAlertHelper(lowStockNotificationServiceApplication,redCircle,toggleButton);
+        alertHelper.checkLowStockAndShowAlert(medDetailsTable);
     }
 
     private void setup() {
@@ -120,7 +126,7 @@ public class InventoryController implements Initializable {
         }
         medicine = FXCollections.observableArrayList(medicineList);
         medDetailsTable.setItems(medicine);
-        checkLowStockAndShowAlert();
+        setupAlertHelper();
 
     }
     private void showModal(ActionEvent actionEvent,String location) throws IOException {
@@ -269,30 +275,6 @@ public class InventoryController implements Initializable {
                 itemSearch();
             }
         }
-    }
-
-
-    private void checkLowStockAndShowAlert() {
-
-        lowStockItems = lowStockNotificationServiceApplication.getDashboardFacade().getAllLowStockMedicine();
-
-        RedCircle.setVisible(false);
-
-        if (!lowStockItems.isEmpty()) {
-            List<String> productInfo = lowStockItems.stream()
-                    .map(lowStockReport -> lowStockReport.getDescription() + " (Quantity : " + lowStockReport.getQuantityAvailable() + ")")
-                    .toList();
-
-                RedCircle.setVisible(true);
-                toggleButton.setOnMouseClicked(event -> {
-                    Stage stage = (Stage) medDetailsTable.getScene().getWindow();
-                    LowStockNotificationController.showLowStockModal(stage, productInfo);
-                });
-
-             lowLowStock = true;
-        }
-
-
     }
 }
 

@@ -1,20 +1,22 @@
-package com.rocs.infirmary.application.controller.student;
+package com.rocs.infirmary.application.controller.clinic;
 
 import com.rocs.infirmary.application.controller.lowstock.helper.LowStockAlertHelper;
 import com.rocs.infirmary.application.module.lowstock.notification.service.LowStockNotificationServiceApplication;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+
 /**
- * {@code StudentHealthProfileController} is used to handle event processes of the StudentHealthProfile,
+ * {@code ClinicVisitLogController} is used to handle event processes of the ClinicVisitLog,
  * this implements Initializable interface
  **/
-public class StudentHealthProfileController implements Initializable {
+public class ClinicVisitLogController implements Initializable {
 
     @FXML
     private ImageView redCircle;
@@ -23,12 +25,12 @@ public class StudentHealthProfileController implements Initializable {
     private ToggleButton toggleButton;
 
     @FXML
-    private HBox parentHbox;
+    private ScrollPane parentScrollPane;
+
 
     private LowStockNotificationServiceApplication lowStockNotificationServiceApplication = new LowStockNotificationServiceApplication();
 
     private LowStockAlertHelper alertHelper;
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupAlertHelper();
@@ -38,11 +40,9 @@ public class StudentHealthProfileController implements Initializable {
      * Initializes and runs the low stock alert helper to display
      * notifications and set the toggle action for the alert icon.
      */
-    public void setupAlertHelper(){
+    public void setupAlertHelper() {
         alertHelper = new LowStockAlertHelper(lowStockNotificationServiceApplication,redCircle,toggleButton);
-        alertHelper.checkLowStockAndShowAlert(parentHbox);
+        alertHelper.checkLowStockAndShowAlert(parentScrollPane);
     }
 
 }
-
-

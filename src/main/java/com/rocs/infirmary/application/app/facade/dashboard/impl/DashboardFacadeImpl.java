@@ -22,7 +22,12 @@ import org.slf4j.LoggerFactory;
 
 public class DashboardFacadeImpl implements DashboardFacade {
     private DashboardReportsDao dashboardReportsDao = new DashboardReportsDaoImpl();
-
+    /**
+     * {@code DashboardFacadeImpl()} is a constructor that requires parameter
+     * @param dashboardReports DAO implementation of Medicine Inventory
+     * this provides the business logic of the Medicine Inventory
+     * {@code this.dashboardReportsDao = dashboardReports} is used to initialize the DashboardReportsDao
+     */
     public DashboardFacadeImpl(DashboardReportsDao dashboardReports) {
         this.dashboardReportsDao = dashboardReports;
     }

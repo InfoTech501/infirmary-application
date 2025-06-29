@@ -1,7 +1,6 @@
 package com.rocs.infirmary.application.data.model.inventory.medicine;
 
 import com.rocs.infirmary.application.data.model.inventory.Inventory;
-import com.rocs.infirmary.application.data.model.report.lowstock.LowStockReport;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 
@@ -34,7 +33,6 @@ public class Medicine extends Inventory{
     }
 
     private String isAvailable;
-
 
     public boolean getHasSelect() {
         return hasSelect;

@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class InfirmaryApplication extends Application {
@@ -12,7 +11,7 @@ public class InfirmaryApplication extends Application {
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader();
 
-        loader.setLocation(getClass().getResource("/views/InventoryPage.fxml"));
+        loader.setLocation(getClass().getResource("/views/ClinicVisitLogPage.fxml"));
 
         BorderPane mainLayout;
         mainLayout = loader.load();

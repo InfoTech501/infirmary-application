@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1124.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.clinic.ClinicVisitLogPageController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1124.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.clinic.ClinicVisitLogController">
     <stylesheets>
         <URL value="@../styles/buttons.css" />
         <URL value="@../styles/label.css" />
@@ -51,7 +51,7 @@
                                     </ImageView>
                                  </graphic>
                               </ToggleButton>
-                              <ImageView fx:id="RedCircle" fitHeight="8.0" fitWidth="8.0" pickOnBounds="true" preserveRatio="true" translateX="13.0" translateY="-13.0" visible="false">
+                              <ImageView fx:id="redCircle" fitHeight="8.0" fitWidth="8.0" pickOnBounds="true" preserveRatio="true" translateX="13.0" translateY="-13.0" visible="false">
                                  <image>
                                     <Image url="@../assets/round-red-notification.png" />
                                  </image>
@@ -98,7 +98,7 @@
     </VBox>
 </top>
    <center>
-      <ScrollPane fx:id="ParentScrollPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <ScrollPane fx:id="parentScrollPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="10.0" left="10.0" right="5.0" top="10.0" />
          </BorderPane.margin>

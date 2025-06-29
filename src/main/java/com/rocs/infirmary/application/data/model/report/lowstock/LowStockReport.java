@@ -29,5 +29,4 @@ public class LowStockReport {
         this.quantityAvailable = quantityAvailable;
     }
 
-
 }
