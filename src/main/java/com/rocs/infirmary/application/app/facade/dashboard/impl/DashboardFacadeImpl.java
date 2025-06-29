@@ -23,10 +23,6 @@ import org.slf4j.LoggerFactory;
 public class DashboardFacadeImpl implements DashboardFacade {
     private DashboardReportsDao dashboardReportsDao = new DashboardReportsDaoImpl();
 
-    public DashboardFacadeImpl () {
-
-    }
-
     public DashboardFacadeImpl(DashboardReportsDao dashboardReports) {
         this.dashboardReportsDao = dashboardReports;
     }

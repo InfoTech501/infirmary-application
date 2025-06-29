@@ -61,10 +61,10 @@ public class LowStockNotificationController {
      * to notify the user about inventory medicine that have low stock.
      *
      * @param ownerStage       the main window where the alert should appear beside
-     * @param lowStockProducts a list of product names or descriptions that are low in stock
+     * @param lowStockMedicine a list of Inventory Medicine that are low in stock
      */
 
-    public static void showLowStockModal(Stage ownerStage, List<String> lowStockProducts) {
+    public static void showLowStockModal(Stage ownerStage, List<String> lowStockMedicine) {
 
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -73,8 +73,8 @@ public class LowStockNotificationController {
 
             LowStockNotificationController controller = loader.getController();
 
-            String message = lowStockProducts.size() + " product(s) have low stock. Check those products to re-order\n"
-                    + "before the stock reaches zero.\n\nProduct(s):\n" + String.join("\n", lowStockProducts );
+            String message = lowStockMedicine.size() + " product(s) have low stock. Check those products to re-order\n"
+                    + "before the stock reaches zero.\n\nProduct(s):\n" + String.join("\n", lowStockMedicine );
 
 
 
