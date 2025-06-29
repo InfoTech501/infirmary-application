@@ -1,6 +1,6 @@
 package com.rocs.infirmary.application.controller.inventory;
 
-import com.rocs.infirmary.application.controller.LowStockNotificationController;
+import com.rocs.infirmary.application.controller.lowstock.LowStockNotificationController;
 import com.rocs.infirmary.application.module.lowstock.notification.service.LowStockNotificationServiceApplication;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
@@ -23,8 +23,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+
 
 import java.io.IOException;
 import java.net.URL;
@@ -32,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
+
 /**
  * {@code InventoryController} is used to handle event processes of the Inventory,
  * this implements Initializable interface
@@ -53,6 +53,11 @@ public class InventoryController implements Initializable {
     @FXML
     private TextField searchTextField;
 
+    @FXML
+    private ImageView RedCircle;
+
+    @FXML
+    private ToggleButton toggleButton;
 
     private ObservableList<Medicine> medicine;
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
@@ -62,11 +67,6 @@ public class InventoryController implements Initializable {
     private List<LowStockReport> lowStockItems = new ArrayList<>();
     private boolean lowLowStock = false;
 
-
-    @FXML
-    private ImageView RedCircle;
-    @FXML
-    private ImageView NotificationImage;
 
 
     @Override
@@ -120,6 +120,8 @@ public class InventoryController implements Initializable {
         }
         medicine = FXCollections.observableArrayList(medicineList);
         medDetailsTable.setItems(medicine);
+        checkLowStockAndShowAlert();
+
     }
     private void showModal(ActionEvent actionEvent,String location) throws IOException {
         Stage stage = new Stage();
@@ -270,60 +272,21 @@ public class InventoryController implements Initializable {
     }
 
 
-
-    public void showLowStockModal(Stage ownerStage, List<String> lowStockProducts) {
-
-        try {
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(getClass().getResource("/views/LowStockNotificationModal.fxml"));
-            VBox root = loader.load();
-
-            LowStockNotificationController controller = loader.getController();
-
-            String message = lowStockProducts.size() + " product(s) have low stock. Check those products to re-order\n" +
-                    "before the stock reaches zero.\nProduct(s): " + String.join(", ", lowStockProducts);
-
-
-
-            controller.setAlertDetails("Low Stock Alert", message);
-
-            Scene scene = new Scene(root);
-            scene.setFill(Color.TRANSPARENT);
-
-            Stage modalStage = new Stage();
-
-            modalStage.setScene(scene);
-            modalStage.initOwner(ownerStage);
-            modalStage.initModality(Modality.NONE);
-            modalStage.initStyle(StageStyle.TRANSPARENT);
-
-
-            double x = ownerStage.getX() + ownerStage.getWidth() - 472 - 60;
-            double y = ownerStage.getY() + ownerStage.getHeight() - 580 - 20;
-
-            modalStage.setX(x);
-            modalStage.setY(y);
-
-            modalStage.show();
-
-        } catch (IOException e) {
-            System.out.println(" Error Occurred" +  e.getMessage());
-        }
-    }
-
-
     private void checkLowStockAndShowAlert() {
+
         lowStockItems = lowStockNotificationServiceApplication.getDashboardFacade().getAllLowStockMedicine();
+
+        RedCircle.setVisible(false);
 
         if (!lowStockItems.isEmpty()) {
             List<String> productInfo = lowStockItems.stream()
-                    .map(LowStockReport::getDescription)
+                    .map(lowStockReport -> lowStockReport.getDescription() + " (Quantity : " + lowStockReport.getQuantityAvailable() + ")")
                     .toList();
 
                 RedCircle.setVisible(true);
-                NotificationImage.setOnMouseClicked(event -> {
+                toggleButton.setOnMouseClicked(event -> {
                     Stage stage = (Stage) medDetailsTable.getScene().getWindow();
-                    showLowStockModal(stage, productInfo);
+                    LowStockNotificationController.showLowStockModal(stage, productInfo);
                 });
 
              lowLowStock = true;

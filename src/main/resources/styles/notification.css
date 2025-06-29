@@ -10,6 +10,10 @@
     -fx-background-color: #FFE1CC;
     -fx-background-radius: 12px;
     -fx-padding: 25px;
+
+    -fx-min-height: 0;
+      -fx-pref-height: -1;
+      -fx-max-height: Infinity;
 }
 
 #AlertTitle {
@@ -22,6 +26,9 @@
     -fx-font-size: 12.5px;
     -fx-text-fill: #000000;
     -fx-line-spacing: 0.5em;
+    -fx-wrap-text: true;
+    -fx-max-width: 600px;
+
 }
 #AlertContainer {
     -fx-background-color: white;
@@ -36,4 +43,10 @@
     -fx-padding: 5px;
     -fx-cursor: hand;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 5, 0.3, 0, 1);
+}
+
+#AlertCardParent {
+  -fx-min-height: 0;
+  -fx-pref-height: -1;
+  -fx-max-height: Infinity;
 }
