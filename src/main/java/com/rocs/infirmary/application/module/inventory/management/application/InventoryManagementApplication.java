@@ -17,7 +17,4 @@ public class InventoryManagementApplication {
     public MedicineInventoryFacade getMedicineInventoryFacade() {
         return medicineInventoryFacade;
     }
-
 }
-
-

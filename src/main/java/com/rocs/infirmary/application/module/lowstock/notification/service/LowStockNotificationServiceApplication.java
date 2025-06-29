@@ -16,10 +16,7 @@ public class LowStockNotificationServiceApplication  {
         this.dashboardFacade = new DashboardFacadeImpl(dashboardReports);
 
     }
-
     public DashboardFacade getDashboardFacade () {
             return dashboardFacade;
     }
-
-
 }

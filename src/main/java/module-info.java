@@ -1,5 +1,4 @@
 module com.rocs.infirmaryapplication {
-
     requires javafx.fxml;
     requires javafx.controls;
     requires java.sql;
@@ -7,7 +6,6 @@ module com.rocs.infirmaryapplication {
     requires org.apache.logging.log4j.slf4j2.impl;
     requires com.oracle.database.jdbc;
     requires java.desktop;
-
 
     opens com.rocs.infirmary.application.controller.inventory to javafx.fxml;
     opens com.rocs.infirmary.application to javafx.fxml;
