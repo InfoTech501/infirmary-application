@@ -1,55 +1,48 @@
-package com.rocs.infirmary.application;
+package com.rocs.infirmary.application.controller.inventory;
 
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
-import org.testfx.framework.junit5.TestFx;
 
-class InfirmaryApplicationTest extends ApplicationTest {
-    private final InfirmaryApplication infirmaryApplication = new InfirmaryApplication();
+import java.io.IOException;
+
+public class InventoryControllerTest extends ApplicationTest {
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader();
-
         loader.setLocation(getClass().getResource("/views/InventoryPage.fxml"));
-
-        BorderPane mainLayout;
-        mainLayout = loader.load();
-
+        BorderPane mainLayout = loader.load();
         Scene scene = new Scene(mainLayout);
         stage.setMaximized(true);
         stage.setScene(scene);
         stage.show();
     }
 
-    @TestFx
-    public void inventoryPageTest() {
+    @Test
+    public void viewInventoryTest() {
 
-
-        //Test searching and filtering of items
+        // Test searching and filtering of items
         clickOn("#QuantityButton");
         sleep(1000);
         clickOn("#Inventory_Filter_Button_A");
         sleep(1000);
         clickOn("#Inventory_Filter_Button_Z");
         sleep(1000);
-        clickOn("#SearchTextField");
+        clickOn("#searchTextField");
         sleep(1000);
         write("Antacid");
         sleep(1000);
         clickOn("#InventoryClearFilterButton");
         sleep(1000);
-        clickOn("#SearchTextField");
+        clickOn("#searchTextField");
         sleep(1000);
         write("Aspirin");
         sleep(1000);
         clickOn("#InventoryClearFilterButton");
         sleep(1000);
-
     }
-
 }
