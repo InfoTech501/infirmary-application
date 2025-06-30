@@ -31,7 +31,6 @@ public class ClinicVisitLogController implements Initializable {
     private LowStockNotificationServiceApplication lowStockNotificationServiceApplication = new LowStockNotificationServiceApplication();
 
     private LowStockAlertHelper alertHelper;
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         alertHelper = new LowStockAlertHelper(lowStockNotificationServiceApplication,redCircle,toggleButton);
