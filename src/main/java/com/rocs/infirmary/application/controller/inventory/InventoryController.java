@@ -68,18 +68,9 @@ public class InventoryController implements Initializable {
         refresh();
         itemSearch();
         initalizeEditClick();
-        setupAlertHelper();
-    }
-
-    /**
-     * Initializes and runs the low stock alert helper to display
-     * notifications and set the toggle action for the alert icon.
-     */
-    public void setupAlertHelper() {
         alertHelper = new LowStockAlertHelper(lowStockNotificationServiceApplication,redCircle,toggleButton);
         alertHelper.checkLowStockAndShowAlert(medDetailsTable);
     }
-
     private void setup() {
         medDetailsTable.setEditable(true);
         selectColumn.setCellValueFactory(cellData -> cellData.getValue().isSelectedProperty());
@@ -122,7 +113,8 @@ public class InventoryController implements Initializable {
         }
         medicine = FXCollections.observableArrayList(medicineList);
         medDetailsTable.setItems(medicine);
-        setupAlertHelper();
+        alertHelper = new LowStockAlertHelper(lowStockNotificationServiceApplication,redCircle,toggleButton);
+        alertHelper.checkLowStockAndShowAlert(medDetailsTable);
     }
     private void showModal(ActionEvent actionEvent,String location) throws IOException {
         Stage stage = new Stage();

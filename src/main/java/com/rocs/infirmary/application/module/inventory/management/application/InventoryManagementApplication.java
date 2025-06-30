@@ -13,7 +13,6 @@ public class InventoryManagementApplication {
         MedicineInventoryDao medicineInventoryDao = new MedicineInventoryDaoImpl();
         this.medicineInventoryFacade = new MedicineInventoryFacadeImpl(medicineInventoryDao);
     }
-
     public MedicineInventoryFacade getMedicineInventoryFacade() {
         return medicineInventoryFacade;
     }

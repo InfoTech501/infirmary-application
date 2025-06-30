@@ -32,14 +32,6 @@ public class DashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        setupAlertHelper();
-    }
-
-    /**
-     * Initializes and runs the low stock alert helper to display
-     * notifications and set the toggle action for the alert icon.
-     */
-    public void setupAlertHelper() {
         alertHelper = new LowStockAlertHelper(lowStockNotificationServiceApplication, redCircle, toggleButton);
         alertHelper.checkLowStockAndShowAlert(parentVbox);
     }
