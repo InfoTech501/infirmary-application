@@ -16,10 +16,8 @@ import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,7 +25,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.ResourceBundle;
 /**
  * {@code AddInventoryController} is used to handle event processes of the Inventory when adding new Items
@@ -52,6 +49,8 @@ public class AddInventoryController implements Initializable {
     private TextField descriptionTextField;
     @FXML
     private DatePicker expirationDatePicker;
+    @FXML
+    private ChoiceBox itemTypeChoicebox;
 
     private ObservableList<Medicine> medicine;
     private DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
@@ -105,26 +104,12 @@ public class AddInventoryController implements Initializable {
             if(!med.isSelected()){
                 medicineModel.setHasSelect(false);
             }else{
-               medicineModel.setHasSelect(true);
+                medicineModel.setHasSelect(true);
                 System.out.println(med.isSelected());
             }
         }
         medicine = FXCollections.observableArrayList(medicineList);
         medDetailsTable.setItems(medicine);
-    }
-    private String getMedicineId(TextField textField){
-        String itemName = textField.getText();
-        String[] words = itemName.trim().split(" ");
-        String medicineID = "";
-
-        if (words.length == 1) {
-            medicineID += itemName.substring(0, 2).toUpperCase();
-        } else {
-            for (String word : words) {
-                medicineID += Character.toUpperCase(word.charAt(0));
-            }
-        }
-        return medicineID;
     }
     /**
      * This method retrieves a list of medicines that are marked as selected.
@@ -138,48 +123,42 @@ public class AddInventoryController implements Initializable {
                 .toList();
         return selectedMedicine;
     }
+    private boolean addMedicineToInventory(int quantity, String itemType,Date expirationDate){
+        refresh();
+        if(!medicine.isEmpty()){
+            for(Medicine med:medicine){
+                if(med.getItemName().equalsIgnoreCase(productNameTextField.getText())){
+                    return inventoryManagementApplication.getMedicineInventoryFacade().addInventory(med.getMedicineId(), itemType, quantity, expirationDate);
+                }
+            }
+        }
+        return false;
+    }
     private boolean addMedicine() throws ParseException {
         boolean isAdded = false;
-        String medicineId = getMedicineId(productNameTextField);
+        boolean found = false;
         int quantity = Integer.parseInt(quantityTextField.getText());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-        if(!medicine.isEmpty()) {
+        Date expirationDate = dateFormat.parse(String.valueOf(expirationDatePicker.getValue()));
+        String productName = productNameTextField.getText().trim();
+        if (!medicine.isEmpty()) {
             for (Medicine med : medicine) {
-                if (med.getItemName() == productNameTextField.getText()) {
-                    inventoryManagementApplication.getMedicineInventoryFacade().addInventory(med.getMedicineId(), med.getItemType(), quantity);
-                    isAdded = true;
-                    break;
-                } else {
-                    Date expirationDate;
-                    String inputDate = String.valueOf(expirationDatePicker.getValue());
-                    expirationDate = dateFormat.parse(inputDate);
-
-                    medicineModel.setMedicineId(medicineId);
-                    medicineModel.setItemName(productNameTextField.getText());
-                    medicineModel.setExpirationDate(new Timestamp(expirationDate.getTime()));
-                    medicineModel.setDescription(descriptionTextField.getText());
-                    inventoryManagementApplication.getMedicineInventoryFacade().addMedicine(medicineModel);
-                    inventoryManagementApplication.getMedicineInventoryFacade().addInventory(medicineId, "medicine", quantity);
-                    isAdded = true;
+                if (med.getItemName().equalsIgnoreCase(productName)) {
+                    found = true;
+                    isAdded = inventoryManagementApplication.getMedicineInventoryFacade().addInventory(med.getMedicineId(), med.getItemType(), quantity, expirationDate);
                     break;
                 }
             }
-        }else{
-            Date expirationDate;
-            String inputDate = String.valueOf(expirationDatePicker.getValue());
-            expirationDate = dateFormat.parse(inputDate);
-            medicineModel.setMedicineId(medicineId);
-            medicineModel.setItemName(productNameTextField.getText());
-            medicineModel.setExpirationDate(new Timestamp(expirationDate.getTime()));
+        }
+        if (!found) {
+            medicineModel.setItemName(productName);
             medicineModel.setDescription(descriptionTextField.getText());
             inventoryManagementApplication.getMedicineInventoryFacade().addMedicine(medicineModel);
-            inventoryManagementApplication.getMedicineInventoryFacade().addInventory(medicineId, "medicine", quantity);
-            isAdded = true;
+            isAdded = addMedicineToInventory(quantity,"medicine",expirationDate);
         }
-        refresh();
         return isAdded;
     }
+
     /**
      * this method handles the action triggered when the confirm button is clicked.
      * @param actionEvent the event triggered by the confirm button click

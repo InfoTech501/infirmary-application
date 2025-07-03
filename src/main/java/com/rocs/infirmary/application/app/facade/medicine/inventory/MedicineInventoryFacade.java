@@ -38,9 +38,10 @@ public interface MedicineInventoryFacade {
      * @param medicineId the unique identifier of the medicine
      * @param itemType the type of the Item to be added in the inventory
      * @param quantity the quantity to be added to the inventory
+     * @param expirationDate is used to specify the medicine expiration date
      * @return true if the inventory was successfully updated; false otherwise
      **/
-    boolean addInventory(String medicineId , String itemType, int quantity );
+    boolean addInventory(int medicineId , String itemType, int quantity,Date expirationDate );
     /**
      * This display all the medicine retrieved From the Medicine Table
      * @return a List of Medicine that is available on the database
@@ -60,5 +61,5 @@ public interface MedicineInventoryFacade {
      * @param expirationDate is used to specify the medicine expiration date
      * @return true if the medicine is successfully updated and false if not
      **/
-    boolean updateMedicineInventory(int inventoryId,String medicineId, int quantity, String description, Date expirationDate);
+    boolean updateMedicineInventory(int inventoryId,int medicineId, int quantity, String description, Date expirationDate);
 }

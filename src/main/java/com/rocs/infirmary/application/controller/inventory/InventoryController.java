@@ -22,7 +22,6 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -47,7 +46,7 @@ public class InventoryController implements Initializable {
     @FXML
     private TableColumn<Medicine, Timestamp> expiryDateColumn;
     @FXML
-    private TableColumn<Medicine,String> descriptionColumn;
+    private TableColumn<Medicine,String> itemTypeColumn;
     @FXML
     private TextField searchTextField;
     private ObservableList<Medicine> medicine;
@@ -73,8 +72,8 @@ public class InventoryController implements Initializable {
         productNameColumn.setStyle("-fx-alignment: CENTER;");
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         quantityColumn.setStyle("-fx-alignment: CENTER;");
-        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-        descriptionColumn.setStyle("-fx-alignment: CENTER;");
+        itemTypeColumn.setCellValueFactory(new PropertyValueFactory<>("itemType"));
+        itemTypeColumn.setStyle("-fx-alignment: CENTER;");
         expiryDateColumn.setCellValueFactory(new PropertyValueFactory<>("expirationDate"));
         setMedicineExpiration();
         expiryDateColumn.setStyle("-fx-alignment: CENTER;");

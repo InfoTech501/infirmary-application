@@ -31,7 +31,7 @@ public class UpdateInventoryController {
     @FXML
     private TextField descriptionTextField;
 
-    private String medicineId;
+    private int medicineId;
     private int inventoryId;
     private LocalDate localDate;
     private DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");

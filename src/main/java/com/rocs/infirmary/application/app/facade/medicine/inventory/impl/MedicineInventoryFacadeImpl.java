@@ -66,8 +66,8 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
     }
 
     @Override
-    public boolean addInventory(String medicineId, String itemType, int quantity) {
-        return this.medicineInventoryDao.addInventory(medicineId, itemType, quantity);
+    public boolean addInventory(int medicineId, String itemType, int quantity,Date expirationDate) {
+        return this.medicineInventoryDao.addInventory(medicineId, itemType, quantity,expirationDate);
     }
     @Override
     public List<Medicine> getAllMedicineFromMedicineTable() {
@@ -80,7 +80,7 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
     }
 
     @Override
-    public boolean updateMedicineInventory(int inventoryId,String medicineId, int quantity, String description, Date expirationDate) {
+    public boolean updateMedicineInventory(int inventoryId,int medicineId, int quantity, String description, Date expirationDate) {
         return this.medicineInventoryDao.updateMedicine(inventoryId,medicineId,quantity,description,expirationDate);
     }
 
