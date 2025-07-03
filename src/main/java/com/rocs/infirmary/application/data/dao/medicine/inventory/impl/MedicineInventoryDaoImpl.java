@@ -144,7 +144,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     }
 
     @Override
-    public boolean updateMedicine(String medicineId, int quantity, String description, Date expirationDate) {
+    public boolean updateMedicine(int inventoryId, String medicineId, int quantity, String description, Date expirationDate) {
         LOGGER.info("update medicine started");
         boolean isUpdated = false;
         QueryConstants queryConstants = new QueryConstants();
@@ -153,7 +153,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                 String updateQuantityQuery = queryConstants.UPDATE_MEDICINE_QUANTITY_QUERY();
                 try(PreparedStatement preparedStatement = connection.prepareStatement(updateQuantityQuery)) {
                     preparedStatement.setInt(1,quantity);
-                    preparedStatement.setString(2, medicineId);
+                    preparedStatement.setInt(2, inventoryId);
                     int affectedRows = preparedStatement.executeUpdate();
                     isUpdated = affectedRows > 0;
                     LOGGER.info("Data inserted:\n" +
@@ -251,6 +251,50 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
             throw new RuntimeException(e);
         }
 
+    }
+
+    @Override
+    public List<Medicine> findAllMedicineFromMedicineTable() {
+        LOGGER.info("get all medicine started");
+        List<Medicine> MedicineInventoryList = new ArrayList<>();
+
+
+        QueryConstants queryConstants = new QueryConstants();
+        String sql= queryConstants.retrieveAllMedicine();
+
+
+
+        try (Connection con = ConnectionHelper.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            LOGGER.info("Query in use"+sql);
+
+            while (rs.next()) {
+
+                Medicine medicine = new Medicine();
+
+                medicine.setMedicineId(rs.getString("MEDICINE_ID"));
+                medicine.setItemName(rs.getString("ITEM_NAME"));
+                medicine.setDescription(rs.getString("DESCRIPTION"));
+                medicine.setExpirationDate(rs.getTimestamp("EXPIRATION_DATE"));
+
+                LOGGER.info("Data retrieved: "+"\n"
+                        +"Medicine  ID: "+medicine.getMedicineId()+"\n"
+                        +"Item Name   : "+medicine.getItemName()+"\n"
+                        +"Description : "+medicine.getDescription()+"\n"
+                        +"Expiration  : "+medicine.getExpirationDate()
+                );
+
+                MedicineInventoryList.add(medicine);
+            }
+
+        } catch (SQLException e) {
+            LOGGER.error("SQLException Occurred: " + e.getMessage());
+            System.out.println("An SQL Exception occurred: " + e.getMessage());
+        }
+        LOGGER.info("Data retrieved successfully");
+        LOGGER.info("Retrieved Date :   " + new Date());
+        return  MedicineInventoryList;
     }
 
 }

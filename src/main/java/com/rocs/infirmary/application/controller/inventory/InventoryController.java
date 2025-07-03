@@ -22,6 +22,10 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -41,13 +45,13 @@ public class InventoryController implements Initializable {
     @FXML
     private TableColumn<Medicine, Integer> quantityColumn;
     @FXML
-    private TableColumn<Medicine, String> expiryDateColumn;
+    private TableColumn<Medicine, Timestamp> expiryDateColumn;
     @FXML
     private TableColumn<Medicine,String> descriptionColumn;
     @FXML
     private TextField searchTextField;
-
     private ObservableList<Medicine> medicine;
+    private DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     private List<Medicine> medicineList = new ArrayList<>();
     @Override
@@ -72,8 +76,23 @@ public class InventoryController implements Initializable {
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         descriptionColumn.setStyle("-fx-alignment: CENTER;");
         expiryDateColumn.setCellValueFactory(new PropertyValueFactory<>("expirationDate"));
+        setMedicineExpiration();
         expiryDateColumn.setStyle("-fx-alignment: CENTER;");
 
+    }
+    private void setMedicineExpiration(){
+        expiryDateColumn.setCellFactory(expiryDateColumn -> new TableCell<Medicine, Timestamp>() {
+            @Override
+            protected void updateItem(Timestamp expirationDate, boolean empty) {
+                super.updateItem(expirationDate, empty);
+                if (empty || expirationDate == null) {
+                    setText(null);
+                } else {
+                    LocalDate localDate = expirationDate.toLocalDateTime().toLocalDate();
+                    setText(localDate.format(outputFormat));
+                }
+            }
+        });
     }
     private void initalizeEditClick(){
         medDetailsTable.setRowFactory(t->{

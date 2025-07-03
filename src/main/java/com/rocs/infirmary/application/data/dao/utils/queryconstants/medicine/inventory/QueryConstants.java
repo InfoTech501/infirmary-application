@@ -15,12 +15,12 @@ public class QueryConstants {
 
     private final String ADD_MEDICINE_TO_MAIN_INVENTORY_QUERY = "INSERT INTO INVENTORY (MEDICINE_ID , ITEM_TYPE, QUANTITY) VALUES (?,?,?)";
 
-    private final String GET_ALL_MEDICINE_QUERY = "SELECT MEDICINE_ID ,ITEM_NAME FROM MEDICINE";
+    private final String GET_ALL_MEDICINE_QUERY = "SELECT MEDICINE_ID ,ITEM_NAME,DESCRIPTION,EXPIRATION_DATE FROM MEDICINE WHERE IS_AVAILABLE = 1";
 
     private String DELETE_INVENTORY_QUERY = "DELETE INVENTORY WHERE INVENTORY_ID = ? ";
 
 
-    private String UPDATE_MEDICINE_QUANTITY_QUERY = "UPDATE INVENTORY SET inventory.quantity = ? where inventory.medicine_id = ?";
+    private String UPDATE_MEDICINE_QUANTITY_QUERY = "UPDATE INVENTORY SET inventory.quantity = ? where inventory.inventory_id = ?";
     private String UPDATE_MEDICINE_DESCRIPTION_QUERY = "UPDATE MEDICINE SET medicine.description = ? where medicine.medicine_id = ?";
     private String UPDATE_MEDICINE_EXPIRATIONDATE_QUERY = "UPDATE MEDICINE SET medicine.expiration_date = ? where medicine.medicine_id = ?";
 

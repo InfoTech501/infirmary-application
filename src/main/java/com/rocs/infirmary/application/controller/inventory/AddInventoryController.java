@@ -19,9 +19,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -38,9 +41,7 @@ public class AddInventoryController implements Initializable {
     @FXML
     private TableColumn<Medicine, String> productNameColumn;
     @FXML
-    private TableColumn<Medicine, Integer> quantityColumn;
-    @FXML
-    private TableColumn<Medicine, String> expiryDateColumn;
+    private TableColumn<Medicine, Timestamp> expiryDateColumn;
     @FXML
     private TableColumn<Medicine, String> descriptionColumn;
     @FXML
@@ -48,9 +49,12 @@ public class AddInventoryController implements Initializable {
     @FXML
     private TextField quantityTextField;
     @FXML
-    private TextField expirationDateTextField;
-    private ObservableList<Medicine> medicine;
+    private TextField descriptionTextField;
+    @FXML
+    private DatePicker expirationDatePicker;
 
+    private ObservableList<Medicine> medicine;
+    private DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     Medicine medicineModel = new Medicine();
 
@@ -70,17 +74,29 @@ public class AddInventoryController implements Initializable {
 
         productNameColumn.setCellValueFactory(new PropertyValueFactory<>("itemName"));
         productNameColumn.setStyle("-fx-alignment: CENTER;");
-        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        quantityColumn.setStyle("-fx-alignment: CENTER;");
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         descriptionColumn.setStyle("-fx-alignment: CENTER;");
         expiryDateColumn.setCellValueFactory(new PropertyValueFactory<>("expirationDate"));
+        setMedicineExpiration();
         expiryDateColumn.setStyle("-fx-alignment: CENTER;");
 
     }
-
+    private void setMedicineExpiration(){
+        expiryDateColumn.setCellFactory(expiryDateColumn -> new TableCell<Medicine, Timestamp>() {
+            @Override
+            protected void updateItem(Timestamp expirationDate, boolean empty) {
+                super.updateItem(expirationDate, empty);
+                if (empty || expirationDate == null) {
+                    setText(null);
+                } else {
+                    LocalDate localDate = expirationDate.toLocalDateTime().toLocalDate();
+                    setText(localDate.format(outputFormat));
+                }
+            }
+        });
+    }
     private void refresh() {
-        List<Medicine> medicineList; medicineList = inventoryManagementApplication.getMedicineInventoryFacade().getAllMedicine();
+        List<Medicine> medicineList = inventoryManagementApplication.getMedicineInventoryFacade().getAllMedicineFromMedicineTable();
         for (Medicine med : medicineList) {
             if (med.isSelectedProperty() == null) {
                 med.setIsSelected(false);
@@ -95,14 +111,6 @@ public class AddInventoryController implements Initializable {
         }
         medicine = FXCollections.observableArrayList(medicineList);
         medDetailsTable.setItems(medicine);
-    }
-    private void showModal(ActionEvent actionEvent,String location) throws IOException {
-        Stage stage = new Stage();
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(location)));
-        stage.setScene(new Scene(root));
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(((Node)actionEvent.getSource()).getScene().getWindow() );
-        stage.show();
     }
     private String getMedicineId(TextField textField){
         String itemName = textField.getText();
@@ -134,27 +142,40 @@ public class AddInventoryController implements Initializable {
         boolean isAdded = false;
         String medicineId = getMedicineId(productNameTextField);
         int quantity = Integer.parseInt(quantityTextField.getText());
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
-        for(Medicine med:medicine){
-            if(Objects.equals(med.getItemName(), productNameTextField.getText())){
-                System.out.println("existing");
-                inventoryManagementApplication.getMedicineInventoryFacade().addInventory(med.getMedicineId(),med.getItemType(),quantity);
-                isAdded = true;
-                break;
-            }else{
-                System.out.println("new");
-                Date expirationDate;
-                String inputDate = expirationDateTextField.getText();
-                expirationDate = dateFormat.parse(inputDate);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-                medicineModel.setMedicineId(medicineId);
-                medicineModel.setItemName(productNameTextField.getText());
-                medicineModel.setExpirationDate(new Timestamp(expirationDate.getTime()));
-                inventoryManagementApplication.getMedicineInventoryFacade().addMedicine(medicineModel);
-                inventoryManagementApplication.getMedicineInventoryFacade().addInventory(medicineId,"medicine",quantity);
-                isAdded = true;
-                break;
+        if(!medicine.isEmpty()) {
+            for (Medicine med : medicine) {
+                if (med.getItemName() == productNameTextField.getText()) {
+                    inventoryManagementApplication.getMedicineInventoryFacade().addInventory(med.getMedicineId(), med.getItemType(), quantity);
+                    isAdded = true;
+                    break;
+                } else {
+                    Date expirationDate;
+                    String inputDate = String.valueOf(expirationDatePicker.getValue());
+                    expirationDate = dateFormat.parse(inputDate);
+
+                    medicineModel.setMedicineId(medicineId);
+                    medicineModel.setItemName(productNameTextField.getText());
+                    medicineModel.setExpirationDate(new Timestamp(expirationDate.getTime()));
+                    medicineModel.setDescription(descriptionTextField.getText());
+                    inventoryManagementApplication.getMedicineInventoryFacade().addMedicine(medicineModel);
+                    inventoryManagementApplication.getMedicineInventoryFacade().addInventory(medicineId, "medicine", quantity);
+                    isAdded = true;
+                    break;
+                }
             }
+        }else{
+            Date expirationDate;
+            String inputDate = String.valueOf(expirationDatePicker.getValue());
+            expirationDate = dateFormat.parse(inputDate);
+            medicineModel.setMedicineId(medicineId);
+            medicineModel.setItemName(productNameTextField.getText());
+            medicineModel.setExpirationDate(new Timestamp(expirationDate.getTime()));
+            medicineModel.setDescription(descriptionTextField.getText());
+            inventoryManagementApplication.getMedicineInventoryFacade().addMedicine(medicineModel);
+            inventoryManagementApplication.getMedicineInventoryFacade().addInventory(medicineId, "medicine", quantity);
+            isAdded = true;
         }
         refresh();
         return isAdded;
@@ -178,7 +199,14 @@ public class AddInventoryController implements Initializable {
             dialog.setContentText("Quantity cannot be empty");
             dialog.getDialogPane().getButtonTypes().add(type);
             dialog.showAndWait();
-        }else if(expirationDateTextField.getText()==null||expirationDateTextField.getText().isEmpty()|| expirationDateTextField.getText().isBlank()){
+        } else if (descriptionTextField.getText() == null || descriptionTextField.getText().isEmpty()||descriptionTextField.getText().isBlank()) {
+            Dialog dialog = new Dialog();
+            dialog.setTitle("Warning");
+            ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+            dialog.setContentText("Description cannot be empty");
+            dialog.getDialogPane().getButtonTypes().add(type);
+            dialog.showAndWait();
+        } else if(expirationDatePicker.getValue()==null){
             Dialog dialog = new Dialog();
             dialog.setTitle("Warning");
             ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
@@ -232,7 +260,7 @@ public class AddInventoryController implements Initializable {
      * this method handles the action triggered when the cancel button is clicked.
      * @param actionEvent the event triggered by the confirm button click
      */
-    public void onCancelBtnClick(ActionEvent actionEvent) {
+    public void onCancelBtnClick(ActionEvent actionEvent) throws IOException {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
     }

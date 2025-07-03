@@ -60,5 +60,5 @@ public interface MedicineInventoryFacade {
      * @param expirationDate is used to specify the medicine expiration date
      * @return true if the medicine is successfully updated and false if not
      **/
-    boolean updateMedicineInventory(String medicineId, int quantity, String description, Date expirationDate);
+    boolean updateMedicineInventory(int inventoryId,String medicineId, int quantity, String description, Date expirationDate);
 }

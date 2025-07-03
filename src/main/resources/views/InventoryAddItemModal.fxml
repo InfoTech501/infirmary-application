@@ -70,8 +70,8 @@
                               <RowConstraints maxHeight="39.333309173583984" minHeight="0.0" prefHeight="16.333323160807296" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <TextField fx:id="expirationDateTextField" alignment="CENTER" prefHeight="57.0" prefWidth="280.0" GridPane.rowIndex="1" />
                               <Label fx:id="ExpirationDateLabel" text="Lot/Expiration Date" />
+                              <DatePicker fx:id="expirationDatePicker" prefHeight="52.0" prefWidth="251.0" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
                      </children>
@@ -89,8 +89,8 @@
                               <RowConstraints maxHeight="27.666656494140625" minHeight="0.0" prefHeight="16.66665267944336" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <TextField alignment="CENTER" prefHeight="57.0" prefWidth="280.0" GridPane.rowIndex="1" />
-                              <Label fx:id="BatchNoLable" text="Batch No." />
+                              <TextField fx:id="descriptionTextField" alignment="CENTER" prefHeight="57.0" prefWidth="280.0" GridPane.rowIndex="1" />
+                              <Label fx:id="BatchNoLable" text="Description" />
                            </children>
                         </GridPane>
                      </children>
@@ -156,11 +156,9 @@
                         <TableView fx:id="medDetailsTable" prefHeight="435.0" prefWidth="983.0">
                            <columns>
                               <TableColumn fx:id="selectColumn" prefWidth="75.33334350585938" text="Select" />
-                              <TableColumn fx:id="productNameColumn" prefWidth="196.6666717529297" text="Product Name" />
-                              <TableColumn fx:id="quantityColumn" minWidth="4.000030517578125" prefWidth="181.33331298828125" text="Quantity" />
-                              <TableColumn fx:id="descriptionColumn" prefWidth="232.0" text="Description" />
-                              <TableColumn fx:id="expiryDateColumn" prefWidth="168.0001220703125" text="Expiry Date" />
-                              <TableColumn fx:id="SelectColumn1" prefWidth="116.6666259765625" text="Batch No." />
+                              <TableColumn fx:id="productNameColumn" prefWidth="261.0" text="Product Name" />
+                              <TableColumn fx:id="descriptionColumn" prefWidth="284.0" text="Description" />
+                              <TableColumn fx:id="expiryDateColumn" prefWidth="318.0" text="Expiry Date" />
                            </columns>
                         </TableView>
                      </content>

@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Optional;
 /**
@@ -25,11 +27,14 @@ public class UpdateInventoryController {
     @FXML
     private TextField quantityTextField;
     @FXML
-    private TextField expirationDateTextField;
+    private DatePicker expirationDatePicker;
     @FXML
     private TextField descriptionTextField;
 
     private String medicineId;
+    private int inventoryId;
+    private LocalDate localDate;
+    private DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     private final Logger LOGGER = LoggerFactory.getLogger(UpdateInventoryController.class);
     private static final String prompt = "  Cannot be edit as of now due to conflicts";
@@ -43,22 +48,31 @@ public class UpdateInventoryController {
         productNameTextField.setText(medicine.getItemName()+prompt);
         productNameTextField.setEditable(false);
         quantityTextField.setText(String.valueOf(medicine.getQuantity()));
-        expirationDateTextField.setText(String.valueOf(medicine.getExpirationDate()));
+
+        localDate = medicine.getExpirationDate().toLocalDateTime().toLocalDate();
+        expirationDatePicker.setPromptText(localDate.format(outputFormat));
+
         descriptionTextField.setText(medicine.getDescription());
         medicineId = medicine.getMedicineId();
+        inventoryId = medicine.getInventoryId();
     }
 
     private boolean updateMedicine()throws ParseException{
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-mm-dd");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         boolean isUpdated = false;
-        if(!productNameTextField.getText().isEmpty()||!quantityTextField.getText().isEmpty()||!expirationDateTextField.getText().isEmpty()){
-            String inputDate = expirationDateTextField.getText();
-            simpleDateFormat.setLenient(false);
-            Date date = simpleDateFormat.parse(inputDate);
-            Date parseDate = new Date(date.getTime());
-
-            isUpdated = inventoryManagementApplication.getMedicineInventoryFacade().updateMedicineInventory(medicineId,Integer.parseInt(quantityTextField.getText()),descriptionTextField.getText(), parseDate);
+        if (!productNameTextField.getText().isEmpty() && !quantityTextField.getText().isEmpty()) {
+            Date expirationDate;
+            if (expirationDatePicker.getValue() != null) {
+                String inputDate = expirationDatePicker.getValue().toString();
+                simpleDateFormat.setLenient(false);
+                Date parsedDate = simpleDateFormat.parse(inputDate);
+                expirationDate = new Date(parsedDate.getTime());
+            } else {
+                expirationDate = java.sql.Date.valueOf(localDate);
+            }
+            isUpdated = inventoryManagementApplication.getMedicineInventoryFacade().updateMedicineInventory(inventoryId,medicineId,Integer.parseInt(quantityTextField.getText()), descriptionTextField.getText(), expirationDate);
         }
+
         return isUpdated;
     }
     /**
@@ -91,7 +105,7 @@ public class UpdateInventoryController {
             LOGGER.warn("Quantity field is empty");
             dialog.getDialogPane().getButtonTypes().add(type);
             dialog.showAndWait();
-        }else if(expirationDateTextField.getText()==null||expirationDateTextField.getText().isEmpty()|| expirationDateTextField.getText().isBlank()){
+        }else if(expirationDatePicker.getPromptText() == null){
             Dialog dialog = new Dialog();
             dialog.setTitle("Warning");
             ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);

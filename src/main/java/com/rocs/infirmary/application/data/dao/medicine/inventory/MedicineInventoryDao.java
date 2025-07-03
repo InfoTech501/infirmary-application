@@ -39,7 +39,7 @@ public interface MedicineInventoryDao {
      * @param expirationDate is used to update the medicine's expiration date
      * @return true when the medicine are successfully updated, false when the medicine are not updated successfully due to error
      * */
-    boolean updateMedicine(String medicineId, int quantity, String description, Date expirationDate);
+    boolean updateMedicine(int inventoryId,String medicineId, int quantity, String description, Date expirationDate);
     /**
      * this is used to add new medicine in the inventory
      * @param medicineId is a unique identifier that is used to specify the item to be added
@@ -53,4 +53,6 @@ public interface MedicineInventoryDao {
      * @return true if the item is successfully deleted, false when item is not successfully deleted
      */
     boolean deleteInventory(int inventoryID);
+
+    List<Medicine> findAllMedicineFromMedicineTable();
 }
