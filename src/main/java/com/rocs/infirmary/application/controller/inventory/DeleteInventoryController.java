@@ -19,8 +19,6 @@ public class DeleteInventoryController{
     @FXML
     private Label inventoryDeleteLabelA;
     @FXML
-    private Label inventoryDeleteLabelB;
-    @FXML
     private GridPane medicineListContainer;
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     private List<Medicine> medicineList = new ArrayList<>();

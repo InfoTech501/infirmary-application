@@ -244,10 +244,10 @@ public class AddInventoryController implements Initializable {
             dialog.showAndWait();
         }else {
             List<Medicine> selectedMedicine = getSelectedMedicines();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/InventoryDeleteItemModal.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MedicineDeleteItemModal.fxml"));
             Parent root = loader.load();
-            DeleteInventoryController deleteInventoryController = loader.getController();
-            deleteInventoryController.showMedicineList(selectedMedicine);
+            DeleteMedicineController deleteMedicineController = loader.getController();
+            deleteMedicineController.showMedicineList(selectedMedicine);
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
