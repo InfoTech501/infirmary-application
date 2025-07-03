@@ -6,58 +6,28 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 import com.rocs.infirmary.application.InfirmaryApplication;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
+import javafx.scene.layout.StackPane;
 
-
+/**
+ * {@code MainpageController} is used to handle navigation between different pages,
+ * this implements Initializable interface
+ **/
 public class MainpageController implements Initializable {
-
-    @FXML
-    private ToggleButton accountBtn;
-
-    @FXML
-    private Button clinicVisitLogBtn;
 
     @FXML
     private Button dashboardBtn;
 
     @FXML
-    private ImageView dropdownAccountBtn;
-
-    @FXML
-    private VBox homepageScene;
-
-    @FXML
-    private BorderPane infirmaryContainerPage;
-
-    @FXML
-    private Button inventoryBtn;
-
-    @FXML
-    private VBox mainpageEnvironmentVbox;
+    private StackPane homepageScene;
 
     @FXML
     private Label pageLabel;
-
-    @FXML
-    private Button studentHealthProfileBtn;
-
-    @FXML
-    private ToggleButton notificationBtn;
-
-    @FXML
-    private Label welcomeText;
 
 
     @Override
@@ -65,40 +35,45 @@ public class MainpageController implements Initializable {
         loadDashboard();
     }
 
-    public boolean loadDashboard() {
+    private void loadDashboard() {
         try {
             switchScene("/views/DashboardPage.fxml");
-//            Parent root = FXMLLoader.load(Objects.requireNonNull(InfirmaryApplication.class.getResource("/views/DashboardPage.fxml")));
-//            Stage stage = new Stage();
-//            stage.setScene(new Scene(root));
-////            stage.setMinWidth(400);
-////            stage.setMinHeight(600);
-            pageLabel.setText(" Dashboard");
-            dashboardBtn.isDefaultButton();
+            pageLabel.setText("Dashboard");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return true;
     }
 
+    /**
+     * this method handles the action triggered when the clinic visit log button is clicked.
+     */
     @FXML
     void setClinicVisitLogBtn() throws IOException {
         switchScene("/views/ClinicVisitLogPage.fxml");
         pageLabel.setText("Clinic Visit Log");
     }
 
+    /**
+     * this method handles the action triggered when the dashboard button is clicked.
+     */
     @FXML
     void setDashboardBtn() throws IOException {
         switchScene("/views/DashboardPage.fxml");
         pageLabel.setText("Dashboard");
     }
 
+    /**
+     * this method handles the action triggered when the student health profile button is clicked.
+     */
     @FXML
     void setStudentHealthProfileBtn() throws IOException {
         switchScene("/views/StudentHealthProfilePage.fxml");
         pageLabel.setText("Student Health Profile");
     }
 
+    /**
+     * this method handles the action triggered when the inventory button is clicked.
+     */
     @FXML
     public void setInventoryBtn() throws IOException {
         switchScene("/views/InventoryPage.fxml");
@@ -106,7 +81,8 @@ public class MainpageController implements Initializable {
     }
 
     private void switchScene(String fxmlFile) throws IOException {
-        BorderPane nextVbox = FXMLLoader.load(Objects.requireNonNull(InfirmaryApplication.class.getResource(fxmlFile)));
-        infirmaryContainerPage.setCenter(nextVbox);
+        homepageScene.getChildren().clear();
+        Parent newPage = FXMLLoader.load(Objects.requireNonNull(InfirmaryApplication.class.getResource(fxmlFile)));
+        homepageScene.getChildren().add(newPage);
     }
 }
