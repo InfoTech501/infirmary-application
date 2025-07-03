@@ -1,7 +1,9 @@
 package com.rocs.infirmary.application.data.dao.student.record.impl;
 
 import com.rocs.infirmary.application.data.connection.ConnectionHelper;
-import com.rocs.infirmary.application.data.dao.utils.queryconstants.student.QueryConstants;
+import static com.rocs.infirmary.application.data.dao.utils.queryconstants.student.QueryConstants.*;
+
+import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import com.rocs.infirmary.application.data.model.person.student.Student;
 import com.rocs.infirmary.application.data.dao.student.record.StudentMedicalRecordDao;
 import org.slf4j.Logger;
@@ -11,7 +13,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 
 /**
  * The StudentMedicalRecordDaoImpl class implements the StudentMedicalRecordDao interface
@@ -26,15 +27,11 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
         Student studentMedicalRecord = null;
         try (Connection con = ConnectionHelper.getConnection()) {
 
-            QueryConstants queryConstants = new QueryConstants();
-
-            String sql = queryConstants.getAllMedicalInformationByLRN();
-
-            PreparedStatement stmt = con.prepareStatement(sql);
-            LOGGER.info("Query in use"+sql);
+            PreparedStatement stmt = con.prepareStatement(GET_ALL_MEDICAL_INFORMATION_BY_LRN);
+            LOGGER.info("Query in use" + GET_ALL_MEDICAL_INFORMATION_BY_LRN);
 
             stmt.setLong(1, LRN);
-            LOGGER.info("data inserted: "+"LRN: "+LRN);
+            LOGGER.info("data inserted: " + "LRN: " + LRN);
             ResultSet rs = stmt.executeQuery();
 
 
@@ -52,16 +49,16 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                 studentMedicalRecord.setVisitDate(rs.getDate("visit_date"));
                 studentMedicalRecord.setTreatment(rs.getString("treatment"));
 
-                LOGGER.info("Data retrieved: "+"\n"
-                        +"Student ID: "+studentMedicalRecord.getStudentId()+"\n"
-                        +"LRN  ID: "+studentMedicalRecord.getLrn()+"\n"
-                        +"Name   : "+studentMedicalRecord.getFirstName()+" "+studentMedicalRecord.getLastName()+"\n"
-                        +"Age    : "+studentMedicalRecord.getAge()+"\n"
-                        +"Gender   : "+studentMedicalRecord.getGender()+"\n"
-                        +"Symptoms : "+studentMedicalRecord.getSymptoms()+"\n"
-                        +"Temperature Reading  : "+studentMedicalRecord.getTemperatureReadings()+"\n"
-                        +"Visit Date  : "+studentMedicalRecord.getVisitDate()+"\n"
-                        +"Treatment  : "+studentMedicalRecord.getTreatment()
+                LOGGER.info("Data retrieved: " + "\n"
+                        + "Student ID: " + studentMedicalRecord.getStudentId() + "\n"
+                        + "LRN  ID: " + studentMedicalRecord.getLrn() + "\n"
+                        + "Name   : " + studentMedicalRecord.getFirstName() + " " + studentMedicalRecord.getLastName() + "\n"
+                        + "Age    : " + studentMedicalRecord.getAge() + "\n"
+                        + "Gender   : " + studentMedicalRecord.getGender() + "\n"
+                        + "Symptoms : " + studentMedicalRecord.getSymptoms() + "\n"
+                        + "Temperature Reading  : " + studentMedicalRecord.getTemperatureReadings() + "\n"
+                        + "Visit Date  : " + studentMedicalRecord.getVisitDate() + "\n"
+                        + "Treatment  : " + studentMedicalRecord.getTreatment()
                 );
             }
         } catch (SQLException e) {
@@ -79,12 +76,8 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
         List<Student> medicalRecords = new ArrayList<>();
         try (Connection con = ConnectionHelper.getConnection()) {
 
-            QueryConstants queryConstants = new QueryConstants();
-
-            String sql = queryConstants.getAllStudentMedicalRecords();
-
-            PreparedStatement stmt = con.prepareStatement(sql);
-            LOGGER.info("Query in use"+sql);
+            PreparedStatement stmt = con.prepareStatement(GET_ALL_STUDENTS_MEDICAL_RECORDS);
+            LOGGER.info("Query in use" + GET_ALL_STUDENTS_MEDICAL_RECORDS);
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
@@ -115,27 +108,27 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                 studentMedicalRecord.setMedicineName(rs.getString("medicine_name"));
                 studentMedicalRecord.setDispensingOut(rs.getInt("medicine_quantity"));
 
-                LOGGER.info("Data retrieved: "+"\n"
-                        +"Student ID   : "+studentMedicalRecord.getStudentId()+"\n"
-                        +"LRN   : "+studentMedicalRecord.getLrn()+"\n"
-                        +"Name   : "+studentMedicalRecord.getFirstName()+" "+studentMedicalRecord.getLastName()+"\n"
-                        +"Grade Level   : "+studentMedicalRecord.getGradeLevel()+"\n"
-                        +"Section   : "+studentMedicalRecord.getSection()+"\n"
-                        +"Age    : "+studentMedicalRecord.getAge()+"\n"
-                        +"Gender   : "+studentMedicalRecord.getGender()+"\n"
-                        +"Email   : "+studentMedicalRecord.getEmail()+"\n"
-                        +"Address   : "+studentMedicalRecord.getAddress()+"\n"
-                        +"Contact Number   : "+studentMedicalRecord.getContactNumber()+"\n"
-                        +"Symptoms : "+studentMedicalRecord.getSymptoms()+"\n"
-                        +"Temperature Reading  : "+studentMedicalRecord.getTemperatureReadings()+"\n"
-                        +"Blood Pressure  : "+studentMedicalRecord.getBloodPressure()+"\n"
-                        +"Pulse Rate  : "+studentMedicalRecord.getPulseRate()+"\n"
-                        +"Respiratory Rate  : "+studentMedicalRecord.getRespiratoryRate()+"\n"
-                        +"Visit Date  : "+studentMedicalRecord.getVisitDate()+"\n"
-                        +"Treatment  : "+studentMedicalRecord.getTreatment()+"\n"
-                        +"Nurse In-Charge : " + studentMedicalRecord.getNurseInCharge()+"\n"
-                        +"Medicine Name : " + studentMedicalRecord.getMedicineName()+"\n"
-                        +"Dispensing Out : " + studentMedicalRecord.getDispensingOut()+"\n"
+                LOGGER.info("Data retrieved: " + "\n"
+                        + "Student ID   : " + studentMedicalRecord.getStudentId() + "\n"
+                        + "LRN   : " + studentMedicalRecord.getLrn() + "\n"
+                        + "Name   : " + studentMedicalRecord.getFirstName() + " " + studentMedicalRecord.getLastName() + "\n"
+                        + "Grade Level   : " + studentMedicalRecord.getGradeLevel() + "\n"
+                        + "Section   : " + studentMedicalRecord.getSection() + "\n"
+                        + "Age    : " + studentMedicalRecord.getAge() + "\n"
+                        + "Gender   : " + studentMedicalRecord.getGender() + "\n"
+                        + "Email   : " + studentMedicalRecord.getEmail() + "\n"
+                        + "Address   : " + studentMedicalRecord.getAddress() + "\n"
+                        + "Contact Number   : " + studentMedicalRecord.getContactNumber() + "\n"
+                        + "Symptoms : " + studentMedicalRecord.getSymptoms() + "\n"
+                        + "Temperature Reading  : " + studentMedicalRecord.getTemperatureReadings() + "\n"
+                        + "Blood Pressure  : " + studentMedicalRecord.getBloodPressure() + "\n"
+                        + "Pulse Rate  : " + studentMedicalRecord.getPulseRate() + "\n"
+                        + "Respiratory Rate  : " + studentMedicalRecord.getRespiratoryRate() + "\n"
+                        + "Visit Date  : " + studentMedicalRecord.getVisitDate() + "\n"
+                        + "Treatment  : " + studentMedicalRecord.getTreatment() + "\n"
+                        + "Nurse In-Charge : " + studentMedicalRecord.getNurseInCharge() + "\n"
+                        + "Medicine Name : " + studentMedicalRecord.getMedicineName() + "\n"
+                        + "Dispensing Out : " + studentMedicalRecord.getDispensingOut() + "\n"
                 );
                 medicalRecords.add(studentMedicalRecord);
             }
@@ -147,163 +140,12 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
         return medicalRecords;
     }
 
-
-    /**
-     * Deactivates a student's medical record based on their LRN (Learner Reference Number).
-     * Instead of completely removing the data, it likely updates the status
-     * of the medical record in the database to indicate it's no longer active.
-     *
-     * A status value of 0 means the record is no longer active (deleted),
-     * while a status of 1 means the record is still active and present in the system.
-     */
-    @Override
-    public boolean deleteStudentMedicalRecord(long LRN) {
-        LOGGER.info("Delete medical records started");
-        Student studentMedicalRecord = getStudent(LRN);
-
-        try (Connection con = ConnectionHelper.getConnection()) {
-
-            QueryConstants queryConstants = new QueryConstants();
-
-            String sql = queryConstants.deleteStudentMedicalRecord();
-
-            PreparedStatement preparedStatement = con.prepareStatement(sql);
-            LOGGER.info("Query in use"+sql);
-            preparedStatement.setInt(1,studentMedicalRecord.getStudentId());
-            LOGGER.info("data inserted: "+"LRN: "+LRN);
-            int affectedRow = preparedStatement.executeUpdate();
-            return affectedRow > 0;
-        } catch (SQLException e) {
-            LOGGER.error("SQLException Occurred: " + e.getMessage());
-            throw new RuntimeException(e);
-        }
-
-    }
-
-
-
-    @Override
-    public boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate, String treatment, long LRN) {
-        LOGGER.info("Update Student Medical Record Started for LRN: " + LRN);
-        QueryConstants queryConstants = new QueryConstants();
-        boolean updateSuccessful = false;
-
-        try (Connection con = ConnectionHelper.getConnection()) {
-
-
-            if (symptoms != null && !symptoms.trim().isEmpty()) {
-                String updateSymptomQuery = queryConstants.updateStudentSymptoms();
-                try (PreparedStatement stmt = con.prepareStatement(updateSymptomQuery)) {
-                    LOGGER.info("Executing update for symptoms...");
-                    LOGGER.info("Query: " + updateSymptomQuery);
-                    stmt.setString(1, symptoms);
-                    stmt.setLong(2, LRN);
-                    LOGGER.info("Symptoms: " + symptoms + ", LRN: " + LRN);
-                    int rows = stmt.executeUpdate();
-                    LOGGER.info("Symptoms updated. Rows affected: " + rows);
-                    updateSuccessful = rows > 0;
-                }catch (SQLException e ) {
-                    LOGGER.info("SQL Exception Occurred on Symptoms " + symptoms );
-                    System.out.println("SQL Exception Occurred when updating Symptom : " + e.getMessage());
-                }
-            }
-
-            if (temperatureReadings != null && !temperatureReadings.trim().isEmpty()) {
-                String updateTemperatureReadingsQuery = queryConstants.updateStudentTemperatureReadings();
-                try (PreparedStatement stmt = con.prepareStatement(updateTemperatureReadingsQuery)) {
-                    LOGGER.info("Executing update for temperature readings...");
-                    LOGGER.info("Query: " + updateTemperatureReadingsQuery);
-                    stmt.setString(1, temperatureReadings);
-                    stmt.setLong(2, LRN);
-                    LOGGER.info("TemperatureReadings: " + temperatureReadings + ", LRN: " + LRN);
-                    int rows = stmt.executeUpdate();
-                    LOGGER.info("Temperature readings updated. Rows affected: " + rows);
-                    updateSuccessful = rows > 0;
-                }catch (SQLException e ) {
-                    LOGGER.info("SQL Exception Occurred on Temperature Readings" + e.getMessage());
-                    System.out.println("SQL Exception Occurred when Updating Temperature Readings : " + e.getMessage());
-                }
-            }
-
-            if (visitDate != null) {
-                String updateVisitDateQuery = queryConstants.updateStudentVisitDate();
-                try (PreparedStatement stmt = con.prepareStatement(updateVisitDateQuery)) {
-                    LOGGER.info("Executing update for visit date...");
-                    LOGGER.info("Query: " + updateVisitDateQuery);
-                    stmt.setTimestamp(1, new java.sql.Timestamp(visitDate.getTime()));
-                    stmt.setLong(2, LRN);
-                    LOGGER.info("Parameters - visitDate: " + visitDate + ", LRN: " + LRN);
-                    int rows = stmt.executeUpdate();
-                    LOGGER.info("Visit date updated. Rows affected: " + rows);
-                    updateSuccessful = rows > 0;
-                }catch (SQLException e ) {
-                    LOGGER.info("SQL Exception Occurred on Visit Date "+ e.getMessage());
-                    System.out.println("SQL Exception Occurred when Updating Visit Date : " + e.getMessage());}
-            }
-
-            if (treatment != null && !treatment.trim().isEmpty()) {
-                String updateTreatmentQuery = queryConstants.updateStudentTreatment();
-                try (PreparedStatement stmt = con.prepareStatement(updateTreatmentQuery)) {
-                    LOGGER.info("Executing update for treatment");
-                    LOGGER.info("Query: " + updateTreatmentQuery);
-                    stmt.setString(1, treatment);
-                    stmt.setLong(2, LRN);
-                    LOGGER.info("Parameters - treatment: " + treatment + ", LRN: " + LRN);
-                    int rows = stmt.executeUpdate();
-                    updateSuccessful = rows > 0;
-                } catch (SQLException e) {
-                    LOGGER.info("SQL Exception Occurred on Treatment " + e.getMessage());
-                    System.out.println("SQL Exception Occurred when Updating Treatment : " + e.getMessage());
-                }
-            }
-
-            LOGGER.info("Update Student Medical Record Completed for LRN: " + LRN);
-            return updateSuccessful;
-
-        } catch ( SQLException e) {
-            LOGGER.error("SQL Exception Occurred" + e.getMessage());
-            throw new RuntimeException(e);
-        }
-    }
-
-    private static Student getStudent(long LRN) {
-        Student studentMedicalRecord = null;
-        LOGGER.info("Retrieving Student information");
-        try (Connection con = ConnectionHelper.getConnection()) {
-
-            QueryConstants queryConstants = new QueryConstants();
-
-            String sql = queryConstants.getAllMedicalInformationByLRN();
-
-            PreparedStatement stmt = con.prepareStatement(sql);
-            LOGGER.info("Query in use"+sql);
-            stmt.setLong(1, LRN);
-            LOGGER.info("data inserted: "+"LRN: "+LRN);
-            ResultSet resultSet = stmt.executeQuery();
-            while(resultSet.next()){
-                studentMedicalRecord = new Student();
-                studentMedicalRecord.setStudentId(resultSet.getInt("student_id"));
-                LOGGER.info("Data retrieved: "+"\n"
-                        +"Student ID   : "+studentMedicalRecord.getStudentId()+"\n"
-                );
-            }
-
-        } catch (SQLException e) {
-            LOGGER.error("SQLException Occurred: " + e.getMessage());
-            throw new RuntimeException(e);
-        }
-        return studentMedicalRecord;
-    }
-
     @Override
     public boolean addStudentMedicalRecord(Student record) {
-        QueryConstants queryConstants = new QueryConstants();
-        String medicalRecordSql = queryConstants.addStudentMedicalRecord();
-
         try (Connection con = ConnectionHelper.getConnection()) {
             con.setAutoCommit(false);
 
-            try (PreparedStatement medStmt = con.prepareStatement(medicalRecordSql)) {
+            try (PreparedStatement medStmt = con.prepareStatement(ADD_STUDENT_MEDICAL_RECORD)) {
                 medStmt.setInt(1, record.getStudentId());
                 medStmt.setString(2, record.getSymptoms());
                 medStmt.setString(3, record.getTemperatureReadings());
@@ -322,6 +164,161 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
             System.out.println("Transaction failed: " + e.getMessage());
             return false;
         }
+    }
+
+//        public boolean addStudMedAdministeredRecord(Student record, Medicine medicine) { //still having trouble here coz if i change the String medicineId into int medicineId. It will conflict with vincents'.
+//            try (Connection con = ConnectionHelper.getConnection()) {
+//                con.setAutoCommit(false);
+//            try (PreparedStatement insertStmt = con.prepareStatement(ADD_STUDENT_MED_ADMINISTERED)) {
+//                insertStmt.setInt(1, medicine.getMedicineId());
+//                insertStmt.setInt(2, record.getSetMedicalRecordId());
+//                insertStmt.setInt(3, record.getNurseInChargeId());
+//                insertStmt.setInt(4, record.getDispensingOut());
+//                insertStmt.setString(5, record.getMedicineName() + " administered");
+//                insertStmt.setInt(6, record.getDispensingOut());
+//                insertStmt.setTimestamp(7, new Timestamp(record.getVisitDate().getTime()));
+//
+//                int affected = insertStmt.executeUpdate();
+//                return affected > 0;
+//            }
+//
+//        } catch (SQLException e) {
+//            System.out.println("Failed to insert into medicine_administered: " + e.getMessage());
+//            return false;
+//        }
+//    }
+
+    /**
+     * Deactivates a student's medical record based on their LRN (Learner Reference Number).
+     * Instead of completely removing the data, it likely updates the status
+     * of the medical record in the database to indicate it's no longer active.
+     * <p>
+     * A status value of 0 means the record is no longer active (deleted),
+     * while a status of 1 means the record is still active and present in the system.
+     */
+    @Override
+    public boolean deleteStudentMedicalRecord(long LRN) {
+        LOGGER.info("Delete medical records started");
+        Student studentMedicalRecord = getStudent(LRN);
+
+        try (Connection con = ConnectionHelper.getConnection()) {
+
+            PreparedStatement preparedStatement = con.prepareStatement(DELETE_STUDENT_MEDICAL_RECORD);
+            LOGGER.info("Query in use" + DELETE_STUDENT_MEDICAL_RECORD);
+            preparedStatement.setInt(1, studentMedicalRecord.getStudentId());
+            LOGGER.info("data inserted: " + "LRN: " + LRN);
+            int affectedRow = preparedStatement.executeUpdate();
+            return affectedRow > 0;
+        } catch (SQLException e) {
+            LOGGER.error("SQLException Occurred: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+
+    }
+
+
+    @Override
+    public boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate, String treatment, long LRN) {
+        LOGGER.info("Update Student Medical Record Started for LRN: " + LRN);
+        boolean updateSuccessful = false;
+
+        try (Connection con = ConnectionHelper.getConnection()) {
+
+            if (symptoms != null && !symptoms.trim().isEmpty()) {
+                try (PreparedStatement stmt = con.prepareStatement(UPDATE_STUDENT_SYMPTOMS)) {
+                    LOGGER.info("Executing update for symptoms...");
+                    LOGGER.info("Query: " + UPDATE_STUDENT_SYMPTOMS);
+                    stmt.setString(1, symptoms);
+                    stmt.setLong(2, LRN);
+                    LOGGER.info("Symptoms: " + symptoms + ", LRN: " + LRN);
+                    int rows = stmt.executeUpdate();
+                    LOGGER.info("Symptoms updated. Rows affected: " + rows);
+                    updateSuccessful = rows > 0;
+                } catch (SQLException e) {
+                    LOGGER.info("SQL Exception Occurred on Symptoms " + symptoms);
+                    System.out.println("SQL Exception Occurred when updating Symptom : " + e.getMessage());
+                }
+            }
+
+            if (temperatureReadings != null && !temperatureReadings.trim().isEmpty()) {
+                try (PreparedStatement stmt = con.prepareStatement(UPDATE_STUDENT_TEMPERATURE_READINGS)) {
+                    LOGGER.info("Executing update for temperature readings...");
+                    LOGGER.info("Query: " + UPDATE_STUDENT_TEMPERATURE_READINGS);
+                    stmt.setString(1, temperatureReadings);
+                    stmt.setLong(2, LRN);
+                    LOGGER.info("TemperatureReadings: " + temperatureReadings + ", LRN: " + LRN);
+                    int rows = stmt.executeUpdate();
+                    LOGGER.info("Temperature readings updated. Rows affected: " + rows);
+                    updateSuccessful = rows > 0;
+                } catch (SQLException e) {
+                    LOGGER.info("SQL Exception Occurred on Temperature Readings" + e.getMessage());
+                    System.out.println("SQL Exception Occurred when Updating Temperature Readings : " + e.getMessage());
+                }
+            }
+
+            if (visitDate != null) {
+                try (PreparedStatement stmt = con.prepareStatement(UPDATE_STUDENT_VISIT_DATE)) {
+                    LOGGER.info("Executing update for visit date...");
+                    LOGGER.info("Query: " + UPDATE_STUDENT_VISIT_DATE);
+                    stmt.setTimestamp(1, new java.sql.Timestamp(visitDate.getTime()));
+                    stmt.setLong(2, LRN);
+                    LOGGER.info("Parameters - visitDate: " + visitDate + ", LRN: " + LRN);
+                    int rows = stmt.executeUpdate();
+                    LOGGER.info("Visit date updated. Rows affected: " + rows);
+                    updateSuccessful = rows > 0;
+                } catch (SQLException e) {
+                    LOGGER.info("SQL Exception Occurred on Visit Date " + e.getMessage());
+                    System.out.println("SQL Exception Occurred when Updating Visit Date : " + e.getMessage());
+                }
+            }
+
+            if (treatment != null && !treatment.trim().isEmpty()) {
+                try (PreparedStatement stmt = con.prepareStatement(UPDATE_STUDENT_TREATMENT)) {
+                    LOGGER.info("Executing update for treatment");
+                    LOGGER.info("Query: " + UPDATE_STUDENT_TREATMENT);
+                    stmt.setString(1, treatment);
+                    stmt.setLong(2, LRN);
+                    LOGGER.info("Parameters - treatment: " + treatment + ", LRN: " + LRN);
+                    int rows = stmt.executeUpdate();
+                    updateSuccessful = rows > 0;
+                } catch (SQLException e) {
+                    LOGGER.info("SQL Exception Occurred on Treatment " + e.getMessage());
+                    System.out.println("SQL Exception Occurred when Updating Treatment : " + e.getMessage());
+                }
+            }
+
+            LOGGER.info("Update Student Medical Record Completed for LRN: " + LRN);
+            return updateSuccessful;
+
+        } catch (SQLException e) {
+            LOGGER.error("SQL Exception Occurred" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static Student getStudent(long LRN) {
+        Student studentMedicalRecord = null;
+        LOGGER.info("Retrieving Student information");
+
+        try (Connection con = ConnectionHelper.getConnection()) {
+            PreparedStatement stmt = con.prepareStatement(GET_ALL_MEDICAL_INFORMATION_BY_LRN);
+            LOGGER.info("Query in use" + GET_ALL_MEDICAL_INFORMATION_BY_LRN);
+            stmt.setLong(1, LRN);
+            LOGGER.info("data inserted: " + "LRN: " + LRN);
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next()) {
+                studentMedicalRecord = new Student();
+                studentMedicalRecord.setStudentId(resultSet.getInt("student_id"));
+                LOGGER.info("Data retrieved: " + "\n"
+                        + "Student ID   : " + studentMedicalRecord.getStudentId() + "\n"
+                );
+            }
+
+        } catch (SQLException e) {
+            LOGGER.error("SQLException Occurred: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return studentMedicalRecord;
     }
 
 }

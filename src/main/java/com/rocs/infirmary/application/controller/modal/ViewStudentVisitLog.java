@@ -12,6 +12,10 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
 
+/**
+ * {@code ViewStudentVisitLogController} is used to handle event processes of viewing
+ * information of a student medical record, this implements Initializable interface
+ */
 public class ViewStudentVisitLog implements Initializable {
 
     @FXML
@@ -58,10 +62,10 @@ public class ViewStudentVisitLog implements Initializable {
 
     }
 
-    public void handleCloseButton(ActionEvent event) {
-        ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
-    }
-
+    /**
+     * This method displays student data on the form fields for viewing.
+     * @param student the Student object to be displayed.
+     */
     public void setStudentData(Student student) {
         if (student == null) {
             return;
@@ -93,7 +97,20 @@ public class ViewStudentVisitLog implements Initializable {
         }
     }
 
+    /**
+     * This method converts the given value to a string or "N/A" if null.
+     * @param value the object to format.
+     * @return the formatted string.
+     */
     private String formatValue(Object value) {
         return value != null ? String.valueOf(value) : "N/A";
+    }
+
+    /**
+     * This method handles the action triggered when the cancel button is clicked.
+     * @param actionEvent the event triggered by the confirm button click
+     */
+    public void handleCloseButton(ActionEvent actionEvent) {
+        ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
     }
 }

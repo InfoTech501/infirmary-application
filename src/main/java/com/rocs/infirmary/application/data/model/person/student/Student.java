@@ -33,7 +33,6 @@ public class Student extends Person {
     public String getNurseInCharge() {
         return nurseInCharge;
     }
-
     public void setNurseInCharge(String nurseInCharge) {
         this.nurseInCharge = nurseInCharge;
     }
@@ -41,7 +40,6 @@ public class Student extends Person {
     public String getStudentAdviser() {
         return studentAdviser;
     }
-
     public void setStudentAdviser(String studentAdviser) {
         this.studentAdviser = studentAdviser;
     }
@@ -49,15 +47,20 @@ public class Student extends Person {
     public String getGradeLevel() {
         return gradeLevel;
     }
-
     public void setGradeLevel(String gradeLevel) {
         this.gradeLevel = gradeLevel;
     }
 
+    public int getStudentId() {
+        return studentId;
+    }
     public void setStudentId(int studentId) {
         this.studentId = studentId;
     }
 
+    public long getLrn() {
+        return lrn;
+    }
     public void setLrn(long lrn) {
         this.lrn = lrn;
     }
@@ -65,7 +68,6 @@ public class Student extends Person {
     public String getSymptoms() {
         return symptoms;
     }
-
     public void setSymptoms(String symptoms) {
         this.symptoms = symptoms;
     }
@@ -73,13 +75,11 @@ public class Student extends Person {
     public String getTemperatureReadings() {
         return temperatureReadings;
     }
-
     public void setTemperatureReadings(String temperatureReadings) { this.temperatureReadings = temperatureReadings; }
 
     public Date getVisitDate() {
         return visitDate;
     }
-
     public void setVisitDate(Date visitDate) {
         this.visitDate = visitDate;
     }
@@ -87,23 +87,13 @@ public class Student extends Person {
     public String getTreatment() {
         return treatment;
     }
-
     public void setTreatment(String treatment) {
         this.treatment = treatment;
     }
 
-    public int getStudentId() {
-        return studentId;
-    }
+    public void setId(long id) { this.id = id; }
 
-    public long getLrn() {
-        return lrn;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
+    public int getAilmentId() { return ailmentId; }
     public void setAilmentId(int ailmentId) {
         this.ailmentId = ailmentId;
     }
@@ -112,10 +102,12 @@ public class Student extends Person {
         this.medHistoryId = medHistoryId;
     }
 
+    public int getNurseInChargeId() { return nurseInChargeId; }
     public void setNurseInChargeId(int nurseInChargeId) {
         this.nurseInChargeId = nurseInChargeId;
     }
 
+    public int getSetMedicalRecordId() { return setMedicalRecordId; }
     public void setMedicalRecordId(int medicalRecordIdId) {
         this.setMedicalRecordId = medicalRecordIdId;
     }
@@ -125,26 +117,20 @@ public class Student extends Person {
     }
 
     public String getBloodPressure() { return bloodPressure; }
-
     public void setBloodPressure(String bloodPressure) { this.bloodPressure = bloodPressure; }
 
     public int getPulseRate() { return pulseRate; }
-
     public void setPulseRate(int pulseRate) { this.pulseRate = pulseRate; }
 
     public int getRespiratoryRate() { return respiratoryRate; }
-
     public void setRespiratoryRate(int respiratoryRate) { this.respiratoryRate = respiratoryRate; }
 
+    public String getChiefComplaint() { return chiefComplaint; }
     public void setChiefComplaint(String chiefComplaint) { this.chiefComplaint = chiefComplaint; }
 
-    public String getChiefComplaint() { return chiefComplaint; }
-
     public int getDispensingOut() { return dispensingOut; }
-
     public void setDispensingOut(int dispensingOut) { this.dispensingOut = dispensingOut; }
 
     public String getMedicineName() { return medicineName; }
-
     public void setMedicineName(String medicineName) { this.medicineName = medicineName; }
 }

@@ -17,16 +17,24 @@ import org.slf4j.LoggerFactory;
  */
 public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacade {
 
-    /** The data access object for Student Medical Record. */
     private StudentMedicalRecordDao studentMedRecord = new StudentMedicalRecordDaoImpl();
     private static final Logger logger = LoggerFactory.getLogger(StudentMedicalRecordFacadeImpl.class);
 
+    /**
+     * StudentMedicalRecordFacadeImpl()
+     * is a no argument constructor that provides an option to access the Student Medical Records Facade without needing to provide parameters
+     */
     public StudentMedicalRecordFacadeImpl() {
 
     }
-
-    public StudentMedicalRecordFacadeImpl(StudentMedicalRecordDao studentMedicalRecordDao) {
-        this.studentMedRecord = studentMedicalRecordDao;
+    /**
+     * {@code StudentMedicalRecordFacadeImpl()} is a constructor that requires parameter
+     * @param studentMedRecord DAO implementation of Student Medical Record
+     * this provides the business logic of the Medicine Inventory
+     * {@code this.studentMedRecord = studentMedicalRecordDao} is used to initialize the StudentMedicalRecordDao
+     */
+    public StudentMedicalRecordFacadeImpl(StudentMedicalRecordDao studentMedRecord) {
+        this.studentMedRecord = studentMedRecord;
     }
 
     public Student getMedicalInformationByLRN(long LRN) {
@@ -46,7 +54,6 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
 
     /**
      * This is used to delete a student's medical record based on their Learner Reference Number (LRN).
-     *
      * boolean returns true if the deletion was successful, otherwise false.
      */
     @Override

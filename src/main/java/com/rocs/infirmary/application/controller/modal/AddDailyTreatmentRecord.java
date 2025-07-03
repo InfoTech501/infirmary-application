@@ -1,6 +1,6 @@
 package com.rocs.infirmary.application.controller.modal;
 
-import com.rocs.infirmary.application.MedicalRecordInfoMgtApplication;
+import com.rocs.infirmary.application.module.inventory.management.application.MedicalRecordInfoMgtApplication;
 import com.rocs.infirmary.application.controller.dashboard.ClinicVisitLogPageController;
 import com.rocs.infirmary.application.data.model.person.student.Student;
 import javafx.collections.ObservableList;
@@ -17,6 +17,10 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+/**
+ * {@code AddDailyTreatmentRecordController} is used to handle event processes of adding new daily treatment record of a student
+ * this implements Initializable interface
+ **/
 public class AddDailyTreatmentRecord implements Initializable {
 
     @FXML
@@ -40,7 +44,7 @@ public class AddDailyTreatmentRecord implements Initializable {
     @FXML
     public TextField treatmentField;
     @FXML
-    public TextField medicineName;
+    public TextField medicineNameField;
     @FXML
     public TextField invDispensingOutField;
     @FXML
@@ -58,12 +62,19 @@ public class AddDailyTreatmentRecord implements Initializable {
     public void setClinicVisitLogPageController(ClinicVisitLogPageController controller) {
         this.clinicVisitLogPageController = controller;
     }
-
+    /**
+     * This method handles the action triggered when the confirm button is clicked.
+     * @param actionEvent the event triggered by the confirm button click
+     */
     @FXML
     private void handleConfirmButton(ActionEvent actionEvent) {
-           addDailyRecord();
-        }
+        addDailyRecord();
+    }
 
+    /**
+     * This method saves a daily medical record if student exists using the LRN
+     * and shows warnings if not.
+     */
     @FXML
     private void addDailyRecord() {
         try {
@@ -73,7 +84,7 @@ public class AddDailyTreatmentRecord implements Initializable {
                     .getMedicalInformationByLRN(record.getLrn());
 
             if (existing != null) {
-                record.setStudentId(existing.getStudentId()); // This must match PERSON.ID
+                record.setStudentId(existing.getStudentId());
             } else {
                 showWarning("Student with this LRN was not found. Please register the student first.");
                 return;
@@ -96,6 +107,10 @@ public class AddDailyTreatmentRecord implements Initializable {
         }
     }
 
+    /**
+     * This method builds a Student object using form input values.
+     * @return a Student Medical Record.
+     */
     private Student createStudentMedicalRecordFromForm() {
         Student student = new Student();
         student.setLrn(Long.parseLong(lrnField.getText()));
@@ -121,7 +136,7 @@ public class AddDailyTreatmentRecord implements Initializable {
         student.setSymptoms(symptomsField.getText());
         student.setNurseInCharge(nurseInChargeField.getText());
         student.setTreatment(treatmentField.getText());
-        student.setMedicineName(medicineName.getText());
+        student.setMedicineName(medicineNameField.getText());
         student.setDispensingOut(Integer.parseInt(invDispensingOutField.getText()));
         LocalDate selectedDate = datePickerTextField.getValue();
         if (selectedDate != null) {
@@ -131,6 +146,10 @@ public class AddDailyTreatmentRecord implements Initializable {
         return student;
     }
 
+    /**
+     * This method shows a warning dialog with a custom message.
+     * @param message the warning text.
+     */
     private void showWarning(String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Warning");
@@ -139,9 +158,13 @@ public class AddDailyTreatmentRecord implements Initializable {
         alert.showAndWait();
     }
 
+    /**
+     * This method handles the action triggered when the cancel button is clicked.
+     * @param actionEvent the event triggered by the confirm button click
+     */
     @FXML
-    private void handleCancelButton(ActionEvent event) {
-        ((Stage) ((Node) event.getSource()).getScene().getWindow()).close();
+    private void handleCancelButton(ActionEvent actionEvent) {
+        ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
     }
 
 }
