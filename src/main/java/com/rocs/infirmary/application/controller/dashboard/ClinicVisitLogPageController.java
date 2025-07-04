@@ -68,10 +68,6 @@ public class ClinicVisitLogPageController implements Initializable {
      */
     private List<Student> fullStudentList;
     /**
-     * Stores the current page's student records for display.
-     */
-    //private ObservableList<Student> currentStudentPageList;
-    /**
      * Handles student medical record operations.
      */
     private final MedicalRecordInfoMgtApplication medicalRecordInfoMgtApplication = new MedicalRecordInfoMgtApplication();
