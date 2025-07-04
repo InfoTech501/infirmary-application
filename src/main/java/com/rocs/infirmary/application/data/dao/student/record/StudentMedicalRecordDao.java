@@ -39,5 +39,4 @@ public interface StudentMedicalRecordDao {
      * @return true if the medical record is successfully added; false if the addition fails
      * */
     boolean addStudentMedicalRecord(Student record);
-    //boolean addStudMedAdministeredRecord(Student record, Medicine medicine);
 }

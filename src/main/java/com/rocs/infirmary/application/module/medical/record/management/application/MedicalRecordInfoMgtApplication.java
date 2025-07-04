@@ -1,4 +1,4 @@
-package com.rocs.infirmary.application.module.inventory.management.application;
+package com.rocs.infirmary.application.module.medical.record.management.application;
 
 import com.rocs.infirmary.application.app.facade.student.record.StudentMedicalRecordFacade;
 import com.rocs.infirmary.application.app.facade.student.record.impl.StudentMedicalRecordFacadeImpl;
@@ -6,19 +6,23 @@ import com.rocs.infirmary.application.data.dao.student.record.StudentMedicalReco
 import com.rocs.infirmary.application.data.dao.student.record.impl.StudentMedicalRecordDaoImpl;
 
 /**
- * use the 4th year system as reference in docs.
- **/
+ * Provides access to student medical record operations.
+ */
 public class MedicalRecordInfoMgtApplication {
 
     private StudentMedicalRecordFacade studentMedicalRecordFacade;
-//docu dito
+    /**
+     * Initializes the application with its required dependencies.
+     */
     public MedicalRecordInfoMgtApplication() {
         StudentMedicalRecordDao studentMedicalRecordDao = new StudentMedicalRecordDaoImpl();
         this.studentMedicalRecordFacade = new StudentMedicalRecordFacadeImpl(studentMedicalRecordDao);
     }
-//docu dito
+    /**
+     * This gets the for managing student medical records.
+     * @return the StudentMedicalRecordFacade instance.
+     */
     public StudentMedicalRecordFacade getStudentMedicalRecordFacade() {
         return studentMedicalRecordFacade;
     }
-
 }

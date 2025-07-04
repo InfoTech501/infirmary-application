@@ -72,68 +72,77 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
 
     @Override
     public List<Student> findAllStudentMedicalRecords() {
-        LOGGER.info("get all medical records started");
+        LOGGER.info("Fetching all student medical records...");
         List<Student> medicalRecords = new ArrayList<>();
-        try (Connection con = ConnectionHelper.getConnection()) {
 
-            PreparedStatement stmt = con.prepareStatement(GET_ALL_STUDENTS_MEDICAL_RECORDS);
-            LOGGER.info("Query in use" + GET_ALL_STUDENTS_MEDICAL_RECORDS);
-            ResultSet rs = stmt.executeQuery();
+        try (Connection con = ConnectionHelper.getConnection();
+             PreparedStatement stmt = con.prepareStatement(GET_ALL_STUDENTS_MEDICAL_RECORDS);
+             ResultSet rs = stmt.executeQuery()) {
+
+            LOGGER.info("Executing query: " + GET_ALL_STUDENTS_MEDICAL_RECORDS);
 
             while (rs.next()) {
-                Student studentMedicalRecord = new Student();
+                try {
+                    Student studentMedicalRecord = new Student();
 
-                studentMedicalRecord.setStudentId(rs.getInt("person_id"));
-                studentMedicalRecord.setLrn(rs.getLong("LRN"));
-                studentMedicalRecord.setFirstName(rs.getString("first_name"));
-                studentMedicalRecord.setMiddleName(rs.getString("middle_name"));
-                studentMedicalRecord.setLastName(rs.getString("last_name"));
-                studentMedicalRecord.setGradeLevel(rs.getString("grade_level"));
-                studentMedicalRecord.setSection(rs.getString("section"));
-                studentMedicalRecord.setAge(rs.getInt("age"));
-                studentMedicalRecord.setGender(rs.getString("gender"));
-                studentMedicalRecord.setEmail(rs.getString("email"));
-                studentMedicalRecord.setAddress(rs.getString("address"));
-                studentMedicalRecord.setContactNumber((rs.getString("contact_number")));
-                studentMedicalRecord.setSymptoms(rs.getString("symptoms"));
-                studentMedicalRecord.setTemperatureReadings(rs.getString("temperature_readings"));
-                studentMedicalRecord.setBloodPressure(rs.getString("blood_pressure"));
-                studentMedicalRecord.setPulseRate(rs.getInt("pulse_rate"));
-                studentMedicalRecord.setRespiratoryRate(rs.getInt("respiratory_rate"));
-                studentMedicalRecord.setVisitDate(rs.getDate("visit_date"));
-                studentMedicalRecord.setTreatment(rs.getString("treatment"));
-                String nurseFirst = rs.getString("nurse_first_name");
-                String nurseLast = rs.getString("nurse_last_name");
-                studentMedicalRecord.setNurseInCharge((nurseFirst + " " + nurseLast).trim());
-                studentMedicalRecord.setMedicineName(rs.getString("medicine_name"));
-                studentMedicalRecord.setDispensingOut(rs.getInt("medicine_quantity"));
+                    studentMedicalRecord.setStudentId(rs.getInt("person_id"));
+                    studentMedicalRecord.setLrn(rs.getLong("LRN"));
+                    studentMedicalRecord.setFirstName(rs.getString("first_name"));
+                    studentMedicalRecord.setMiddleName(rs.getString("middle_name"));
+                    studentMedicalRecord.setLastName(rs.getString("last_name"));
+                    studentMedicalRecord.setGradeLevel(rs.getString("grade_level"));
+                    studentMedicalRecord.setSection(rs.getString("section"));
+                    studentMedicalRecord.setAge(rs.getInt("age"));
+                    studentMedicalRecord.setGender(rs.getString("gender"));
+                    studentMedicalRecord.setEmail(rs.getString("email"));
+                    studentMedicalRecord.setAddress(rs.getString("address"));
+                    studentMedicalRecord.setContactNumber(rs.getString("contact_number"));
+                    studentMedicalRecord.setSymptoms(rs.getString("symptoms"));
+                    studentMedicalRecord.setTemperatureReadings(rs.getString("temperature_readings"));
+                    studentMedicalRecord.setBloodPressure(rs.getString("blood_pressure"));
+                    studentMedicalRecord.setPulseRate(rs.getInt("pulse_rate"));
+                    studentMedicalRecord.setRespiratoryRate(rs.getInt("respiratory_rate"));
+                    studentMedicalRecord.setVisitDate(rs.getDate("visit_date"));
+                    studentMedicalRecord.setTreatment(rs.getString("treatment"));
 
-                LOGGER.info("Data retrieved: " + "\n"
-                        + "Student ID   : " + studentMedicalRecord.getStudentId() + "\n"
-                        + "LRN   : " + studentMedicalRecord.getLrn() + "\n"
-                        + "Name   : " + studentMedicalRecord.getFirstName() + " " + studentMedicalRecord.getLastName() + "\n"
-                        + "Grade Level   : " + studentMedicalRecord.getGradeLevel() + "\n"
-                        + "Section   : " + studentMedicalRecord.getSection() + "\n"
-                        + "Age    : " + studentMedicalRecord.getAge() + "\n"
-                        + "Gender   : " + studentMedicalRecord.getGender() + "\n"
-                        + "Email   : " + studentMedicalRecord.getEmail() + "\n"
-                        + "Address   : " + studentMedicalRecord.getAddress() + "\n"
-                        + "Contact Number   : " + studentMedicalRecord.getContactNumber() + "\n"
-                        + "Symptoms : " + studentMedicalRecord.getSymptoms() + "\n"
-                        + "Temperature Reading  : " + studentMedicalRecord.getTemperatureReadings() + "\n"
-                        + "Blood Pressure  : " + studentMedicalRecord.getBloodPressure() + "\n"
-                        + "Pulse Rate  : " + studentMedicalRecord.getPulseRate() + "\n"
-                        + "Respiratory Rate  : " + studentMedicalRecord.getRespiratoryRate() + "\n"
-                        + "Visit Date  : " + studentMedicalRecord.getVisitDate() + "\n"
-                        + "Treatment  : " + studentMedicalRecord.getTreatment() + "\n"
-                        + "Nurse In-Charge : " + studentMedicalRecord.getNurseInCharge() + "\n"
-                        + "Medicine Name : " + studentMedicalRecord.getMedicineName() + "\n"
-                        + "Dispensing Out : " + studentMedicalRecord.getDispensingOut() + "\n"
-                );
-                medicalRecords.add(studentMedicalRecord);
+                    String nurseFirst = rs.getString("nurse_first_name");
+                    String nurseLast = rs.getString("nurse_last_name");
+                    studentMedicalRecord.setNurseInCharge((nurseFirst + " " + nurseLast).trim());
+
+                    studentMedicalRecord.setMedicineName(rs.getString("medicine_name"));
+                    studentMedicalRecord.setDispensingOut(rs.getInt("medicine_quantity"));
+
+                    LOGGER.info("Retrieved Student Record:\n"
+                            + "Student ID       : " + studentMedicalRecord.getStudentId() + "\n"
+                            + "LRN              : " + studentMedicalRecord.getLrn() + "\n"
+                            + "Name             : " + studentMedicalRecord.getFirstName() + " " + studentMedicalRecord.getLastName() + "\n"
+                            + "Grade Level      : " + studentMedicalRecord.getGradeLevel() + "\n"
+                            + "Section          : " + studentMedicalRecord.getSection() + "\n"
+                            + "Age              : " + studentMedicalRecord.getAge() + "\n"
+                            + "Gender           : " + studentMedicalRecord.getGender() + "\n"
+                            + "Email            : " + studentMedicalRecord.getEmail() + "\n"
+                            + "Address          : " + studentMedicalRecord.getAddress() + "\n"
+                            + "Contact Number   : " + studentMedicalRecord.getContactNumber() + "\n"
+                            + "Symptoms         : " + studentMedicalRecord.getSymptoms() + "\n"
+                            + "Temperature      : " + studentMedicalRecord.getTemperatureReadings() + "\n"
+                            + "Blood Pressure   : " + studentMedicalRecord.getBloodPressure() + "\n"
+                            + "Pulse Rate       : " + studentMedicalRecord.getPulseRate() + "\n"
+                            + "Respiratory Rate : " + studentMedicalRecord.getRespiratoryRate() + "\n"
+                            + "Visit Date       : " + studentMedicalRecord.getVisitDate() + "\n"
+                            + "Treatment        : " + studentMedicalRecord.getTreatment() + "\n"
+                            + "Nurse In-Charge  : " + studentMedicalRecord.getNurseInCharge() + "\n"
+                            + "Medicine Name    : " + studentMedicalRecord.getMedicineName() + "\n"
+                            + "Dispensing Out   : " + studentMedicalRecord.getDispensingOut());
+
+                    medicalRecords.add(studentMedicalRecord);
+
+                } catch (Exception ex) {
+                    LOGGER.warn("Error mapping record. Row skipped: " + ex.getMessage());
+                }
             }
+
         } catch (SQLException e) {
-            LOGGER.error("SQLException Occurred: " + e.getMessage());
+            LOGGER.error("SQLException Occurred: " + e.getMessage(), e);
             throw new RuntimeException("Error fetching student medical records", e);
         }
 
@@ -165,28 +174,6 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
             return false;
         }
     }
-
-//        public boolean addStudMedAdministeredRecord(Student record, Medicine medicine) { //still having trouble here coz if i change the String medicineId into int medicineId. It will conflict with vincents'.
-//            try (Connection con = ConnectionHelper.getConnection()) {
-//                con.setAutoCommit(false);
-//            try (PreparedStatement insertStmt = con.prepareStatement(ADD_STUDENT_MED_ADMINISTERED)) {
-//                insertStmt.setInt(1, medicine.getMedicineId());
-//                insertStmt.setInt(2, record.getSetMedicalRecordId());
-//                insertStmt.setInt(3, record.getNurseInChargeId());
-//                insertStmt.setInt(4, record.getDispensingOut());
-//                insertStmt.setString(5, record.getMedicineName() + " administered");
-//                insertStmt.setInt(6, record.getDispensingOut());
-//                insertStmt.setTimestamp(7, new Timestamp(record.getVisitDate().getTime()));
-//
-//                int affected = insertStmt.executeUpdate();
-//                return affected > 0;
-//            }
-//
-//        } catch (SQLException e) {
-//            System.out.println("Failed to insert into medicine_administered: " + e.getMessage());
-//            return false;
-//        }
-//    }
 
     /**
      * Deactivates a student's medical record based on their LRN (Learner Reference Number).

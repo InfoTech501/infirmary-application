@@ -1,6 +1,6 @@
 package com.rocs.infirmary.application.controller.modal;
 
-import com.rocs.infirmary.application.module.inventory.management.application.MedicalRecordInfoMgtApplication;
+import com.rocs.infirmary.application.module.medical.record.management.application.MedicalRecordInfoMgtApplication;
 import com.rocs.infirmary.application.controller.dashboard.ClinicVisitLogPageController;
 import com.rocs.infirmary.application.data.model.person.student.Student;
 import javafx.collections.ObservableList;
@@ -72,7 +72,7 @@ public class AddDailyTreatmentRecord implements Initializable {
     }
 
     /**
-     * This method saves a daily medical record if student exists using the LRN
+     * This method saves a daily medical record if student exists based on student LRN
      * and shows warnings if not.
      */
     @FXML

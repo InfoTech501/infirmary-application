@@ -1,6 +1,6 @@
 package com.rocs.infirmary.application.controller.dashboard;
 
-import com.rocs.infirmary.application.module.inventory.management.application.MedicalRecordInfoMgtApplication;
+import com.rocs.infirmary.application.module.medical.record.management.application.MedicalRecordInfoMgtApplication;
 import com.rocs.infirmary.application.controller.modal.AddDailyTreatmentRecord;
 import com.rocs.infirmary.application.controller.modal.ViewStudentVisitLog;
 import com.rocs.infirmary.application.data.model.person.student.Student;
@@ -59,8 +59,6 @@ public class ClinicVisitLogPageController implements Initializable {
     @FXML
     public Label paginationLabel;
     @FXML
-    public ComboBox<Integer> rowsPerPageComboBox;
-    @FXML
     public Label rowsPageLabel;
     private int rowsPerPage = 10;
     private int currentPage = 1;
@@ -72,7 +70,7 @@ public class ClinicVisitLogPageController implements Initializable {
     /**
      * Stores the current page's student records for display.
      */
-    private ObservableList<Student> currentStudentPageList;
+    //private ObservableList<Student> currentStudentPageList;
     /**
      * Handles student medical record operations.
      */
@@ -146,14 +144,6 @@ public class ClinicVisitLogPageController implements Initializable {
                 .getStudentMedicalRecordFacade()
                 .getAllStudentMedicalRecords();
 
-        int totalPages = (int) Math.ceil((double) fullStudentList.size() / rowsPerPage);
-        ObservableList<Integer> pages = FXCollections.observableArrayList();
-        for (int i = 1; i <= totalPages; i++) {
-            pages.add(i);
-        }
-        rowsPerPageComboBox.setItems(pages);
-        rowsPerPageComboBox.setValue(currentPage);
-
         updatePage();
     }
 
@@ -183,21 +173,22 @@ public class ClinicVisitLogPageController implements Initializable {
      * This method filters student records in the current page based on search input of the user.
      */
     private void studentSearch() {
-        if (currentStudentPageList == null) return;
-
-        FilteredList<Student> filteredList = new FilteredList<>(currentStudentPageList, s -> true);
-
         searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null || newValue.isBlank()) {
+                updatePage();
+                return;
+            }
+
+            ObservableList<Student> tableItems = visitLogTable.getItems();
+            if (tableItems == null || tableItems.isEmpty()) return;
+
+            FilteredList<Student> filteredList = new FilteredList<>(tableItems, s -> true);
+
             filteredList.setPredicate(student -> {
-                if (newValue == null || newValue.isBlank()) {
-                    return true;
-                }
-
                 String keyword = newValue.toLowerCase();
-
-                String fullName = (student.getFirstName() + " "
-                        + student.getMiddleName() + " "
-                        + student.getLastName()).toLowerCase();
+                String fullName = (student.getFirstName() + " " +
+                        student.getMiddleName() + " " +
+                        student.getLastName()).toLowerCase();
 
                 String grade = student.getGradeLevel() != null ? student.getGradeLevel().toLowerCase() : "";
                 String section = student.getSection() != null ? student.getSection().toLowerCase() : "";
@@ -209,11 +200,11 @@ public class ClinicVisitLogPageController implements Initializable {
                         || section.contains(keyword)
                         || visitDate.contains(keyword);
             });
-        });
 
-        SortedList<Student> sortedList = new SortedList<>(filteredList);
-        sortedList.comparatorProperty().bind(visitLogTable.comparatorProperty());
-        visitLogTable.setItems(sortedList);
+            SortedList<Student> sortedList = new SortedList<>(filteredList);
+            sortedList.comparatorProperty().bind(visitLogTable.comparatorProperty());
+            visitLogTable.setItems(sortedList);
+        });
     }
 
     /**
@@ -244,9 +235,13 @@ public class ClinicVisitLogPageController implements Initializable {
      * @param newRecord the student record to add.
      */
     public void addStudentMedicalRecord(Student newRecord) {
-        if (newRecord == null || currentStudentPageList == null) return;
-        currentStudentPageList.add(newRecord);
-        visitLogTable.refresh();
+        if (newRecord == null) return;
+
+        fullStudentList = medicalRecordInfoMgtApplication
+                .getStudentMedicalRecordFacade()
+                .getAllStudentMedicalRecords();
+
+        updatePage();
     }
 
     /**
@@ -262,23 +257,12 @@ public class ClinicVisitLogPageController implements Initializable {
         ObservableList<Student> pageItems = FXCollections.observableArrayList(pageData);
         visitLogTable.setItems(pageItems);
 
+        searchTextField.setText("");
+        studentSearch();
+
         int displayedCount = pageItems.size();
         paginationLabel.setText((fromIndex + 1) + " - " + toIndex + " of " + total);
         rowsPageLabel.setText(String.valueOf(displayedCount));
-    }
-
-
-    /**
-     * This method changes the current page based on selected ComboBox value.
-     * @param actionEvent triggered when a page is selected.
-     */
-    @FXML
-    private void handlePageComboBox(ActionEvent actionEvent) {
-        Integer selectedPage = rowsPerPageComboBox.getValue();
-        if (selectedPage != null && selectedPage >= 1) {
-            currentPage = selectedPage;
-            updatePage();
-        }
     }
 
     /**
@@ -299,7 +283,9 @@ public class ClinicVisitLogPageController implements Initializable {
      */
     @FXML
     private void handleToggleRight(ActionEvent actionEvent) {
-        int maxPage = (int) Math.ceil((double) currentStudentPageList.size() / rowsPerPage);
+        int totalRecords = fullStudentList != null ? fullStudentList.size() : 0;
+        int maxPage = (int) Math.ceil((double) totalRecords / rowsPerPage);
+
         if (currentPage < maxPage) {
             currentPage++;
             updatePage();
