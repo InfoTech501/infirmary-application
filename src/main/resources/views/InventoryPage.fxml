@@ -8,7 +8,6 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -16,16 +15,17 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1124.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.inventory.InventoryController">
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.ToggleButton?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="711.0" prefWidth="1125.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.inventory.InventoryController">
     <stylesheets>
         <URL value="@../styles/buttons.css" />
         <URL value="@../styles/label.css" />
         <URL value="@../styles/table.css" />
-       <URL value="@../styles/notification.css" />
-
+        <URL value="@../styles/label.css" />
+        <URL value="@../styles/notification.css" />
     </stylesheets>
    <center>
       <ScrollPane prefHeight="680.0" prefWidth="200.0" BorderPane.alignment="CENTER">
