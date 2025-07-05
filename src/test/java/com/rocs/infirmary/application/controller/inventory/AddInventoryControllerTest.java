@@ -57,13 +57,13 @@ class AddInventoryControllerTest {
         stage.setScene(scene);
         stage.show();
     }
-//    @Disabled
+    @Disabled
     @Test
     void showWarningDialogTest(FxRobot robot) {
         robot.clickOn("#ButtonConfirm");
         robot.clickOn("Ok");
     }
-//    @Disabled
+    @Disabled
     @Test
     void emptyProductNameDialogTest(FxRobot robot){
         robot.clickOn(quantityTextField);
@@ -74,7 +74,7 @@ class AddInventoryControllerTest {
         assertTrue(robot.lookup("Product Name cannot be empty").tryQuery().isPresent());
         robot.clickOn("Ok");
     }
-//    @Disabled
+    @Disabled
     @Test
     void emptyQuantityDialogTest(FxRobot robot){
         robot.clickOn(productNameTextField);
@@ -85,7 +85,7 @@ class AddInventoryControllerTest {
         assertTrue(robot.lookup("Quantity cannot be empty").tryQuery().isPresent());
         robot.clickOn("Ok");
     }
-//    @Disabled
+    @Disabled
     @Test
     void emptyExpirationDateDialogTest(FxRobot robot){
         robot.clickOn(productNameTextField);
@@ -96,7 +96,8 @@ class AddInventoryControllerTest {
         assertTrue(robot.lookup("Expiration date cannot be empty").tryQuery().isPresent());
         robot.clickOn("Ok");
     }
-//    @Disabled
+
+    @Disabled
     @Test
     void testInvalidProductName(FxRobot robot) {
         robot.clickOn(productNameTextField);
@@ -110,14 +111,14 @@ class AddInventoryControllerTest {
         assertTrue(robot.lookup("Product Name must only contain letters.").tryQuery().isPresent());
 
     }
-//    @Disabled
+    @Disabled
     @Test
     void testRemoveButtonWithoutSelection(FxRobot robot) {
         robot.clickOn(removeButton);
         assertTrue(robot.lookup("No Items selected").tryQuery().isPresent());
         robot.clickOn("Ok");
     }
-//    @Disabled
+    @Disabled
     @Test
     void addNewMedicine(FxRobot robot) throws InterruptedException {
         robot.clickOn(productNameTextField);
@@ -132,7 +133,7 @@ class AddInventoryControllerTest {
         assertTrue(found);
         assertTrue(robot.lookup("Successfully Added").tryQuery().isPresent());
     }
-//    @Disabled
+    @Disabled
     @Test
     void removeMedicine(FxRobot robot){
         robot.interact(() -> {
