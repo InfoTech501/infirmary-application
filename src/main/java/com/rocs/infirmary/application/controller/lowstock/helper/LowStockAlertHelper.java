@@ -34,7 +34,6 @@ public class LowStockAlertHelper {
 
         List<LowStockReport> lowStockItems = lowStockService.getDashboardFacade().getAllLowStockMedicine();
 
-        redCircle.setVisible(false);
 
         if (lowStockItems.isEmpty()) {
             redCircle.setVisible(false);
