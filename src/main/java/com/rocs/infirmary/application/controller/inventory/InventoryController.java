@@ -1,7 +1,5 @@
 package com.rocs.infirmary.application.controller.inventory;
 
-import com.rocs.infirmary.application.controller.lowstock.helper.LowStockAlertHelper;
-import com.rocs.infirmary.application.module.lowstock.notification.service.LowStockNotificationServiceApplication;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
 import javafx.collections.FXCollections;
@@ -21,7 +19,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.scene.image.ImageView;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -49,18 +46,9 @@ public class InventoryController implements Initializable {
     @FXML
     private TextField searchTextField;
 
-    @FXML
-    private ImageView redCircle;
-
-    @FXML
-    private ToggleButton toggleButton;
-
     private ObservableList<Medicine> medicine;
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     private List<Medicine> medicineList = new ArrayList<>();
-
-    private LowStockNotificationServiceApplication lowStockNotificationServiceApplication = new LowStockNotificationServiceApplication();
-    private LowStockAlertHelper alertHelper;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -68,8 +56,6 @@ public class InventoryController implements Initializable {
         refresh();
         itemSearch();
         initalizeEditClick();
-        alertHelper = new LowStockAlertHelper(lowStockNotificationServiceApplication,redCircle,toggleButton);
-        alertHelper.checkLowStockAndShowAlert(medDetailsTable);
     }
     private void setup() {
         medDetailsTable.setEditable(true);
@@ -113,8 +99,6 @@ public class InventoryController implements Initializable {
         }
         medicine = FXCollections.observableArrayList(medicineList);
         medDetailsTable.setItems(medicine);
-        alertHelper = new LowStockAlertHelper(lowStockNotificationServiceApplication,redCircle,toggleButton);
-        alertHelper.checkLowStockAndShowAlert(medDetailsTable);
     }
     private void showModal(ActionEvent actionEvent,String location) throws IOException {
         Stage stage = new Stage();

@@ -6,12 +6,16 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 import com.rocs.infirmary.application.InfirmaryApplication;
+import com.rocs.infirmary.application.controller.lowstock.helper.LowStockAlertHelper;
+import com.rocs.infirmary.application.module.lowstock.notification.service.LowStockNotificationServiceApplication;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
 /**
@@ -29,10 +33,25 @@ public class MainpageController implements Initializable {
     @FXML
     private Label pageLabel;
 
+    @FXML
+    private ImageView redCircle;
+
+    @FXML
+    private ToggleButton notificationBtn;
+
+    private LowStockNotificationServiceApplication lowStockNotificationServiceApplication = new LowStockNotificationServiceApplication();
+    private LowStockAlertHelper alertHelper;
+
 
     @Override
     public void initialize (URL url, ResourceBundle rb) {
         loadDashboard();
+        alertHelper = new LowStockAlertHelper(lowStockNotificationServiceApplication,redCircle,notificationBtn);
+        alertHelper.checkLowStockAndShowAlert(homepageScene);
+    }
+
+    public void updateLowStockDisplay() {
+        alertHelper.checkLowStockAndShowAlert(homepageScene);
     }
 
     private void loadDashboard() {
@@ -77,6 +96,7 @@ public class MainpageController implements Initializable {
     @FXML
     public void setInventoryBtn() throws IOException {
         switchScene("/views/InventoryPage.fxml");
+        updateLowStockDisplay();
         pageLabel.setText("Inventory");
     }
 

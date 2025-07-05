@@ -27,7 +27,7 @@
         <URL value="@../styles/fonts.css" />
     </stylesheets>
    <center>
-      <ScrollPane fx:id="parentScrollPane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <BorderPane.margin>
             <Insets bottom="10.0" left="10.0" right="5.0" top="10.0" />
          </BorderPane.margin>

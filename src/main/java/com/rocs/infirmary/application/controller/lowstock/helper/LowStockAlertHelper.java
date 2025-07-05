@@ -14,7 +14,6 @@ import java.util.List;
  */
 public class LowStockAlertHelper {
 
-
     private final LowStockNotificationServiceApplication lowStockService;
     private final ImageView redCircle;
     private final ToggleButton toggleButton;

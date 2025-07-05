@@ -31,7 +31,6 @@ public class LowStockNotificationController {
     private Label alertMessage;
 
 
-
     /**
      * Sets the alert title and message content in the notification modal
      * @param title   the title of the alert

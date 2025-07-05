@@ -68,6 +68,11 @@
                            </ImageView>
                         </graphic>
                      </ToggleButton>
+                     <ImageView fx:id="redCircle" fitHeight="13.0" fitWidth="6.0" pickOnBounds="true" preserveRatio="true" translateX="-20.0" translateY="-10.0" visible="false">
+                        <image>
+                           <Image url="@../assets/round-red-notification.png" />
+                        </image>
+                     </ImageView>
                      <ToggleButton fx:id="accountBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="244.0" style="-fx-background-color: #f0f0f0;" text="Mr./ Ms. Username">
                         <graphic>
                            <ImageView fx:id="dropdownAccountBtn" accessibleRole="TOGGLE_BUTTON" fitHeight="33.0" fitWidth="36.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
