@@ -38,9 +38,10 @@ public interface MedicineInventoryFacade {
      * @param medicineId the unique identifier of the medicine
      * @param itemType the type of the Item to be added in the inventory
      * @param quantity the quantity to be added to the inventory
+     * @param expirationDate is used to specify the medicine expiration date
      * @return true if the inventory was successfully updated; false otherwise
      **/
-    boolean addInventory(String medicineId , String itemType, int quantity );
+    boolean addInventory(int medicineId , String itemType, int quantity,Date expirationDate );
     /**
      * This display all the medicine retrieved From the Medicine Table
      * @return a List of Medicine that is available on the database
@@ -54,11 +55,19 @@ public interface MedicineInventoryFacade {
     boolean deleteInventory(int inventoryId);
     /**
      * this is used to update the medicine attributes in the inventory
+     * @param inventoryId the ID of the inventory item to be updated
      * @param medicineId is a unique identifier that is used to specify the item to be updated
      * @param quantity is used to specify the quantity of the item being added
-     * @param description is used to specify what type of item are going to be added on the item table
+     * @param itemType is used to specify what type of item are going to be added on the item table
      * @param expirationDate is used to specify the medicine expiration date
      * @return true if the medicine is successfully updated and false if not
      **/
-    boolean updateMedicineInventory(String medicineId, int quantity, String description, Date expirationDate);
+    boolean updateMedicineInventory(int inventoryId,int medicineId, int quantity, String itemType, Date expirationDate);
+    /**
+     * this is used to update the medicine attributes in the inventory
+     * @param medicineId is a unique identifier that is used to specify the item to be updated
+     * @param description is used to specify what type of item are going to be added on the item table
+     * @return true if the medicine is successfully updated and false if not
+     **/
+    boolean updateMedicine(int medicineId, String medicineName, String description);
 }

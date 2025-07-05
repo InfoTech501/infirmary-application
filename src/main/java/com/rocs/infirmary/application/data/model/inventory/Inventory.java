@@ -3,7 +3,7 @@ package com.rocs.infirmary.application.data.model.inventory;
 public class Inventory {
     private int inventoryId;
     private int quantity;
-    private String medicineId;
+    private int medicineId;
     private String itemType;
 
     public void setQuantity(int quantity) {
@@ -26,9 +26,9 @@ public class Inventory {
         this.quantity = quantity;
     }
 
-    public String getMedicineId() {return medicineId; }
+    public int getMedicineId() {return medicineId; }
 
-    public void setMedicineId(String medicineId) { this.medicineId = medicineId; }
+    public void setMedicineId(int medicineId) { this.medicineId = medicineId; }
 
     public String getItemType () { return itemType;}
 

@@ -157,10 +157,8 @@
 }
 
 
-#ProductNameLabel, #QuantityLabel, #ExpirationDateLabel, #BatchNoLable, #DosageLabel{
+#ProductNameLabel, #QuantityLabel, #ExpirationDateLabel, #descriptionLabel, #DosageLabel,#itemTypeChoicebox,#itemTypeLabel{
  -fx-text-fill: #A9A9A9;
 }
-
-
 
 

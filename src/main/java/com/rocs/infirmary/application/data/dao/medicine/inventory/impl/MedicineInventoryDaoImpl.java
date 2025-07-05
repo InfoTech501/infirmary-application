@@ -37,7 +37,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                 Medicine medicine = new Medicine();
 
                 medicine.setInventoryId(rs.getInt("INVENTORY_ID"));
-                medicine.setMedicineId(rs.getString("MEDICINE_ID"));
+                medicine.setMedicineId(rs.getInt("MEDICINE_ID"));
                 medicine.setItemType(rs.getString("ITEM_TYPE"));
                 medicine.setQuantityAvailable(rs.getInt("QUANTITY"));
                 medicine.setItemName(rs.getString("ITEM_NAME"));
@@ -127,11 +127,9 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
         try (Connection con = ConnectionHelper.getConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
 
-            stmt.setString(1, medicine.getMedicineId());
-            stmt.setString(2, medicine.getItemName());
-            stmt.setString(3, medicine.getDescription());
-            stmt.setTimestamp(4, new java.sql.Timestamp(medicine.getExpirationDate().getTime()));
-            stmt.setInt(5, 1);
+            stmt.setString(1, medicine.getItemName());
+            stmt.setString(2, medicine.getDescription());
+            stmt.setInt(3, 1);
             int affectedRow = stmt.executeUpdate();
 
             return affectedRow > 0;
@@ -144,7 +142,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     }
 
     @Override
-    public boolean updateMedicine(String medicineId, int quantity, String description, Date expirationDate) {
+    public boolean updateInventory(int inventoryId, int medicineId, int quantity, String itemType, Date expirationDate) {
         LOGGER.info("update medicine started");
         boolean isUpdated = false;
         QueryConstants queryConstants = new QueryConstants();
@@ -153,7 +151,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                 String updateQuantityQuery = queryConstants.UPDATE_MEDICINE_QUANTITY_QUERY();
                 try(PreparedStatement preparedStatement = connection.prepareStatement(updateQuantityQuery)) {
                     preparedStatement.setInt(1,quantity);
-                    preparedStatement.setString(2, medicineId);
+                    preparedStatement.setInt(2, inventoryId);
                     int affectedRows = preparedStatement.executeUpdate();
                     isUpdated = affectedRows > 0;
                     LOGGER.info("Data inserted:\n" +
@@ -164,26 +162,26 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                     LOGGER.error("Error during update quantity"+e);
                 }
             }
-            if(description != null){
-                String updateDescriptionQuery = queryConstants.UPDATE_MEDICINE_DESCRIPTION_QUERY();
-                try (PreparedStatement preparedStatement = connection.prepareStatement(updateDescriptionQuery)){
-                    preparedStatement.setString(1,description);
-                    preparedStatement.setString(2, medicineId);
+            if (itemType != null) {
+                String updateDescriptionQuery = queryConstants.UPDATE_ITEM_TYPE_QUERY();
+                try (PreparedStatement preparedStatement = connection.prepareStatement(updateDescriptionQuery)) {
+                    preparedStatement.setString(1, itemType);
+                    preparedStatement.setInt(2, medicineId);
                     int affectedRows = preparedStatement.executeUpdate();
                     isUpdated = affectedRows > 0;
                     LOGGER.info("Data inserted:\n" +
                             "Medicine ID : {}\n" +
-                            "Description : {}", medicineId,description);
+                            "Description : {}", medicineId, itemType);
                     LOGGER.info("Description Updated Successfully");
-                }catch (SQLException e){
-                    LOGGER.error("Error during update description "+e);
+                } catch (SQLException e) {
+                    LOGGER.error("Error during update description " + e);
                 }
             }
             if(expirationDate != null){
                 String updateDescriptionQuery = queryConstants.UPDATE_MEDICINE_EXPIRATIONDATE_QUERY();
                 try (PreparedStatement preparedStatement = connection.prepareStatement(updateDescriptionQuery)){
                     preparedStatement.setTimestamp(1, new Timestamp(expirationDate.getTime()));
-                    preparedStatement.setString(2, medicineId);
+                    preparedStatement.setInt(2, inventoryId);
                     int affectedRows = preparedStatement.executeUpdate();
                     isUpdated = affectedRows > 0;
                     LOGGER.info("Data inserted:\n" +
@@ -203,7 +201,46 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     }
 
     @Override
-    public boolean addInventory(String medicineId, String itemType, int quantity) {
+    public boolean updateMedicine(int medicineId, String medicineName, String description) {
+        boolean isUpdated = false;
+        QueryConstants queryConstants = new QueryConstants();
+        try(Connection connection = ConnectionHelper.getConnection()) {
+            if (description != null) {
+                String updateDescriptionQuery = queryConstants.UPDATE_MEDICINE_DESCRIPTION_QUERY();
+                try (PreparedStatement preparedStatement = connection.prepareStatement(updateDescriptionQuery)) {
+                    preparedStatement.setString(1, description);
+                    preparedStatement.setInt(2, medicineId);
+                    int affectedRows = preparedStatement.executeUpdate();
+                    isUpdated = affectedRows > 0;
+                    LOGGER.info("Data inserted:\n" +
+                            "Medicine ID : {}\n" +
+                            "Description : {}", medicineId, description);
+                    LOGGER.info("Description Updated Successfully");
+                } catch (SQLException e) {
+                    LOGGER.error("Error during update description " + e);
+                }
+            }
+            if(medicineName!= null){
+                String updateItemNameQuery = queryConstants.UPDATE_MEDICINE_NAME();
+                try(PreparedStatement preparedStatement = connection.prepareStatement(updateItemNameQuery)) {
+                    preparedStatement.setString(1,medicineName);
+                    preparedStatement.setInt(2,medicineId);
+                    int affectedRows = preparedStatement.executeUpdate();
+                    isUpdated = affectedRows > 0;
+                    LOGGER.info("Data inserted:\n" +
+                            "Medicine ID   : {}\n" +
+                            "Medicine name : {}", medicineId, medicineName);
+                    LOGGER.info("Medicine Name Updated Successfully");
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Error during update medicine name " + e);
+        }
+        return isUpdated;
+    }
+
+    @Override
+    public boolean addInventory(int medicineId, String itemType, int quantity, Date expirationDate) {
         LOGGER.info("Accessing Add Inventory DAO");
         QueryConstants queryConstants = new QueryConstants();
 
@@ -214,9 +251,10 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
 
             PreparedStatement stmt = con.prepareStatement(sql);
 
-            stmt.setString(1, medicineId);
+            stmt.setInt(1, medicineId);
             stmt.setString(2, itemType);
             stmt.setInt(3, quantity);
+            stmt.setTimestamp(4, new Timestamp(expirationDate.getTime()));
             int affectedRows = stmt.executeUpdate();
             LOGGER.info("Retrieved Data : " + " \n"
                     + "Medicine ID : " + medicineId + "\n"
@@ -251,6 +289,44 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
             throw new RuntimeException(e);
         }
 
+    }
+
+    @Override
+    public List<Medicine> findAllMedicineFromMedicineTable() {
+        LOGGER.info("get all medicine started");
+        List<Medicine> MedicineInventoryList = new ArrayList<>();
+        QueryConstants queryConstants = new QueryConstants();
+        String sql= queryConstants.retrieveAllMedicine();
+
+        try (Connection con = ConnectionHelper.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            LOGGER.info("Query in use"+sql);
+
+            while (rs.next()) {
+
+                Medicine medicine = new Medicine();
+
+                medicine.setMedicineId(rs.getInt("MEDICINE_ID"));
+                medicine.setItemName(rs.getString("ITEM_NAME"));
+                medicine.setDescription(rs.getString("DESCRIPTION"));
+
+                LOGGER.info("Data retrieved: "+"\n"
+                        +"Medicine  ID: "+medicine.getMedicineId()+"\n"
+                        +"Item Name   : "+medicine.getItemName()+"\n"
+                        +"Description : "+medicine.getDescription()
+                );
+
+                MedicineInventoryList.add(medicine);
+            }
+
+        } catch (SQLException e) {
+            LOGGER.error("SQLException Occurred: " + e.getMessage());
+            System.out.println("An SQL Exception occurred: " + e.getMessage());
+        }
+        LOGGER.info("Data retrieved successfully");
+        LOGGER.info("Retrieved Date :   " + new Date());
+        return  MedicineInventoryList;
     }
 
 }
