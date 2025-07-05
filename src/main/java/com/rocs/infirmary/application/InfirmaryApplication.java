@@ -5,7 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class InfirmaryApplication extends Application {
@@ -13,7 +12,7 @@ public class InfirmaryApplication extends Application {
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader();
 
-        loader.setLocation(getClass().getResource("/views/StudentHealthProfilePage.fxml"));
+        loader.setLocation(getClass().getResource("/views/Mainpage.fxml"));
 
         Parent mainLayout = loader.load();
 
