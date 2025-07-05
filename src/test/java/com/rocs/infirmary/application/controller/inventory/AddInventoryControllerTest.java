@@ -96,7 +96,6 @@ class AddInventoryControllerTest {
         assertTrue(robot.lookup("Expiration date cannot be empty").tryQuery().isPresent());
         robot.clickOn("Ok");
     }
-
     @Disabled
     @Test
     void testInvalidProductName(FxRobot robot) {
