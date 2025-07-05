@@ -13,9 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Optional;
 
 import static com.rocs.infirmary.application.controller.helper.ControllerHelper.showDialog;
@@ -30,7 +27,7 @@ public class UpdateMedicineController {
     @FXML
     private TextArea descriptionTextField;
 
-    private int medicineId;
+    private long medicineId;
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     private final Logger LOGGER = LoggerFactory.getLogger(UpdateInventoryController.class);
     /**

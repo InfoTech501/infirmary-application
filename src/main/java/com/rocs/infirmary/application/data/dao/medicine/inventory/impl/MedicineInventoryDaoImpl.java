@@ -142,7 +142,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     }
 
     @Override
-    public boolean updateInventory(int inventoryId, int medicineId, int quantity, String itemType, Date expirationDate) {
+    public boolean updateInventory(long inventoryId, long medicineId, int quantity, String itemType, Date expirationDate) {
         LOGGER.info("update medicine started");
         boolean isUpdated = false;
         QueryConstants queryConstants = new QueryConstants();
@@ -151,12 +151,12 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                 String updateQuantityQuery = queryConstants.UPDATE_MEDICINE_QUANTITY_QUERY();
                 try(PreparedStatement preparedStatement = connection.prepareStatement(updateQuantityQuery)) {
                     preparedStatement.setInt(1,quantity);
-                    preparedStatement.setInt(2, inventoryId);
+                    preparedStatement.setLong(2, inventoryId);
                     int affectedRows = preparedStatement.executeUpdate();
                     isUpdated = affectedRows > 0;
                     LOGGER.info("Data inserted:\n" +
                                 "Medicine ID : {}\n" +
-                                "Quantity    : {}", medicineId,quantity);
+                                "Quantity    : {}", inventoryId,quantity);
                     LOGGER.info("Quantity Updated Successfully");
                 }catch (SQLException e){
                     LOGGER.error("Error during update quantity"+e);
@@ -166,7 +166,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                 String updateDescriptionQuery = queryConstants.UPDATE_ITEM_TYPE_QUERY();
                 try (PreparedStatement preparedStatement = connection.prepareStatement(updateDescriptionQuery)) {
                     preparedStatement.setString(1, itemType);
-                    preparedStatement.setInt(2, medicineId);
+                    preparedStatement.setLong(2, inventoryId);
                     int affectedRows = preparedStatement.executeUpdate();
                     isUpdated = affectedRows > 0;
                     LOGGER.info("Data inserted:\n" +
@@ -181,7 +181,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                 String updateDescriptionQuery = queryConstants.UPDATE_MEDICINE_EXPIRATIONDATE_QUERY();
                 try (PreparedStatement preparedStatement = connection.prepareStatement(updateDescriptionQuery)){
                     preparedStatement.setTimestamp(1, new Timestamp(expirationDate.getTime()));
-                    preparedStatement.setInt(2, inventoryId);
+                    preparedStatement.setLong(2, inventoryId);
                     int affectedRows = preparedStatement.executeUpdate();
                     isUpdated = affectedRows > 0;
                     LOGGER.info("Data inserted:\n" +
@@ -201,7 +201,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     }
 
     @Override
-    public boolean updateMedicine(int medicineId, String medicineName, String description) {
+    public boolean updateMedicine(long medicineId, String medicineName, String description) {
         boolean isUpdated = false;
         QueryConstants queryConstants = new QueryConstants();
         try(Connection connection = ConnectionHelper.getConnection()) {
@@ -209,7 +209,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                 String updateDescriptionQuery = queryConstants.UPDATE_MEDICINE_DESCRIPTION_QUERY();
                 try (PreparedStatement preparedStatement = connection.prepareStatement(updateDescriptionQuery)) {
                     preparedStatement.setString(1, description);
-                    preparedStatement.setInt(2, medicineId);
+                    preparedStatement.setLong(2, medicineId);
                     int affectedRows = preparedStatement.executeUpdate();
                     isUpdated = affectedRows > 0;
                     LOGGER.info("Data inserted:\n" +
@@ -224,7 +224,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                 String updateItemNameQuery = queryConstants.UPDATE_MEDICINE_NAME();
                 try(PreparedStatement preparedStatement = connection.prepareStatement(updateItemNameQuery)) {
                     preparedStatement.setString(1,medicineName);
-                    preparedStatement.setInt(2,medicineId);
+                    preparedStatement.setLong(2,medicineId);
                     int affectedRows = preparedStatement.executeUpdate();
                     isUpdated = affectedRows > 0;
                     LOGGER.info("Data inserted:\n" +
@@ -240,7 +240,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     }
 
     @Override
-    public boolean addInventory(int medicineId, String itemType, int quantity, Date expirationDate) {
+    public boolean addInventory(long medicineId, String itemType, int quantity, Date expirationDate) {
         LOGGER.info("Accessing Add Inventory DAO");
         QueryConstants queryConstants = new QueryConstants();
 
@@ -251,7 +251,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
 
             PreparedStatement stmt = con.prepareStatement(sql);
 
-            stmt.setInt(1, medicineId);
+            stmt.setLong(1, medicineId);
             stmt.setString(2, itemType);
             stmt.setInt(3, quantity);
             stmt.setTimestamp(4, new Timestamp(expirationDate.getTime()));
@@ -270,7 +270,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     }
 
     @Override
-    public boolean deleteInventory(int inventoryID) {
+    public boolean deleteInventory(long inventoryID) {
         LOGGER.info("Accessing Delete Inventory on DAO ");
         try (Connection con = ConnectionHelper.getConnection()) {
             QueryConstants queryConstants = new QueryConstants();
@@ -278,7 +278,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
             LOGGER.info("Query : " + sql);
 
             PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setInt(1,inventoryID);
+            stmt.setLong(1,inventoryID);
             int affectRows = stmt.executeUpdate();
 
             LOGGER.info("Deleted Date :   " + new Date());
@@ -292,7 +292,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     }
 
     @Override
-    public List<Medicine> findAllMedicineFromMedicineTable() {
+    public List<Medicine> findAll() {
         LOGGER.info("get all medicine started");
         List<Medicine> MedicineInventoryList = new ArrayList<>();
         QueryConstants queryConstants = new QueryConstants();

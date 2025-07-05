@@ -126,8 +126,4 @@ public class DeleteMedicineController {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
     }
-
-    private boolean isValidString(String input) {
-        return input != null && input.matches("[a-zA-Z\\s]+");
-    }
 }

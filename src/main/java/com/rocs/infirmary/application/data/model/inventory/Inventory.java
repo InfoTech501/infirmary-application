@@ -1,16 +1,16 @@
 package com.rocs.infirmary.application.data.model.inventory;
 
 public class Inventory {
-    private int inventoryId;
+    private long inventoryId;
     private int quantity;
-    private int medicineId;
+    private long medicineId;
     private String itemType;
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
-    public int getInventoryId() {
+    public long getInventoryId() {
         return inventoryId;
     }
 
@@ -26,9 +26,9 @@ public class Inventory {
         this.quantity = quantity;
     }
 
-    public int getMedicineId() {return medicineId; }
+    public long getMedicineId() {return medicineId; }
 
-    public void setMedicineId(int medicineId) { this.medicineId = medicineId; }
+    public void setMedicineId(long medicineId) { this.medicineId = medicineId; }
 
     public String getItemType () { return itemType;}
 

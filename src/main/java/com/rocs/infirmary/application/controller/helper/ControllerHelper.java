@@ -6,7 +6,15 @@ import javafx.scene.control.Dialog;
 
 import java.util.Optional;
 
+/**
+ * the {@code ControllerHelper} is used to facilitate commonly used method
+ * */
 public class ControllerHelper {
+    /**
+     * This method creates and shows a modal dialog with a custom title and content message.
+     * @param title used to set the title of the dialog
+     * @param content used to set the content of the dialog
+     * */
     public static void showDialog(String title,String content){
         Dialog dialog = new Dialog();
         dialog.setTitle(title);
@@ -15,6 +23,17 @@ public class ControllerHelper {
         dialog.getDialogPane().getButtonTypes().add(type);
         dialog.showAndWait();
     }
+    /**
+     * Displays a confirmation dialog with "Yes" and "No" buttons.
+     *
+     * This method creates and shows a modal dialog with a custom title and content message.
+     * It allows the user to confirm or cancel an action. The response is returned as an
+     * {@link Optional} containing the {@link ButtonType} selected by the user.
+     *
+     * @param title   the title of the alert dialog
+     * @param content the content message to be displayed in the dialog
+     * @return {@code Optional<ButtonType>} which will be used for the user's choice {@code ButtonType.YES} if "Yes" was clicked {@code ButtonType.NO} if "No" was clicked empty if the dialog was closed without a selection
+     **/
     public static Optional<ButtonType> alertAction(String title, String content) {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle(title);

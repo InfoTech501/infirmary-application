@@ -20,7 +20,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Optional;
 
-import static com.rocs.infirmary.application.controller.helper.ControllerHelper.alertAction;
 import static com.rocs.infirmary.application.controller.helper.ControllerHelper.showDialog;
 
 /**
@@ -39,13 +38,13 @@ public class UpdateInventoryController {
     private ComboBox itemTypeComboBox;
     private ObservableList<String> itemType;
     private String defaultItemType;
-    private int medicineId;
-    private int inventoryId;
+    private long medicineId;
+    private long inventoryId;
     private LocalDate localDate;
     private DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     private final Logger LOGGER = LoggerFactory.getLogger(UpdateInventoryController.class);
-    private static final String prompt = "  (Product Name Cannot be edited here)";
+    private static final String PROMPT = "  (Product Name Cannot be edited here)";
     /**
      * this displays the attributes of the Item to be updated
      * @param medicine is a model that contains all attribute of the medicine
@@ -59,7 +58,7 @@ public class UpdateInventoryController {
         inventoryId = medicine.getInventoryId();
 
         itemToEditLabel.setText(medicine.getItemName());
-        productNameTextField.setText(medicine.getItemName()+prompt);
+        productNameTextField.setText(medicine.getItemName()+ PROMPT);
         productNameTextField.setEditable(false);
         quantityTextField.setText(String.valueOf(medicine.getQuantity()));
 
