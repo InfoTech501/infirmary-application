@@ -1,6 +1,6 @@
 package com.rocs.infirmary.application.controller.student.profile;
 
-import com.rocs.infirmary.application.StudentMedicalRecordApplication;
+import com.rocs.infirmary.application.module.student.record.StudentMedicalRecordApplication;
 import com.rocs.infirmary.application.data.model.person.student.Student;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

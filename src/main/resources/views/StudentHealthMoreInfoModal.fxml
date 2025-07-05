@@ -15,7 +15,7 @@
 
 <StackPane fx:id="rootModal" maxHeight="-Infinity" prefHeight="726.0" prefWidth="1400.0" style="-fx-background-color: white;  -fx-background-radius: 8;" StackPane.alignment="BOTTOM_CENTER" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.student.profile.SHPMoreInfoModalController">
     <effect>
-        <DropShadow color="#00000055" offsetY="-20" radius="50" />
+        <DropShadow color="#00000055" offsetY="-100" radius="0" />
     </effect>
 
     <BorderPane prefHeight="700.0" prefWidth="1400.0">
@@ -46,13 +46,41 @@
                   </padding>
                   <VBox>
                       <HBox prefHeight="79.0" prefWidth="1360.0" spacing="40.0">
-                          <Label fx:id="AgeLabel" text="Age" />
-                          <Label fx:id="SexLabel" text="Sex" />
-                          <Label fx:id="BirthdateLabel" text="Birthdate" />
-                          <VBox prefHeight="79.0" prefWidth="706.0">
-                              <Label text="Contact Information:" />
-                              <Label fx:id="AddressLabel" text="Address" />
-                              <Label fx:id="ContactNumberLabel" text="Contact Number" />
+                  <VBox prefHeight="79.0" prefWidth="0.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <Label text="Age:" />
+                                      <Label fx:id="AgeLabel" text="Age" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <Label text="Sex:" />
+                                      <Label fx:id="SexLabel" text="Sex" />
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="30.0" prefWidth="382.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <Label text="Birthdate:" />
+                                      <Label fx:id="BirthdateLabel" text="Birthdate" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                          <VBox prefHeight="79.0" prefWidth="614.0" HBox.hgrow="ALWAYS">
+                     <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                        <children>
+                           <Label text="Address:" />
+                                    <Label fx:id="AddressLabel" text="Address" />
+                        </children>
+                     </HBox>
+                     <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                        <children>
+                           <Label text="Contact Number:" />
+                                    <Label fx:id="ContactNumberLabel" text="Contact Number" />
+                        </children>
+                     </HBox>
                           </VBox>
                       </HBox>
                   </VBox>
@@ -60,7 +88,7 @@
                          <!-- recent clinic history table-->
                  <VBox fx:id="tableViewWrapper" prefHeight="446.0" prefWidth="1360.0" spacing="10.0" VBox.vgrow="ALWAYS">
                   <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="82.0" prefWidth="1400.0" VBox.vgrow="ALWAYS">
-                        <Label text="Recent Clinic History" />
+                        <Label text="Recent Clinic History:" />
                   <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                      <children>
                             <Button fx:id="EditHealthInfoBtn" mnemonicParsing="false" prefHeight="48.0" prefWidth="255.0" text="Update Medical Record">
@@ -83,9 +111,9 @@
                              <TableColumn fx:id="NurseColumn" minWidth="200.0" text="Nurse" />
                          </columns>
                      </TableView>
-               <padding>
-                  <Insets bottom="20.0" />
-               </padding>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
                  </VBox>
               </VBox>
       </center>

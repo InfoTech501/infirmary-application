@@ -1,4 +1,4 @@
-package com.rocs.infirmary.application;
+package com.rocs.infirmary.application.module.student.profile;
 
 import com.rocs.infirmary.application.app.facade.student.profile.Impl.StudentHealthProfileFacadeImpl;
 import com.rocs.infirmary.application.app.facade.student.profile.StudentHealthProfileFacade;

@@ -141,6 +141,24 @@ fx-font-weight: 400;
     -fx-font-size: 15px;
 }
 
+#deleteMedicalRecordBtn {
+-fx-background-color:#D32F2F;
+-fx-text-fill: white;
+}
+
+#deleteMedicalRecordBtn:hover {
+-fx-background-color:#D32F2F;
+}
+
+#EditHealthInfoBtn{
+-fx-background-color:#1976D2;
+-fx-text-fill: white;
+}
+
+#EditHealthInfoBtn:hover {
+-fx-background-color:#1976D2;
+}
+
 #AgeComboBox .cell {
     -fx-alignment: center;
     -fx-text-alignment: center;

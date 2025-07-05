@@ -1,4 +1,4 @@
-package com.rocs.infirmary.application;
+package com.rocs.infirmary.application.module.student.record;
 
 import com.rocs.infirmary.application.app.facade.student.record.StudentMedicalRecordFacade;
 import com.rocs.infirmary.application.app.facade.student.record.impl.StudentMedicalRecordFacadeImpl;

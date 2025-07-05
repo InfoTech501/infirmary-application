@@ -1,8 +1,6 @@
 package com.rocs.infirmary.application.controller.student.profile;
 
-import com.rocs.infirmary.application.StudentHealthProfileApplication;
-import com.rocs.infirmary.application.app.facade.student.profile.StudentHealthProfileFacade;
-import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
+import com.rocs.infirmary.application.module.student.profile.StudentHealthProfileApplication;
 import com.rocs.infirmary.application.data.model.person.student.Student;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,7 +17,6 @@ import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -140,7 +137,7 @@ public class StudentHealthProfileController implements Initializable {
 
         SearchTextField.textProperty().addListener((observable,oldValue , newValue)->
                         filteredList.setPredicate(student -> {
-                            if(newValue.isEmpty()||newValue.isBlank()||newValue == null){
+                            if(newValue.isBlank()){
                                 return true;
                             }
                             String searchKeyword = newValue.toLowerCase();
@@ -151,10 +148,7 @@ public class StudentHealthProfileController implements Initializable {
                             if(student.getLastName().toLowerCase().contains(searchKeyword)){
                                 return true;
                             }
-                            if(String.valueOf(student.getLrn()).contains(searchKeyword)){
-                                return true;
-                            }
-                            return false;
+                            return String.valueOf(student.getLrn()).contains(searchKeyword);
                         })
         );
         SortedList<Student> sortedList = new SortedList<>(filteredList);

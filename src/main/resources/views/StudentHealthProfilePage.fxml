@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane fx:id="rootStackPane" prefHeight="677.0" prefWidth="1266.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.student.profile.StudentHealthProfileController">
+<StackPane fx:id="rootStackPane" prefHeight="677.0" prefWidth="1266.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.student.profile.StudentHealthProfileController">
     <BorderPane fx:id="mainBorderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
         <stylesheets>
             <URL value="@../styles/buttons.css" />
@@ -43,7 +43,7 @@
 
                         <Label text="Filter List" />
 
-                        <TextField fx:id="SearchTextField" prefHeight="42.0" prefWidth="487.0" promptText="Search" />
+                        <TextField fx:id="SearchTextField" prefHeight="42.0" prefWidth="487.0" promptText="Find LRN, First and Last name" />
                     </HBox>
 
                     <!--control buttons -->

@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="446.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.student.profile.SHPMedicalRecordsController">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="530.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.student.profile.SHPMedicalRecordsController">
 
    <stylesheets>
       <URL value="@../styles/buttons.css" />
@@ -22,18 +22,52 @@
 
    <center>
        <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-           <VBox prefHeight="246.0" prefWidth="330.0" spacing="10.0">
+           <VBox prefHeight="310.0" prefWidth="518.0" spacing="10.0">
                <HBox.margin>
                    <Insets />
                </HBox.margin>
-                <Label fx:id="illnessLabel" text="Illness/ Symptoms:" />
-                <Label fx:id="visitDateLabel" text="Visit Date:" />
-                <Label fx:id="givenMedicationLabel" text="Given Medication:" />
-                <Label fx:id="temperatureLabel" text="Temperature:" />
-                <Label fx:id="bloodPressureLabel" text="Blood Pressure:" />
-                <Label fx:id="pulseRateLabel" text="Pulse Rate:" />
-                <Label fx:id="respiratoryRate" text="Respiratory Rate:" />
-               <Label fx:id="treatmentLabel" text="Treatment:" />
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Label text="Illnes/Symptoms:" />
+                      <Label fx:id="illnessLabel" text="data" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Label text="Visit date:" />
+                      <Label fx:id="visitDateLabel" text="data" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Label text="Temperature:" />
+                      <Label fx:id="temperatureLabel" text="data" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Label text="Blood Pressure:" />
+                      <Label fx:id="bloodPressureLabel" text="data" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Label text="Pulse Rate:" />
+                      <Label fx:id="pulseRateLabel" text="data" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Label text="Respiratory Rate:" />
+                      <Label fx:id="respiratoryRate" text="data" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Label text="Treatment:" />
+                     <Label fx:id="treatmentLabel" text="data" />
+               </children>
+            </HBox>
            </VBox>
 
 
@@ -55,14 +89,17 @@
                    <DatePicker fx:id="updateVisitDatePicker" prefHeight="45.0" prefWidth="312.0" />
                </VBox>
            </VBox>
+         <padding>
+            <Insets top="30.0" />
+         </padding>
        </HBox>
 
    </center>
    <bottom>
-      <ButtonBar prefHeight="73.0" prefWidth="1400.0" BorderPane.alignment="CENTER">
+      <ButtonBar BorderPane.alignment="CENTER">
         <buttons>
-          <Button fx:id="confirmChangesBtn" mnemonicParsing="false" text="Confirm Changes" />
-            <Button fx:id="deleteMedicalRecordBtn" mnemonicParsing="false" text="Delete Medical Record">
+          <Button fx:id="confirmChangesBtn" mnemonicParsing="false" prefHeight="60.0" text="Confirm Changes" />
+            <Button fx:id="deleteMedicalRecordBtn" mnemonicParsing="false" prefHeight="60.0" text="Delete Medical Record">
                     <HBox.margin>
                         <Insets right="20.0" />
                     </HBox.margin>
@@ -74,8 +111,17 @@
       </ButtonBar>
    </bottom>
    <top>
-       <VBox prefHeight="42.0" prefWidth="1400.0" BorderPane.alignment="CENTER">
-           <Label text="UPDATE MEDICAL RECORDS" />
-       </VBox>
+      <VBox prefWidth="1400.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox alignment="CENTER_LEFT" prefWidth="1400.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Label text="MANAGE MEDICAL RECORDS" VBox.vgrow="ALWAYS" />
+               </children>
+            </VBox>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="20.0" top="20.0" />
+         </BorderPane.margin>
+      </VBox>
    </top>
 </BorderPane>

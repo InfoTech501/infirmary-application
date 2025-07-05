@@ -18,4 +18,16 @@ module com.rocs.infirmaryapplication {
     exports com.rocs.infirmary.application.module.inventory.management.application;
     opens com.rocs.infirmary.application.module.inventory.management.application to javafx.fxml;
     exports com.rocs.infirmary.application.controller.mainpage;
+
+    exports com.rocs.infirmary.application.module.student.profile;
+    opens com.rocs.infirmary.application.module.student.profile to javafx.fxml;
+    exports com.rocs.infirmary.application.module.student.record;
+
+    exports com.rocs.infirmary.application.controller.student.profile;
+    opens com.rocs.infirmary.application.data.model.person.student;
+    exports com.rocs.infirmary.application.data.model.person.student;
+    opens com.rocs.infirmary.application.data.model.person;
+    exports com.rocs.infirmary.application.data.model.person;
+
+
 }
