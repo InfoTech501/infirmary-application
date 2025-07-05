@@ -17,74 +17,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1124.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="711.0" prefWidth="1125.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <stylesheets>
         <URL value="@../styles/buttons.css" />
         <URL value="@../styles/label.css" />
         <URL value="@../styles/table.css" />
         <URL value="@../styles/label.css" />
     </stylesheets>
-
-    <top>
-      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <HBox prefHeight="100.0" prefWidth="500.0">
-               <children>
-                  <Label fx:id="StudentProfileLabel" prefHeight="46.0" prefWidth="435.0" text="Student Health Profile">
-                     <HBox.margin>
-                        <Insets left="30.0" top="30.0" />
-                     </HBox.margin>
-                     <stylesheets>
-                        <URL value="@../styles/fonts.css" />
-                        <URL value="@../styles/label.css" />
-                     </stylesheets>
-                  </Label>
-               </children></HBox>
-            <HBox prefHeight="100.0" prefWidth="286.0" />
-            <HBox prefHeight="90.0" prefWidth="130.0">
-               <children>
-                  <ImageView fitHeight="45.0" fitWidth="61.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../assets/notification-icon.png" />
-                     </image>
-                     <HBox.margin>
-                        <Insets left="38.0" top="25.0" />
-                     </HBox.margin>
-                  </ImageView>
-               </children>
-            </HBox>
-            <GridPane>
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="49.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="163.2000732421875" minWidth="10.0" prefWidth="139.2000732421875" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="99.1999267578125" minWidth="10.0" prefWidth="99.1999267578125" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints maxHeight="28.599996948242186" minHeight="10.0" prefHeight="22.999998474121092" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="54.40000915527344" minHeight="10.0" prefHeight="54.40000915527344" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="27.59999694824218" minHeight="10.0" prefHeight="21.999990844726554" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" />
-                  <ImageView fitHeight="42.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
-                     <image>
-                        <Image url="@../assets/profile-icon.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="29.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                     <image>
-                        <Image url="@../assets/dropdown-icon.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="NurseNameLabel" prefHeight="19.0" prefWidth="132.0" text="Nurse @User" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                     <GridPane.margin>
-                        <Insets left="15.0" />
-                     </GridPane.margin></Label>
-               </children>
-            </GridPane>
-         </children>
-      </HBox>
-   </top>
    <center>
       <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <content>
