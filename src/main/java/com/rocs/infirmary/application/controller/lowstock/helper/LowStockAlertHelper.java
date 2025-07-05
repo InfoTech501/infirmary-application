@@ -36,7 +36,11 @@ public class LowStockAlertHelper {
 
         redCircle.setVisible(false);
 
-        if (!lowStockItems.isEmpty()) {
+        if (lowStockItems.isEmpty()) {
+            redCircle.setVisible(false);
+            toggleButton.setOnMouseClicked(null);
+            return;
+        }
             List<String> productInfo = lowStockItems.stream()
                     .map(lowStockReport -> lowStockReport.getDescription() + " (Quantity : " + lowStockReport.getQuantityAvailable() + ")")
                     .toList();
@@ -49,4 +53,3 @@ public class LowStockAlertHelper {
 
         }
     }
-}
