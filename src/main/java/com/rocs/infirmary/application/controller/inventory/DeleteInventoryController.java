@@ -12,8 +12,11 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.rocs.infirmary.application.controller.helper.ControllerHelper.showDialog;
+
 /**
- * {@code AddInventoryController} is used to handle event processes of the Inventory when deleting Items
+ * {@code DeleteInventoryController} is used to handle event processes of the Inventory when deleting Items
  **/
 public class DeleteInventoryController{
     @FXML
@@ -108,22 +111,8 @@ public class DeleteInventoryController{
      * @param actionEvent the event triggered by the confirm button click
      */
     public void onConfirmButtonClick(ActionEvent actionEvent) {
-        String medicineName = inventoryDeleteLabelA.getText();
-        if (!isValidString(medicineName)) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Invalid Input");
-            alert.setHeaderText(null);
-            alert.setContentText("Medicine name must be a string.");
-            alert.showAndWait();return;
-        }
-        boolean isDeleted = deleteMedicine();
-        if(isDeleted){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Notification");
-            alert.setHeaderText(null);
-            alert.setContentText("Deleted successfully!");
-            alert.showAndWait();
-
+        if(deleteMedicine()){
+            showDialog("Notification","Medicine successfully Deleted");
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             stage.close();
         }

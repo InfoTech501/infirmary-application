@@ -17,12 +17,14 @@ public class QueryConstants {
 
     private final String GET_ALL_MEDICINE_QUERY = "SELECT MEDICINE_ID ,ITEM_NAME,DESCRIPTION FROM MEDICINE WHERE IS_AVAILABLE = 1";
 
-    private String DELETE_INVENTORY_QUERY = "DELETE INVENTORY WHERE INVENTORY_ID = ? ";
+    private final String DELETE_INVENTORY_QUERY = "DELETE INVENTORY WHERE INVENTORY_ID = ? ";
 
 
-    private String UPDATE_MEDICINE_QUANTITY_QUERY = "UPDATE INVENTORY SET inventory.quantity = ? where inventory.inventory_id = ?";
-    private String UPDATE_MEDICINE_DESCRIPTION_QUERY = "UPDATE MEDICINE SET medicine.description = ? where medicine.medicine_id = ?";
-    private String UPDATE_MEDICINE_EXPIRATIONDATE_QUERY = "UPDATE INVENTORY SET inventory.expiration_date = ? where inventory.inventory_id = ?";
+    private final String UPDATE_MEDICINE_QUANTITY_QUERY = "UPDATE INVENTORY SET inventory.quantity = ? where inventory.inventory_id = ?";
+    private final String UPDATE_ITEM_TYPE_QUERY = "UPDATE INVENTORY SET inventory.item_type = ? where inventory.inventory_id = ?";
+    private final String UPDATE_MEDICINE_DESCRIPTION_QUERY = "UPDATE MEDICINE SET medicine.description = ? where medicine.medicine_id = ?";
+    private final String UPDATE_MEDICINE_EXPIRATIONDATE_QUERY = "UPDATE INVENTORY SET inventory.expiration_date = ? where inventory.inventory_id = ?";
+    private final String UPDATE_MEDICINE_NAME = "UPDATE MEDICINE SET medicine.item_name = ? where medicine.medicine_id = ?";
 
     public String UPDATE_MEDICINE_EXPIRATIONDATE_QUERY() {
         return UPDATE_MEDICINE_EXPIRATIONDATE_QUERY;
@@ -35,6 +37,15 @@ public class QueryConstants {
     public String UPDATE_MEDICINE_QUANTITY_QUERY() {
         return UPDATE_MEDICINE_QUANTITY_QUERY;
     }
+
+    public String UPDATE_MEDICINE_NAME() {
+        return UPDATE_MEDICINE_NAME;
+    }
+
+    public String UPDATE_ITEM_TYPE_QUERY() {
+        return UPDATE_ITEM_TYPE_QUERY;
+    }
+
     public String getDeleteMedicineQuery() {return DELETE_MEDICINE_BY_ITEM_NAME_QUERY;}
 
     public String addMedicineToInventory() {return ADD_MEDICINE_TO_MAIN_INVENTORY_QUERY;}

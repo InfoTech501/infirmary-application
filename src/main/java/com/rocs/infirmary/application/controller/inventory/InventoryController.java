@@ -83,7 +83,6 @@ public class InventoryController implements Initializable {
         expiryDateColumn.setCellFactory(expiryDateColumn -> new TableCell<Medicine, Timestamp>() {
             @Override
             protected void updateItem(Timestamp expirationDate, boolean empty) {
-                super.updateItem(expirationDate, empty);
                 if (empty || expirationDate == null) {
                     setText(null);
                 } else {
@@ -97,7 +96,7 @@ public class InventoryController implements Initializable {
         medDetailsTable.setRowFactory(t->{
             TableRow<Medicine>tableRow = new TableRow<>();
             tableRow.setOnMouseClicked(event->{
-                if(!tableRow.isEmpty() && event.getClickCount() == 1){
+                if(!tableRow.isEmpty() && event.getClickCount() == 2){
                     Medicine selectedMedicine = tableRow.getItem();
                     try {
                         showEditInventory(selectedMedicine);
@@ -230,7 +229,6 @@ public class InventoryController implements Initializable {
      * @param actionEvent the event triggered by the confirm button click
      */
     public void onRemoveBtnClick(ActionEvent actionEvent) throws IOException {
-        System.out.println("clicked");
         if(getSelectedMedicines().isEmpty()){
             Dialog dialog = new Dialog();
             dialog.setTitle("Warning");

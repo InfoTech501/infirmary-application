@@ -80,9 +80,12 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
     }
 
     @Override
-    public boolean updateMedicineInventory(int inventoryId,int medicineId, int quantity, String description, Date expirationDate) {
-        return this.medicineInventoryDao.updateMedicine(inventoryId,medicineId,quantity,description,expirationDate);
+    public boolean updateMedicineInventory(int inventoryId, int medicineId, int quantity, String itemType, Date expirationDate) {
+        return this.medicineInventoryDao.updateInventory(inventoryId,medicineId,quantity, itemType,expirationDate);
     }
 
-
+    @Override
+    public boolean updateMedicine(int medicineId, String medicineName, String description) {
+        return this.medicineInventoryDao.updateMedicine(medicineId,medicineName,description);
+    }
 }

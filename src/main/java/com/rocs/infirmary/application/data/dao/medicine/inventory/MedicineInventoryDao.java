@@ -33,13 +33,21 @@ public interface MedicineInventoryDao {
     boolean addMedicine(Medicine medicine);
     /**
      * This is used to update the specified medicine record in the inventory.
-     * @param medicineId isis a unique identifier that is  used to specify the medicine that needs to be updated
+     * @param inventoryId is a unique identifier that is used to specify the item in inventory to be updated
+     * @param medicineId is a unique identifier that is  used to specify the medicine that needs to be updated
      * @param quantity is used to update the quantity of medicine
-     * @param description is used to update the medicine description
+     * @param itemType is used to update the inventory item type
      * @param expirationDate is used to update the medicine's expiration date
      * @return true when the medicine are successfully updated, false when the medicine are not updated successfully due to error
      * */
-    boolean updateMedicine(int inventoryId,int medicineId, int quantity, String description, Date expirationDate);
+    boolean updateInventory(int inventoryId, int medicineId, int quantity, String itemType, Date expirationDate);
+    /**
+     * This is used to update the specified medicine record.
+     * @param medicineId is a unique identifier that is  used to specify the medicine that needs to be updated
+     * @param description is used to update the medicine description
+     * @return true when the medicine are successfully updated, false when the medicine are not updated successfully due to error
+     * */
+    boolean updateMedicine(int medicineId,String medicineName,String description);
     /**
      * this is used to add new medicine in the inventory
      * @param medicineId is a unique identifier that is used to specify the item to be added
@@ -53,6 +61,9 @@ public interface MedicineInventoryDao {
      * @return true if the item is successfully deleted, false when item is not successfully deleted
      */
     boolean deleteInventory(int inventoryID);
-
+    /**
+     * this is used to find all medicine in the medicine table
+     * return list of Medicine attributes with details such as medicineId,medicine name, and description
+     **/
     List<Medicine> findAllMedicineFromMedicineTable();
 }

@@ -1,7 +1,10 @@
 package com.rocs.infirmary.application.controller.inventory;
 
+import com.rocs.infirmary.application.controller.helper.ControllerHelper;
 import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -16,6 +19,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Optional;
+
+import static com.rocs.infirmary.application.controller.helper.ControllerHelper.alertAction;
+import static com.rocs.infirmary.application.controller.helper.ControllerHelper.showDialog;
+
 /**
  * {@code UpdateInventoryController} is used to handle event processes of the Inventory when updating Item attributes
  **/
@@ -29,21 +36,28 @@ public class UpdateInventoryController {
     @FXML
     private DatePicker expirationDatePicker;
     @FXML
-    private TextField descriptionTextField;
-
+    private ComboBox itemTypeComboBox;
+    private ObservableList<String> itemType;
+    private String defaultItemType;
     private int medicineId;
     private int inventoryId;
     private LocalDate localDate;
     private DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     private final Logger LOGGER = LoggerFactory.getLogger(UpdateInventoryController.class);
-    private static final String prompt = "  Cannot be edit as of now due to conflicts";
+    private static final String prompt = "  (Product Name Cannot be edited here)";
     /**
      * this displays the attributes of the Item to be updated
      * @param medicine is a model that contains all attribute of the medicine
      **/
     public void showItemToEdit(Medicine medicine){
+        String[] itemTypeList = {"No selection","Medicine", "Non expiry", "other"};
         LOGGER.info("Edit Inventory Controller started");
+
+        defaultItemType = medicine.getItemType();
+        medicineId = medicine.getMedicineId();
+        inventoryId = medicine.getInventoryId();
+
         itemToEditLabel.setText(medicine.getItemName());
         productNameTextField.setText(medicine.getItemName()+prompt);
         productNameTextField.setEditable(false);
@@ -52,13 +66,15 @@ public class UpdateInventoryController {
         localDate = medicine.getExpirationDate().toLocalDateTime().toLocalDate();
         expirationDatePicker.setPromptText(localDate.format(outputFormat));
 
-        descriptionTextField.setText(medicine.getDescription());
-        medicineId = medicine.getMedicineId();
-        inventoryId = medicine.getInventoryId();
+        itemType = FXCollections.observableArrayList(itemTypeList);
+        itemTypeComboBox.setItems(itemType);
+        itemTypeComboBox.setPromptText(defaultItemType);
+
     }
 
     private boolean updateMedicine()throws ParseException{
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String itemType;
         boolean isUpdated = false;
         if (!productNameTextField.getText().isEmpty() && !quantityTextField.getText().isEmpty()) {
             Date expirationDate;
@@ -70,7 +86,12 @@ public class UpdateInventoryController {
             } else {
                 expirationDate = java.sql.Date.valueOf(localDate);
             }
-            isUpdated = inventoryManagementApplication.getMedicineInventoryFacade().updateMedicineInventory(inventoryId,medicineId,Integer.parseInt(quantityTextField.getText()), descriptionTextField.getText(), expirationDate);
+            if(itemTypeComboBox.getSelectionModel().getSelectedItem() != null){
+                itemType = itemTypeComboBox.getSelectionModel().getSelectedItem().toString();
+            }else{
+                itemType = defaultItemType;
+            }
+            isUpdated = inventoryManagementApplication.getMedicineInventoryFacade().updateMedicineInventory(inventoryId,medicineId,Integer.parseInt(quantityTextField.getText()), itemType, expirationDate);
         }
 
         return isUpdated;
@@ -90,62 +111,27 @@ public class UpdateInventoryController {
     public void onConfirmButtonClick(ActionEvent actionEvent) throws ParseException {
         LOGGER.warn("This action cannot be undone");
         if(productNameTextField.getText()==null || productNameTextField.getText().isEmpty()|| productNameTextField.getText().isBlank()){
-            Dialog dialog = new Dialog();
-            dialog.setTitle("Warning");
-            ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            dialog.setContentText("Product Name cannot be empty");
             LOGGER.warn("Product name field is empty");
-            dialog.getDialogPane().getButtonTypes().add(type);
-            dialog.showAndWait();
+            showDialog("Warning","Product Name cannot be empty");
         }else if(quantityTextField.getText()==null||quantityTextField.getText().isEmpty()|| quantityTextField.getText().isBlank()){
-            Dialog dialog = new Dialog();
-            dialog.setTitle("Warning");
-            ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            dialog.setContentText("Quantity cannot be empty");
             LOGGER.warn("Quantity field is empty");
-            dialog.getDialogPane().getButtonTypes().add(type);
-            dialog.showAndWait();
+            showDialog("Warning","Quantity cannot be empty");
         }else if(expirationDatePicker.getPromptText() == null){
-            Dialog dialog = new Dialog();
-            dialog.setTitle("Warning");
-            ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            dialog.setContentText("Expiration date cannot be empty");
             LOGGER.warn("Expiration field is empty");
-            dialog.getDialogPane().getButtonTypes().add(type);
-            dialog.showAndWait();
-        }
-        else if (!isValidTextInput(productNameTextField.getText())) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Invalid Input In Product Name");
-            alert.setContentText("Product Name must only contain letters.");
-            LOGGER.warn("Product name contains number or symbols");
-            alert.showAndWait();
+            showDialog("Warning","Expiration date cannot be empty");
+        } else if (itemTypeComboBox.getSelectionModel().getSelectedItem() == null && defaultItemType == null || defaultItemType.isEmpty()) {
+            showDialog("Warning","please select item type");
         }
         else {
-            Dialog confirmDialog = new Dialog();
-            confirmDialog.setTitle("Update Confirmation");
-            ButtonType okayButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            ButtonType cancelButton = new ButtonType("Cancel",ButtonBar.ButtonData.CANCEL_CLOSE);
-            confirmDialog.setContentText("This action cannot be undone. Are you sure about this update?");
-            confirmDialog.getDialogPane().getButtonTypes().addAll(okayButton,cancelButton);
-            Optional<ButtonType> result = confirmDialog.showAndWait();
+            Optional<ButtonType> result = ControllerHelper.alertAction("Update Confirmation", "This action cannot be undone. Are you sure about this update?");
+            if (result.isPresent()&& result.get().getButtonData() == ButtonBar.ButtonData.YES) {
+                if (updateMedicine()) {
+                    ControllerHelper.showDialog("Notification", "Updated Successfully!");
 
-            if(result.isPresent() && result.get() == okayButton){
-                if(updateMedicine()){
-                    Dialog dialog = new Dialog();
-                    dialog.setTitle("Notification");
-                    ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-                    dialog.setContentText("Updated Successfully!");
-                    dialog.getDialogPane().getButtonTypes().add(type);
-                    dialog.showAndWait();
-                    if(type.getButtonData().isDefaultButton()){
-                        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-                        stage.close();
-                        LOGGER.info("Exiting Update Inventory Modal");
-                    }
+                    Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                    stage.close();
+                    LOGGER.info("Exiting Update Inventory Modal");
                 }
-            }else{
-                confirmDialog.close();
             }
         }
     }

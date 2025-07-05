@@ -142,7 +142,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     }
 
     @Override
-    public boolean updateMedicine(int inventoryId, int medicineId, int quantity, String description, Date expirationDate) {
+    public boolean updateInventory(int inventoryId, int medicineId, int quantity, String itemType, Date expirationDate) {
         LOGGER.info("update medicine started");
         boolean isUpdated = false;
         QueryConstants queryConstants = new QueryConstants();
@@ -162,19 +162,19 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                     LOGGER.error("Error during update quantity"+e);
                 }
             }
-            if(description != null){
-                String updateDescriptionQuery = queryConstants.UPDATE_MEDICINE_DESCRIPTION_QUERY();
-                try (PreparedStatement preparedStatement = connection.prepareStatement(updateDescriptionQuery)){
-                    preparedStatement.setString(1,description);
+            if (itemType != null) {
+                String updateDescriptionQuery = queryConstants.UPDATE_ITEM_TYPE_QUERY();
+                try (PreparedStatement preparedStatement = connection.prepareStatement(updateDescriptionQuery)) {
+                    preparedStatement.setString(1, itemType);
                     preparedStatement.setInt(2, medicineId);
                     int affectedRows = preparedStatement.executeUpdate();
                     isUpdated = affectedRows > 0;
                     LOGGER.info("Data inserted:\n" +
                             "Medicine ID : {}\n" +
-                            "Description : {}", medicineId,description);
+                            "Description : {}", medicineId, itemType);
                     LOGGER.info("Description Updated Successfully");
-                }catch (SQLException e){
-                    LOGGER.error("Error during update description "+e);
+                } catch (SQLException e) {
+                    LOGGER.error("Error during update description " + e);
                 }
             }
             if(expirationDate != null){
@@ -197,6 +197,45 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
             LOGGER.error("SQLException Occurred: " + e.getMessage());
         }
         LOGGER.info("Updated Date :   " + new Date());
+        return isUpdated;
+    }
+
+    @Override
+    public boolean updateMedicine(int medicineId, String medicineName, String description) {
+        boolean isUpdated = false;
+        QueryConstants queryConstants = new QueryConstants();
+        try(Connection connection = ConnectionHelper.getConnection()) {
+            if (description != null) {
+                String updateDescriptionQuery = queryConstants.UPDATE_MEDICINE_DESCRIPTION_QUERY();
+                try (PreparedStatement preparedStatement = connection.prepareStatement(updateDescriptionQuery)) {
+                    preparedStatement.setString(1, description);
+                    preparedStatement.setInt(2, medicineId);
+                    int affectedRows = preparedStatement.executeUpdate();
+                    isUpdated = affectedRows > 0;
+                    LOGGER.info("Data inserted:\n" +
+                            "Medicine ID : {}\n" +
+                            "Description : {}", medicineId, description);
+                    LOGGER.info("Description Updated Successfully");
+                } catch (SQLException e) {
+                    LOGGER.error("Error during update description " + e);
+                }
+            }
+            if(medicineName!= null){
+                String updateItemNameQuery = queryConstants.UPDATE_MEDICINE_NAME();
+                try(PreparedStatement preparedStatement = connection.prepareStatement(updateItemNameQuery)) {
+                    preparedStatement.setString(1,medicineName);
+                    preparedStatement.setInt(2,medicineId);
+                    int affectedRows = preparedStatement.executeUpdate();
+                    isUpdated = affectedRows > 0;
+                    LOGGER.info("Data inserted:\n" +
+                            "Medicine ID   : {}\n" +
+                            "Medicine name : {}", medicineId, medicineName);
+                    LOGGER.info("Medicine Name Updated Successfully");
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Error during update medicine name " + e);
+        }
         return isUpdated;
     }
 
