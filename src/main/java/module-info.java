@@ -13,6 +13,7 @@ module com.rocs.infirmaryapplication {
     opens com.rocs.infirmary.application.controller.dashboard to javafx.fxml;
     opens com.rocs.infirmary.application.data.model.person.student to javafx.fxml;
     opens com.rocs.infirmary.application.controller.modal to javafx.fxml;
+    opens com.rocs.infirmary.application.controller.mainpage to javafx.fxml;
 
     exports com.rocs.infirmary.application;
     exports com.rocs.infirmary.application.data.model.inventory;
@@ -25,4 +26,5 @@ module com.rocs.infirmaryapplication {
     opens com.rocs.infirmary.application.module.inventory.management.application to javafx.fxml;
     exports com.rocs.infirmary.application.module.medical.record.management.application;
     opens com.rocs.infirmary.application.module.medical.record.management.application to javafx.fxml;
+    exports com.rocs.infirmary.application.controller.mainpage;
 }
