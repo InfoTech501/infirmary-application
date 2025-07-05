@@ -50,10 +50,6 @@ public class MainpageController implements Initializable {
         alertHelper.checkLowStockAndShowAlert(homepageScene);
     }
 
-    public void updateLowStockDisplay() {
-        alertHelper.checkLowStockAndShowAlert(homepageScene);
-    }
-
     private void loadDashboard() {
         try {
             switchScene("/views/DashboardPage.fxml");
@@ -96,7 +92,7 @@ public class MainpageController implements Initializable {
     @FXML
     public void setInventoryBtn() throws IOException {
         switchScene("/views/InventoryPage.fxml");
-        updateLowStockDisplay();
+        alertHelper.checkLowStockAndShowAlert(homepageScene);
         pageLabel.setText("Inventory");
     }
 
