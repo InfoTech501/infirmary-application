@@ -219,9 +219,7 @@ public class InventoryController implements Initializable {
     }
     private boolean deleteMedicine(){
         boolean deleted = false;
-        for (Medicine med : medicineList) {
-            deleted = inventoryManagementApplication.getMedicineInventoryFacade().deleteInventory(med.getInventoryId());
-        }
+        deleted = inventoryManagementApplication.getMedicineInventoryFacade().deleteInventory(medicineList);
         return deleted;
     }
     /**

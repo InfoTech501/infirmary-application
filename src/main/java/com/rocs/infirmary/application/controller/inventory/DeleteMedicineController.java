@@ -101,11 +101,7 @@ public class DeleteMedicineController {
         }
     }
     private boolean deleteMedicine(){
-        boolean deleted = false;
-        for (Medicine med : medicineList) {
-            deleted = inventoryManagementApplication.getMedicineInventoryFacade().deleteMedicineByItemName(med.getItemName());
-        }
-        return deleted;
+        return inventoryManagementApplication.getMedicineInventoryFacade().deleteMedicineByItemName(medicineList);
     }
     /**
      * this method handles the action triggered when the confirm button is clicked.

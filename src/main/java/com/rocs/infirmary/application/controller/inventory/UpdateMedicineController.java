@@ -26,7 +26,6 @@ public class UpdateMedicineController {
     private TextField productNameTextField;
     @FXML
     private TextArea descriptionTextField;
-
     private long medicineId;
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     private final Logger LOGGER = LoggerFactory.getLogger(UpdateInventoryController.class);
@@ -44,12 +43,10 @@ public class UpdateMedicineController {
     }
 
     private boolean updateMedicine()throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         boolean isUpdated = false;
-        if (!productNameTextField.getText().isEmpty() && !descriptionTextField.getText().isEmpty()) {
+        if (productNameTextField.getText() != null && descriptionTextField.getText() != null && !productNameTextField.getText().isEmpty() && !descriptionTextField.getText().isEmpty()) {
             isUpdated = inventoryManagementApplication.getMedicineInventoryFacade().updateMedicine(medicineId,productNameTextField.getText(), descriptionTextField.getText());
         }
-
         return isUpdated;
     }
     /**
@@ -58,6 +55,7 @@ public class UpdateMedicineController {
      */
     public void onCancelButtonClick(ActionEvent actionEvent) {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        LOGGER.info("Exiting Update Medicine Modal");
         stage.close();
     }
     /**
@@ -66,26 +64,30 @@ public class UpdateMedicineController {
      */
     public void onConfirmButtonClick(ActionEvent actionEvent) throws ParseException {
         LOGGER.warn("This action cannot be undone");
-        if(productNameTextField.getText()==null || productNameTextField.getText().isEmpty()|| productNameTextField.getText().isBlank()){
-            LOGGER.warn("Product name field is empty");
-            showDialog("Warning","Product Name cannot be empty");
-        } else if (descriptionTextField.getText() == null || descriptionTextField.getText().isEmpty() || descriptionTextField.getText().isBlank()) {
-            showDialog("Warning","Description cannot be empty");
-        } else if (!isValidTextInput(productNameTextField.getText())) {
-            showDialog("Invalid Input","Product Name must only contain letters.");
-        }
-        else {
-            Optional<ButtonType> result = ControllerHelper.alertAction("Update Confirmation", "This action cannot be undone. Are you sure about this update?");
-            if (result.isPresent()&& result.get().getButtonData() == ButtonBar.ButtonData.YES) {
-                if (updateMedicine()) {
-                    ControllerHelper.showDialog("Notification", "Updated Successfully!");
+       try {
+           if(productNameTextField.getText()==null || productNameTextField.getText().isEmpty()|| productNameTextField.getText().isBlank()){
+               LOGGER.warn("Product name field is empty");
+               showDialog("Warning","Product Name cannot be empty");
+           } else if (descriptionTextField.getText() == null || descriptionTextField.getText().isEmpty() || descriptionTextField.getText().isBlank()) {
+               showDialog("Warning","Description cannot be empty");
+           } else if (!isValidTextInput(productNameTextField.getText())) {
+               showDialog("Invalid Input","Product Name must only contain letters.");
+           }
+           else {
+               Optional<ButtonType> result = ControllerHelper.alertAction("Update Confirmation", "This action cannot be undone. Are you sure about this update?");
+               if (result.isPresent()&& result.get().getButtonData() == ButtonBar.ButtonData.YES) {
+                   if (updateMedicine()) {
+                       ControllerHelper.showDialog("Notification", "Updated Successfully!");
 
-                    Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-                    stage.close();
-                    LOGGER.info("Exiting Update Inventory Modal");
-                }
-            }
-        }
+                       Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                       LOGGER.info("Exiting Update Medicine Modal");
+                       stage.close();
+                   }
+               }
+           }
+       }catch (NullPointerException e){
+           LOGGER.error("NullPointerException Occurred "+e);
+       }
     }
     private boolean isValidTextInput(String input) {
         return input.matches("[a-zA-Z\\s]+");

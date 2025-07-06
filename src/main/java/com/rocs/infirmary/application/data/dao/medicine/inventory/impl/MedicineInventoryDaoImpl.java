@@ -10,6 +10,9 @@ import java.sql.*;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
+
+import static com.rocs.infirmary.application.data.dao.utils.queryconstants.medicine.inventory.QueryConstants.*;
+
 /**
  * The MedicineInventoryDaoImpl class is an implementation of the Medicine Inventory Dao Interface.
  * It provides methods that handles the business logics of create, update and delete functionality.
@@ -21,16 +24,10 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
         LOGGER.info("get all medicine started");
         List<Medicine> MedicineInventoryList = new ArrayList<>();
 
-
-        QueryConstants queryConstants = new QueryConstants();
-        String sql= queryConstants.getLIST_ALL_MEDICINE_INVENTORY_QUERY();
-
-
-
         try (Connection con = ConnectionHelper.getConnection();
-             PreparedStatement stmt = con.prepareStatement(sql);
+             PreparedStatement stmt = con.prepareStatement(GET_ALL_MEDICINE_INVENTORY_QUERY);
              ResultSet rs = stmt.executeQuery()) {
-            LOGGER.info("Query in use"+sql);
+            LOGGER.debug("Query in use"+ GET_ALL_MEDICINE_INVENTORY_QUERY);
 
             while (rs.next()) {
 
@@ -44,7 +41,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                 medicine.setDescription(rs.getString("DESCRIPTION"));
                 medicine.setExpirationDate(rs.getTimestamp("EXPIRATION_DATE"));
 
-                LOGGER.info("Data retrieved: "+"\n"
+                LOGGER.debug("Data retrieved: "+"\n"
                         +"Inventory ID: "+medicine.getInventoryId()+"\n"
                         +"Medicine  ID: "+medicine.getMedicineId()+"\n"
                         +"Item type   : "+medicine.getItemType()+"\n"
@@ -67,26 +64,22 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     }
 
     @Override
-    public boolean deleteMedicine(String itemName) {
+    public boolean deleteMedicine(List<Medicine> itemName) {
         LOGGER.info("Delete medicine started");
+        int totalAffectedRows = 0;
         try (Connection con = ConnectionHelper.getConnection()) {
-            QueryConstants queryConstants = new QueryConstants();
+            PreparedStatement stmt = con.prepareStatement(DELETE_MEDICINE_BY_ITEM_NAME_QUERY);
+            LOGGER.debug("Query in use "+DELETE_MEDICINE_BY_ITEM_NAME_QUERY);
+            LOGGER.debug("data inserted: "+"Item Name: "+itemName);
+            for(Medicine item:itemName){
+                if(isAvailable(item.getItemName())) {
+                    stmt.setString(1,item.getItemName());
+                    totalAffectedRows += stmt.executeUpdate();
+                    LOGGER.info(itemName+" successfully deleted");
 
-            String sql = queryConstants.getDeleteMedicineQuery();
-            PreparedStatement stmt = con.prepareStatement(sql);
-            LOGGER.info("Query in use"+sql);
-            LOGGER.info("data inserted: "+"Item Name: "+itemName);
-            if(isAvailable(itemName)) {
-
-                stmt.setString(1,itemName);
-
-                int affectedRows = stmt.executeUpdate();
-                LOGGER.info(itemName+" successfully deleted");
-                return affectedRows > 0;
-
-            } else {
-                LOGGER.info(itemName+" Failed to delete");
-                return false;
+                } else {
+                    LOGGER.info(itemName+" Failed to delete");
+                }
             }
 
 
@@ -94,20 +87,15 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
             LOGGER.error("SqlException Occurred: "+e.getMessage());
             throw new RuntimeException();
         }
-
+        return totalAffectedRows > 0;
     }
 
     @Override
     public boolean isAvailable(String itemName) {
         LOGGER.info("availability check started");
         try(Connection con = ConnectionHelper.getConnection()){
-            QueryConstants queryConstants = new QueryConstants();
-
-            String sql = queryConstants.filterDeletedMedicine();
-            PreparedStatement stmt = con.prepareStatement(sql);
-
+            PreparedStatement stmt = con.prepareStatement(FILTER_AVAILABLE_MEDICINE_QUERY);
             stmt.setString(1,itemName);
-
             ResultSet rs =  stmt.executeQuery();
             return rs.next();
 
@@ -121,12 +109,9 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
 
     @Override
     public boolean addMedicine(Medicine medicine) {
-        QueryConstants queryConstants = new QueryConstants();
-        String sql = queryConstants.addMedicine();
 
         try (Connection con = ConnectionHelper.getConnection();
-             PreparedStatement stmt = con.prepareStatement(sql)) {
-
+             PreparedStatement stmt = con.prepareStatement(ADD_MEDICINE_QUERY)) {
             stmt.setString(1, medicine.getItemName());
             stmt.setString(2, medicine.getDescription());
             stmt.setInt(3, 1);
@@ -145,11 +130,10 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     public boolean updateInventory(long inventoryId, long medicineId, int quantity, String itemType, Date expirationDate) {
         LOGGER.info("update medicine started");
         boolean isUpdated = false;
-        QueryConstants queryConstants = new QueryConstants();
+
         try(Connection connection = ConnectionHelper.getConnection()){
             if(quantity != 0){
-                String updateQuantityQuery = queryConstants.UPDATE_MEDICINE_QUANTITY_QUERY();
-                try(PreparedStatement preparedStatement = connection.prepareStatement(updateQuantityQuery)) {
+                try(PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_ITEM_QUANTITY_QUERY)) {
                     preparedStatement.setInt(1,quantity);
                     preparedStatement.setLong(2, inventoryId);
                     int affectedRows = preparedStatement.executeUpdate();
@@ -163,8 +147,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                 }
             }
             if (itemType != null) {
-                String updateDescriptionQuery = queryConstants.UPDATE_ITEM_TYPE_QUERY();
-                try (PreparedStatement preparedStatement = connection.prepareStatement(updateDescriptionQuery)) {
+                try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_ITEM_TYPE_QUERY)) {
                     preparedStatement.setString(1, itemType);
                     preparedStatement.setLong(2, inventoryId);
                     int affectedRows = preparedStatement.executeUpdate();
@@ -178,8 +161,8 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                 }
             }
             if(expirationDate != null){
-                String updateDescriptionQuery = queryConstants.UPDATE_MEDICINE_EXPIRATIONDATE_QUERY();
-                try (PreparedStatement preparedStatement = connection.prepareStatement(updateDescriptionQuery)){
+
+                try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_MEDICINE_EXPIRATION_DATE_QUERY)){
                     preparedStatement.setTimestamp(1, new Timestamp(expirationDate.getTime()));
                     preparedStatement.setLong(2, inventoryId);
                     int affectedRows = preparedStatement.executeUpdate();
@@ -203,11 +186,9 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     @Override
     public boolean updateMedicine(long medicineId, String medicineName, String description) {
         boolean isUpdated = false;
-        QueryConstants queryConstants = new QueryConstants();
         try(Connection connection = ConnectionHelper.getConnection()) {
             if (description != null) {
-                String updateDescriptionQuery = queryConstants.UPDATE_MEDICINE_DESCRIPTION_QUERY();
-                try (PreparedStatement preparedStatement = connection.prepareStatement(updateDescriptionQuery)) {
+                try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_MEDICINE_DESCRIPTION_QUERY)) {
                     preparedStatement.setString(1, description);
                     preparedStatement.setLong(2, medicineId);
                     int affectedRows = preparedStatement.executeUpdate();
@@ -221,8 +202,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                 }
             }
             if(medicineName!= null){
-                String updateItemNameQuery = queryConstants.UPDATE_MEDICINE_NAME();
-                try(PreparedStatement preparedStatement = connection.prepareStatement(updateItemNameQuery)) {
+                try(PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_MEDICINE_NAME)) {
                     preparedStatement.setString(1,medicineName);
                     preparedStatement.setLong(2,medicineId);
                     int affectedRows = preparedStatement.executeUpdate();
@@ -246,10 +226,8 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
 
         try {
             Connection con = ConnectionHelper.getConnection();
-            String sql = queryConstants.addMedicineToInventory();
-            LOGGER.info("query in use : {}", sql);
-
-            PreparedStatement stmt = con.prepareStatement(sql);
+            PreparedStatement stmt = con.prepareStatement(ADD_ITEM_TO_INVENTORY_QUERY);
+            LOGGER.info("query in use : {}", ADD_ITEM_TO_INVENTORY_QUERY);
 
             stmt.setLong(1, medicineId);
             stmt.setString(2, itemType);
@@ -270,38 +248,36 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     }
 
     @Override
-    public boolean deleteInventory(long inventoryID) {
+    public boolean deleteInventory(List<Medicine> medicines) {
         LOGGER.info("Accessing Delete Inventory on DAO ");
+        int totalAffectedRows = 0;
+
         try (Connection con = ConnectionHelper.getConnection()) {
-            QueryConstants queryConstants = new QueryConstants();
-            String sql = queryConstants.deleteInventory();
-            LOGGER.info("Query : " + sql);
+            LOGGER.info("Query : " + DELETE_INVENTORY_ITEM_QUERY);
+            PreparedStatement stmt = con.prepareStatement(DELETE_INVENTORY_ITEM_QUERY);
 
-            PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setLong(1,inventoryID);
-            int affectRows = stmt.executeUpdate();
+            for (Medicine med : medicines) {
+                stmt.setLong(1, med.getInventoryId());
+                totalAffectedRows += stmt.executeUpdate();
+            }
 
-            LOGGER.info("Deleted Date :   " + new Date());
-
-            return affectRows > 0 ;
-
+            LOGGER.info("Deleted Date : " + new Date());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
+        return totalAffectedRows > 0;
     }
 
     @Override
     public List<Medicine> findAll() {
         LOGGER.info("get all medicine started");
         List<Medicine> MedicineInventoryList = new ArrayList<>();
-        QueryConstants queryConstants = new QueryConstants();
-        String sql= queryConstants.retrieveAllMedicine();
 
         try (Connection con = ConnectionHelper.getConnection();
-             PreparedStatement stmt = con.prepareStatement(sql);
+             PreparedStatement stmt = con.prepareStatement(GET_ALL_MEDICINE_QUERY);
              ResultSet rs = stmt.executeQuery()) {
-            LOGGER.info("Query in use"+sql);
+            LOGGER.info("Query in use"+GET_ALL_MEDICINE_QUERY);
 
             while (rs.next()) {
 

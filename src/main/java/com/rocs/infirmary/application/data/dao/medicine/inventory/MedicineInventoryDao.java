@@ -18,7 +18,7 @@ public interface MedicineInventoryDao {
      * @param itemName is a unique identifier assigned to a medicine. This value is used to locate and delete the corresponding medicine.
      * @return true if the medicine is successfully deleted, false when medicine is not successfully deleted
      */
-    boolean deleteMedicine(String itemName);
+    boolean deleteMedicine(List<Medicine> itemName);
     /**
      * This is used to check if the medicine is already existing in the database
      * @param itemName is used to specify the name of the medicine that needs to be checked
@@ -57,10 +57,10 @@ public interface MedicineInventoryDao {
     boolean addInventory(long medicineId , String itemType, int quantity, Date expirationDate );
     /**
      * This is intended to delete medicine based on its Name(ItemName).
-     * @param inventoryID is a unique identifier assigned to an item in the inventory. This value is used to locate and delete the corresponding item.
+     * @param medicines is the list of selected medicine to be deleted.
      * @return true if the item is successfully deleted, false when item is not successfully deleted
      */
-    boolean deleteInventory(long inventoryID);
+    boolean deleteInventory(List<Medicine> medicines);
     /**
      * this is used to find all medicine in the medicine table
      * return list of Medicine attributes with details such as medicineId,medicine name, and description

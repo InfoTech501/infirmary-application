@@ -60,9 +60,8 @@ public class AddInventoryController implements Initializable {
     private ObservableList<Medicine> medicine;
     private ObservableList<String> itemType;
     private List<Medicine> medicineList = new ArrayList<>();
-    private DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
+    private Medicine medicineModel = new Medicine();
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
-    Medicine medicineModel = new Medicine();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -228,11 +227,7 @@ public class AddInventoryController implements Initializable {
         }
     }
     private boolean deleteMedicine(){
-        boolean deleted = false;
-        for (Medicine med : medicineList) {
-            deleted = inventoryManagementApplication.getMedicineInventoryFacade().deleteMedicineByItemName(med.getItemName());
-        }
-        return deleted;
+        return inventoryManagementApplication.getMedicineInventoryFacade().deleteMedicineByItemName(medicineList);
     }
     /**
      * this method handles the action triggered when the remove button is clicked.

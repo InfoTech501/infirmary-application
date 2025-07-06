@@ -20,7 +20,7 @@ public interface MedicineInventoryFacade {
      * @param itemName the name of the medicine to be removed must correspond to an existing entry
      * @return true if the medicine was successfully deleted false otherwise
      */
-    boolean deleteMedicineByItemName(String itemName);
+    boolean deleteMedicineByItemName(List<Medicine> itemName);
     /**
      * Checks whether a specific medicine is available in the inventory.
      * @param itemName the name of the medicine to check
@@ -49,10 +49,10 @@ public interface MedicineInventoryFacade {
     List<Medicine> getAllMedicineFromMedicineTable();
     /**
      * Deletes a specific inventory record using its unique identifier.
-     * @param inventoryId the ID of the inventory item to be deleted
+     * @param medicines the list of medicine to be deleted
      * @return true if the inventory record was successfully deleted false if not
      **/
-    boolean deleteInventory(long inventoryId);
+    boolean deleteInventory(List<Medicine> medicines);
     /**
      * this is used to update the medicine attributes in the inventory
      * @param inventoryId the ID of the inventory item to be updated

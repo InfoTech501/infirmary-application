@@ -20,9 +20,8 @@ import static com.rocs.infirmary.application.controller.helper.ControllerHelper.
  **/
 public class DeleteInventoryController{
     @FXML
-    private Label inventoryDeleteLabelA;
-    @FXML
     private GridPane medicineListContainer;
+
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     private List<Medicine> medicineList = new ArrayList<>();
     /**
@@ -100,11 +99,7 @@ public class DeleteInventoryController{
         }
     }
     private boolean deleteMedicine(){
-        boolean deleted = false;
-        for (Medicine med : medicineList) {
-            deleted = inventoryManagementApplication.getMedicineInventoryFacade().deleteInventory(med.getInventoryId());
-        }
-        return deleted;
+        return inventoryManagementApplication.getMedicineInventoryFacade().deleteInventory(medicineList);
     }
     /**
      * this method handles the action triggered when the confirm button is clicked.
@@ -126,7 +121,4 @@ public class DeleteInventoryController{
         stage.close();
     }
 
-    private boolean isValidString(String input) {
-        return input != null && input.matches("[a-zA-Z\\s]+");
-    }
 }

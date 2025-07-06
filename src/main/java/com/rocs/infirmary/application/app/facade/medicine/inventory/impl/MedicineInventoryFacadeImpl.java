@@ -44,7 +44,7 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
         return medicines;
     }
     @Override
-    public boolean deleteMedicineByItemName(String itemName) {
+    public boolean deleteMedicineByItemName(List<Medicine> itemName) {
         logger.warn("Entering deleteMedicineByItemName with itemName: {}", itemName);
         boolean isDeleted = medicineInventoryDao.deleteMedicine(itemName);
         logger.warn("Exiting deleteMedicineByItemName with result: {}", isDeleted);
@@ -75,8 +75,8 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
     }
 
     @Override
-    public boolean deleteInventory(long inventoryId) {
-        return this.medicineInventoryDao.deleteInventory(inventoryId);
+    public boolean deleteInventory(List<Medicine> medicines) {
+        return this.medicineInventoryDao.deleteInventory(medicines);
     }
 
     @Override
