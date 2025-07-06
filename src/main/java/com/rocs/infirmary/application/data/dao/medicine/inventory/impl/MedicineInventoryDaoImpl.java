@@ -68,12 +68,12 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
         LOGGER.info("Delete medicine started");
         int totalAffectedRows = 0;
         try (Connection con = ConnectionHelper.getConnection()) {
-            PreparedStatement stmt = con.prepareStatement(DELETE_MEDICINE_BY_ITEM_NAME_QUERY);
-            LOGGER.debug("Query in use "+DELETE_MEDICINE_BY_ITEM_NAME_QUERY);
+            PreparedStatement stmt = con.prepareStatement(DELETE_MEDICINE_BY_ID_QUERY);
+            LOGGER.debug("Query in use "+ DELETE_MEDICINE_BY_ID_QUERY);
             LOGGER.debug("data inserted: "+"Item Name: "+itemName);
             for(Medicine item:itemName){
                 if(isAvailable(item.getItemName())) {
-                    stmt.setString(1,item.getItemName());
+                    stmt.setLong(1,item.getMedicineId());
                     totalAffectedRows += stmt.executeUpdate();
                     LOGGER.info(itemName+" successfully deleted");
 
