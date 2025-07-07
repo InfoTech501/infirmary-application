@@ -34,7 +34,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                 Medicine medicine = new Medicine();
 
                 medicine.setInventoryId(rs.getLong("INVENTORY_ID"));
-                medicine.setMedicineId(rs.getInt("MEDICINE_ID"));
+                medicine.setMedicineId(rs.getLong("MEDICINE_ID"));
                 medicine.setItemType(rs.getString("ITEM_TYPE"));
                 medicine.setQuantityAvailable(rs.getInt("QUANTITY"));
                 medicine.setItemName(rs.getString("ITEM_NAME"));
@@ -283,7 +283,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
 
                 Medicine medicine = new Medicine();
 
-                medicine.setMedicineId(rs.getInt("MEDICINE_ID"));
+                medicine.setMedicineId(rs.getLong("MEDICINE_ID"));
                 medicine.setItemName(rs.getString("ITEM_NAME"));
                 medicine.setDescription(rs.getString("DESCRIPTION"));
 
