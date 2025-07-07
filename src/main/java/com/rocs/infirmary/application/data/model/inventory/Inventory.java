@@ -10,7 +10,7 @@ public class Inventory {
         this.quantity = quantity;
     }
 
-    public long getInventoryId() {
+    public Long getInventoryId() {
         return inventoryId;
     }
 
