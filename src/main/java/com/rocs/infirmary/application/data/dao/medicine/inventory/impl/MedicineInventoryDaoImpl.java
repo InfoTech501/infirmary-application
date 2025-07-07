@@ -33,7 +33,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
 
                 Medicine medicine = new Medicine();
 
-                medicine.setInventoryId(rs.getInt("INVENTORY_ID"));
+                medicine.setInventoryId(rs.getLong("INVENTORY_ID"));
                 medicine.setMedicineId(rs.getInt("MEDICINE_ID"));
                 medicine.setItemType(rs.getString("ITEM_TYPE"));
                 medicine.setQuantityAvailable(rs.getInt("QUANTITY"));
@@ -64,21 +64,21 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     }
 
     @Override
-    public boolean deleteMedicine(List<Medicine> itemName) {
+    public boolean deleteMedicine(List<Medicine> medicines) {
         LOGGER.info("Delete medicine started");
         int totalAffectedRows = 0;
         try (Connection con = ConnectionHelper.getConnection()) {
             PreparedStatement stmt = con.prepareStatement(DELETE_MEDICINE_BY_ID_QUERY);
             LOGGER.debug("Query in use "+ DELETE_MEDICINE_BY_ID_QUERY);
-            LOGGER.debug("data inserted: "+"Item Name: "+itemName);
-            for(Medicine item:itemName){
+            LOGGER.debug("data inserted: "+"Item Name: "+ medicines);
+            for(Medicine item: medicines){
                 if(isAvailable(item.getItemName())) {
                     stmt.setLong(1,item.getMedicineId());
                     totalAffectedRows += stmt.executeUpdate();
-                    LOGGER.info(itemName+" successfully deleted");
+                    LOGGER.info(medicines +" successfully deleted");
 
                 } else {
-                    LOGGER.info(itemName+" Failed to delete");
+                    LOGGER.info(medicines +" Failed to delete");
                 }
             }
 
@@ -127,7 +127,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     }
 
     @Override
-    public boolean updateInventory(long inventoryId, long medicineId, int quantity, String itemType, Date expirationDate) {
+    public boolean updateInventory(Long inventoryId, Long medicineId, int quantity, String itemType, Date expirationDate) {
         LOGGER.info("update medicine started");
         boolean isUpdated = false;
 
@@ -184,7 +184,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     }
 
     @Override
-    public boolean updateMedicine(long medicineId, String medicineName, String description) {
+    public boolean updateMedicine(Long medicineId, String medicineName, String description) {
         boolean isUpdated = false;
         try(Connection connection = ConnectionHelper.getConnection()) {
             if (description != null) {
@@ -220,7 +220,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     }
 
     @Override
-    public boolean addInventory(long medicineId, String itemType, int quantity, Date expirationDate) {
+    public boolean addInventory(Long medicineId, String itemType, int quantity, Date expirationDate) {
         LOGGER.info("Accessing Add Inventory DAO");
         QueryConstants queryConstants = new QueryConstants();
 

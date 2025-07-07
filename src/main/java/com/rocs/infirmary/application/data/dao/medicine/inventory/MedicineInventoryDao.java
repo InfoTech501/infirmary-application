@@ -15,10 +15,10 @@ public interface MedicineInventoryDao {
     List<Medicine> findAllMedicine();
     /**
      * This is intended to delete medicine based on its Name(ItemName).
-     * @param itemName is a unique identifier assigned to a medicine. This value is used to locate and delete the corresponding medicine.
+     * @param medicines is a list of medicine to be removed
      * @return true if the medicine is successfully deleted, false when medicine is not successfully deleted
      */
-    boolean deleteMedicine(List<Medicine> itemName);
+    boolean deleteMedicine(List<Medicine> medicines);
     /**
      * This is used to check if the medicine is already existing in the database
      * @param itemName is used to specify the name of the medicine that needs to be checked
@@ -40,21 +40,21 @@ public interface MedicineInventoryDao {
      * @param expirationDate is used to update the medicine's expiration date
      * @return true when the medicine are successfully updated, false when the medicine are not updated successfully due to error
      * */
-    boolean updateInventory(long inventoryId, long medicineId, int quantity, String itemType, Date expirationDate);
+    boolean updateInventory(Long inventoryId, Long medicineId, int quantity, String itemType, Date expirationDate);
     /**
      * This is used to update the specified medicine record.
      * @param medicineId is a unique identifier that is  used to specify the medicine that needs to be updated
      * @param description is used to update the medicine description
      * @return true when the medicine are successfully updated, false when the medicine are not updated successfully due to error
      * */
-    boolean updateMedicine(long medicineId, String medicineName, String description);
+    boolean updateMedicine(Long medicineId, String medicineName, String description);
     /**
      * this is used to add new medicine in the inventory
      * @param medicineId is a unique identifier that is used to specify the item to be added
      * @param itemType is used to specify what type of item are going to be added on the item table
      * @param quantity is used to specify the quantity of the item being added
      **/
-    boolean addInventory(long medicineId , String itemType, int quantity, Date expirationDate );
+    boolean addInventory(Long medicineId , String itemType, int quantity, Date expirationDate );
     /**
      * This is intended to delete medicine based on its Name(ItemName).
      * @param medicines is the list of selected medicine to be deleted.

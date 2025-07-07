@@ -218,9 +218,7 @@ public class InventoryController implements Initializable {
         medDetailsTable.sort();
     }
     private boolean deleteMedicine(){
-        boolean deleted = false;
-        deleted = inventoryManagementApplication.getMedicineInventoryFacade().deleteInventory(medicineList);
-        return deleted;
+        return inventoryManagementApplication.getMedicineInventoryFacade().deleteInventory(medicineList);
     }
     /**
      * this method handles the action triggered when the remove button is clicked.
