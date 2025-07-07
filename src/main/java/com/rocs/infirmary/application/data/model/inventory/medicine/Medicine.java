@@ -57,7 +57,7 @@ public class Medicine extends Inventory{
         return isAvailable;
     }
 
-    public long getMedicineId(){ return medicineId; }
+    public Long getMedicineId(){ return medicineId; }
     public void setMedicineId(Long medicineId) { this.medicineId = medicineId; }
 
 
