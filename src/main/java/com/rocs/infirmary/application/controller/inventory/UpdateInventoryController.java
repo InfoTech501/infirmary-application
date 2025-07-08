@@ -91,7 +91,6 @@ public class UpdateInventoryController {
                     itemType = itemTypeComboBox.getSelectionModel().getSelectedItem().toString();
                 }
                 try {
-                    quantity = Integer.parseInt(quantityTextField.getText());
                     isUpdated = inventoryManagementApplication.getMedicineInventoryFacade().updateMedicineInventory(inventoryId, medicineId, quantity, itemType, newSelectedExpirationDate);
                 } catch (NumberFormatException e) {
                     showDialog("Warning","Invalid quantity");
@@ -118,6 +117,7 @@ public class UpdateInventoryController {
      */
     public void onConfirmButtonClick(ActionEvent actionEvent) throws ParseException {
         LOGGER.warn("This action cannot be undone");
+        String parsedQuantity  = quantityTextField.getText().trim();
         try {
             if(productNameTextField.getText()==null || productNameTextField.getText().isEmpty()|| productNameTextField.getText().isBlank()){
                 LOGGER.warn("Product name field is empty");
@@ -125,6 +125,9 @@ public class UpdateInventoryController {
             }else if(quantityTextField.getText()==null||quantityTextField.getText().isEmpty()|| quantityTextField.getText().isBlank()){
                 LOGGER.warn("Quantity field is empty");
                 showDialog("Warning","Quantity cannot be empty");
+            } else if (!parsedQuantity.matches("^\\d{1,10}$")) {
+                showDialog("Warning", "Quantity must be a whole number between 0 and " + Integer.MAX_VALUE);
+                LOGGER.warn("Invalid quantity input: " + parsedQuantity);
             }else if(expirationDatePicker.getPromptText() == null && expirationDatePicker.getValue() == null && expirationDatePicker == null && expirationDate == null){
                 LOGGER.warn("Expiration field is empty");
                 showDialog("Warning","Expiration date cannot be empty");
