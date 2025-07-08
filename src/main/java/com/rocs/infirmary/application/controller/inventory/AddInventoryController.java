@@ -144,10 +144,9 @@ public class AddInventoryController implements Initializable {
         }
         return false;
     }
-    private boolean addMedicine() throws ParseException {
+    private boolean addMedicine(int quantity) throws ParseException {
         boolean isAdded = false;
         boolean found = false;
-        int quantity = Integer.parseInt(quantityTextField.getText());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date expirationDate = dateFormat.parse(String.valueOf(expirationDatePicker.getValue()));
         String productName = productNameTextField.getText().trim();
@@ -208,11 +207,15 @@ public class AddInventoryController implements Initializable {
      * @param actionEvent the event triggered by the confirm button click
      */
     public void onConfirmBtnClick(ActionEvent actionEvent) throws ParseException {
+        String parsedQuantity  = quantityTextField.getText().trim();
         if(productNameTextField.getText()==null||productNameTextField.getText().isEmpty()|| productNameTextField.getText().isBlank()){
             showDialog("warning","Product Name cannot be empty");
         }else if(quantityTextField.getText()==null||quantityTextField.getText().isEmpty()|| quantityTextField.getText().isBlank()){
             showDialog("warning","Quantity cannot be empty");
-        } else if (descriptionTextField.getText() == null || descriptionTextField.getText().isEmpty()||descriptionTextField.getText().isBlank()) {
+        }else if (!parsedQuantity.matches("^\\d{1,10}$")) {
+            showDialog("Warning", "Quantity must be a whole number between 0 and " + Integer.MAX_VALUE);
+            LOGGER.warn("Invalid quantity input: " + parsedQuantity);
+        }else if (descriptionTextField.getText() == null || descriptionTextField.getText().isEmpty()||descriptionTextField.getText().isBlank()) {
             showDialog("warning","Description cannot be empty");
         } else if(expirationDatePicker.getValue()==null){
             showDialog("warning","Expiration date cannot be empty");
@@ -223,7 +226,7 @@ public class AddInventoryController implements Initializable {
         } else if (!isValidInputNumber(quantityTextField.getText())) {
             showDialog("Invalid Input","Quantity must only contain number");
         } else {
-            addMedicine();
+            addMedicine(Integer.parseInt(quantityTextField.getText()));
         }
     }
     private boolean deleteMedicine(){
