@@ -3,7 +3,6 @@ package com.rocs.infirmary.application.data.dao.student.record.impl;
 import com.rocs.infirmary.application.data.connection.ConnectionHelper;
 import static com.rocs.infirmary.application.data.dao.utils.queryconstants.student.QueryConstants.*;
 
-import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import com.rocs.infirmary.application.data.model.person.student.Student;
 import com.rocs.infirmary.application.data.dao.student.record.StudentMedicalRecordDao;
 import org.slf4j.Logger;
@@ -150,12 +149,42 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
     }
 
     @Override
+    public List<Student> getAllNurseAccounts() {
+        List<Student> nurses = new ArrayList<>();
+
+        try (Connection con = ConnectionHelper.getConnection();
+             PreparedStatement stmt = con.prepareStatement(GET_ALL_NURSE_EMPLOYEE);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                try {
+                    Student nurse = new Student();
+                    nurse.setStudentId(rs.getInt("id"));
+                    nurse.setFirstName(rs.getString("first_name"));
+                    nurse.setMiddleName(rs.getString("middle_name"));
+                    nurse.setLastName(rs.getString("last_name"));
+                    nurses.add(nurse);
+                    LOGGER.info("Mapped Nurse: {} {}", nurse.getFirstName(), nurse.getLastName());
+                } catch (Exception ex) {
+                    LOGGER.warn("Error mapping nurse record. Row skipped: {}", ex.getMessage());
+                }
+            }
+
+        } catch (SQLException e) {
+            LOGGER.error("SQLException Occurred: {}", e.getMessage(), e);
+            throw new RuntimeException("Error fetching nurse accounts", e);
+        }
+
+        return nurses;
+    }
+
+    @Override
     public boolean addStudentMedicalRecord(Student record) {
         try (Connection con = ConnectionHelper.getConnection()) {
             con.setAutoCommit(false);
 
             try (PreparedStatement medStmt = con.prepareStatement(ADD_STUDENT_MEDICAL_RECORD)) {
-                medStmt.setInt(1, record.getStudentId());
+                medStmt.setLong(1, record.getStudentId());
                 medStmt.setString(2, record.getSymptoms());
                 medStmt.setString(3, record.getTemperatureReadings());
                 medStmt.setString(4, record.getBloodPressure());
@@ -167,12 +196,13 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
 
                 int affectedRow = medStmt.executeUpdate();
                 return affectedRow > 0;
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
 
-        } catch (SQLException e) {
-            System.out.println("Transaction failed: " + e.getMessage());
-            return false;
-        }
+        return false;
     }
 
     /**

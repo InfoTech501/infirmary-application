@@ -1,8 +1,13 @@
 package com.rocs.infirmary.application.data.dao.utils.queryconstants.student;
 
+/**
+ * the {@code QueryConstants} class handles the static method for database queries.
+ */
 public class QueryConstants {
-
-    public static final String GET_ALL_MEDICAL_INFORMATION_BY_LRN = "SELECT " +
+    /**
+     * query that retrieves all medical information by its LRN.
+     */
+    public static String GET_ALL_MEDICAL_INFORMATION_BY_LRN = "SELECT " +
             "s.id AS student_id, " +
             "s.LRN, " +
             "p.first_name, " +
@@ -18,8 +23,10 @@ public class QueryConstants {
             "JOIN person p ON s.person_id = p.id " +
             "LEFT JOIN medical_record mr ON s.id = mr.student_id " +
             "WHERE s.LRN = ?";
-
-    public static final String GET_ALL_STUDENTS_MEDICAL_RECORDS = "SELECT\n" +
+    /**
+     * query that retrieves all student medical record.
+     */
+    public static String GET_ALL_STUDENTS_MEDICAL_RECORDS = "SELECT\n" +
             "    student.id,\n" +
             "    student.person_id,\n" +
             "    student.lrn,\n" +
@@ -52,18 +59,40 @@ public class QueryConstants {
             "LEFT JOIN medicine ON medicine_administered.medicine_id = medicine.medicine_id\n" +
             "LEFT JOIN employee ON medical_record.nurse_in_charge_id = employee.id\n" +
             "LEFT JOIN person nurse_person ON employee.id = nurse_person.id ";
-
-    public static final String ADD_STUDENT_MEDICAL_RECORD = "INSERT INTO MEDICAL_RECORD (STUDENT_ID, SYMPTOMS, TEMPERATURE_READINGS, BLOOD_PRESSURE, PULSE_RATE, RESPIRATORY_RATE, VISIT_DATE, TREATMENT, IS_ACTIVE) VALUES(?,?,?,?,?,?,?,?,?)";
-
-    public static final String DELETE_STUDENT_MEDICAL_RECORD = "UPDATE MEDICAL_RECORD SET IS_ACTIVE = 0 WHERE STUDENT_ID = ?";
-
-    public static final String UPDATE_STUDENT_SYMPTOMS = "UPDATE MEDICAL_RECORD mr SET mr.SYMPTOMS = ? WHERE mr.ID = (SELECT s.ID FROM STUDENT s WHERE s.LRN = ?)";
-
-    public static final String UPDATE_STUDENT_TEMPERATURE_READINGS = "UPDATE MEDICAL_RECORD mr SET mr.TEMPERATURE_READINGS = ? WHERE mr.ID = (SELECT s.ID FROM STUDENT s WHERE s.LRN = ?)";
-
-    public static final String UPDATE_STUDENT_VISIT_DATE = "UPDATE MEDICAL_RECORD mr SET mr.VISIT_DATE = ? WHERE mr.ID = (SELECT s.ID FROM STUDENT s WHERE s.LRN = ?)";
-
-    public static final String UPDATE_STUDENT_TREATMENT = "UPDATE MEDICAL_RECORD mr SET mr.TREATMENT = ? WHERE mr.ID = (SELECT s.ID FROM STUDENT s WHERE s.LRN = ?)";
+    /**
+     * query that add student medical record.
+     */
+    public static String ADD_STUDENT_MEDICAL_RECORD = "INSERT INTO MEDICAL_RECORD (STUDENT_ID, SYMPTOMS, TEMPERATURE_READINGS, BLOOD_PRESSURE, PULSE_RATE, RESPIRATORY_RATE, VISIT_DATE, TREATMENT, IS_ACTIVE) VALUES(?,?,?,?,?,?,?,?,?)";
+    /**
+     * query that add a record into medicine administered.
+     */
+    public static String ADD_MEDICINE_ADMINISTERED = "INSERT INTO medicine_administered (medicine_id, med_record_id, nurse_in_charge_id, quantity, date_administered) VALUES (?, ?, ?, ?, ?)";
+    /**
+     * query that retrieves basic nurse identity info from person and employee tables.
+     */
+    public static String GET_ALL_NURSE_EMPLOYEE = "SELECT p.id, p.first_name, p.middle_name, p.last_name " +
+            "FROM person p " +
+            "JOIN employee e ON p.id = e.id ";
+    /**
+     * query that delete a student's medical record as inactive by its student id.
+     */
+    public static String DELETE_STUDENT_MEDICAL_RECORD = "UPDATE MEDICAL_RECORD SET IS_ACTIVE = 0 WHERE STUDENT_ID = ?";
+    /**
+     * query that updates student's symptoms by LRN.
+     */
+    public static String UPDATE_STUDENT_SYMPTOMS = "UPDATE MEDICAL_RECORD mr SET mr.SYMPTOMS = ? WHERE mr.ID = (SELECT s.ID FROM STUDENT s WHERE s.LRN = ?)";
+    /**
+     * query that updates student's temperature readings by LRN.
+     */
+    public static String UPDATE_STUDENT_TEMPERATURE_READINGS = "UPDATE MEDICAL_RECORD mr SET mr.TEMPERATURE_READINGS = ? WHERE mr.ID = (SELECT s.ID FROM STUDENT s WHERE s.LRN = ?)";
+    /**
+     * query that updates student's visit date by LRN.
+     */
+    public static String UPDATE_STUDENT_VISIT_DATE = "UPDATE MEDICAL_RECORD mr SET mr.VISIT_DATE = ? WHERE mr.ID = (SELECT s.ID FROM STUDENT s WHERE s.LRN = ?)";
+    /**
+     * query that updates student's treatment info by LRN.
+     */
+    public static String UPDATE_STUDENT_TREATMENT = "UPDATE MEDICAL_RECORD mr SET mr.TREATMENT = ? WHERE mr.ID = (SELECT s.ID FROM STUDENT s WHERE s.LRN = ?)";
 
     private final String SELECT_STUDENT_HEALTH_PROFILE_QUERY = "SELECT p.first_name, p.middle_name,p.last_name,section.section,student.lrn,section.grade_level,adviser.first_name AS adviser_first_name,mr.symptoms,mr.temperature_readings,visit_date,nurse.first_name as NURSE_IN_CHARGE\n" +
             "FROM MEDICAL_RECORD mr\n" +

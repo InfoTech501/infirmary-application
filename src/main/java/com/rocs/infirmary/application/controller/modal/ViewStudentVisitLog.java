@@ -97,11 +97,6 @@ public class ViewStudentVisitLog implements Initializable {
         }
     }
 
-    /**
-     * This method converts the given value to a string or "N/A" if null.
-     * @param value the object to format.
-     * @return the formatted string.
-     */
     private String formatValue(Object value) {
         return value != null ? String.valueOf(value) : "N/A";
     }

@@ -63,18 +63,9 @@ public class ClinicVisitLogPageController implements Initializable {
     private int rowsPerPage = 10;
     private int currentPage = 1;
 
-    /**
-     * Stores all student medical records.
-     */
     private List<Student> fullStudentList;
-    /**
-     * Handles student medical record operations.
-     */
     private final MedicalRecordInfoMgtApplication medicalRecordInfoMgtApplication = new MedicalRecordInfoMgtApplication();
 
-    /**
-     * Initializes the controller and sets up the table, data, and search.
-     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setup();
@@ -94,9 +85,6 @@ public class ClinicVisitLogPageController implements Initializable {
 
     }
 
-    /**
-     * Sets up column mappings and formatting for the TableView.
-     */
     private void setup() {
         NameColumn.setCellValueFactory(cellData -> {
             Student student = cellData.getValue();
@@ -132,9 +120,6 @@ public class ClinicVisitLogPageController implements Initializable {
 
     }
 
-    /**
-     * Loads all student records, populates pagination, and updates the table view.
-     */
     private void refresh() {
         fullStudentList = medicalRecordInfoMgtApplication
                 .getStudentMedicalRecordFacade()
@@ -165,9 +150,6 @@ public class ClinicVisitLogPageController implements Initializable {
         stage.showAndWait();
     }
 
-    /**
-     * This method filters student records in the current page based on search input of the user.
-     */
     private void studentSearch() {
         searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null || newValue.isBlank()) {
@@ -203,10 +185,6 @@ public class ClinicVisitLogPageController implements Initializable {
         });
     }
 
-    /**
-     * This method displays the selected student's visit log in a modal window.
-     * @param student the selected student to view.
-     */
     private void openViewStudentVisitLogModal(Student student) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ViewStudentVisitLog.fxml"));
@@ -240,10 +218,6 @@ public class ClinicVisitLogPageController implements Initializable {
         updatePage();
     }
 
-    /**
-     * This method updates the TableView with records for the selected page.
-     * Also updates pagination and row count labels.
-     */
     private void updatePage() {
         int total = fullStudentList.size();
         int fromIndex = (currentPage - 1) * rowsPerPage;
@@ -261,10 +235,6 @@ public class ClinicVisitLogPageController implements Initializable {
         rowsPageLabel.setText(String.valueOf(displayedCount));
     }
 
-    /**
-     * This method navigates to the previous page in the TableView if available.
-     * @param actionEvent triggered by the left arrow toggle.
-     */
     @FXML
     private void handleToggleLeft(ActionEvent actionEvent) {
         if (currentPage > 1) {
@@ -273,10 +243,6 @@ public class ClinicVisitLogPageController implements Initializable {
         }
     }
 
-    /**
-     * This method navigates to the next page in the TableView if available.
-     * @param actionEvent triggered by the right arrow toggle.
-     */
     @FXML
     private void handleToggleRight(ActionEvent actionEvent) {
         int totalRecords = fullStudentList != null ? fullStudentList.size() : 0;

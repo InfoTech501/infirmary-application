@@ -80,9 +80,12 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
         return added;
     }
 
+    @Override
+    public List<Student> getAllNurseAccounts() {
+        logger.info("Retrieving all nurse accounts...");
+        List<Student> nurses = studentMedRecord.getAllNurseAccounts();
+        logger.info("Retrieved {} nurse records", nurses.size());
+        return nurses;
+    }
 
 }
-
-
-
-

@@ -1,7 +1,5 @@
 package com.rocs.infirmary.application.data.dao.student.record;
 
-
-import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import com.rocs.infirmary.application.data.model.person.student.Student;
 
 import java.util.Date;
@@ -17,6 +15,11 @@ public interface StudentMedicalRecordDao {
      * return list of StudentMedicalRecord and objects with details such as symptom, temperature readings, pulse rate, blood pressure, (edit).
      **/
     List<Student> findAllStudentMedicalRecords();
+    /**
+     * Retrieves all nurse information from the database.
+     * @return A list of nurse information, or an empty list if no records are found.
+     */
+    List<Student> getAllNurseAccounts();
     /**
      * This is intended to delete medical record based on LRN.
      * @param LRN is a student's unique identifier assigned to each student
@@ -35,8 +38,10 @@ public interface StudentMedicalRecordDao {
     boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate , String treatment, long LRN  );
     /**
      * Adds a new student medical record to the database.
+     *
      * @param record the model containing all attributes of the medicine to be added (edit this - change record into student)
      * @return true if the medical record is successfully added; false if the addition fails
-     * */
+     */
     boolean addStudentMedicalRecord(Student record);
+
 }

@@ -1,6 +1,5 @@
 package com.rocs.infirmary.application.app.facade.student.record;
 
-
 import com.rocs.infirmary.application.data.model.person.student.Student;
 
 import java.util.Date;
@@ -20,6 +19,11 @@ public interface StudentMedicalRecordFacade {
      * @return A list of student medical records, or an empty list if no records are found.
      */
     List<Student> getAllStudentMedicalRecords();
+    /**
+     * Retrieves all nurse information from the database.
+     * @return A list of nurse information, or an empty list if no records are found.
+     */
+    List<Student> getAllNurseAccounts();
     /**
      * This intended to delete a student's medical record based on their Learner Reference Number (LRN).
      * The LRN is a unique identifier assigned to each student. This value is used to locate and delete the corresponding medical record.
@@ -41,4 +45,5 @@ public interface StudentMedicalRecordFacade {
      * @return true if the medical record was successfully added; false otherwise
      */
     boolean addStudentMedicalRecord(Student record);
+
 }

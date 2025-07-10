@@ -2,7 +2,7 @@ package com.rocs.infirmary.application.data.dao.utils.queryconstants.medicine.in
 
 public class QueryConstants {
 
-    private final  String LIST_ALL_MEDICINE_INVENTORY_QUERY  = "SELECT i.INVENTORY_ID, i.MEDICINE_ID, i.ITEM_TYPE, i.QUANTITY, m.ITEM_NAME, m.DESCRIPTION, m.EXPIRATION_DATE " +
+    private final  String LIST_ALL_MEDICINE_INVENTORY_QUERY  = "SELECT i.INVENTORY_ID, i.MEDICINE_ID, i.ITEM_TYPE, i.QUANTITY, m.ITEM_NAME, m.DESCRIPTION " +
             "FROM INVENTORY i " +
             "JOIN MEDICINE m ON i.MEDICINE_ID = m.MEDICINE_ID";
 

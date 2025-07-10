@@ -76,6 +76,11 @@ public class Medicine extends Inventory{
         this.expirationDate = expirationDate;
     }
 
+    @Override
+    public String toString() {
+        return itemName + " (" + medicineId + ")";
+    }
+
 }
 
 

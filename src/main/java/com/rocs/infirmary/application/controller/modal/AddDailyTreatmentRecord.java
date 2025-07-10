@@ -1,8 +1,12 @@
 package com.rocs.infirmary.application.controller.modal;
 
+import com.rocs.infirmary.application.data.dao.student.record.impl.StudentMedicalRecordDaoImpl;
+import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
 import com.rocs.infirmary.application.module.medical.record.management.application.MedicalRecordInfoMgtApplication;
 import com.rocs.infirmary.application.controller.dashboard.ClinicVisitLogPageController;
 import com.rocs.infirmary.application.data.model.person.student.Student;
+import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,11 +14,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.scene.Node;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -23,62 +30,76 @@ import java.util.ResourceBundle;
  **/
 public class AddDailyTreatmentRecord implements Initializable {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AddDailyTreatmentRecord.class);
     @FXML
-    public TextField lrnField;
+    private TextField lrnField;
     @FXML
-    public TextField nameField;
+    private TextField nameField;
     @FXML
-    public TextField gradeSectionField;
+    private TextField gradeSectionField;
     @FXML
-    public TextField bodyTempField;
+    private TextField bodyTempField;
     @FXML
-    public TextField pulseRateField;
+    private TextField pulseRateField;
     @FXML
-    public TextField respiratoryRateField;
+    private TextField respiratoryRateField;
     @FXML
-    public TextField bloodPressureField;
+    private TextField bloodPressureField;
     @FXML
-    public TextField symptomsField;
+    private TextField symptomsField;
     @FXML
-    public TextField nurseInChargeField;
+    private ComboBox<Student> nurseInChargeComboBox;
     @FXML
-    public TextField treatmentField;
+    private TextField treatmentField;
     @FXML
-    public TextField medicineNameField;
+    private ComboBox<Medicine> medicineNameComboBox;
     @FXML
-    public TextField invDispensingOutField;
+    private TextField invDispensingOutField;
     @FXML
-    public DatePicker datePickerTextField;
+    private DatePicker datePickerTextField;
 
     private ObservableList<Student> studentList;
     private final MedicalRecordInfoMgtApplication medicalRecordInfoMgtApplication = new MedicalRecordInfoMgtApplication();
+    private final InventoryManagementApplication inventoryApp = new InventoryManagementApplication();
     private ClinicVisitLogPageController clinicVisitLogPageController;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         lrnField.requestFocus();
-    }
+        List<Medicine> available = inventoryApp.getMedicineInventoryFacade().getAllMedicine();
+        medicineNameComboBox.setItems(FXCollections.observableArrayList(available));
+        List<Student> nurses = medicalRecordInfoMgtApplication.getStudentMedicalRecordFacade().getAllNurseAccounts();
+        nurseInChargeComboBox.setItems(FXCollections.observableArrayList(nurses));
 
+    }
+    /**
+     * Sets the controller responsible for updating the clinic visit log view.
+     * Used to allow real-time updates to the record list after a new entry is added.
+     *
+     * @param controller the ClinicVisitLogPageController to link with this form
+     */
     public void setClinicVisitLogPageController(ClinicVisitLogPageController controller) {
         this.clinicVisitLogPageController = controller;
     }
-    /**
-     * This method handles the action triggered when the confirm button is clicked.
-     * @param actionEvent the event triggered by the confirm button click
-     */
+
     @FXML
     private void handleConfirmButton(ActionEvent actionEvent) {
         addDailyRecord();
     }
 
-    /**
-     * This method saves a daily medical record if student exists based on student LRN
-     * and shows warnings if not.
-     */
     @FXML
     private void addDailyRecord() {
         try {
             Student record = createStudentMedicalRecordFromForm();
+
+            Medicine selectedMedicine = medicineNameComboBox.getSelectionModel().getSelectedItem();
+            if (selectedMedicine != null) {
+                record.setMedicineId((Integer.parseInt(selectedMedicine.getMedicineId())));
+            } else {
+                showWarning("Please select a medicine from the dropdown before saving.");
+                return;
+            }
+
             Student existing = medicalRecordInfoMgtApplication
                     .getStudentMedicalRecordFacade()
                     .getMedicalInformationByLRN(record.getLrn());
@@ -90,7 +111,9 @@ public class AddDailyTreatmentRecord implements Initializable {
                 return;
             }
 
-            medicalRecordInfoMgtApplication.getStudentMedicalRecordFacade().addStudentMedicalRecord(record);
+            medicalRecordInfoMgtApplication
+                    .getStudentMedicalRecordFacade()
+                    .addStudentMedicalRecord(record);
 
             if (clinicVisitLogPageController != null) {
                 clinicVisitLogPageController.addStudentMedicalRecord(record);
@@ -102,23 +125,21 @@ public class AddDailyTreatmentRecord implements Initializable {
             stage.close();
 
         } catch (Exception e) {
+            LOGGER.error("Failed to save daily treatment record: {}", e.getMessage(), e);
             showWarning("Error, Failed to save record: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
-    /**
-     * This method builds a Student object using form input values.
-     * @return a Student Medical Record.
-     */
     private Student createStudentMedicalRecordFromForm() {
         Student student = new Student();
+
         student.setLrn(Long.parseLong(lrnField.getText()));
+
         String[] nameParts = nameField.getText().trim().split("\\s+");
         String firstName = nameParts.length > 0 ? nameParts[0] : "";
         String middleName = nameParts.length == 3 ? nameParts[1] : "";
-        String lastName = nameParts.length == 3 ? nameParts[2] :
-                (nameParts.length == 2 ? nameParts[1] : "");
+        String lastName = nameParts.length == 3 ? nameParts[2]
+                : (nameParts.length == 2 ? nameParts[1] : "");
         student.setFirstName(firstName);
         student.setMiddleName(middleName);
         student.setLastName(lastName);
@@ -134,22 +155,38 @@ public class AddDailyTreatmentRecord implements Initializable {
         student.setRespiratoryRate(Integer.parseInt(respiratoryRateField.getText()));
         student.setBloodPressure(bloodPressureField.getText());
         student.setSymptoms(symptomsField.getText());
-        student.setNurseInCharge(nurseInChargeField.getText());
+
+        Student selectedNurse = nurseInChargeComboBox != null
+                ? nurseInChargeComboBox.getSelectionModel().getSelectedItem()
+                : null;
+
+        if (selectedNurse != null) {
+            student.setNurseInChargeId(Long.valueOf(selectedNurse.getStudentId()));
+            student.setNurseInCharge(selectedNurse.getFirstName() + " " + selectedNurse.getLastName());
+        }
+
         student.setTreatment(treatmentField.getText());
-        student.setMedicineName(medicineNameField.getText());
+
+        Medicine selected = medicineNameComboBox != null
+                ? medicineNameComboBox.getValue()
+                : null;
+
+        if (selected != null) {
+            student.setMedicineId((Integer.parseInt(selected.getMedicineId())));
+            student.setMedicineName(selected.getItemName());
+        }
+
         student.setDispensingOut(Integer.parseInt(invDispensingOutField.getText()));
-        LocalDate selectedDate = datePickerTextField.getValue();
-        if (selectedDate != null) {
+
+        if (datePickerTextField != null && datePickerTextField.getValue() != null) {
+            LocalDate selectedDate = datePickerTextField.getValue();
             Date convertedDate = Date.from(selectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
             student.setVisitDate(convertedDate);
         }
+
         return student;
     }
 
-    /**
-     * This method shows a warning dialog with a custom message.
-     * @param message the warning text.
-     */
     private void showWarning(String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("Warning");
@@ -158,10 +195,6 @@ public class AddDailyTreatmentRecord implements Initializable {
         alert.showAndWait();
     }
 
-    /**
-     * This method handles the action triggered when the cancel button is clicked.
-     * @param actionEvent the event triggered by the confirm button click
-     */
     @FXML
     private void handleCancelButton(ActionEvent actionEvent) {
         ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();

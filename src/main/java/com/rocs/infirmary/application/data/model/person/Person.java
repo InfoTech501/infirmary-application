@@ -9,7 +9,7 @@ import java.util.Date;
  * Person model class representing person information.
  */
 public class Person {
-    private long id;
+    private Long id;
     private String firstName;
     private String middleName;
     private String lastName;
@@ -35,7 +35,7 @@ public class Person {
      * @param address       The home address of the person.
      * @param contactNumber The contact number of the person.
      */
-    public Person(long id, String firstName, String middleName, String lastName, int age, Date birthdate, String gender, String email, String address, String contactNumber) {
+    public Person(Long id, String firstName, String middleName, String lastName, int age, Date birthdate, String gender, String email, String address, String contactNumber) {
         this.id = id;
         this.firstName = firstName;
         this.middleName = middleName;

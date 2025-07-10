@@ -14,11 +14,11 @@ public class Student extends Person {
     private String temperatureReadings;
     private Date visitDate;
     private String treatment;
-    private long id;
+    private Long id;
     private int ailmentId;
     private String medHistoryId;
-    private int nurseInChargeId;
-    private int setMedicalRecordId ;
+    private Long nurseInChargeId;
+    private Long setMedicalRecordId ;
     private int getMedicaRecordStatus;
     private String gradeLevel;
     private String studentAdviser;
@@ -29,6 +29,7 @@ public class Student extends Person {
     private String chiefComplaint;
     private String medicineName;
     private int dispensingOut;
+    private int medicineId;
 
     public String getNurseInCharge() {
         return nurseInCharge;
@@ -51,9 +52,7 @@ public class Student extends Person {
         this.gradeLevel = gradeLevel;
     }
 
-    public int getStudentId() {
-        return studentId;
-    }
+    public int getStudentId() { return studentId; }
     public void setStudentId(int studentId) {
         this.studentId = studentId;
     }
@@ -91,7 +90,7 @@ public class Student extends Person {
         this.treatment = treatment;
     }
 
-    public void setId(long id) { this.id = id; }
+    public void setId(Long id) { this.id = id; }
 
     public int getAilmentId() { return ailmentId; }
     public void setAilmentId(int ailmentId) {
@@ -102,13 +101,13 @@ public class Student extends Person {
         this.medHistoryId = medHistoryId;
     }
 
-    public int getNurseInChargeId() { return nurseInChargeId; }
-    public void setNurseInChargeId(int nurseInChargeId) {
+    public Long getNurseInChargeId() { return nurseInChargeId; }
+    public void setNurseInChargeId(Long nurseInChargeId) {
         this.nurseInChargeId = nurseInChargeId;
     }
 
-    public int getSetMedicalRecordId() { return setMedicalRecordId; }
-    public void setMedicalRecordId(int medicalRecordIdId) {
+    public Long getSetMedicalRecordId() { return setMedicalRecordId; }
+    public void setMedicalRecordId(Long medicalRecordIdId) {
         this.setMedicalRecordId = medicalRecordIdId;
     }
 
@@ -133,4 +132,12 @@ public class Student extends Person {
 
     public String getMedicineName() { return medicineName; }
     public void setMedicineName(String medicineName) { this.medicineName = medicineName; }
+
+    public int getMedicineId() { return medicineId; }
+    public void setMedicineId(int medicineId) { this.medicineId = medicineId; }
+
+    @Override
+    public String toString() {
+        return getFirstName() + " " + getLastName();
+    }
 }
