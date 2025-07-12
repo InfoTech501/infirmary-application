@@ -6,7 +6,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="731.0" prefWidth="1125.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.dashboard.ClinicVisitLogPageController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="731.0" prefWidth="1125.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.dashboard.ClinicVisitLogPageController">
     <stylesheets>
         <URL value="@../styles/buttons.css" />
         <URL value="@../styles/label.css" />
@@ -70,15 +70,15 @@
                                  <children>
                                     <TableView fx:id="visitLogTable" prefHeight="442.0" prefWidth="1075.0" styleClass="clinic-visit-table-view">
                                       <columns>
-                                        <TableColumn fx:id="NameColumn" prefWidth="155.0" text="Name" />
-                                        <TableColumn fx:id="GradeSectionColumn" prefWidth="104.0" text="Grade &amp; Section" />
-                                          <TableColumn fx:id="TempReadingsColumn" prefWidth="118.0" text="Temperature" />
-                                          <TableColumn fx:id="PulseRateColumn" prefWidth="96.0" text="Pulse" />
-                                          <TableColumn fx:id="BloodPressureColumn" prefWidth="126.0" text="Blood Pressure" />
-                                          <TableColumn fx:id="SymptomsColumn" prefWidth="149.0" text="Symptoms" />
-                                          <TableColumn fx:id="MedicineNameColumn" minWidth="6.0" prefWidth="98.0" text="Medicine Name" />
-                                          <TableColumn fx:id="DispensingOutColumn" minWidth="0.0" prefWidth="104.0" text="Dispensing OUT" />
-                                          <TableColumn fx:id="VisitDateColumn" prefWidth="102.0" text="Visit Date" />
+                                        <TableColumn fx:id="nameColumn" prefWidth="155.0" text="Name" />
+                                        <TableColumn fx:id="gradeSectionColumn" prefWidth="104.0" text="Grade &amp; Section" />
+                                          <TableColumn fx:id="tempReadingsColumn" prefWidth="118.0" text="Temperature" />
+                                          <TableColumn fx:id="pulseRateColumn" prefWidth="96.0" text="Pulse" />
+                                          <TableColumn fx:id="bloodPressureColumn" prefWidth="126.0" text="Blood Pressure" />
+                                          <TableColumn fx:id="symptomsColumn" prefWidth="149.0" text="Symptoms" />
+                                          <TableColumn fx:id="medicineNameColumn" minWidth="6.0" prefWidth="98.0" text="Medicine Name" />
+                                          <TableColumn fx:id="dispensingOutColumn" minWidth="0.0" prefWidth="104.0" text="Dispensing OUT" />
+                                          <TableColumn fx:id="visitDateColumn" prefWidth="102.0" text="Visit Date" />
                                       </columns>
                                     </TableView>
                                  </children>

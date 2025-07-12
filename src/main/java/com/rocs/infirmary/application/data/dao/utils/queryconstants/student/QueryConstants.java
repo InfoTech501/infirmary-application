@@ -62,7 +62,7 @@ public class QueryConstants {
     /**
      * query that add student medical record.
      */
-    public static String ADD_STUDENT_MEDICAL_RECORD = "INSERT INTO MEDICAL_RECORD (STUDENT_ID, SYMPTOMS, TEMPERATURE_READINGS, BLOOD_PRESSURE, PULSE_RATE, RESPIRATORY_RATE, VISIT_DATE, TREATMENT, IS_ACTIVE) VALUES(?,?,?,?,?,?,?,?,?)";
+    public static String ADD_STUDENT_MEDICAL_RECORD = "INSERT INTO MEDICAL_RECORD (STUDENT_ID, AILMENT_ID, NURSE_IN_CHARGE_ID, SYMPTOMS, TEMPERATURE_READINGS, BLOOD_PRESSURE, PULSE_RATE, RESPIRATORY_RATE, VISIT_DATE, TREATMENT, IS_ACTIVE) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
     /**
      * query that add a record into medicine administered.
      */
@@ -93,6 +93,10 @@ public class QueryConstants {
      * query that updates student's treatment info by LRN.
      */
     public static String UPDATE_STUDENT_TREATMENT = "UPDATE MEDICAL_RECORD mr SET mr.TREATMENT = ? WHERE mr.ID = (SELECT s.ID FROM STUDENT s WHERE s.LRN = ?)";
+    /**
+     * query that retrieves the ailment_id by matching symptoms with the description.
+     */
+    public static String FIND_AILMENT_ID_BY_SYMPTOMS = "SELECT ailment_id FROM ailments WHERE LOWER(description) LIKE ?";
 
     private final String SELECT_STUDENT_HEALTH_PROFILE_QUERY = "SELECT p.first_name, p.middle_name,p.last_name,section.section,student.lrn,section.grade_level,adviser.first_name AS adviser_first_name,mr.symptoms,mr.temperature_readings,visit_date,nurse.first_name as NURSE_IN_CHARGE\n" +
             "FROM MEDICAL_RECORD mr\n" +

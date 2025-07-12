@@ -7,19 +7,19 @@ import java.util.Date;
 public class Student extends Person {
 
     private int studentSectionId;
-    private int studentId;
+    private Long studentId;
     private int studentGuardianId;
-    private long lrn;
+    private Long lrn;
     private String symptoms;
     private String temperatureReadings;
     private Date visitDate;
     private String treatment;
     private Long id;
-    private int ailmentId;
+    private Long ailmentId;
     private String medHistoryId;
     private Long nurseInChargeId;
     private Long setMedicalRecordId ;
-    private int getMedicaRecordStatus;
+    private Long getMedicaRecordStatus;
     private String gradeLevel;
     private String studentAdviser;
     private String nurseInCharge;
@@ -52,17 +52,13 @@ public class Student extends Person {
         this.gradeLevel = gradeLevel;
     }
 
-    public int getStudentId() { return studentId; }
-    public void setStudentId(int studentId) {
+    public Long getStudentId() { return studentId; }
+    public void setStudentId(Long studentId) {
         this.studentId = studentId;
     }
 
-    public long getLrn() {
-        return lrn;
-    }
-    public void setLrn(long lrn) {
-        this.lrn = lrn;
-    }
+    public Long getLrn() { return lrn; }
+    public void setLrn(Long lrn) { this.lrn = lrn; }
 
     public String getSymptoms() {
         return symptoms;
@@ -92,10 +88,8 @@ public class Student extends Person {
 
     public void setId(Long id) { this.id = id; }
 
-    public int getAilmentId() { return ailmentId; }
-    public void setAilmentId(int ailmentId) {
-        this.ailmentId = ailmentId;
-    }
+    public Long getAilmentId() { return ailmentId; }
+    public void setAilmentId(Long ailmentId) { this.ailmentId = ailmentId; }
 
     public void setMedHistoryId(String medHistoryId) {
         this.medHistoryId = medHistoryId;
@@ -107,13 +101,9 @@ public class Student extends Person {
     }
 
     public Long getSetMedicalRecordId() { return setMedicalRecordId; }
-    public void setMedicalRecordId(Long medicalRecordIdId) {
-        this.setMedicalRecordId = medicalRecordIdId;
-    }
+    public void setMedicalRecordId(Long medicalRecordIdId) { this.setMedicalRecordId = medicalRecordIdId; }
 
-    public int getMedicalRecordStatus() {
-        return getMedicaRecordStatus;
-    }
+    public Long getMedicalRecordStatus() { return getMedicaRecordStatus; }
 
     public String getBloodPressure() { return bloodPressure; }
     public void setBloodPressure(String bloodPressure) { this.bloodPressure = bloodPressure; }

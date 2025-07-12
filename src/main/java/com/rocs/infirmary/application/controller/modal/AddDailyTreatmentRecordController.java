@@ -1,6 +1,5 @@
 package com.rocs.infirmary.application.controller.modal;
 
-import com.rocs.infirmary.application.data.dao.student.record.impl.StudentMedicalRecordDaoImpl;
 import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
 import com.rocs.infirmary.application.module.medical.record.management.application.MedicalRecordInfoMgtApplication;
 import com.rocs.infirmary.application.controller.dashboard.ClinicVisitLogPageController;
@@ -28,9 +27,9 @@ import java.util.ResourceBundle;
  * {@code AddDailyTreatmentRecordController} is used to handle event processes of adding new daily treatment record of a student
  * this implements Initializable interface
  **/
-public class AddDailyTreatmentRecord implements Initializable {
+public class AddDailyTreatmentRecordController implements Initializable {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AddDailyTreatmentRecord.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AddDailyTreatmentRecordController.class);
     @FXML
     private TextField lrnField;
     @FXML
@@ -125,8 +124,8 @@ public class AddDailyTreatmentRecord implements Initializable {
             stage.close();
 
         } catch (Exception e) {
-            LOGGER.error("Failed to save daily treatment record: {}", e.getMessage(), e);
-            showWarning("Error, Failed to save record: " + e.getMessage());
+            LOGGER.error("Failed to save daily treatment record", e);
+            showWarning("Failed to save record.");
         }
     }
 

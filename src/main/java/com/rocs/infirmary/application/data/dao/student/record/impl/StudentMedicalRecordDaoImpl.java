@@ -36,7 +36,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
 
             if (rs.next()) {
                 studentMedicalRecord = new Student();
-                studentMedicalRecord.setStudentId(rs.getInt("student_id"));
+                studentMedicalRecord.setStudentId(rs.getLong("student_id"));
                 studentMedicalRecord.setLrn(rs.getLong("LRN"));
                 studentMedicalRecord.setFirstName(rs.getString("first_name"));
                 studentMedicalRecord.setMiddleName(rs.getString("middle_name"));
@@ -84,7 +84,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                 try {
                     Student studentMedicalRecord = new Student();
 
-                    studentMedicalRecord.setStudentId(rs.getInt("person_id"));
+                    studentMedicalRecord.setStudentId(rs.getLong("person_id"));
                     studentMedicalRecord.setLrn(rs.getLong("LRN"));
                     studentMedicalRecord.setFirstName(rs.getString("first_name"));
                     studentMedicalRecord.setMiddleName(rs.getString("middle_name"));
@@ -159,7 +159,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
             while (rs.next()) {
                 try {
                     Student nurse = new Student();
-                    nurse.setStudentId(rs.getInt("id"));
+                    nurse.setStudentId(rs.getLong("id"));
                     nurse.setFirstName(rs.getString("first_name"));
                     nurse.setMiddleName(rs.getString("middle_name"));
                     nurse.setLastName(rs.getString("last_name"));
@@ -183,26 +183,51 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
         try (Connection con = ConnectionHelper.getConnection()) {
             con.setAutoCommit(false);
 
+            Long ailmentId = findAilmentIdBySymptoms(con, record.getSymptoms());
+            if (ailmentId == null) {
+                LOGGER.warn("No ailment_id found for symptoms: {}", record.getSymptoms());
+                return false;
+            }
+
             try (PreparedStatement medStmt = con.prepareStatement(ADD_STUDENT_MEDICAL_RECORD)) {
                 medStmt.setLong(1, record.getStudentId());
-                medStmt.setString(2, record.getSymptoms());
-                medStmt.setString(3, record.getTemperatureReadings());
-                medStmt.setString(4, record.getBloodPressure());
-                medStmt.setInt(5, record.getPulseRate());
-                medStmt.setInt(6, record.getRespiratoryRate());
-                medStmt.setTimestamp(7, new Timestamp(record.getVisitDate().getTime()));
-                medStmt.setString(8, record.getTreatment());
-                medStmt.setInt(9, 1);
+                medStmt.setLong(2, ailmentId);
+                medStmt.setLong(3, record.getNurseInChargeId());
+                medStmt.setString(4, record.getSymptoms());
+                medStmt.setString(5, record.getTemperatureReadings());
+                medStmt.setString(6, record.getBloodPressure());
+                medStmt.setInt(7, record.getPulseRate());
+                medStmt.setInt(8, record.getRespiratoryRate());
+                medStmt.setTimestamp(9, new Timestamp(record.getVisitDate().getTime()));
+                medStmt.setString(10, record.getTreatment());
+                medStmt.setInt(11, 1);
 
                 int affectedRow = medStmt.executeUpdate();
                 return affectedRow > 0;
-                }
-
             } catch (SQLException e) {
-                e.printStackTrace();
+                LOGGER.error("Error saving medical record ", e);
+                con.rollback();
             }
 
+        } catch (SQLException e) {
+            LOGGER.error("Connection or rollback failed ", e);
+        }
+
         return false;
+    }
+
+    private Long findAilmentIdBySymptoms(Connection con, String symptoms) {
+        try (PreparedStatement stmt = con.prepareStatement(FIND_AILMENT_ID_BY_SYMPTOMS)) {
+            stmt.setString(1, "%" + symptoms.toLowerCase() + "%");
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getLong("ailment_id");
+                }
+            }
+        } catch (SQLException e) {
+            LOGGER.warn("Failed to match symptoms to ailment_id: {}", e.getMessage());
+        }
+        return null;
     }
 
     /**
@@ -222,7 +247,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
 
             PreparedStatement preparedStatement = con.prepareStatement(DELETE_STUDENT_MEDICAL_RECORD);
             LOGGER.info("Query in use" + DELETE_STUDENT_MEDICAL_RECORD);
-            preparedStatement.setInt(1, studentMedicalRecord.getStudentId());
+            preparedStatement.setLong(1, studentMedicalRecord.getStudentId());
             LOGGER.info("data inserted: " + "LRN: " + LRN);
             int affectedRow = preparedStatement.executeUpdate();
             return affectedRow > 0;
@@ -325,7 +350,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next()) {
                 studentMedicalRecord = new Student();
-                studentMedicalRecord.setStudentId(resultSet.getInt("student_id"));
+                studentMedicalRecord.setStudentId(resultSet.getLong("student_id"));
                 LOGGER.info("Data retrieved: " + "\n"
                         + "Student ID   : " + studentMedicalRecord.getStudentId() + "\n"
                 );

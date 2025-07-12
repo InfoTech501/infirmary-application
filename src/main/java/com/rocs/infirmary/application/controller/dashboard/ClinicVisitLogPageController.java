@@ -1,8 +1,8 @@
 package com.rocs.infirmary.application.controller.dashboard;
 
 import com.rocs.infirmary.application.module.medical.record.management.application.MedicalRecordInfoMgtApplication;
-import com.rocs.infirmary.application.controller.modal.AddDailyTreatmentRecord;
-import com.rocs.infirmary.application.controller.modal.ViewStudentVisitLog;
+import com.rocs.infirmary.application.controller.modal.AddDailyTreatmentRecordController;
+import com.rocs.infirmary.application.controller.modal.ViewStudentVisitLogController;
 import com.rocs.infirmary.application.data.model.person.student.Student;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -37,23 +37,23 @@ public class ClinicVisitLogPageController implements Initializable {
     @FXML
     private TableView<Student> visitLogTable;
     @FXML
-    private TableColumn<Student, String> NameColumn;
+    private TableColumn<Student, String> nameColumn;
     @FXML
-    private TableColumn<Student, String> GradeSectionColumn;
+    private TableColumn<Student, String> gradeSectionColumn;
     @FXML
-    private TableColumn<Student, String> TempReadingsColumn;
+    private TableColumn<Student, String> tempReadingsColumn;
     @FXML
-    private TableColumn<Student, Integer> PulseRateColumn;
+    private TableColumn<Student, Integer> pulseRateColumn;
     @FXML
-    private TableColumn<Student, String> BloodPressureColumn;
+    private TableColumn<Student, String> bloodPressureColumn;
     @FXML
-    private TableColumn<Student, String> SymptomsColumn;
+    private TableColumn<Student, String> symptomsColumn;
     @FXML
-    private TableColumn<Student, String> MedicineNameColumn;
+    private TableColumn<Student, String> medicineNameColumn;
     @FXML
-    private TableColumn<Student, Integer> DispensingOutColumn;
+    private TableColumn<Student, Integer> dispensingOutColumn;
     @FXML
-    private TableColumn<Student, String> VisitDateColumn;
+    private TableColumn<Student, String> visitDateColumn;
     @FXML
     private TextField searchTextField;
     @FXML
@@ -86,37 +86,37 @@ public class ClinicVisitLogPageController implements Initializable {
     }
 
     private void setup() {
-        NameColumn.setCellValueFactory(cellData -> {
+        nameColumn.setCellValueFactory(cellData -> {
             Student student = cellData.getValue();
             String fullName = student.getFirstName() + " " + student.getMiddleName() + " " + student.getLastName();
             return new SimpleStringProperty(fullName);
         });
-        GradeSectionColumn.setCellValueFactory(cellData -> {
+        gradeSectionColumn.setCellValueFactory(cellData -> {
             String grade = cellData.getValue().getGradeLevel();
             String section = cellData.getValue().getSection();
-            return new javafx.beans.property.SimpleStringProperty(grade + " - " + section);
+            return new SimpleStringProperty(grade + " - " + section);
         });
-        GradeSectionColumn.setStyle("-fx-alignment: CENTER;");
-        TempReadingsColumn.setCellValueFactory(new PropertyValueFactory<>("temperatureReadings"));
-        TempReadingsColumn.setStyle("-fx-alignment: CENTER;");
-        PulseRateColumn.setCellValueFactory(new PropertyValueFactory<>("pulseRate"));
-        PulseRateColumn.setStyle("-fx-alignment: CENTER;");
-        BloodPressureColumn.setCellValueFactory(new PropertyValueFactory<>("bloodPressure"));
-        BloodPressureColumn.setStyle("-fx-alignment: CENTER;");
-        SymptomsColumn.setCellValueFactory(new PropertyValueFactory<>("symptoms"));
-        SymptomsColumn.setStyle("-fx-alignment: CENTER;");
-        MedicineNameColumn.setCellValueFactory(new PropertyValueFactory<>("medicineName"));
-        MedicineNameColumn.setStyle("-fx-alignment: CENTER;");
-        DispensingOutColumn.setCellValueFactory(new PropertyValueFactory<>("dispensingOut"));
-        DispensingOutColumn.setStyle("-fx-alignment: CENTER;");
-        VisitDateColumn.setCellValueFactory(cellData -> {
+        gradeSectionColumn.setStyle("-fx-alignment: CENTER;");
+        tempReadingsColumn.setCellValueFactory(new PropertyValueFactory<>("temperatureReadings"));
+        tempReadingsColumn.setStyle("-fx-alignment: CENTER;");
+        pulseRateColumn.setCellValueFactory(new PropertyValueFactory<>("pulseRate"));
+        pulseRateColumn.setStyle("-fx-alignment: CENTER;");
+        bloodPressureColumn.setCellValueFactory(new PropertyValueFactory<>("bloodPressure"));
+        bloodPressureColumn.setStyle("-fx-alignment: CENTER;");
+        symptomsColumn.setCellValueFactory(new PropertyValueFactory<>("symptoms"));
+        symptomsColumn.setStyle("-fx-alignment: CENTER;");
+        medicineNameColumn.setCellValueFactory(new PropertyValueFactory<>("medicineName"));
+        medicineNameColumn.setStyle("-fx-alignment: CENTER;");
+        dispensingOutColumn.setCellValueFactory(new PropertyValueFactory<>("dispensingOut"));
+        dispensingOutColumn.setStyle("-fx-alignment: CENTER;");
+        visitDateColumn.setCellValueFactory(cellData -> {
             Date visitDate = cellData.getValue().getVisitDate();
             String formatted = visitDate != null
                     ? new SimpleDateFormat("MMMM dd, yyyy").format(visitDate)
                     : "N/A";
             return new SimpleStringProperty(formatted);
         });
-        VisitDateColumn.setStyle("-fx-alignment: CENTER;");
+        visitDateColumn.setStyle("-fx-alignment: CENTER;");
 
     }
 
@@ -139,7 +139,7 @@ public class ClinicVisitLogPageController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(location));
         Parent root = loader.load();
 
-        AddDailyTreatmentRecord controller = loader.getController();
+        AddDailyTreatmentRecordController controller = loader.getController();
         controller.setClinicVisitLogPageController(this);
 
         Stage stage = new Stage();
@@ -190,7 +190,7 @@ public class ClinicVisitLogPageController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ViewStudentVisitLog.fxml"));
             Parent root = loader.load();
 
-            ViewStudentVisitLog controller = loader.getController();
+            ViewStudentVisitLogController controller = loader.getController();
             controller.setStudentData(student);
 
             Stage stage = new Stage();

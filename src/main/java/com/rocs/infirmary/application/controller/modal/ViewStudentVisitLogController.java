@@ -16,7 +16,7 @@ import java.util.ResourceBundle;
  * {@code ViewStudentVisitLogController} is used to handle event processes of viewing
  * information of a student medical record, this implements Initializable interface
  */
-public class ViewStudentVisitLog implements Initializable {
+public class ViewStudentVisitLogController implements Initializable {
 
     @FXML
     private Label viewLrn;
