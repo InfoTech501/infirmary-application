@@ -93,7 +93,7 @@ public class AddDailyTreatmentRecordController implements Initializable {
 
             Medicine selectedMedicine = medicineNameComboBox.getSelectionModel().getSelectedItem();
             if (selectedMedicine != null) {
-                record.setMedicineId((Integer.parseInt(selectedMedicine.getMedicineId())));
+                record.setMedicineId(selectedMedicine.getMedicineId());
             } else {
                 showWarning("Please select a medicine from the dropdown before saving.");
                 return;
@@ -113,6 +113,10 @@ public class AddDailyTreatmentRecordController implements Initializable {
             medicalRecordInfoMgtApplication
                     .getStudentMedicalRecordFacade()
                     .addStudentMedicalRecord(record);
+
+            medicalRecordInfoMgtApplication
+                    .getStudentMedicalRecordFacade()
+                    .addMedicineAdministered(record);
 
             if (clinicVisitLogPageController != null) {
                 clinicVisitLogPageController.addStudentMedicalRecord(record);
@@ -171,7 +175,7 @@ public class AddDailyTreatmentRecordController implements Initializable {
                 : null;
 
         if (selected != null) {
-            student.setMedicineId((Integer.parseInt(selected.getMedicineId())));
+            student.setMedicineId(Long.parseLong(String.valueOf(selected.getMedicineId())));
             student.setMedicineName(selected.getItemName());
         }
 

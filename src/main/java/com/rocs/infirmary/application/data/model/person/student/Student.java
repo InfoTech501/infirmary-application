@@ -29,7 +29,7 @@ public class Student extends Person {
     private String chiefComplaint;
     private String medicineName;
     private int dispensingOut;
-    private int medicineId;
+    private Long medicineId;
 
     public String getNurseInCharge() {
         return nurseInCharge;
@@ -123,8 +123,8 @@ public class Student extends Person {
     public String getMedicineName() { return medicineName; }
     public void setMedicineName(String medicineName) { this.medicineName = medicineName; }
 
-    public int getMedicineId() { return medicineId; }
-    public void setMedicineId(int medicineId) { this.medicineId = medicineId; }
+    public Long getMedicineId() { return medicineId; }
+    public void setMedicineId(Long medicineId) { this.medicineId = medicineId; }
 
     @Override
     public String toString() {

@@ -66,7 +66,7 @@ public class QueryConstants {
     /**
      * query that add a record into medicine administered.
      */
-    public static String ADD_MEDICINE_ADMINISTERED = "INSERT INTO medicine_administered (medicine_id, med_record_id, nurse_in_charge_id, quantity, date_administered) VALUES (?, ?, ?, ?, ?)";
+    public static String ADD_MEDICINE_ADMINISTERED = "INSERT INTO MEDICINE_ADMINISTERED (MEDICINE_ID, NURSE_IN_CHARGE_ID, DESCRIPTION, QUANTITY, DATE_ADMINISTERED) VALUES (?, ?, ?, ?, ?)";
     /**
      * query that retrieves basic nurse identity info from person and employee tables.
      */

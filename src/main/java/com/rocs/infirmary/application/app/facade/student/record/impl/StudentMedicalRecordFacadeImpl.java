@@ -88,4 +88,13 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
         return nurses;
     }
 
+    @Override
+    public boolean addMedicineAdministered(Student record) {
+        logger.debug("Entering addMedicineAdministered with studentId: {}, medicineId: {}",
+                record.getStudentId(), record.getMedicineId());
+        boolean added = studentMedRecord.addMedicineAdministered(record);
+        logger.debug("Exiting addMedicineAdministered, insert successful: {}", added);
+        return added;
+    }
+
 }

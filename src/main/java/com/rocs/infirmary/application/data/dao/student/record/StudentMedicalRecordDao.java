@@ -43,5 +43,12 @@ public interface StudentMedicalRecordDao {
      * @return true if the medical record is successfully added; false if the addition fails
      */
     boolean addStudentMedicalRecord(Student record);
-
+    /**
+     * Adds a new medicine administration entry linked to an existing medical record.
+     * This is intended to log information such as medicine ID, nurse in charge, description, quantity, and date administered.
+     *
+     * @param record the student object containing medication and administration details
+     * @return true if the medicine administration record is successfully added; false otherwise
+     */
+    boolean addMedicineAdministered(Student record);
 }

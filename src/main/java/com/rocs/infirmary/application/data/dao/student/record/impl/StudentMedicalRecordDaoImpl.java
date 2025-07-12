@@ -8,6 +8,7 @@ import com.rocs.infirmary.application.data.dao.student.record.StudentMedicalReco
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -216,6 +217,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
         return false;
     }
 
+
     private Long findAilmentIdBySymptoms(Connection con, String symptoms) {
         try (PreparedStatement stmt = con.prepareStatement(FIND_AILMENT_ID_BY_SYMPTOMS)) {
             stmt.setString(1, "%" + symptoms.toLowerCase() + "%");
@@ -228,6 +230,26 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
             LOGGER.warn("Failed to match symptoms to ailment_id ", e);
         }
         return null;
+    }
+
+    @Override
+    public boolean addMedicineAdministered(Student record) {
+        try (Connection con = ConnectionHelper.getConnection();
+             PreparedStatement stmt = con.prepareStatement(ADD_MEDICINE_ADMINISTERED)) {
+
+            stmt.setLong(1, record.getMedicineId());
+            stmt.setLong(2, record.getNurseInChargeId());
+            stmt.setString(3, record.getTreatment());
+            stmt.setInt(4, record.getDispensingOut());
+            stmt.setTimestamp(5, new Timestamp(record.getVisitDate().getTime()));
+
+            int affectedRows = stmt.executeUpdate();
+            return affectedRows > 0;
+
+        } catch (SQLException e) {
+            LOGGER.error("Failed to insert into medicine_administered", e);
+            return false;
+        }
     }
 
     /**
