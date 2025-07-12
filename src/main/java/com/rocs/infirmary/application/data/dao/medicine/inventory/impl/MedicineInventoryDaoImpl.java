@@ -80,8 +80,6 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
         try (Connection con = ConnectionHelper.getConnection()) {
             String query = DELETE_MEDICINE_BY_ID_QUERY+"("+placeholder+")";
             PreparedStatement stmt = con.prepareStatement(query);
-            LOGGER.debug("Query in use "+ query);
-
             for (int i = 0; i < collectedId.size(); i++) {
                 stmt.setLong(i + 1, collectedId.get(i));
             }
