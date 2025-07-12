@@ -225,7 +225,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                 }
             }
         } catch (SQLException e) {
-            LOGGER.warn("Failed to match symptoms to ailment_id: {}", e.getMessage());
+            LOGGER.warn("Failed to match symptoms to ailment_id ", e);
         }
         return null;
     }
