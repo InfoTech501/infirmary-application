@@ -12,7 +12,7 @@ public class QueryConstants {
     /**
      * query that delete medicine by its item name
      * */
-    public static String DELETE_MEDICINE_BY_ID_QUERY = "UPDATE MEDICINE SET IS_AVAILABLE = 0 WHERE medicine.medicine_Id = ?";
+    public static String DELETE_MEDICINE_BY_ID_QUERY = "UPDATE MEDICINE SET IS_AVAILABLE = 0 WHERE medicine.medicine_Id IN ";
     /**
      * query that filters available medicine
      * */
@@ -32,7 +32,7 @@ public class QueryConstants {
     /**
      * query that delete item to inventory
      * */
-    public static String DELETE_INVENTORY_ITEM_QUERY = "DELETE INVENTORY WHERE INVENTORY_ID = ? ";
+    public static String DELETE_INVENTORY_ITEM_QUERY = "DELETE INVENTORY WHERE INVENTORY_ID IN ";
     /**
      * query that updates item quantity
      * */

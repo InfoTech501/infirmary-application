@@ -7,9 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import static com.rocs.infirmary.application.data.dao.utils.queryconstants.medicine.inventory.QueryConstants.*;
 
@@ -66,28 +68,31 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     @Override
     public boolean deleteMedicine(List<Medicine> medicines) {
         LOGGER.info("Delete medicine started");
-        int totalAffectedRows = 0;
+        int affectedRows;
+
+        if (medicines == null || medicines.isEmpty()) {
+            LOGGER.debug("medicine list is empty");
+            return false;
+        }
+        List<Long> collectedId = medicines.stream().map(Medicine::getMedicineId).collect(Collectors.toList());
+        String placeholder = collectedId.stream().map(id -> "?").collect(Collectors.joining(", "));
+
         try (Connection con = ConnectionHelper.getConnection()) {
-            PreparedStatement stmt = con.prepareStatement(DELETE_MEDICINE_BY_ID_QUERY);
-            LOGGER.debug("Query in use "+ DELETE_MEDICINE_BY_ID_QUERY);
-            LOGGER.debug("data inserted: "+"Item Name: "+ medicines);
-            for(Medicine item: medicines){
-                if(isAvailable(item.getItemName())) {
-                    stmt.setLong(1,item.getMedicineId());
-                    totalAffectedRows += stmt.executeUpdate();
-                    LOGGER.info(medicines +" successfully deleted");
+            String query = DELETE_MEDICINE_BY_ID_QUERY+"("+placeholder+")";
+            PreparedStatement stmt = con.prepareStatement(query);
+            LOGGER.debug("Query in use "+ query);
 
-                } else {
-                    LOGGER.info(medicines +" Failed to delete");
-                }
+            for (int i = 0; i < collectedId.size(); i++) {
+                stmt.setLong(i + 1, collectedId.get(i));
             }
-
-
+            affectedRows = stmt.executeUpdate();
+            LOGGER.debug("Query : " + query);
+            LOGGER.info("Deleted Date : " + new Date());
         }catch (SQLException e) {
             LOGGER.error("SqlException Occurred: "+e.getMessage());
             throw new RuntimeException();
         }
-        return totalAffectedRows > 0;
+        return affectedRows > 0;
     }
 
     @Override
@@ -250,23 +255,30 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     @Override
     public boolean deleteInventory(List<Medicine> medicines) {
         LOGGER.info("Accessing Delete Inventory on DAO ");
-        int totalAffectedRows = 0;
+        int affectedRows;
+
+        if (medicines == null || medicines.isEmpty()) {
+            LOGGER.debug("medicine list is empty");
+            return false;
+        }
+        List<Long> collectedId = medicines.stream().map(Medicine::getInventoryId).collect(Collectors.toList());
+        String placeholder = collectedId.stream().map(id -> "?").collect(Collectors.joining(", "));
 
         try (Connection con = ConnectionHelper.getConnection()) {
-            LOGGER.info("Query : " + DELETE_INVENTORY_ITEM_QUERY);
-            PreparedStatement stmt = con.prepareStatement(DELETE_INVENTORY_ITEM_QUERY);
-
-            for (Medicine med : medicines) {
-                stmt.setLong(1, med.getInventoryId());
-                totalAffectedRows += stmt.executeUpdate();
+            String query = DELETE_INVENTORY_ITEM_QUERY + "(" + placeholder + ")";
+            PreparedStatement stmt = con.prepareStatement(query);
+            for (int i = 0; i < collectedId.size(); i++) {
+                stmt.setLong(i + 1, collectedId.get(i));
             }
-
+            affectedRows = stmt.executeUpdate();
+            LOGGER.debug("Query : " + query);
             LOGGER.info("Deleted Date : " + new Date());
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-        return totalAffectedRows > 0;
+        return affectedRows > 0;
     }
 
     @Override

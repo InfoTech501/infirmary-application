@@ -26,7 +26,7 @@ public class UpdateMedicineController {
     private TextField productNameTextField;
     @FXML
     private TextArea descriptionTextField;
-    private long medicineId;
+    private Long medicineId;
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     private final Logger LOGGER = LoggerFactory.getLogger(UpdateInventoryController.class);
     /**

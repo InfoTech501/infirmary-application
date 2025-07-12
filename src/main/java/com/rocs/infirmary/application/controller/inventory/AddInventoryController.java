@@ -280,6 +280,7 @@ public class AddInventoryController implements Initializable {
             return;
         }
         productNameTextField.setText(medicineModel.getItemName());
+        productNameTextField.setStyle("-fx-alignment: LEFT;");
         descriptionTextField.setText(medicineModel.getDescription());
         descriptionTextField.setStyle("-fx-alignment:LEFT;");
 

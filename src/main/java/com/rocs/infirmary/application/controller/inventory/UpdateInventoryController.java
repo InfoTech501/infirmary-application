@@ -37,8 +37,8 @@ public class UpdateInventoryController {
     private ComboBox itemTypeComboBox;
 
     private String defaultItemType;
-    private long medicineId;
-    private long inventoryId;
+    private Long medicineId;
+    private Long inventoryId;
     private Date expirationDate;
 
 
