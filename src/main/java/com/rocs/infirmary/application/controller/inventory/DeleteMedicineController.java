@@ -1,31 +1,33 @@
 package com.rocs.infirmary.application.controller.inventory;
 
-import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
+import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
+import static com.rocs.infirmary.application.controller.helper.ControllerHelper.showDialog;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.scene.layout.*;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.rocs.infirmary.application.controller.helper.ControllerHelper.showDialog;
-
 /**
- * {@code DeleteInventoryController} is used to handle event processes of the Inventory when deleting Items
+ * {@code DeleteMedicineController} is used to handle event processes of the Medicine when deleting Items
  **/
-public class DeleteInventoryController{
+public class DeleteMedicineController {
+    @FXML
+    private Label inventoryDeleteLabelA;
     @FXML
     private GridPane medicineListContainer;
-
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     private List<Medicine> medicineList = new ArrayList<>();
     /**
-     * this method display the medicine to be deleted
+     * this method display the medicine from medicine table to be deleted
      * @param selectedMedicines is a list that provide attributes the selected medicine
      **/
     public void showMedicineList(List<Medicine> selectedMedicines) {
@@ -99,7 +101,7 @@ public class DeleteInventoryController{
         }
     }
     private boolean deleteMedicine(){
-        return inventoryManagementApplication.getMedicineInventoryFacade().deleteInventory(medicineList);
+        return inventoryManagementApplication.getMedicineInventoryFacade().deleteMedicineByItemName(medicineList);
     }
     /**
      * this method handles the action triggered when the confirm button is clicked.
@@ -120,5 +122,4 @@ public class DeleteInventoryController{
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
     }
-
 }
