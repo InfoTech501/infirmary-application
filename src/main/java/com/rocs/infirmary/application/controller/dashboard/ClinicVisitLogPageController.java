@@ -20,6 +20,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
@@ -34,6 +36,7 @@ import java.util.ResourceBundle;
  **/
 public class ClinicVisitLogPageController implements Initializable {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClinicVisitLogPageController.class);
     @FXML
     private TableView<Student> visitLogTable;
     @FXML
@@ -200,8 +203,10 @@ public class ClinicVisitLogPageController implements Initializable {
             stage.showAndWait();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Error opening visit log modal for LRN '{}'",
+                    student != null ? student.getLrn() : "unknown", e);
         }
+
     }
 
     /**
