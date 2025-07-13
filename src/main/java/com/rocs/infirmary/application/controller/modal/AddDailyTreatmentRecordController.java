@@ -110,22 +110,28 @@ public class AddDailyTreatmentRecordController implements Initializable {
                 return;
             }
 
-            medicalRecordInfoMgtApplication
+            Long medRecordId = medicalRecordInfoMgtApplication
                     .getStudentMedicalRecordFacade()
                     .addStudentMedicalRecord(record);
 
-            medicalRecordInfoMgtApplication
-                    .getStudentMedicalRecordFacade()
-                    .addMedicineAdministered(record);
+            if (medRecordId != null) {
+                record.setMedicalRecordId(medRecordId);
 
-            if (clinicVisitLogPageController != null) {
-                clinicVisitLogPageController.addStudentMedicalRecord(record);
+                medicalRecordInfoMgtApplication
+                        .getStudentMedicalRecordFacade()
+                        .addMedicineAdministered(record);
+
+                if (clinicVisitLogPageController != null) {
+                    clinicVisitLogPageController.addStudentMedicalRecord(record);
+                }
+
+                showWarning("Success, Record Added Successfully.");
+
+                Stage stage = (Stage) lrnField.getScene().getWindow();
+                stage.close();
+            } else {
+                showWarning("Failed to save medical record.");
             }
-
-            showWarning("Success, Record Added Successfully.");
-
-            Stage stage = (Stage) lrnField.getScene().getWindow();
-            stage.close();
 
         } catch (Exception e) {
             LOGGER.error("Failed to save daily treatment record", e);

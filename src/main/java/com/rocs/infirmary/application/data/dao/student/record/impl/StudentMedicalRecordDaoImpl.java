@@ -48,6 +48,8 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                 studentMedicalRecord.setTemperatureReadings(rs.getString("temperature_readings"));
                 studentMedicalRecord.setVisitDate(rs.getDate("visit_date"));
                 studentMedicalRecord.setTreatment(rs.getString("treatment"));
+                studentMedicalRecord.setMedicineName(rs.getString("medicine_name"));
+                studentMedicalRecord.setDispensingOut(rs.getInt("dispensing_out"));
 
                 LOGGER.info("Data retrieved: " + "\n"
                         + "Student ID: " + studentMedicalRecord.getStudentId() + "\n"
@@ -59,6 +61,8 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                         + "Temperature Reading  : " + studentMedicalRecord.getTemperatureReadings() + "\n"
                         + "Visit Date  : " + studentMedicalRecord.getVisitDate() + "\n"
                         + "Treatment  : " + studentMedicalRecord.getTreatment()
+                        + "Medicine Name        : " + studentMedicalRecord.getMedicineName() + "\n"
+                        + "Dispensing Out       : " + studentMedicalRecord.getDispensingOut()
                 );
             }
         } catch (SQLException e) {
@@ -66,7 +70,6 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
             throw new RuntimeException(e);
         }
         return studentMedicalRecord;
-
 
     }
 
@@ -180,14 +183,14 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
     }
 
     @Override
-    public boolean addStudentMedicalRecord(Student record) {
+    public Long addStudentMedicalRecord(Student record) {
         try (Connection con = ConnectionHelper.getConnection()) {
             con.setAutoCommit(false);
 
             Long ailmentId = findAilmentIdBySymptoms(con, record.getSymptoms());
             if (ailmentId == null) {
                 LOGGER.warn("No ailment_id found for symptoms: {}", record.getSymptoms());
-                return false;
+                return null;
             }
 
             try (PreparedStatement medStmt = con.prepareStatement(ADD_STUDENT_MEDICAL_RECORD)) {
@@ -204,19 +207,37 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                 medStmt.setInt(11, 1);
 
                 int affectedRow = medStmt.executeUpdate();
-                return affectedRow > 0;
+                if (affectedRow > 0) {
+                    try (PreparedStatement selectStmt = con.prepareStatement(GET_LAST_INSERTED_MEDICAL_RECORD_ID)) {
+
+                        selectStmt.setLong(1, record.getStudentId());
+                        try (ResultSet rs = selectStmt.executeQuery()) {
+                            if (rs.next()) {
+                                Long medRecordId = rs.getLong("id");
+                                LOGGER.info("Retrieved inserted medical_record ID: {}", medRecordId);
+                                con.commit();
+                                return medRecordId;
+                            } else {
+                                LOGGER.warn("Insert succeeded but no medical record ID found.");
+                                con.rollback();
+                            }
+                        }
+                    }
+                } else {
+                    LOGGER.warn("Medical record insert affected 0 rows.");
+                    con.rollback();
+                }
             } catch (SQLException e) {
-                LOGGER.error("Error saving medical record ", e);
+                LOGGER.error("Error inserting medical record", e);
                 con.rollback();
             }
 
         } catch (SQLException e) {
-            LOGGER.error("Connection or rollback failed ", e);
+            LOGGER.error("Connection or rollback failed", e);
         }
 
-        return false;
+        return null;
     }
-
 
     private Long findAilmentIdBySymptoms(Connection con, String symptoms) {
         try (PreparedStatement stmt = con.prepareStatement(FIND_AILMENT_ID_BY_SYMPTOMS)) {
@@ -238,10 +259,11 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
              PreparedStatement stmt = con.prepareStatement(ADD_MEDICINE_ADMINISTERED)) {
 
             stmt.setLong(1, record.getMedicineId());
-            stmt.setLong(2, record.getNurseInChargeId());
-            stmt.setString(3, record.getTreatment());
-            stmt.setInt(4, record.getDispensingOut());
-            stmt.setTimestamp(5, new Timestamp(record.getVisitDate().getTime()));
+            stmt.setLong(2, record.getSetMedicalRecordId());
+            stmt.setLong(3, record.getNurseInChargeId());
+            stmt.setString(4, record.getTreatment());
+            stmt.setInt(5, record.getDispensingOut());
+            stmt.setTimestamp(6, new Timestamp(record.getVisitDate().getTime()));
 
             int affectedRows = stmt.executeUpdate();
             return affectedRows > 0;

@@ -73,9 +73,9 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
     }
 
     @Override
-    public boolean addStudentMedicalRecord(Student record) {
+    public Long addStudentMedicalRecord(Student record) {
         logger.debug("Entering add with Student: {}", record);
-        boolean added = this.studentMedRecord.addStudentMedicalRecord(record);
+        Long added = this.studentMedRecord.addStudentMedicalRecord(record);
         logger.debug("Exiting add, addition successful: {}", added);
         return added;
     }

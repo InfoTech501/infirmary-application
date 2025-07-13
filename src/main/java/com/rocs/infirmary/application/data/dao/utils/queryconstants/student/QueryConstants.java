@@ -7,21 +7,25 @@ public class QueryConstants {
     /**
      * query that retrieves all medical information by its LRN.
      */
-    public static String GET_ALL_MEDICAL_INFORMATION_BY_LRN = "SELECT " +
-            "s.id AS student_id, " +
-            "s.LRN, " +
-            "p.first_name, " +
-            "p.middle_name, " +
-            "p.last_name, " +
-            "p.age, " +
-            "p.gender, " +
-            "mr.symptoms, " +
-            "mr.temperature_readings, " +
-            "mr.visit_date AS visit_date, " +
-            "mr.treatment " +
-            "FROM student s " +
-            "JOIN person p ON s.person_id = p.id " +
-            "LEFT JOIN medical_record mr ON s.id = mr.student_id " +
+    public static String GET_ALL_MEDICAL_INFORMATION_BY_LRN = "SELECT\n" +
+            "  s.id AS student_id,\n" +
+            "  s.LRN,\n" +
+            "  p.first_name,\n" +
+            "  p.middle_name,\n" +
+            "  p.last_name,\n" +
+            "  p.age,\n" +
+            "  p.gender,\n" +
+            "  mr.symptoms,\n" +
+            "  mr.temperature_readings,\n" +
+            "  mr.visit_date AS visit_date,\n" +
+            "  mr.treatment,\n" +
+            "  m.item_name AS medicine_name,\n" +
+            "  ma.quantity AS dispensing_out\n" +
+            "FROM student s\n" +
+            "JOIN person p ON s.person_id = p.id\n" +
+            "LEFT JOIN medical_record mr ON s.id = mr.student_id\n" +
+            "LEFT JOIN medicine_administered ma ON mr.id = ma.med_record_id\n" +
+            "LEFT JOIN medicine m ON ma.medicine_id = m.medicine_id\n" +
             "WHERE s.LRN = ?";
     /**
      * query that retrieves all student medical record.
@@ -59,6 +63,7 @@ public class QueryConstants {
             "LEFT JOIN medicine ON medicine_administered.medicine_id = medicine.medicine_id\n" +
             "LEFT JOIN employee ON medical_record.nurse_in_charge_id = employee.id\n" +
             "LEFT JOIN person nurse_person ON employee.id = nurse_person.id ";
+    public static  String GET_LAST_INSERTED_MEDICAL_RECORD_ID = "SELECT id FROM medical_record WHERE student_id = ? ORDER BY id DESC FETCH FIRST 1 ROWS ONLY";
     /**
      * query that add student medical record.
      */
@@ -66,7 +71,7 @@ public class QueryConstants {
     /**
      * query that add a record into medicine administered.
      */
-    public static String ADD_MEDICINE_ADMINISTERED = "INSERT INTO MEDICINE_ADMINISTERED (MEDICINE_ID, NURSE_IN_CHARGE_ID, DESCRIPTION, QUANTITY, DATE_ADMINISTERED) VALUES (?, ?, ?, ?, ?)";
+    public static String ADD_MEDICINE_ADMINISTERED = "INSERT INTO MEDICINE_ADMINISTERED (MEDICINE_ID, MED_RECORD_ID, NURSE_IN_CHARGE_ID, DESCRIPTION, QUANTITY, DATE_ADMINISTERED) VALUES (?,?, ?, ?, ?, ?)";
     /**
      * query that retrieves basic nurse identity info from person and employee tables.
      */
