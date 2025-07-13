@@ -37,8 +37,8 @@
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="725.0" minWidth="0.0" prefWidth="0.0" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints maxHeight="61.333343505859375" minHeight="10.0" prefHeight="54.66667175292969" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="61.333343505859375" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="89.0" minHeight="10.0" prefHeight="62.0" valignment="CENTER" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <Label fx:id="studInfoLabel" style="-fx-font-size: 22; -fx-font-weight: 700;" styleClass="label-student-info" stylesheets="@../styles/fonts.css" text="Student Info" GridPane.columnIndex="1">
@@ -90,8 +90,8 @@
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="725.0" minWidth="0.0" prefWidth="0.0" />
                      </columnConstraints>
                      <rowConstraints>
-                        <RowConstraints maxHeight="61.333343505859375" minHeight="10.0" prefHeight="54.66667175292969" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="61.333343505859375" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="62.0" valignment="CENTER" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
                         <Label fx:id="vitalSignsLabel" style="-fx-font-size: 22; -fx-font-weight: 700;" styleClass="vital-signs-label" stylesheets="@../styles/fonts.css" text="Vital Signs" GridPane.columnIndex="1">
@@ -149,8 +149,8 @@
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="725.0" minWidth="0.0" prefWidth="0.0" />
                      </columnConstraints>
                      <rowConstraints>
-                        <RowConstraints maxHeight="61.333343505859375" minHeight="10.0" prefHeight="54.66667175292969" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="61.333343505859375" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="62.0" valignment="CENTER" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
                         <ComboBox fx:id="medicineNameComboBox" opacity="0.7" prefHeight="55.0" prefWidth="300.0" promptText="Medicine Name" styleClass="medicineNameComboBox" GridPane.columnIndex="7" GridPane.rowIndex="1">
@@ -206,8 +206,8 @@
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="725.0" minWidth="0.0" prefWidth="0.0" />
                      </columnConstraints>
                      <rowConstraints>
-                        <RowConstraints maxHeight="61.333343505859375" minHeight="10.0" prefHeight="54.66667175292969" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="61.333343505859375" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="62.0" valignment="CENTER" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
                         <TextField fx:id="invDispensingOutField" opacity="0.6" prefHeight="55.0" prefWidth="300.0" promptText="Dispensing OUT" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="inv-dispensing-out-text-field" GridPane.columnIndex="1" GridPane.rowIndex="1">

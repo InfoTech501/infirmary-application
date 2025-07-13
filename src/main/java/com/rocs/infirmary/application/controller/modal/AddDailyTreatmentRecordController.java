@@ -30,6 +30,7 @@ import java.util.ResourceBundle;
 public class AddDailyTreatmentRecordController implements Initializable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AddDailyTreatmentRecordController.class);
+
     @FXML
     private TextField lrnField;
     @FXML
@@ -159,9 +160,30 @@ public class AddDailyTreatmentRecordController implements Initializable {
         student.setGradeLevel(grade);
         student.setSection(section);
 
-        student.setTemperatureReadings(String.valueOf(Double.parseDouble(bodyTempField.getText())));
-        student.setPulseRate(Integer.parseInt(pulseRateField.getText()));
-        student.setRespiratoryRate(Integer.parseInt(respiratoryRateField.getText()));
+        try {
+            double temperature = Double.parseDouble(bodyTempField.getText());
+            student.setTemperatureReadings(String.valueOf(temperature));
+        } catch (NumberFormatException e) {
+            showWarning("Please enter a valid body temperature");
+            return null;
+        }
+
+        try {
+            int pulse = Integer.parseInt(pulseRateField.getText());
+            student.setPulseRate(pulse);
+        } catch (NumberFormatException e) {
+            showWarning("Please enter a valid pulse rate");
+            return null;
+        }
+
+        try {
+            int respiration = Integer.parseInt(respiratoryRateField.getText());
+            student.setRespiratoryRate(respiration);
+        } catch (NumberFormatException e) {
+            showWarning("Please enter a valid respiratory rate");
+            return null;
+        }
+
         student.setBloodPressure(bloodPressureField.getText());
         student.setSymptoms(symptomsField.getText());
 

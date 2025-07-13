@@ -74,10 +74,10 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
 
     @Override
     public Long addStudentMedicalRecord(Student record) {
-        logger.debug("Entering add with Student: {}", record);
-        Long added = this.studentMedRecord.addStudentMedicalRecord(record);
-        logger.debug("Exiting add, addition successful: {}", added);
-        return added;
+        logger.debug("Entering addStudentMedicalRecord with Student: {}", record);
+        Long medicalRecordId = this.studentMedRecord.addStudentMedicalRecord(record);
+        logger.debug("Exiting addStudentMedicalRecord with returned ID: {}", medicalRecordId);
+        return medicalRecordId;
     }
 
     @Override
@@ -92,9 +92,9 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
     public boolean addMedicineAdministered(Student record) {
         logger.debug("Entering addMedicineAdministered with studentId: {}, medicineId: {}",
                 record.getStudentId(), record.getMedicineId());
-        boolean added = studentMedRecord.addMedicineAdministered(record);
-        logger.debug("Exiting addMedicineAdministered, insert successful: {}", added);
-        return added;
+        boolean wasInserted = studentMedRecord.addMedicineAdministered(record);
+        logger.debug("Exiting addMedicineAdministered with insertion result: {}", wasInserted);
+        return wasInserted;
     }
 
 }

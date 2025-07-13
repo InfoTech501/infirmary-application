@@ -23,54 +23,58 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentMedicalRecordDaoImpl.class);
 
     public Student findMedicalInformation(long LRN) {
-        LOGGER.info("get medical record started");
+        LOGGER.info("Starting medical record retrieval for LRN: {}", LRN);
         Student studentMedicalRecord = null;
-        try (Connection con = ConnectionHelper.getConnection()) {
 
-            PreparedStatement stmt = con.prepareStatement(GET_ALL_MEDICAL_INFORMATION_BY_LRN);
-            LOGGER.info("Query in use" + GET_ALL_MEDICAL_INFORMATION_BY_LRN);
+        try (Connection con = ConnectionHelper.getConnection();
+             PreparedStatement stmt = con.prepareStatement(GET_ALL_MEDICAL_INFORMATION_BY_LRN)) {
 
+            LOGGER.info("Preparing query: {}", GET_ALL_MEDICAL_INFORMATION_BY_LRN);
             stmt.setLong(1, LRN);
-            LOGGER.info("data inserted: " + "LRN: " + LRN);
-            ResultSet rs = stmt.executeQuery();
+            LOGGER.info("Executing query with LRN: {}", LRN);
 
+            try (ResultSet rs = stmt.executeQuery()) {
+                LOGGER.info("Query executed successfully");
 
-            if (rs.next()) {
-                studentMedicalRecord = new Student();
-                studentMedicalRecord.setStudentId(rs.getLong("student_id"));
-                studentMedicalRecord.setLrn(rs.getLong("LRN"));
-                studentMedicalRecord.setFirstName(rs.getString("first_name"));
-                studentMedicalRecord.setMiddleName(rs.getString("middle_name"));
-                studentMedicalRecord.setLastName(rs.getString("last_name"));
-                studentMedicalRecord.setAge(rs.getInt("age"));
-                studentMedicalRecord.setGender(rs.getString("gender"));
-                studentMedicalRecord.setSymptoms(rs.getString("symptoms"));
-                studentMedicalRecord.setTemperatureReadings(rs.getString("temperature_readings"));
-                studentMedicalRecord.setVisitDate(rs.getDate("visit_date"));
-                studentMedicalRecord.setTreatment(rs.getString("treatment"));
-                studentMedicalRecord.setMedicineName(rs.getString("medicine_name"));
-                studentMedicalRecord.setDispensingOut(rs.getInt("dispensing_out"));
+                if (rs.next()) {
+                    studentMedicalRecord = new Student();
+                    studentMedicalRecord.setStudentId(rs.getLong("student_id"));
+                    studentMedicalRecord.setLrn(rs.getLong("LRN"));
+                    studentMedicalRecord.setFirstName(rs.getString("first_name"));
+                    studentMedicalRecord.setMiddleName(rs.getString("middle_name"));
+                    studentMedicalRecord.setLastName(rs.getString("last_name"));
+                    studentMedicalRecord.setAge(rs.getInt("age"));
+                    studentMedicalRecord.setGender(rs.getString("gender"));
+                    studentMedicalRecord.setSymptoms(rs.getString("symptoms"));
+                    studentMedicalRecord.setTemperatureReadings(rs.getString("temperature_readings"));
+                    studentMedicalRecord.setVisitDate(rs.getDate("visit_date"));
+                    studentMedicalRecord.setTreatment(rs.getString("treatment"));
+                    studentMedicalRecord.setMedicineName(rs.getString("medicine_name"));
+                    studentMedicalRecord.setDispensingOut(rs.getInt("dispensing_out"));
 
-                LOGGER.info("Data retrieved: " + "\n"
-                        + "Student ID: " + studentMedicalRecord.getStudentId() + "\n"
-                        + "LRN  ID: " + studentMedicalRecord.getLrn() + "\n"
-                        + "Name   : " + studentMedicalRecord.getFirstName() + " " + studentMedicalRecord.getLastName() + "\n"
-                        + "Age    : " + studentMedicalRecord.getAge() + "\n"
-                        + "Gender   : " + studentMedicalRecord.getGender() + "\n"
-                        + "Symptoms : " + studentMedicalRecord.getSymptoms() + "\n"
-                        + "Temperature Reading  : " + studentMedicalRecord.getTemperatureReadings() + "\n"
-                        + "Visit Date  : " + studentMedicalRecord.getVisitDate() + "\n"
-                        + "Treatment  : " + studentMedicalRecord.getTreatment()
-                        + "Medicine Name        : " + studentMedicalRecord.getMedicineName() + "\n"
-                        + "Dispensing Out       : " + studentMedicalRecord.getDispensingOut()
-                );
+                    LOGGER.info("Data retrieved:" + "\n"
+                            + "Student ID        : " + studentMedicalRecord.getStudentId() + "\n"
+                            + "LRN               : " + studentMedicalRecord.getLrn() + "\n"
+                            + "Name              : " + studentMedicalRecord.getFirstName() + " " + studentMedicalRecord.getLastName() + "\n"
+                            + "Age               : " + studentMedicalRecord.getAge() + "\n"
+                            + "Gender            : " + studentMedicalRecord.getGender() + "\n"
+                            + "Symptoms          : " + studentMedicalRecord.getSymptoms() + "\n"
+                            + "Temperature Readings : " + studentMedicalRecord.getTemperatureReadings() + "\n"
+                            + "Visit Date        : " + studentMedicalRecord.getVisitDate() + "\n"
+                            + "Treatment         : " + studentMedicalRecord.getTreatment() + "\n"
+                            + "Medicine Name     : " + studentMedicalRecord.getMedicineName() + "\n"
+                            + "Dispensing Out    : " + studentMedicalRecord.getDispensingOut()
+                    );
+                } else {
+                    LOGGER.warn("No medical record found for LRN: {}", LRN);
+                }
             }
         } catch (SQLException e) {
-            LOGGER.error("SQLException Occurred: " + e.getMessage());
+            LOGGER.error("SQLException occurred while retrieving medical information: {}", e.getMessage(), e);
             throw new RuntimeException(e);
         }
-        return studentMedicalRecord;
 
+        return studentMedicalRecord;
     }
 
     @Override
