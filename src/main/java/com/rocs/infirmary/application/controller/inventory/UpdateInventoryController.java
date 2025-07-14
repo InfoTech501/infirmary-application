@@ -41,7 +41,7 @@ public class UpdateInventoryController {
     private Long inventoryId;
     private Date expirationDate;
 
-
+    private InventoryController parentController;
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     private final Logger LOGGER = LoggerFactory.getLogger(UpdateInventoryController.class);
     private static final String PROMPT = "  (Product Name Cannot be edited here)";
@@ -107,6 +107,9 @@ public class UpdateInventoryController {
      * @param actionEvent the event triggered by the confirm button click
      */
     public void onCancelButtonClick(ActionEvent actionEvent) {
+        if (parentController != null) {
+            parentController.refresh();
+        }
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         LOGGER.info("Exiting Update Inventory Modal");
         stage.close();
@@ -138,6 +141,9 @@ public class UpdateInventoryController {
                 if (result.isPresent()&& result.get().getButtonData() == ButtonBar.ButtonData.YES) {
                     if (updateMedicine(defaultItemType, Integer.parseInt(quantityTextField.getText()))) {
                         ControllerHelper.showDialog("Notification", "Updated Successfully!");
+                        if (parentController != null) {
+                            parentController.refresh();
+                        }
                         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
                         LOGGER.info("Exiting Update Inventory Modal");
                         stage.close();
@@ -147,5 +153,9 @@ public class UpdateInventoryController {
         }catch (NullPointerException e){
             LOGGER.error("NullPointerException Occurred "+e);
         }
+    }
+
+    public void setParentController(InventoryController parentController) {
+        this.parentController = parentController;
     }
 }

@@ -62,7 +62,7 @@ public class AddInventoryController implements Initializable {
     private List<Medicine> medicineList = new ArrayList<>();
     private Medicine medicineModel = new Medicine();
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
-
+    private InventoryController parentController;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setup();
@@ -82,7 +82,7 @@ public class AddInventoryController implements Initializable {
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         itemTypeComboBox.setItems(itemType);
     }
-    private void refresh() {
+    public void refresh() {
         List<Medicine> medicineList = inventoryManagementApplication.getMedicineInventoryFacade().getAllMedicineFromMedicineTable();
         String[] itemTypeList = {"No selection","Medicine", "Non expiry", "other"};
         for (Medicine med : medicineList) {
@@ -195,7 +195,7 @@ public class AddInventoryController implements Initializable {
         Parent root = loader.load();
         UpdateMedicineController updateMedicineController = loader.getController();
         updateMedicineController.showMedicineToEdit(medicine);
-
+        updateMedicineController.setParentController(this);
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -226,7 +226,11 @@ public class AddInventoryController implements Initializable {
         } else if (!isValidInputNumber(quantityTextField.getText())) {
             showDialog("Invalid Input","Quantity must only contain number");
         } else {
-            addMedicine(Integer.parseInt(quantityTextField.getText()));
+           if(addMedicine(Integer.parseInt(quantityTextField.getText()))){
+               if (parentController != null) {
+                   parentController.refresh();
+               }
+           }
         }
     }
     private boolean deleteMedicine(){
@@ -251,7 +255,7 @@ public class AddInventoryController implements Initializable {
             Parent root = loader.load();
             DeleteMedicineController deleteMedicineController = loader.getController();
             deleteMedicineController.showMedicineList(selectedMedicine);
-
+            deleteMedicineController.setParentController(this);
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -290,6 +294,9 @@ public class AddInventoryController implements Initializable {
      * @param actionEvent the event triggered by the confirm button click
      */
     public void onCancelBtnClick(ActionEvent actionEvent) throws IOException {
+        if (parentController != null) {
+            parentController.refresh();
+        }
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
     }
@@ -300,4 +307,7 @@ public class AddInventoryController implements Initializable {
         return input.matches("^[0-9]+");
     }
 
+    public void setParentController(InventoryController parentController) {
+        this.parentController = parentController;
+    }
 }
