@@ -1,44 +1,45 @@
 package com.rocs.infirmary.application.controller.dashboard;
 
-import com.rocs.infirmary.application.DashboardInfoApplication;
+import com.rocs.infirmary.application.module.dashboard.information.application.DashboardInfoApplication;
 import com.rocs.infirmary.application.app.facade.dashboard.DashboardFacade;
 import com.rocs.infirmary.application.data.model.report.ailment.CommonAilmentsReport;
 import com.rocs.infirmary.application.data.model.report.medication.MedicationTrendReport;
 import com.rocs.infirmary.application.data.model.report.visit.FrequentVisitReport;
 import com.rocs.infirmary.application.service.dashboard.DashboardDataService;
 import com.rocs.infirmary.application.service.dashboard.DateRange;
-import com.rocs.infirmary.application.service.dashboard.TableColumnHelper;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.*;
-
+import java.util.function.Function;
+/**
+ * {@code DashboardController} is used to handle event processes for the Dashboard,
+ * this implements Initializable interface
+ **/
 public class DashboardPageController implements Initializable {
-
-    private static final String GRADE_11 = "Grade 11";
-    private static final String GRADE_12 = "Grade 12";
-    private static final String DATE_FORMAT = "MMMMM dd, yyyy";
-    private static final LocalDate DEFAULT_START_DATE = LocalDate.of(2000, 1, 1);
-
-    @FXML
-    private AnchorPane chartForm;
+    private static final Logger logger = LoggerFactory.getLogger(DashboardPageController.class);
 
     @FXML
     private Label dateDisplay;
 
     @FXML
-    TableView<MedicationTrendReport> medTrendRptTable;
+    private TableView<MedicationTrendReport> medTrendRptTable;
 
     @FXML
     private TableColumn<MedicationTrendReport, String> numberedColumnMedTrend;
@@ -53,7 +54,7 @@ public class DashboardPageController implements Initializable {
     private Label medDistributtedTodayRprt;
 
     @FXML
-    TableView<CommonAilmentsReport> commonAilmentsRptTable;
+    private TableView<CommonAilmentsReport> commonAilmentsRptTable;
 
     @FXML
     private TableColumn<CommonAilmentsReport, String> numberedColumnCommonAilment;
@@ -100,6 +101,7 @@ public class DashboardPageController implements Initializable {
     }
 
     private void setDateDisplay() {
+        String DATE_FORMAT = "MMMMM dd, yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
         String datenow = sdf.format(new Date());
         dateDisplay.setText(datenow);
@@ -114,24 +116,23 @@ public class DashboardPageController implements Initializable {
             populateCharts();
             populateTables();
 
-        } catch (Exception e) {
-            showErrorMessage("Failed to load dashboard data: " + e.getMessage());
+        } catch (NullPointerException e) {
+            logger.error("Failed to load dashboard data: {}", e.getMessage());
         }
     }
 
-    private void showErrorMessage(String message) {
-        System.err.println("Dashboard Error: " + message);
-    }
-
     private void populateCharts() {
+        String GRADE_11 = "Grade 11";
+        String GRADE_12 = "Grade 12";
         DateRange dateRange = DateRange.weekly();
         try {
             studentVisitBarChart.getData().clear();
             studentVisitBarChart.getYAxis().setLabel("Visits");
+
             initializeBarChartWeeklyVisitByGrade(dateRange, GRADE_11);
             initializeBarChartWeeklyVisitByGrade(dateRange, GRADE_12);
-        } catch (Exception e) {
-            System.err.println("Failed to populate charts: " + e.getMessage());
+        } catch (NullPointerException e) {
+            logger.error("Failed to populate charts: {}", e.getMessage());
         }
     }
 
@@ -140,8 +141,8 @@ public class DashboardPageController implements Initializable {
         try {
             populateTableMedicationTrendReport(dateRange);
             populateTableCommonAilmentsReport(dateRange);
-        } catch (Exception e) {
-            System.err.println("Failed to populate tables: " + e.getMessage());
+        } catch (NullPointerException e) {
+            logger.error("Failed to populate tables: {}", e.getMessage());
         }
     }
 
@@ -151,6 +152,10 @@ public class DashboardPageController implements Initializable {
         ObservableList<MedicationTrendReport> dataMedTrend =
                 FXCollections.observableArrayList(medicationTrendReports);
         medTrendRptTable.setItems(dataMedTrend);
+        totalDistributedMedTrend.setSortable(true);
+        totalDistributedMedTrend.setSortType(TableColumn.SortType.DESCENDING);
+        medTrendRptTable.getSortOrder().setAll(totalDistributedMedTrend);
+        medTrendRptTable.sort();
     }
 
     private void populateTableCommonAilmentsReport(DateRange dateRange) {
@@ -162,9 +167,15 @@ public class DashboardPageController implements Initializable {
         ObservableList<CommonAilmentsReport> observableCommonAilmentTable =
                 FXCollections.observableArrayList(reports);
         commonAilmentsRptTable.setItems(observableCommonAilmentTable);
+        numOfStudCommonAilment.setSortable(true);
+        numOfStudCommonAilment.setSortType(TableColumn.SortType.DESCENDING);
+        commonAilmentsRptTable.getSortOrder().setAll(numOfStudCommonAilment);
+        commonAilmentsRptTable.sort();
     }
 
     private void setClinicVisitReports(DateRange dateRange) {
+        String GRADE_11 = "Grade 11";
+        String GRADE_12 = "Grade 12";
         int grade11Visits = dataService.getVisitCount(dateRange, GRADE_11);
         int grade12Visits = dataService.getVisitCount(dateRange, GRADE_12);
 
@@ -175,6 +186,22 @@ public class DashboardPageController implements Initializable {
     private void setMedicationDistributionReport(DateRange dateRange) {
         int totalUsage = dataService.getTotalMedicationUsage(dateRange);
         medDistributtedTodayRprt.setText(String.valueOf(totalUsage));
+    }
+
+    private <T> void setupNumberedColumn(TableColumn<T, String> column) {
+        column.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? null : String.valueOf(getIndex() + 1));
+            }
+        });
+    }
+
+    private <T> void setupCenteredColumn(TableColumn<T, String> column,
+                                         Function<T, String> valueExtractor) {
+        column.setCellValueFactory( cellData ->
+                new SimpleStringProperty(valueExtractor.apply(cellData.getValue())));
     }
 
     private void initializeBarChartWeeklyVisitByGrade(DateRange dateRange, String gradeLevel) {
@@ -192,6 +219,9 @@ public class DashboardPageController implements Initializable {
         series.setName(gradeLevel);
         List<String> orderedDays = List.of("Monday", "Tuesday", "Wednesday", "Thursday", "Friday");
 
+        NumberAxis yAxis = new NumberAxis();
+        yAxis.setForceZeroInRange(false);
+
         for (String day : orderedDays) {
             int visits = visitsPerDay.getOrDefault(day, 0);
             series.getData().add(new XYChart.Data<>(day, visits));
@@ -200,16 +230,16 @@ public class DashboardPageController implements Initializable {
     }
 
     private void initializeTableColumns() {
-        TableColumnHelper.setupNumberedColumn(numberedColumnMedTrend);
-        TableColumnHelper.setupCenteredColumn(medicineColumnMedTrend,
+        setupNumberedColumn(numberedColumnMedTrend);
+        setupCenteredColumn(medicineColumnMedTrend,
                 MedicationTrendReport::getMedicineName);
-        TableColumnHelper.setupCenteredColumn(totalDistributedMedTrend,
+        setupCenteredColumn(totalDistributedMedTrend,
                 reports -> String.valueOf(reports.getUsage()));
 
-        TableColumnHelper.setupNumberedColumn(numberedColumnCommonAilment);
-        TableColumnHelper.setupCenteredColumn(illnessColumnCommonAilment,
+        setupNumberedColumn(numberedColumnCommonAilment);
+        setupCenteredColumn(illnessColumnCommonAilment,
                 CommonAilmentsReport::getAilment);
-        TableColumnHelper.setupCenteredColumn(numOfStudCommonAilment,
+        setupCenteredColumn(numOfStudCommonAilment,
                 report -> String.valueOf(report.getOccurrences()));
     }
 }
