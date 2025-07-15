@@ -15,6 +15,8 @@ public class QueryConstants {
             "  p.last_name,\n" +
             "  p.age,\n" +
             "  p.gender,\n" +
+            "  sec.grade_level,\n" +
+            "  sec.section,\n" +
             "  mr.symptoms,\n" +
             "  mr.temperature_readings,\n" +
             "  mr.visit_date AS visit_date,\n" +
@@ -23,6 +25,7 @@ public class QueryConstants {
             "  ma.quantity AS dispensing_out\n" +
             "FROM student s\n" +
             "JOIN person p ON s.person_id = p.id\n" +
+            "LEFT JOIN section sec ON sec.section_id = sec.section_id\n" +
             "LEFT JOIN medical_record mr ON s.id = mr.student_id\n" +
             "LEFT JOIN medicine_administered ma ON mr.id = ma.med_record_id\n" +
             "LEFT JOIN medicine m ON ma.medicine_id = m.medicine_id\n" +

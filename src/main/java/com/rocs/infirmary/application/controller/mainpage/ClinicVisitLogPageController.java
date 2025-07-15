@@ -1,4 +1,4 @@
-package com.rocs.infirmary.application.controller.dashboard;
+package com.rocs.infirmary.application.controller.mainpage;
 
 import com.rocs.infirmary.application.module.medical.record.management.application.MedicalRecordInfoMgtApplication;
 import com.rocs.infirmary.application.controller.modal.AddDailyTreatmentRecordController;
@@ -26,9 +26,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * {@code ClinicVisitLogPageController} is used to handle event processes of the Medical Record of the Student,
@@ -44,21 +42,13 @@ public class ClinicVisitLogPageController implements Initializable {
     @FXML
     private TableColumn<Student, String> gradeSectionColumn;
     @FXML
-    private TableColumn<Student, String> tempReadingsColumn;
-    @FXML
-    private TableColumn<Student, Integer> pulseRateColumn;
-    @FXML
-    private TableColumn<Student, String> bloodPressureColumn;
-    @FXML
     private TableColumn<Student, String> symptomsColumn;
-    @FXML
-    private TableColumn<Student, String> medicineNameColumn;
-    @FXML
-    private TableColumn<Student, Integer> dispensingOutColumn;
     @FXML
     private TableColumn<Student, String> visitDateColumn;
     @FXML
     private TextField searchTextField;
+    @FXML
+    public ComboBox<Integer> rowsPerPageComboBox;
     @FXML
     public Label paginationLabel;
     @FXML
@@ -72,20 +62,12 @@ public class ClinicVisitLogPageController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setup();
+        setupTableColumns();
+        setupRowFactory();
+        setupRowsPerPageSelector();
         refresh();
         studentSearch();
         updatePage();
-        visitLogTable.setRowFactory(tv -> {
-            TableRow<Student> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (!row.isEmpty() && event.getClickCount() == 1) {
-                    Student selectedStudent = row.getItem();
-                    openViewStudentVisitLogModal(selectedStudent);
-                }
-            });
-            return row;
-        });
-
     }
 
     private void setup() {
@@ -94,33 +76,94 @@ public class ClinicVisitLogPageController implements Initializable {
             String fullName = student.getFirstName() + " " + student.getMiddleName() + " " + student.getLastName();
             return new SimpleStringProperty(fullName);
         });
+        nameColumn.setStyle("-fx-alignment: CENTER;");
         gradeSectionColumn.setCellValueFactory(cellData -> {
             String grade = cellData.getValue().getGradeLevel();
             String section = cellData.getValue().getSection();
             return new SimpleStringProperty(grade + " - " + section);
         });
         gradeSectionColumn.setStyle("-fx-alignment: CENTER;");
-        tempReadingsColumn.setCellValueFactory(new PropertyValueFactory<>("temperatureReadings"));
-        tempReadingsColumn.setStyle("-fx-alignment: CENTER;");
-        pulseRateColumn.setCellValueFactory(new PropertyValueFactory<>("pulseRate"));
-        pulseRateColumn.setStyle("-fx-alignment: CENTER;");
-        bloodPressureColumn.setCellValueFactory(new PropertyValueFactory<>("bloodPressure"));
-        bloodPressureColumn.setStyle("-fx-alignment: CENTER;");
         symptomsColumn.setCellValueFactory(new PropertyValueFactory<>("symptoms"));
         symptomsColumn.setStyle("-fx-alignment: CENTER;");
-        medicineNameColumn.setCellValueFactory(new PropertyValueFactory<>("medicineName"));
-        medicineNameColumn.setStyle("-fx-alignment: CENTER;");
-        dispensingOutColumn.setCellValueFactory(new PropertyValueFactory<>("dispensingOut"));
-        dispensingOutColumn.setStyle("-fx-alignment: CENTER;");
         visitDateColumn.setCellValueFactory(cellData -> {
             Date visitDate = cellData.getValue().getVisitDate();
             String formatted = visitDate != null
-                    ? new SimpleDateFormat("MMMM dd, yyyy").format(visitDate)
+                    ? new SimpleDateFormat("MMM dd, yyyy").format(visitDate)
                     : "N/A";
             return new SimpleStringProperty(formatted);
         });
         visitDateColumn.setStyle("-fx-alignment: CENTER;");
 
+    }
+
+    private void setupTableColumns() {
+        nameColumn.setCellValueFactory(cellData -> {
+            Student student = cellData.getValue();
+
+            List<String> nameParts = Arrays.asList(
+                    student.getFirstName(),
+                    student.getMiddleName(),
+                    student.getLastName()
+            );
+
+            StringBuilder fullNameBuilder = new StringBuilder();
+            for (String part : nameParts) {
+                if (part != null && !part.isBlank()) {
+                    if (fullNameBuilder.length() > 0) {
+                        fullNameBuilder.append(" ");
+                    }
+                    fullNameBuilder.append(part.trim());
+                }
+            }
+            String fullName = fullNameBuilder.toString();
+
+            return new SimpleStringProperty(fullName);
+        });
+        nameColumn.setStyle("-fx-alignment: CENTER;");
+
+        gradeSectionColumn.setCellValueFactory(cellData -> {
+            String grade = cellData.getValue().getGradeLevel();
+            String section = cellData.getValue().getSection();
+            return new SimpleStringProperty(grade + " - " + section);
+        });
+        gradeSectionColumn.setStyle("-fx-alignment: CENTER;");
+
+        symptomsColumn.setCellValueFactory(new PropertyValueFactory<>("symptoms"));
+        symptomsColumn.setStyle("-fx-alignment: CENTER;");
+
+        visitDateColumn.setCellValueFactory(cellData -> {
+            Date visitDate = cellData.getValue().getVisitDate();
+            String formatted = visitDate != null ? new SimpleDateFormat("MMM dd, yyyy").format(visitDate) : "N/A";
+            return new SimpleStringProperty(formatted);
+        });
+        visitDateColumn.setStyle("-fx-alignment: CENTER;");
+    }
+
+    private void setupRowFactory() {
+        visitLogTable.setRowFactory(tv -> {
+            TableRow<Student> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (!row.isEmpty() && event.getClickCount() == 2) {
+                    Student selectedStudent = row.getItem();
+                    openViewStudentVisitLogModal(selectedStudent);
+                }
+            });
+            return row;
+        });
+    }
+
+    private void setupRowsPerPageSelector() {
+        rowsPerPageComboBox.setItems(FXCollections.observableArrayList(1,2,3,4,5,6,7,8,9,10));
+        rowsPerPageComboBox.setValue(rowsPerPage);
+
+        rowsPerPageComboBox.setOnAction(event -> {
+            Object selectedItem = rowsPerPageComboBox.getSelectionModel().getSelectedItem();
+            if (selectedItem instanceof Integer selectedRows) {
+                rowsPerPage = selectedRows;
+                currentPage = 1;
+                updatePage();
+            }
+        });
     }
 
     private void refresh() {
@@ -164,21 +207,25 @@ public class ClinicVisitLogPageController implements Initializable {
             if (tableItems == null || tableItems.isEmpty()) return;
 
             FilteredList<Student> filteredList = new FilteredList<>(tableItems, s -> true);
-
             filteredList.setPredicate(student -> {
                 String keyword = newValue.toLowerCase();
+
                 String fullName = (student.getFirstName() + " " +
                         student.getMiddleName() + " " +
                         student.getLastName()).toLowerCase();
 
-                String grade = student.getGradeLevel() != null ? student.getGradeLevel().toLowerCase() : "";
-                String section = student.getSection() != null ? student.getSection().toLowerCase() : "";
-                String visitDate = student.getVisitDate() != null ? student.getVisitDate().toString().toLowerCase() : "";
+                String gradeSection = (student.getGradeLevel() + " - " +
+                        student.getSection()).toLowerCase();
 
-                return String.valueOf(student.getStudentId()).contains(keyword)
-                        || fullName.contains(keyword)
-                        || grade.contains(keyword)
-                        || section.contains(keyword)
+                String symptoms = student.getSymptoms() != null ? student.getSymptoms().toLowerCase() : "";
+
+                String visitDate = student.getVisitDate() != null
+                        ? new SimpleDateFormat("MMMM dd, yyyy").format(student.getVisitDate()).toLowerCase()
+                        : "";
+
+                return fullName.contains(keyword)
+                        || gradeSection.contains(keyword)
+                        || symptoms.contains(keyword)
                         || visitDate.contains(keyword);
             });
 

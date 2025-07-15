@@ -23,6 +23,8 @@ public class ViewStudentVisitLogController implements Initializable {
     @FXML
     private Label viewFirstname;
     @FXML
+    private Label viewMiddleName;
+    @FXML
     private Label viewLastname;
     @FXML
     private Label viewSex;
@@ -73,6 +75,7 @@ public class ViewStudentVisitLogController implements Initializable {
 
         viewLrn.setText(formatValue(student.getLrn()));
         viewFirstname.setText(formatValue(student.getFirstName()));
+        viewMiddleName.setText(formatValue(student.getMiddleName()));
         viewLastname.setText(formatValue(student.getLastName()));
         viewSex.setText(formatValue(student.getGender()));
         viewAge.setText(formatValue(student.getAge()));
@@ -93,12 +96,12 @@ public class ViewStudentVisitLogController implements Initializable {
             SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy");
             viewVisitDate.setText(sdf.format(student.getVisitDate()));
         } else {
-            viewVisitDate.setText("N/A");
+            viewVisitDate.setText("");
         }
     }
 
     private String formatValue(Object value) {
-        return value != null ? String.valueOf(value) : "N/A";
+        return value != null ? String.valueOf(value) : "";
     }
 
     /**

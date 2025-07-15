@@ -44,6 +44,8 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                     studentMedicalRecord.setMiddleName(rs.getString("middle_name"));
                     studentMedicalRecord.setLastName(rs.getString("last_name"));
                     studentMedicalRecord.setAge(rs.getInt("age"));
+                    studentMedicalRecord.setGradeLevel(rs.getString("grade_level"));
+                    studentMedicalRecord.setSection(rs.getString("section"));
                     studentMedicalRecord.setGender(rs.getString("gender"));
                     studentMedicalRecord.setSymptoms(rs.getString("symptoms"));
                     studentMedicalRecord.setTemperatureReadings(rs.getString("temperature_readings"));
@@ -57,6 +59,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                             + "LRN               : " + studentMedicalRecord.getLrn() + "\n"
                             + "Name              : " + studentMedicalRecord.getFirstName() + " " + studentMedicalRecord.getLastName() + "\n"
                             + "Age               : " + studentMedicalRecord.getAge() + "\n"
+                            + "Grade Level       : " + studentMedicalRecord.getGradeLevel() + " " + studentMedicalRecord.getSection() + "\n"
                             + "Gender            : " + studentMedicalRecord.getGender() + "\n"
                             + "Symptoms          : " + studentMedicalRecord.getSymptoms() + "\n"
                             + "Temperature Readings : " + studentMedicalRecord.getTemperatureReadings() + "\n"
@@ -305,7 +308,6 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
         }
 
     }
-
 
     @Override
     public boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate, String treatment, long LRN) {

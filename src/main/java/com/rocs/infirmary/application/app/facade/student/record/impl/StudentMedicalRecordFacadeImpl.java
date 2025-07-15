@@ -37,7 +37,7 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
         this.studentMedRecord = studentMedRecord;
     }
 
-    public Student getMedicalInformationByLRN(long LRN) {
+    public Student getMedicalInformationByLRN(Long LRN) {
         logger.debug("Entering getMedicalInformationByLRN with LRN: {}", LRN);
         Student student = this.studentMedRecord.findMedicalInformation(LRN);
         logger.debug("Exiting getMedicalInformationByLRN with result: {}", student);
@@ -58,11 +58,12 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
      */
     @Override
     public boolean deleteStudentMedicalRecordByLrn(Long LRN) {
-        logger.warn("Entering deleteStudentMedicalRecordByLrn with LRN: {}", LRN);
+        logger.info("Entering deleteStudentMedicalRecordByLrn with LRN: {}", LRN);
         boolean isDeleted = this.studentMedRecord.deleteStudentMedicalRecord(LRN);
-        logger.warn("Exiting deleteStudentMedicalRecordByLrn with result: {}", isDeleted);
+        logger.info("Exiting deleteStudentMedicalRecordByLrn with result: {}", isDeleted);
         return isDeleted;
     }
+
     @Override
     public boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate, String treatment, long LRN) {
         logger.debug("Entering updateStudentMedicalRecord with LRN: {}, symptoms: {}, temperature: {}, visitDate: {}, treatment: {}",
@@ -90,10 +91,10 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
 
     @Override
     public boolean addMedicineAdministered(Student record) {
-        logger.debug("Entering addMedicineAdministered with studentId: {}, medicineId: {}",
+        logger.info("Entering addMedicineAdministered with studentId: {}, medicineId: {}",
                 record.getStudentId(), record.getMedicineId());
         boolean wasInserted = studentMedRecord.addMedicineAdministered(record);
-        logger.debug("Exiting addMedicineAdministered with insertion result: {}", wasInserted);
+        logger.info("Exiting addMedicineAdministered with insertion result: {}", wasInserted);
         return wasInserted;
     }
 
