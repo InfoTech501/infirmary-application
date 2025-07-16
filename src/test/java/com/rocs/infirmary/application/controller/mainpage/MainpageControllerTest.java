@@ -14,6 +14,7 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
+import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(ApplicationExtension.class)
@@ -27,7 +28,7 @@ class MainpageControllerTest {
     private Button studentHealthProfileBtn;
 
     @Start
-    private void start(Stage stage) throws Exception {
+    private void start(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/Mainpage.fxml"));
         BorderPane mainLayout;
         mainLayout = loader.load();
