@@ -22,6 +22,9 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -41,13 +44,13 @@ public class InventoryController implements Initializable {
     @FXML
     private TableColumn<Medicine, Integer> quantityColumn;
     @FXML
-    private TableColumn<Medicine, String> expiryDateColumn;
+    private TableColumn<Medicine, Timestamp> expiryDateColumn;
     @FXML
-    private TableColumn<Medicine,String> descriptionColumn;
+    private TableColumn<Medicine,String> itemTypeColumn;
     @FXML
     private TextField searchTextField;
-
     private ObservableList<Medicine> medicine;
+    private DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     private List<Medicine> medicineList = new ArrayList<>();
     @Override
@@ -69,17 +72,31 @@ public class InventoryController implements Initializable {
         productNameColumn.setStyle("-fx-alignment: CENTER;");
         quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         quantityColumn.setStyle("-fx-alignment: CENTER;");
-        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-        descriptionColumn.setStyle("-fx-alignment: CENTER;");
+        itemTypeColumn.setCellValueFactory(new PropertyValueFactory<>("itemType"));
+        itemTypeColumn.setStyle("-fx-alignment: CENTER;");
         expiryDateColumn.setCellValueFactory(new PropertyValueFactory<>("expirationDate"));
+        setMedicineExpiration();
         expiryDateColumn.setStyle("-fx-alignment: CENTER;");
 
+    }
+    private void setMedicineExpiration(){
+        expiryDateColumn.setCellFactory(expiryDateColumn -> new TableCell<Medicine, Timestamp>() {
+            @Override
+            protected void updateItem(Timestamp expirationDate, boolean empty) {
+                if (empty || expirationDate == null) {
+                    setText(null);
+                } else {
+                    LocalDate localDate = expirationDate.toLocalDateTime().toLocalDate();
+                    setText(localDate.format(outputFormat));
+                }
+            }
+        });
     }
     private void initalizeEditClick(){
         medDetailsTable.setRowFactory(t->{
             TableRow<Medicine>tableRow = new TableRow<>();
             tableRow.setOnMouseClicked(event->{
-                if(!tableRow.isEmpty() && event.getClickCount() == 1){
+                if(!tableRow.isEmpty() && event.getClickCount() == 2){
                     Medicine selectedMedicine = tableRow.getItem();
                     try {
                         showEditInventory(selectedMedicine);
@@ -201,18 +218,13 @@ public class InventoryController implements Initializable {
         medDetailsTable.sort();
     }
     private boolean deleteMedicine(){
-        boolean deleted = false;
-        for (Medicine med : medicineList) {
-            deleted = inventoryManagementApplication.getMedicineInventoryFacade().deleteInventory(med.getInventoryId());
-        }
-        return deleted;
+        return inventoryManagementApplication.getMedicineInventoryFacade().deleteInventory(medicineList);
     }
     /**
      * this method handles the action triggered when the remove button is clicked.
      * @param actionEvent the event triggered by the confirm button click
      */
     public void onRemoveBtnClick(ActionEvent actionEvent) throws IOException {
-        System.out.println("clicked");
         if(getSelectedMedicines().isEmpty()){
             Dialog dialog = new Dialog();
             dialog.setTitle("Warning");
