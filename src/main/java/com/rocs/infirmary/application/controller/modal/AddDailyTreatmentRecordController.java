@@ -106,6 +106,26 @@ public class AddDailyTreatmentRecordController implements Initializable {
                 return;
             }
 
+            int dispensingQty = record.getDispensingOut();
+            int currentQty = selectedMedicine.getQuantity();
+            int updatedQty = currentQty - dispensingQty;
+
+            if (updatedQty < 0) {
+                showDialog("Stock Warning", "Not enough stock to dispense.");
+                return;
+            }
+            try {
+                boolean inventoryUpdated = inventoryApp.getMedicineInventoryFacade().updateMedicineInventory(selectedMedicine.getInventoryId(), selectedMedicine.getMedicineId(), updatedQty, null, null);
+                if (!inventoryUpdated) {
+                    showDialog("Warning", "Failed to deduct medicine quantity.");
+                    return;
+                }
+            } catch (Exception invEx) {
+                LOGGER.error("Inventory deduction error", invEx);
+                showDialog("Error", "Inventory update failed. Record not saved.");
+                return;
+            }
+
             Student existingStudent = medicalRecordInfoMgtApplication.getStudentMedicalRecordFacade().getMedicalInformationByLRN(record.getLrn());
             if (existingStudent == null) {
                 showDialog("Warning", "Student with this LRN was not found. Please register the student first.");
@@ -113,39 +133,38 @@ public class AddDailyTreatmentRecordController implements Initializable {
             }
             record.setStudentId(existingStudent.getStudentId());
             record.setMedicineId(selectedMedicine.getMedicineId());
-
-            Long medRecordId = medicalRecordInfoMgtApplication.getStudentMedicalRecordFacade().addStudentMedicalRecord(record);
-            if (medRecordId == null) {
-                showDialog("Warning", "Failed to save medical record.");
+            try {
+                Long medRecordId = medicalRecordInfoMgtApplication.getStudentMedicalRecordFacade().addStudentMedicalRecord(record);
+                if (medRecordId == null) {
+                    showDialog("Warning", "Failed to save medical record.");
+                    return;
+                }
+                record.setMedicalRecordId(medRecordId);
+                medicalRecordInfoMgtApplication.getStudentMedicalRecordFacade().addMedicineAdministered(record);
+            } catch (Exception medEx) {
+                LOGGER.error("Error saving treatment record or administering medicine", medEx);
+                showDialog("Error", "Failed to save treatment record.");
                 return;
             }
-            record.setMedicalRecordId(medRecordId);
-
-            medicalRecordInfoMgtApplication.getStudentMedicalRecordFacade().addMedicineAdministered(record);
 
             if (clinicVisitLogPageController != null) {
                 clinicVisitLogPageController.addStudentMedicalRecord(record);
             }
-
             showDialog("Notification", "Success, Record Added Successfully.");
             ((Stage) lrnField.getScene().getWindow()).close();
-
         } catch (Exception e) {
-            LOGGER.error("Failed to save daily treatment record", e);
-            showDialog("Warning", "Failed to save record.");
+            LOGGER.error("Unhandled exception in addDailyRecord", e);
+            showDialog("Error", "Unexpected error. Record not saved.");
         }
     }
-
     private void addLrnAutoFillListener() {
         lrnField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null || newValue.isBlank()) return;
-
             try {
                 long lrn = Long.parseLong(newValue.trim());
                 Student existing = medicalRecordInfoMgtApplication
                         .getStudentMedicalRecordFacade()
                         .getMedicalInformationByLRN(lrn);
-
                 if (existing != null) {
                     List<String> nameParts = Arrays.asList(
                             existing.getFirstName(),
@@ -161,7 +180,6 @@ public class AddDailyTreatmentRecordController implements Initializable {
                         }
                     }
                     nameField.setText(nameBuilder.toString());
-
                     gradeSectionField.setText(
                             (existing.getGradeLevel() != null ? existing.getGradeLevel().trim() : "") + " - " +
                                     (existing.getSection() != null ? existing.getSection().trim() : "")
@@ -213,11 +231,9 @@ public class AddDailyTreatmentRecordController implements Initializable {
         student.setMiddleName(nameParts.length == 3 ? nameParts[1] : "");
         student.setLastName(nameParts.length == 3 ? nameParts[2]
                 : (nameParts.length == 2 ? nameParts[1] : ""));
-
         String[] parts = gradeSectionField.getText().split(" - ");
         student.setGradeLevel(parts.length > 0 ? parts[0].trim() : "");
         student.setSection(parts.length > 1 ? parts[1].trim() : "");
-
         student.setTemperatureReadings(String.valueOf(temperature));
         student.setPulseRate(pulse);
         student.setRespiratoryRate(respiration);
@@ -226,20 +242,16 @@ public class AddDailyTreatmentRecordController implements Initializable {
         student.setSymptoms(symptomsField.getText());
         student.setTreatment(treatmentField.getText());
 
-        Student selectedNurse = nurseInChargeComboBox != null
-                ? nurseInChargeComboBox.getSelectionModel().getSelectedItem()
-                : null;
+        Student selectedNurse = nurseInChargeComboBox != null ? nurseInChargeComboBox.getSelectionModel().getSelectedItem() : null;
         if (selectedNurse != null) {
             student.setNurseInChargeId((Long) selectedNurse.getStudentId());
             student.setNurseInCharge(selectedNurse.getFirstName() + " " + selectedNurse.getLastName());
         }
-
         Medicine selectedMedicine = medicineNameComboBox != null ? medicineNameComboBox.getValue() : null;
         if (selectedMedicine != null) {
             student.setMedicineId(selectedMedicine.getMedicineId());
             student.setMedicineName(selectedMedicine.getItemName());
         }
-
         LocalDate selectedDate = datePickerTextField.getValue();
         Date convertedDate = Date.from(selectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         student.setVisitDate(convertedDate);
