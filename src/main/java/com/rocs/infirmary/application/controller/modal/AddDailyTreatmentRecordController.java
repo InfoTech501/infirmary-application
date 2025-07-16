@@ -239,16 +239,9 @@ public class AddDailyTreatmentRecordController implements Initializable {
             if (newValue == null || newValue.isBlank()) return;
             try {
                 long lrn = Long.parseLong(newValue.trim());
-                Student existing = medicalRecordInfoMgtApplication
-                        .getStudentMedicalRecordFacade()
-                        .getMedicalInformationByLRN(lrn);
+                Student existing = medicalRecordInfoMgtApplication.getStudentMedicalRecordFacade().getMedicalInformationByLRN(lrn);
                 if (existing != null) {
-                    List<String> nameParts = Arrays.asList(
-                            existing.getFirstName(),
-                            existing.getMiddleName(),
-                            existing.getLastName()
-                    );
-
+                    List<String> nameParts = Arrays.asList(existing.getFirstName(), existing.getMiddleName(), existing.getLastName());
                     StringBuilder nameBuilder = new StringBuilder();
                     for (String parts : nameParts) {
                         if (parts != null && !parts.isBlank()) {
