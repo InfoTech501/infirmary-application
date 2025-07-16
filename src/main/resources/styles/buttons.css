@@ -150,12 +150,12 @@ fx-font-weight: 400;
 -fx-background-color:#D32F2F;
 }
 
-#EditHealthInfoBtn{
+#editHealthInfoBtn{
 -fx-background-color:#1976D2;
 -fx-text-fill: white;
 }
 
-#EditHealthInfoBtn:hover {
+#editHealthInfoBtn:hover {
 -fx-background-color:#1976D2;
 }
 

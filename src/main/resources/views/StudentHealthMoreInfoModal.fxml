@@ -32,9 +32,9 @@
                     <padding>
                         <Insets left="20.0" right="20.0" />
                     </padding>
-                      <Label fx:id="StudentFullNameLabel" text="Student Full Name" />
+                      <Label fx:id="studentFullNameLabel" text="Student Full Name" />
                     <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                        <Button fx:id="CloseModalBtn" mnemonicParsing="false" text="Close" />
+                        <Button fx:id="closeModalBtn" mnemonicParsing="false" text="Close" />
                     </HBox>
                 </HBox>
             </VBox>
@@ -46,41 +46,29 @@
                   </padding>
                   <VBox>
                       <HBox prefHeight="79.0" prefWidth="1360.0" spacing="40.0">
-                  <VBox prefHeight="79.0" prefWidth="0.0" HBox.hgrow="ALWAYS">
-                     <children>
-                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
-                           <children>
-                              <Label text="Age:" />
-                                      <Label fx:id="AgeLabel" text="Age" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
-                           <children>
-                              <Label text="Sex:" />
-                                      <Label fx:id="SexLabel" text="Sex" />
-                           </children>
-                        </HBox>
-                        <HBox prefHeight="30.0" prefWidth="382.0" spacing="10.0" VBox.vgrow="ALWAYS">
-                           <children>
-                              <Label text="Birthdate:" />
-                                      <Label fx:id="BirthdateLabel" text="Birthdate" />
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
+                          <VBox prefHeight="79.0" prefWidth="0.0" HBox.hgrow="ALWAYS">
+                              <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                                  <Label text="Age:"/>
+                                  <Label fx:id="ageLabel" text="Age"/>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                                  <Label text="Sex:"/>
+                                  <Label fx:id="sexLabel" text="Sex"/>
+                              </HBox>
+                              <HBox prefHeight="30.0" prefWidth="382.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                                  <Label text="Birthdate:"/>
+                                  <Label fx:id="birthdateLabel" text="Birthdate"/>
+                              </HBox>
+                          </VBox>
                           <VBox prefHeight="79.0" prefWidth="614.0" HBox.hgrow="ALWAYS">
-                     <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
-                        <children>
-                           <Label text="Address:" />
-                                    <Label fx:id="AddressLabel" text="Address" />
-                        </children>
-                     </HBox>
-                     <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
-                        <children>
-                           <Label text="Contact Number:" />
-                                    <Label fx:id="ContactNumberLabel" text="Contact Number" />
-                        </children>
-                     </HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                                  <Label text="Address:"/>
+                                  <Label fx:id="addressLabel" text="Address"/>
+                              </HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                                  <Label text="Contact Number:"/>
+                                  <Label fx:id="contactNumberLabel" text="Contact Number"/>
+                              </HBox>
                           </VBox>
                       </HBox>
                   </VBox>
@@ -89,26 +77,25 @@
                  <VBox fx:id="tableViewWrapper" prefHeight="446.0" prefWidth="1360.0" spacing="10.0" VBox.vgrow="ALWAYS">
                   <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="82.0" prefWidth="1400.0" VBox.vgrow="ALWAYS">
                         <Label text="Recent Clinic History:" />
-                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                     <children>
-                            <Button fx:id="EditHealthInfoBtn" mnemonicParsing="false" prefHeight="48.0" prefWidth="255.0" text="Update Medical Record">
-                              <HBox.margin>
-                                  <Insets right="20.0" />
-                              </HBox.margin>
-                            </Button>
-                     </children>
+                      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                          <Button fx:id="editHealthInfoBtn" mnemonicParsing="false" prefHeight="48.0" prefWidth="255.0"
+                                  text="Update Medical Record">
+                            <HBox.margin>
+                                <Insets right="20.0"/>
+                            </HBox.margin>
+                          </Button>
+                      </HBox>
                   </HBox>
-                  </HBox>
-                     <TableView fx:id="ClinicHistoryTable" editable="true" prefHeight="572.0" prefWidth="1360.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
+                     <TableView fx:id="clinicHistoryTableView" editable="true" prefHeight="572.0" prefWidth="1360.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
                          <columns>
-                             <TableColumn fx:id="IllnessColumn" minWidth="200.0" text="Illness" />
-                             <TableColumn fx:id="DateColumn" minWidth="200.0" text="Visit Date (YYYY/MM/DD)" />
-                             <TableColumn fx:id="MedicationColumn" minWidth="400.0" text="Given Medication" />
-                             <TableColumn fx:id="TemperatureColumn" minWidth="150.0" text="Temperature" />
-                             <TableColumn fx:id="BloodPressureColumn" minWidth="150.0" text="Blood Pressure" />
-                             <TableColumn fx:id="PulseRateColumn" minWidth="150.0" text="Pulse Rate" />
-                             <TableColumn fx:id="RespiratoryRateColumn" minWidth="150.0" text="Respiratory Rate" />
-                             <TableColumn fx:id="NurseColumn" minWidth="200.0" text="Nurse" />
+                             <TableColumn fx:id="illnessColumn" minWidth="200.0" text="Illness" />
+                             <TableColumn fx:id="dateColumn" minWidth="200.0" text="Visit Date (YYYY/MM/DD)" />
+                             <TableColumn fx:id="medicationColumn" minWidth="400.0" text="Given Medication" />
+                             <TableColumn fx:id="temperatureColumn" minWidth="150.0" text="Temperature" />
+                             <TableColumn fx:id="bloodPressureColumn" minWidth="150.0" text="Blood Pressure" />
+                             <TableColumn fx:id="pulseRateColumn" minWidth="150.0" text="Pulse Rate" />
+                             <TableColumn fx:id="respiratoryRateColumn" minWidth="150.0" text="Respiratory Rate" />
+                             <TableColumn fx:id="nurseColumn" minWidth="200.0" text="Nurse" />
                          </columns>
                      </TableView>
                <VBox.margin>

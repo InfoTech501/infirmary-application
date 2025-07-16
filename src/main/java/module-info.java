@@ -28,6 +28,7 @@ module com.rocs.infirmaryapplication {
     exports com.rocs.infirmary.application.data.model.person.student;
     opens com.rocs.infirmary.application.data.model.person;
     exports com.rocs.infirmary.application.data.model.person;
+    opens com.rocs.infirmary.application.controller.student.profile;
 
 
 }

@@ -12,47 +12,60 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for the Student Health Profile More Info modal dialog.
+ * Displays detailed medical history and allows selection of medical records.
+ * Implements Initializable interface.
+ */
 public class SHPMoreInfoModalController implements Initializable {
     @FXML
-    public TableView<Student> ClinicHistoryTable;
+    private TableView<Student> clinicHistoryTableView;
     @FXML
-    public TableColumn<Student, String> IllnessColumn;
+    private TableColumn<Student, String> illnessColumn;
     @FXML
-    public TableColumn<Student, String> DateColumn;
+    private TableColumn<Student, String> dateColumn;
     @FXML
-    public TableColumn<Student, String> MedicationColumn;
+    private TableColumn<Student, String> medicationColumn;
     @FXML
-    public TableColumn<Student, String> NurseColumn;
+    private TableColumn<Student, String> nurseColumn;
     //labels
     @FXML
-    public Label StudentFullNameLabel, AgeLabel, AddressLabel, ContactNumberLabel, SexLabel, BirthdateLabel;
+    private Label studentFullNameLabel, ageLabel, addressLabel, contactNumberLabel, sexLabel, birthdateLabel;
     @FXML
-    public Button EditHealthInfoBtn;
+    private Button editHealthInfoBtn;
     @FXML
-    public StackPane rootModal;
+    private StackPane rootModal;
     @FXML
-    public VBox tableViewWrapper;
+    private VBox tableViewWrapper;
     @FXML
-    public Button CloseModalBtn;
+    private Button closeModalBtn;
 
     @FXML
-    public TableColumn<Student, String> TemperatureColumn;
+    private TableColumn<Student, String> temperatureColumn;
     @FXML
-    public TableColumn<Student, String> BloodPressureColumn;
+    private TableColumn<Student, String> bloodPressureColumn;
     @FXML
-    public TableColumn<Student, String> PulseRateColumn;
+    private TableColumn<Student, String> pulseRateColumn;
     @FXML
-    public TableColumn<Student, String> RespiratoryRateColumn;
+    private TableColumn<Student, String> respiratoryRateColumn;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(SHPMoreInfoModalController.class);
     private final StudentMedicalRecordApplication studentMedicalRecordApplication = new StudentMedicalRecordApplication();
     private Student selectedStudentRecord;
     private StudentHealthProfileController parentController;
 
+    /**
+     * Sets the parent controller reference for communication with the parent view.
+     *
+     * @param parentController the StudentHealthProfileController instance that manages the main view
+     */
     public void setParentController(StudentHealthProfileController parentController) {
         this.parentController = parentController;
     }
@@ -60,50 +73,69 @@ public class SHPMoreInfoModalController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         populateClinicHistoryTable();
-        EditHealthInfoBtn.setOnAction(event -> switchSceneToEditHealthInfo());
-        CloseModalBtn.setOnAction(event -> closeModal());
+        editHealthInfoBtn.setOnAction(event -> switchSceneToEditHealthInfo());
+        closeModalBtn.setOnAction(event -> closeModal());
     }
 
+    /**
+     * Sets the selected student and loads their medical records for display.
+     * Initially disables the edit button until a specific record is selected.
+     *
+     * @param student the Student object containing student information and medical records
+     */
     public void setSelectedStudent(Student student) {
         getMedicalRecords(student);
         setStudentLabelData(student);
-        EditHealthInfoBtn.setDisable(true);
-        EditHealthInfoBtn.setOpacity(0);
+        editHealthInfoBtn.setDisable(true);
+        editHealthInfoBtn.setOpacity(0);
     }
 
+    /**
+     * A function which populates clinic history tableview columns by mapping each table column to the corresponding Student object properties.
+     */
     public void populateClinicHistoryTable() {
-        ClinicHistoryTable.setEditable(true);
-        IllnessColumn.setCellValueFactory(new PropertyValueFactory<>("symptoms"));
-        TemperatureColumn.setCellValueFactory(new PropertyValueFactory<>("temperatureReadings"));
-        BloodPressureColumn.setCellValueFactory(new PropertyValueFactory<>("bloodPressure"));
-        PulseRateColumn.setCellValueFactory(new PropertyValueFactory<>("pulseRate"));
-        RespiratoryRateColumn.setCellValueFactory(new PropertyValueFactory<>("respiratoryRate"));
-        DateColumn.setCellValueFactory(new PropertyValueFactory<>("visitDate"));
-        MedicationColumn.setCellValueFactory(new PropertyValueFactory<>("treatment"));
-        NurseColumn.setCellValueFactory(new PropertyValueFactory<>("nurseInChargeLastName"));
+        clinicHistoryTableView.setEditable(true);
+        illnessColumn.setCellValueFactory(new PropertyValueFactory<>("symptoms"));
+        temperatureColumn.setCellValueFactory(new PropertyValueFactory<>("temperatureReadings"));
+        bloodPressureColumn.setCellValueFactory(new PropertyValueFactory<>("bloodPressure"));
+        pulseRateColumn.setCellValueFactory(new PropertyValueFactory<>("pulseRate"));
+        respiratoryRateColumn.setCellValueFactory(new PropertyValueFactory<>("respiratoryRate"));
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("visitDate"));
+        medicationColumn.setCellValueFactory(new PropertyValueFactory<>("treatment"));
+        nurseColumn.setCellValueFactory(new PropertyValueFactory<>("nurseInChargeLastName"));
+
+        LOGGER.info("Populating table");
     }
 
-    public void setStudentLabelData(Student student) {
-        StudentFullNameLabel.setText(student.getLastName() + ", " + student.getFirstName()+ " " + student.getMiddleName());
-        AgeLabel.setText(String.valueOf(student.getAge()));
-        AddressLabel.setText(student.getAddress());
-        SexLabel.setText(student.getGender());
-        ContactNumberLabel.setText(student.getContactNumber());
-        BirthdateLabel.setText(String.valueOf(student.getBirthdate()));
+    private void setStudentLabelData(Student student) {
+        studentFullNameLabel.setText(student.getLastName() + ", " + student.getFirstName()+ " " + student.getMiddleName());
+        ageLabel.setText(String.valueOf(student.getAge()));
+        addressLabel.setText(student.getAddress());
+        sexLabel.setText(student.getGender());
+        contactNumberLabel.setText(student.getContactNumber());
+        birthdateLabel.setText(String.valueOf(student.getBirthdate()));
 
         getMedicalRecords(student);
+        LOGGER.info("Medical records successfully set");
     }
 
-    private void getMedicalRecords(Student studentLRN) {
+    /**
+     * Retrieves and displays medical records for the specified student using their LRN.
+     * Sets up row selection functionality to enable editing of individual records.
+     *
+     * @param studentLRN the Student object whose medical records will be retrieved using their LRN
+     */
+    public void getMedicalRecords(Student studentLRN) {
         Student studentList = studentMedicalRecordApplication.getStudentMedicalRecordFacade().getMedicalInformationByLRN(studentLRN.getLrn());
 
-        ClinicHistoryTable.setRowFactory(tv -> {
+        clinicHistoryTableView.setRowFactory(tv -> {
             TableRow<Student> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (!row.isEmpty() && event.getClickCount() == 1) {
                     selectedStudentRecord = row.getItem();
-                    EditHealthInfoBtn.setDisable(false);
-                    EditHealthInfoBtn.setOpacity(1.0);
+                    editHealthInfoBtn.setDisable(false);
+                    editHealthInfoBtn.setOpacity(1.0);
+                    LOGGER.info("Row selected");
                 }
             });
             return row;
@@ -111,10 +143,11 @@ public class SHPMoreInfoModalController implements Initializable {
 
 
         ObservableList<Student> studentObservableList = FXCollections.observableArrayList(studentList);
-        ClinicHistoryTable.setItems(studentObservableList);
+        clinicHistoryTableView.setItems(studentObservableList);
+        LOGGER.info("Getting medical info by LRN: Success");
     }
 
-    public void switchSceneToEditHealthInfo() {
+    private void switchSceneToEditHealthInfo() {
        try {
            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/SHPMedicalRecords.fxml"));
            Parent root = loader.load();
@@ -124,15 +157,21 @@ public class SHPMoreInfoModalController implements Initializable {
            SHPMedicalRecordsController controller = loader.getController();
            controller.setSelectedStudentRecord(selectedStudentRecord);
            controller.setParentController(this.parentController);
-
+           controller.setModalController(this);
+           LOGGER.info("Switch scene successful");
        } catch (IOException e) {
+           LOGGER.warn("Switching scene failure");
            throw new RuntimeException(e);
        }
     }
 
+    /**
+     * Closes the modal dialog by hiding, disabling it, and clearing it.
+     */
     public void closeModal() {
         rootModal.setVisible(false);
         rootModal.setDisable(true);
         rootModal.getChildren().clear();
+        LOGGER.info("Modal closed");
     }
 }

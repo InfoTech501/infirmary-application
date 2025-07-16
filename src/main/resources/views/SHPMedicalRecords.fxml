@@ -26,48 +26,34 @@
                <HBox.margin>
                    <Insets />
                </HBox.margin>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <Label text="Illnes/Symptoms:" />
-                      <Label fx:id="illnessLabel" text="data" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <Label text="Visit date:" />
-                      <Label fx:id="visitDateLabel" text="data" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <Label text="Temperature:" />
-                      <Label fx:id="temperatureLabel" text="data" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <Label text="Blood Pressure:" />
-                      <Label fx:id="bloodPressureLabel" text="data" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <Label text="Pulse Rate:" />
-                      <Label fx:id="pulseRateLabel" text="data" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <Label text="Respiratory Rate:" />
-                      <Label fx:id="respiratoryRate" text="data" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <Label text="Treatment:" />
-                     <Label fx:id="treatmentLabel" text="data" />
-               </children>
-            </HBox>
+               <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
+                   <Label text="Illnes/Symptoms:"/>
+                   <Label fx:id="illnessLabel" text="data"/>
+               </HBox>
+               <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
+                   <Label text="Visit date:"/>
+                   <Label fx:id="visitDateLabel" text="data"/>
+               </HBox>
+               <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
+                   <Label text="Temperature:"/>
+                   <Label fx:id="temperatureLabel" text="data"/>
+               </HBox>
+               <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
+                   <Label text="Blood Pressure:"/>
+                   <Label fx:id="bloodPressureLabel" text="data"/>
+               </HBox>
+               <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
+                   <Label text="Pulse Rate:"/>
+                   <Label fx:id="pulseRateLabel" text="data"/>
+               </HBox>
+               <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
+                   <Label text="Respiratory Rate:"/>
+                   <Label fx:id="respiratoryRate" text="data"/>
+               </HBox>
+               <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
+                   <Label text="Treatment:"/>
+                   <Label fx:id="treatmentLabel" text="data"/>
+               </HBox>
            </VBox>
 
 
@@ -111,17 +97,13 @@
       </ButtonBar>
    </bottom>
    <top>
-      <VBox prefWidth="1400.0" BorderPane.alignment="CENTER">
-         <children>
-            <VBox alignment="CENTER_LEFT" prefWidth="1400.0" VBox.vgrow="ALWAYS">
-               <children>
-                  <Label text="MANAGE MEDICAL RECORDS" VBox.vgrow="ALWAYS" />
-               </children>
-            </VBox>
-         </children>
-         <BorderPane.margin>
-            <Insets bottom="20.0" top="20.0" />
-         </BorderPane.margin>
-      </VBox>
+       <VBox prefWidth="1400.0" BorderPane.alignment="CENTER">
+           <BorderPane.margin>
+               <Insets bottom="20.0" top="20.0"/>
+           </BorderPane.margin>
+           <VBox alignment="CENTER_LEFT" prefWidth="1400.0" VBox.vgrow="ALWAYS">
+               <Label text="MANAGE MEDICAL RECORDS" VBox.vgrow="ALWAYS"/>
+           </VBox>
+       </VBox>
    </top>
 </BorderPane>
