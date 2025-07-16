@@ -1,9 +1,9 @@
-package com.rocs.infirmary.application.controller.modal;
+package com.rocs.infirmary.application.controller.dashboard;
 
 import static com.rocs.infirmary.application.controller.helper.ControllerHelper.showDialog;
+
 import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
 import com.rocs.infirmary.application.module.medical.record.management.application.MedicalRecordInfoMgtApplication;
-import com.rocs.infirmary.application.controller.mainpage.ClinicVisitLogPageController;
 import com.rocs.infirmary.application.data.model.person.student.Student;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import javafx.collections.FXCollections;
@@ -181,7 +181,7 @@ public class AddDailyTreatmentRecordController implements Initializable {
         int dispensingQty = record.getDispensingOut();
         int updatedQty = medicine.getQuantity() - dispensingQty;
 
-        if (updatedQty < 0) {
+        if (updatedQty <= 0) {
             showDialog("Stock Warning", "Not enough stock to dispense.");
             return false;
         }

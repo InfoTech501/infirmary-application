@@ -1,4 +1,4 @@
-package com.rocs.infirmary.application.controller.modal;
+package com.rocs.infirmary.application.controller.dashboard;
 
 import com.rocs.infirmary.application.data.model.person.student.Student;
 import javafx.event.ActionEvent;

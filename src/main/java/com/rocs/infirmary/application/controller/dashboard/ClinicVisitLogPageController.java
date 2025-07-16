@@ -1,8 +1,6 @@
-package com.rocs.infirmary.application.controller.mainpage;
+package com.rocs.infirmary.application.controller.dashboard;
 
 import com.rocs.infirmary.application.module.medical.record.management.application.MedicalRecordInfoMgtApplication;
-import com.rocs.infirmary.application.controller.modal.AddDailyTreatmentRecordController;
-import com.rocs.infirmary.application.controller.modal.ViewStudentVisitLogController;
 import com.rocs.infirmary.application.data.model.person.student.Student;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -20,6 +18,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,15 +75,12 @@ public class ClinicVisitLogPageController implements Initializable {
             String fullName = student.getFirstName() + " " + student.getMiddleName() + " " + student.getLastName();
             return new SimpleStringProperty(fullName);
         });
-        nameColumn.setStyle("-fx-alignment: CENTER;");
         gradeSectionColumn.setCellValueFactory(cellData -> {
             String grade = cellData.getValue().getGradeLevel();
             String section = cellData.getValue().getSection();
             return new SimpleStringProperty(grade + " - " + section);
         });
-        gradeSectionColumn.setStyle("-fx-alignment: CENTER;");
         symptomsColumn.setCellValueFactory(new PropertyValueFactory<>("symptoms"));
-        symptomsColumn.setStyle("-fx-alignment: CENTER;");
         visitDateColumn.setCellValueFactory(cellData -> {
             Date visitDate = cellData.getValue().getVisitDate();
             String formatted = visitDate != null
@@ -119,7 +115,6 @@ public class ClinicVisitLogPageController implements Initializable {
 
             return new SimpleStringProperty(fullName);
         });
-        nameColumn.setStyle("-fx-alignment: CENTER;");
 
         gradeSectionColumn.setCellValueFactory(cellData -> {
             String grade = cellData.getValue().getGradeLevel();
@@ -190,9 +185,8 @@ public class ClinicVisitLogPageController implements Initializable {
 
         Stage stage = new Stage();
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
+        stage.initStyle(StageStyle.UTILITY);
         stage.setScene(new Scene(root));
-        stage.setTitle("Add Daily Treatment Record");
         stage.showAndWait();
     }
 
@@ -245,8 +239,8 @@ public class ClinicVisitLogPageController implements Initializable {
 
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initStyle(StageStyle.UTILITY);
             stage.setScene(new Scene(root));
-            stage.setTitle("Student Medical Record");
             stage.showAndWait();
 
         } catch (IOException e) {
