@@ -157,6 +157,7 @@ public class AddDailyTreatmentRecordController implements Initializable {
             showDialog("Error", "Unexpected error. Record not saved.");
         }
     }
+
     private void addLrnAutoFillListener() {
         lrnField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null || newValue.isBlank()) return;

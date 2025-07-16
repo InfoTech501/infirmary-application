@@ -194,7 +194,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
         try (Connection con = ConnectionHelper.getConnection()) {
             con.setAutoCommit(false);
 
-            Long ailmentId = findAilmentIdBySymptoms(con, record.getSymptoms());
+            Long ailmentId = addNewAilment(con, record.getSymptoms());
             if (ailmentId == null) {
                 LOGGER.warn("No ailment_id found for symptoms: {}", record.getSymptoms());
                 return null;
@@ -246,16 +246,42 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
         return null;
     }
 
-    private Long findAilmentIdBySymptoms(Connection con, String symptoms) {
-        try (PreparedStatement stmt = con.prepareStatement(FIND_AILMENT_ID_BY_SYMPTOMS)) {
-            stmt.setString(1, "%" + symptoms.toLowerCase() + "%");
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getLong("ailment_id");
+    private Long addNewAilment(Connection con, String symptoms) {
+        String cleaned = symptoms.toLowerCase().trim();
+        if (cleaned.isEmpty()) return null;
+
+        try {
+            try (PreparedStatement stmt = con.prepareStatement(FIND_AILMENT_ID_BY_SYMPTOMS)) {
+                stmt.setString(1, cleaned);
+                try (ResultSet rs = stmt.executeQuery()) {
+                    if (rs.next()) {
+                        Long existingId = rs.getLong("ailment_id");
+                        LOGGER.info("Found existing ailment '{}', ID: {}", cleaned, existingId);
+                        return existingId;
+                    }
                 }
             }
+
+            try (PreparedStatement insertStmt = con.prepareStatement(ADD_NEW_AILMENTS, new String[] { "ailment_id" })) {
+                insertStmt.setString(1, cleaned);
+                int affected = insertStmt.executeUpdate();
+
+                if (affected > 0) {
+                    try (ResultSet rs = insertStmt.getGeneratedKeys()) {
+                        if (rs.next()) {
+                            Long newId = rs.getLong(1);
+                            LOGGER.info("Inserted new ailment '{}', ID: {}", cleaned, newId);
+                            return newId;
+                        }
+                    }
+                } else {
+                    LOGGER.warn("Insert failed for new ailment '{}'", cleaned);
+                }
+            } catch (SQLException e) {
+                LOGGER.error("Error inserting new ailment '{}'", cleaned, e);
+            }
         } catch (SQLException e) {
-            LOGGER.warn("Failed to match symptoms to ailment_id ", e);
+            LOGGER.error("Error checking existing ailment for '{}'", cleaned, e);
         }
         return null;
     }

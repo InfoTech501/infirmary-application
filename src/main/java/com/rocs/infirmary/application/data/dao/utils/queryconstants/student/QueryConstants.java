@@ -76,6 +76,10 @@ public class QueryConstants {
      */
     public static String ADD_MEDICINE_ADMINISTERED = "INSERT INTO MEDICINE_ADMINISTERED (MEDICINE_ID, MED_RECORD_ID, NURSE_IN_CHARGE_ID, DESCRIPTION, QUANTITY, DATE_ADMINISTERED) VALUES (?,?, ?, ?, ?, ?)";
     /**
+     * query that add a new ailment.
+     */
+    public static String ADD_NEW_AILMENTS = "INSERT INTO AILMENTS (DESCRIPTION) VALUES (?)";
+    /**
      * query that retrieves basic nurse identity info from person and employee tables.
      */
     public static String GET_ALL_NURSE_EMPLOYEE = "SELECT p.id, p.first_name, p.middle_name, p.last_name " +
@@ -104,7 +108,7 @@ public class QueryConstants {
     /**
      * query that retrieves the ailment_id by matching symptoms with the description.
      */
-    public static String FIND_AILMENT_ID_BY_SYMPTOMS = "SELECT ailment_id FROM ailments WHERE LOWER(description) LIKE ?";
+    public static String FIND_AILMENT_ID_BY_SYMPTOMS = "SELECT AILMENT_ID FROM AILMENTS WHERE LOWER(DESCRIPTION) LIKE ?";
 
     private final String SELECT_STUDENT_HEALTH_PROFILE_QUERY = "SELECT p.first_name, p.middle_name,p.last_name,section.section,student.lrn,section.grade_level,adviser.first_name AS adviser_first_name,mr.symptoms,mr.temperature_readings,visit_date,nurse.first_name as NURSE_IN_CHARGE\n" +
             "FROM MEDICAL_RECORD mr\n" +
