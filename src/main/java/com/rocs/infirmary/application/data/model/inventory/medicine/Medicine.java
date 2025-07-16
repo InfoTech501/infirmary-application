@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 
 public class Medicine extends Inventory{
 
-    private String medicineId;
+    private Long medicineId;
 
     private String itemName;
 
@@ -24,7 +24,7 @@ public class Medicine extends Inventory{
 
     }
 
-    public Medicine(String medicineId, String itemName, String description, Timestamp expirationDate,BooleanProperty isSelected) {
+    public Medicine(Long medicineId, String itemName, String description, Timestamp expirationDate, BooleanProperty isSelected) {
         this.medicineId = medicineId;
         this.itemName = itemName;
         this.description = description;
@@ -57,8 +57,8 @@ public class Medicine extends Inventory{
         return isAvailable;
     }
 
-    public String getMedicineId(){ return medicineId; }
-    public void setMedicineId(String medicineId) { this.medicineId = medicineId; }
+    public Long getMedicineId(){ return medicineId; }
+    public void setMedicineId(Long medicineId) { this.medicineId = medicineId; }
 
 
     public String getItemName(){ return itemName; }

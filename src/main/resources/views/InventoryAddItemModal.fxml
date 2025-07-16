@@ -51,8 +51,8 @@
                             <RowConstraints maxHeight="34.666690826416016" minHeight="0.0" prefHeight="22.66668701171875" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <TextField fx:id="quantityTextField" alignment="CENTER" prefHeight="53.0" prefWidth="280.0" GridPane.rowIndex="1" />
                               <Label fx:id="QuantityLabel" text="Quantity" />
+                               <TextField fx:id="quantityTextField" alignment="CENTER" prefHeight="53.0" prefWidth="280.0" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
                      </children>
@@ -70,8 +70,8 @@
                               <RowConstraints maxHeight="39.333309173583984" minHeight="0.0" prefHeight="16.333323160807296" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <TextField fx:id="expirationDateTextField" alignment="CENTER" prefHeight="57.0" prefWidth="280.0" GridPane.rowIndex="1" />
                               <Label fx:id="ExpirationDateLabel" text="Lot/Expiration Date" />
+                              <DatePicker fx:id="expirationDatePicker" prefHeight="52.0" prefWidth="251.0" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
                      </children>
@@ -89,8 +89,8 @@
                               <RowConstraints maxHeight="27.666656494140625" minHeight="0.0" prefHeight="16.66665267944336" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <TextField alignment="CENTER" prefHeight="57.0" prefWidth="280.0" GridPane.rowIndex="1" />
-                              <Label fx:id="BatchNoLable" text="Batch No." />
+                              <TextField fx:id="descriptionTextField" alignment="CENTER" prefHeight="57.0" prefWidth="280.0" GridPane.rowIndex="1" />
+                              <Label fx:id="descriptionLabel" text="Description" />
                            </children>
                         </GridPane>
                      </children>
@@ -108,8 +108,8 @@
                               <RowConstraints maxHeight="27.666656494140625" minHeight="0.0" prefHeight="26.66668701171875" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <TextField alignment="CENTER" prefHeight="56.0" prefWidth="280.0" GridPane.rowIndex="1" />
-                              <Label fx:id="DosageLabel" text="Dosage" />
+                              <Label fx:id="itemTypeChoicebox" text="Item Type" />
+                              <ComboBox fx:id="itemTypeComboBox" prefHeight="44.0" prefWidth="248.0" promptText="Select Item type" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
                      </children>
@@ -131,14 +131,14 @@
                             <RowConstraints maxHeight="25.0" minHeight="1.666656494140625" prefHeight="1.666656494140625" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Label fx:id="ListLabel" prefHeight="21.0" prefWidth="37.0" text="List" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label fx:id="ListLabel" prefHeight="22.0" prefWidth="225.0" text="Medicine List" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
                         <HBox prefHeight="51.0" prefWidth="460.0" />
-                        <GridPane prefHeight="44.0" prefWidth="251.0">
+                        <GridPane prefHeight="51.0" prefWidth="272.0">
                           <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="148.00000762939453" minWidth="5.33333571751912" prefWidth="5.33333571751912" />
-                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="246.6666642824809" minWidth="10.0" prefWidth="246.6666642824809" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="148.00000762939453" minWidth="5.33333571751912" prefWidth="137.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="246.6666642824809" minWidth="10.0" prefWidth="135.0" />
                           </columnConstraints>
                           <rowConstraints>
                             <RowConstraints maxHeight="10.000007629394531" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
@@ -146,21 +146,18 @@
                             <RowConstraints maxHeight="10.333328247070312" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Button fx:id="InventoryRemoveItemsButton" mnemonicParsing="false" onAction="#onRemoveBtnClick" prefHeight="44.0" prefWidth="253.0" text="REMOVE SELECTED ITEMS" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Button fx:id="InventoryRemoveItemsButton" mnemonicParsing="false" onAction="#onRemoveBtnClick" prefHeight="44.0" prefWidth="246.0" text="Delete" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
                      </children>
                   </HBox>
                   <ScrollPane prefHeight="432.0" prefWidth="1033.0">
                      <content>
-                        <TableView fx:id="medDetailsTable" prefHeight="435.0" prefWidth="983.0">
+                        <TableView fx:id="medDetailsTable" onMouseClicked="#onSelectData" prefHeight="435.0" prefWidth="983.0">
                            <columns>
                               <TableColumn fx:id="selectColumn" prefWidth="75.33334350585938" text="Select" />
-                              <TableColumn fx:id="productNameColumn" prefWidth="196.6666717529297" text="Product Name" />
-                              <TableColumn fx:id="quantityColumn" minWidth="4.000030517578125" prefWidth="181.33331298828125" text="Quantity" />
-                              <TableColumn fx:id="descriptionColumn" prefWidth="232.0" text="Description" />
-                              <TableColumn fx:id="expiryDateColumn" prefWidth="168.0001220703125" text="Expiry Date" />
-                              <TableColumn fx:id="SelectColumn1" prefWidth="116.6666259765625" text="Batch No." />
+                              <TableColumn fx:id="productNameColumn" prefWidth="261.0" text="Product Name" />
+                              <TableColumn fx:id="descriptionColumn" prefWidth="608.0" text="Description" />
                            </columns>
                         </TableView>
                      </content>
