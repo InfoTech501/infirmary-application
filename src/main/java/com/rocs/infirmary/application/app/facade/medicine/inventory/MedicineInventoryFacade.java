@@ -17,10 +17,10 @@ public interface MedicineInventoryFacade {
     List<Medicine> getAllMedicine();
     /**
      * This used for the delete functionality of medicine
-     * @param itemName the name of the medicine to be removed must correspond to an existing entry
+     * @param medicines the list of selected medicine of the medicine to be removed
      * @return true if the medicine was successfully deleted false otherwise
      */
-    boolean deleteMedicineByItemName(String itemName);
+    boolean deleteMedicineByItemName(List<Medicine> medicines);
     /**
      * Checks whether a specific medicine is available in the inventory.
      * @param itemName the name of the medicine to check
@@ -38,9 +38,10 @@ public interface MedicineInventoryFacade {
      * @param medicineId the unique identifier of the medicine
      * @param itemType the type of the Item to be added in the inventory
      * @param quantity the quantity to be added to the inventory
+     * @param expirationDate is used to specify the medicine expiration date
      * @return true if the inventory was successfully updated; false otherwise
      **/
-    boolean addInventory(String medicineId , String itemType, int quantity );
+    boolean addInventory(Long medicineId , String itemType, int quantity, Date expirationDate );
     /**
      * This display all the medicine retrieved From the Medicine Table
      * @return a List of Medicine that is available on the database
@@ -48,17 +49,25 @@ public interface MedicineInventoryFacade {
     List<Medicine> getAllMedicineFromMedicineTable();
     /**
      * Deletes a specific inventory record using its unique identifier.
-     * @param inventoryId the ID of the inventory item to be deleted
+     * @param medicines the list of medicine to be deleted
      * @return true if the inventory record was successfully deleted false if not
      **/
-    boolean deleteInventory(int inventoryId);
+    boolean deleteInventory(List<Medicine> medicines);
     /**
      * this is used to update the medicine attributes in the inventory
+     * @param inventoryId the ID of the inventory item to be updated
      * @param medicineId is a unique identifier that is used to specify the item to be updated
      * @param quantity is used to specify the quantity of the item being added
-     * @param description is used to specify what type of item are going to be added on the item table
+     * @param itemType is used to specify what type of item are going to be added on the item table
      * @param expirationDate is used to specify the medicine expiration date
      * @return true if the medicine is successfully updated and false if not
      **/
-    boolean updateMedicineInventory(String medicineId, int quantity, String description, Date expirationDate);
+    boolean updateMedicineInventory(Long inventoryId, Long medicineId, int quantity, String itemType, Date expirationDate);
+    /**
+     * this is used to update the medicine attributes in the inventory
+     * @param medicineId is a unique identifier that is used to specify the item to be updated
+     * @param description is used to specify what type of item are going to be added on the item table
+     * @return true if the medicine is successfully updated and false if not
+     **/
+    boolean updateMedicine(Long medicineId, String medicineName, String description);
 }
