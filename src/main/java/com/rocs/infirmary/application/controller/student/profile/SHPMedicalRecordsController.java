@@ -13,6 +13,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
+import java.sql.Date;
 
 /**
  * Controller for the Student Medical Records management scene.
@@ -120,36 +121,45 @@ public class SHPMedicalRecordsController implements Initializable {
         String illness = updateIllnessTextField.getText().trim();
         String temperature = updateTemperatureTextField.getText().trim();
         String treatment = updateTreatmentTextField.getText().trim();
-        java.sql.Date visitDate = null;
+        Date visitDate = null;
 
         try {
             LocalDate selectedDate = updateVisitDatePicker.getValue();
             if (selectedDate != null) {
-                visitDate = java.sql.Date.valueOf(selectedDate);
+                visitDate = Date.valueOf(selectedDate);
             }
         } catch (Exception e) {
             LOGGER.error("Error processing visit date: {}", e.getMessage());
             errorMessage.append("Invalid visit date format.\n");
         }
 
-        if (illness.length() > 250) {
-            errorMessage.append("Illness must be less than 250 characters.\n");
-        } else if (hasInvalidCharacters(illness)) {
-            errorMessage.append("Illness contains invalid characters.\n");
+        if (!illness.isEmpty()) {
+            if (illness.length() > 250) {
+                errorMessage.append("Illness must be less than 250 characters.\n");
+            } else if (hasInvalidCharacters(illness)) {
+                errorMessage.append("Illness contains invalid characters.\n");
+            }
         }
 
-        if (!isValidTemperature(temperature)) {
+
+        if (!temperature.isEmpty() && !isValidTemperature(temperature)) {
             errorMessage.append("Temperature must be a valid number between 30.0 and 50.0°C (e.g., 37.5).\n");
         }
 
-        if (treatment.length() > 500) {
-            errorMessage.append("Treatment must be less than 500 characters.\n");
-        } else if (hasInvalidCharacters(treatment)) {
-            errorMessage.append("Treatment contains invalid characters.\n");
+        if (!treatment.isEmpty()) {
+            if (treatment.length() > 500) {
+                errorMessage.append("Treatment must be less than 500 characters.\n");
+            } else if (hasInvalidCharacters(treatment)) {
+                errorMessage.append("Treatment contains invalid characters.\n");
+            }
         }
 
-        if (isVisitDateInFuture(visitDate)) {
+        if (visitDate != null && isVisitDateInFuture(visitDate)) {
             errorMessage.append("Visit date cannot be in the future.\n");
+        }
+
+        if (illness.isEmpty() && temperature.isEmpty() && treatment.isEmpty() && visitDate == null) {
+            errorMessage.append("Please provide at least one field to update.\n");
         }
 
         if (!errorMessage.isEmpty()) {
@@ -161,10 +171,10 @@ public class SHPMedicalRecordsController implements Initializable {
         }
 
         boolean updated = studentMedicalRecordApplication.getStudentMedicalRecordFacade().updateStudentMedicalRecord(
-                illness,
-                temperature,
+                illness.isEmpty() ? null : illness,
+                temperature.isEmpty() ? null : temperature,
                 visitDate,
-                treatment,
+                treatment.isEmpty() ? null : treatment,
                 student.getLrn()
         );
 
@@ -174,6 +184,7 @@ public class SHPMedicalRecordsController implements Initializable {
             alert = new Alert(Alert.AlertType.INFORMATION, "Medical record updated successfully.", ButtonType.OK);
             Student updatedStudent = studentMedicalRecordApplication.getStudentMedicalRecordFacade().getMedicalInformationByLRN(student.getLrn());
             setSelectedStudentRecord(updatedStudent);
+            clearTextFields();
             LOGGER.info("Medical records updated successfully for student LRN: {}", student.getLrn());
             alert.showAndWait();
         } else {
@@ -184,15 +195,11 @@ public class SHPMedicalRecordsController implements Initializable {
     }
 
     private boolean hasInvalidCharacters(String text) {
-        if (text == null) return false;
         Pattern pattern = Pattern.compile("[^a-zA-Z0-9\\s\\-'.,()]");
         return pattern.matcher(text).find();
     }
 
     private boolean isValidTemperature(String temperature) {
-        if (temperature == null || temperature.trim().isEmpty()) {
-            return false;
-        }
         try {
             double temp = Double.parseDouble(temperature);
             return temp >= 30.0 && temp <= 50.0;
@@ -202,9 +209,15 @@ public class SHPMedicalRecordsController implements Initializable {
         }
     }
 
-    private boolean isVisitDateInFuture(java.sql.Date visitDate) {
-        if (visitDate == null) return false;
-        return visitDate.after(new java.sql.Date(System.currentTimeMillis()));
+    private boolean isVisitDateInFuture(Date visitDate) {
+        return visitDate.after(new Date(System.currentTimeMillis()));
+    }
+
+    private void clearTextFields() {
+        updateIllnessTextField.clear();
+        updateTemperatureTextField.clear();
+        updateTreatmentTextField.clear();
+        updateVisitDatePicker.setValue(null);
     }
 
     private void confirmDeletion() {

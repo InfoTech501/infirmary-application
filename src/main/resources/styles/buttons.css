@@ -106,12 +106,14 @@
     -fx-text-fill: white;
 }
 
-#SexComboBox, #SectionComboBox{
+#sexComboBox, #sectionComboBox{
      -fx-background-color: #ffffff;
      -fx-border-radius: 10px;
+     -fx-text-fill: #737791;
+     -fx-font-family: 'Lexend';
 }
 
-#SexComboBox:hover, #SectionComboBox:hover{
+#sexComboBox:hover, #sectionComboBox:hover{
      -fx-background-color: #066C3D;
      -fx-text-fill: white;
      -fx-transition: 0.3s;
@@ -167,7 +169,7 @@ fx-font-weight: 400;
 
 }
 
-#SexComboBox .cell {
+#sexComboBox .cell {
 -fx-alignment: center;
     -fx-text-alignment: center;
       -fx-translate-x: 11px;
@@ -177,7 +179,7 @@ fx-font-weight: 400;
 
 
 
-#SectionComboBox .cell {
+#sectionComboBox .cell {
 -fx-alignment: center;
     -fx-text-alignment: center;
       -fx-translate-x: 10px;

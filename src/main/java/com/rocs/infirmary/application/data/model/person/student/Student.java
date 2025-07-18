@@ -11,19 +11,19 @@ public class Student extends Person {
     private int studentSectionId;
     private int studentId;
     private int studentGuardianId;
-    private long lrn;
+    private Long lrn;
     private String symptoms;
     private String temperatureReadings;
     private String bloodPressure;
-    private int pulseRate;
-    private int respiratoryRate;
+    private Long pulseRate;
+    private Long respiratoryRate;
     private Date visitDate;
     private String treatment;
-    private long id;
+    private Long id;
     private int ailmentId;
     private String medHistoryId;
-    private int nurseInChargeId;
-    private int setMedicalRecordId ;
+    private Long nurseInChargeId;
+    private Long setMedicalRecordId ;
     private int MedicalRecordStatus;
     private String gradeLevel;
     private String studentAdviser;
@@ -115,11 +115,11 @@ public class Student extends Person {
         this.medHistoryId = medHistoryId;
     }
 
-    public void setNurseInChargeId(int nurseInChargeId) {
+    public void setNurseInChargeId(Long nurseInChargeId) {
         this.nurseInChargeId = nurseInChargeId;
     }
 
-    public void setMedicalRecordId(int medicalRecordIdId) {
+    public void setMedicalRecordId(Long medicalRecordIdId) {
         this.setMedicalRecordId = medicalRecordIdId;
     }
 
@@ -155,19 +155,19 @@ public class Student extends Person {
         this.bloodPressure = bloodPressure;
     }
 
-    public int getPulseRate() {
+    public Long getPulseRate() {
         return pulseRate;
     }
 
-    public void setPulseRate(int pulseRate) {
+    public void setPulseRate(Long pulseRate) {
         this.pulseRate = pulseRate;
     }
 
-    public int getRespiratoryRate() {
+    public Long getRespiratoryRate() {
         return respiratoryRate;
     }
 
-    public void setRespiratoryRate(int respiratoryRate) {
+    public void setRespiratoryRate(Long respiratoryRate) {
         this.respiratoryRate = respiratoryRate;
     }
 }

@@ -3,7 +3,7 @@ package com.rocs.infirmary.application.data.model.person;
 import java.util.Date;
 
 public class Person {
-    private long id;
+    private Long id;
     private String firstName;
     private String middleName;
     private String lastName;
@@ -15,7 +15,7 @@ public class Person {
     private String contactNumber;
     private String section;
 
-    public Person(long id, String firstName, String middleName, String lastName, int age, Date birthdate, String gender, String email, String address, String contactNumber) {
+    public Person(Long id, String firstName, String middleName, String lastName, int age, Date birthdate, String gender, String email, String address, String contactNumber) {
         this.id = id;
         this.firstName = firstName;
         this.middleName = middleName;

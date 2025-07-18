@@ -126,7 +126,18 @@ public class SHPMoreInfoModalController implements Initializable {
      * @param studentLRN the Student object whose medical records will be retrieved using their LRN
      */
     public void getMedicalRecords(Student studentLRN) {
-        Student studentList = studentMedicalRecordApplication.getStudentMedicalRecordFacade().getMedicalInformationByLRN(studentLRN.getLrn());
+        try {
+            if (studentLRN != null) {
+                Student studentList = studentMedicalRecordApplication.getStudentMedicalRecordFacade().getMedicalInformationByLRN(studentLRN.getLrn());
+                ObservableList<Student> studentObservableList = FXCollections.observableArrayList(studentList);
+                clinicHistoryTableView.setItems(studentObservableList);
+                LOGGER.info("Getting medical info by LRN: Success");
+            } else {
+                LOGGER.warn("No records retrieved");
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error in getting medical records{}", String.valueOf(e));
+        }
 
         clinicHistoryTableView.setRowFactory(tv -> {
             TableRow<Student> row = new TableRow<>();
@@ -140,11 +151,6 @@ public class SHPMoreInfoModalController implements Initializable {
             });
             return row;
         });
-
-
-        ObservableList<Student> studentObservableList = FXCollections.observableArrayList(studentList);
-        clinicHistoryTableView.setItems(studentObservableList);
-        LOGGER.info("Getting medical info by LRN: Success");
     }
 
     private void switchSceneToEditHealthInfo() {
