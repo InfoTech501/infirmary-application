@@ -98,7 +98,10 @@ public class UpdateMedicineController {
     private boolean isValidTextInput(String input) {
         return input.matches("[a-zA-Z\\s]+");
     }
-
+    /**
+     * this method setup's the parent controller
+     * @param parentController the parent AddInventoryController instance to be associated with this controller
+     * */
     public void setParentController(AddInventoryController parentController) {
         this.parentController = parentController;
     }

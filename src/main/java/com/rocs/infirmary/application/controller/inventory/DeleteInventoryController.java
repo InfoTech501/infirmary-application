@@ -126,7 +126,10 @@ public class DeleteInventoryController{
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
     }
-
+    /**
+     * this method setup's the parent controller
+     * @param parentController the parent InventoryController instance to be associated with this controller
+     * */
     public void setParentController(InventoryController parentController) {
         this.parentController = parentController;
     }

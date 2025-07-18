@@ -129,7 +129,10 @@ public class DeleteMedicineController {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
     }
-
+    /**
+     * this method setup's the parent controller
+     * @param parentController the parent AddInventoryController instance to be associated with this controller
+     * */
     public void setParentController(AddInventoryController parentController) {
         this.parentController = parentController;
     }

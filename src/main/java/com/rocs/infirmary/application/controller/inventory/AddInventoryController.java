@@ -362,7 +362,10 @@ public class AddInventoryController implements Initializable {
     private boolean isValidInputNumber(String input) {
         return input.matches("^[0-9]+");
     }
-
+    /**
+     * this method setup's the parent controller
+     * @param parentController the parent InventoryController instance to be associated with this controller
+     * */
     public void setParentController(InventoryController parentController) {
         this.parentController = parentController;
     }

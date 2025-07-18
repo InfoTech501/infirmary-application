@@ -108,7 +108,10 @@ public class InventoryController implements Initializable {
             return tableRow;
         });
     }
-    void refresh() {
+    /**
+     * this method handles the refresh functionality for inventory table
+     ***/
+    public void refresh() {
         List<Medicine> medicineList = inventoryManagementApplication.getMedicineInventoryFacade().getAllMedicine();
         for (Medicine med : medicineList) {
             if (med.isSelectedProperty() == null) {

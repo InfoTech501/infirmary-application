@@ -73,7 +73,12 @@ public class UpdateInventoryController {
         itemTypeComboBox.setPromptText(defaultItemType);
 
     }
-
+    /**
+     * this method handles the update functionality.
+     * @param quantity the new quantity to update for the medicine
+     * @return {@code true} if the medicine was successfully updated; {@code false} if not updated
+     * @throws ParseException if there is an error parsing the expiration date or other date fields
+     */
     public boolean updateMedicine(int quantity)throws ParseException{
         boolean isUpdated = false;
         String itemType = defaultItemType;
@@ -155,7 +160,10 @@ public class UpdateInventoryController {
             LOGGER.error("NullPointerException Occurred "+e);
         }
     }
-
+    /**
+     * this method setup's the parent controller
+     * @param parentController the parent InventoryController instance to be associated with this controller
+     * */
     public void setParentController(InventoryController parentController) {
         this.parentController = parentController;
     }
