@@ -84,6 +84,9 @@ public class AddInventoryController implements Initializable {
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         itemTypeComboBox.setItems(itemType);
     }
+    /**
+     * this method handles the refresh functionality for medicine table
+     ***/
     public void refresh() {
         List<Medicine> medicineList = inventoryManagementApplication.getMedicineInventoryFacade().getAllMedicineFromMedicineTable();
         String[] itemTypeList = {"No selection","Medicine", "Non expiry", "other"};
