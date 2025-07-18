@@ -74,8 +74,9 @@ public class UpdateInventoryController {
 
     }
 
-    private boolean updateMedicine(String itemType,int quantity)throws ParseException{
+    public boolean updateMedicine(int quantity)throws ParseException{
         boolean isUpdated = false;
+        String itemType = defaultItemType;
         try {
             if (productNameTextField != null && quantityTextField != null && expirationDatePicker != null && itemTypeComboBox != null && productNameTextField.getText() != null && !productNameTextField.getText().isBlank()&& !quantityTextField.getText().isBlank()) {
 
@@ -139,7 +140,7 @@ public class UpdateInventoryController {
             } else {
                 Optional<ButtonType> result = ControllerHelper.alertAction("Update Confirmation", "This action cannot be undone. Are you sure about this update?");
                 if (result.isPresent()&& result.get().getButtonData() == ButtonBar.ButtonData.YES) {
-                    if (updateMedicine(defaultItemType, Integer.parseInt(quantityTextField.getText()))) {
+                    if (updateMedicine(Integer.parseInt(quantityTextField.getText()))) {
                         ControllerHelper.showDialog("Notification", "Updated Successfully!");
                         if (parentController != null) {
                             parentController.refresh();
