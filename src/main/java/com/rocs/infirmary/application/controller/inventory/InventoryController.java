@@ -19,6 +19,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
@@ -52,7 +53,6 @@ public class InventoryController implements Initializable {
     private DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     private List<Medicine> medicineList = new ArrayList<>();
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setup();
@@ -60,6 +60,7 @@ public class InventoryController implements Initializable {
         itemSearch();
         initalizeEditClick();
     }
+
     private void setup() {
         medDetailsTable.setEditable(true);
         selectColumn.setCellValueFactory(cellData -> cellData.getValue().isSelectedProperty());
@@ -148,16 +149,16 @@ public class InventoryController implements Initializable {
         FilteredList<Medicine> filteredList = new FilteredList<>(medicine, b -> true);
 
         searchTextField.textProperty().addListener((observable, oldValue , newValue)->
-                        filteredList.setPredicate(medicine -> {
-                            if(newValue.isEmpty()||newValue.isBlank()||newValue == null){
-                                return true;
-                            }
-                            String searchKeyword = newValue.toLowerCase();
-                            if(medicine.getItemName().toLowerCase().contains(searchKeyword)){
-                                return true;
-                            }
-                            return false;
-                        })
+                filteredList.setPredicate(medicine -> {
+                    if(newValue.isEmpty()||newValue.isBlank()||newValue == null){
+                        return true;
+                    }
+                    String searchKeyword = newValue.toLowerCase();
+                    if(medicine.getItemName().toLowerCase().contains(searchKeyword)){
+                        return true;
+                    }
+                    return false;
+                })
         );
         SortedList<Medicine> sortedList = new SortedList<>(filteredList);
         sortedList.comparatorProperty().bind(medDetailsTable.comparatorProperty());
@@ -259,6 +260,5 @@ public class InventoryController implements Initializable {
             }
         }
     }
+
 }
-
-

@@ -17,7 +17,13 @@ public class LowStockAlertHelper {
     private final LowStockNotificationServiceApplication lowStockService;
     private final ImageView redCircle;
     private final ToggleButton toggleButton;
-
+    /**
+     * Creates a LowStockAlertHelper with the given service, red circle icon, and toggle button.
+     *
+     * @param lowStockService the service used to check low stock.
+     * @param redCircle the icon shown when there's a low stock alert.
+     * @param toggleButton the button used to show the low stock notification.
+     */
     public LowStockAlertHelper(LowStockNotificationServiceApplication lowStockService, ImageView redCircle, ToggleButton toggleButton) {
         this.lowStockService = lowStockService;
         this.redCircle = redCircle;
@@ -32,7 +38,7 @@ public class LowStockAlertHelper {
      */
     public void checkLowStockAndShowAlert(Node nodeFromCurrentPage) {
 
-        List<LowStockReport> lowStockItems = lowStockService.getDashboardFacade().getAllLowStockMedicine();
+        List<LowStockReport> lowStockItems = lowStockService.getDashboardFacade().getLowStockMedicine();
 
 
         if (lowStockItems.isEmpty()) {

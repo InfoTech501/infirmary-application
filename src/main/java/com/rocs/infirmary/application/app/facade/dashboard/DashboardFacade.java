@@ -18,7 +18,7 @@ public interface DashboardFacade {
      *
      * @return a list of LowStockItem objects that are low in stock.
      */
-    List<LowStockReport> getAllLowStockMedicine();
+    List<LowStockReport> getLowStockMedicine();
 
     /**
      * Retrieves common ailments report from the database using the start date, end date, grade level, and section of student.

@@ -142,8 +142,8 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
                     int affectedRows = preparedStatement.executeUpdate();
                     isUpdated = affectedRows > 0;
                     LOGGER.info("Data inserted:\n" +
-                                "Medicine ID : {}\n" +
-                                "Quantity    : {}", inventoryId,quantity);
+                            "Medicine ID : {}\n" +
+                            "Quantity    : {}", inventoryId,quantity);
                     LOGGER.info("Quantity Updated Successfully");
                 }catch (SQLException e){
                     LOGGER.error("Error during update quantity"+e);
@@ -316,5 +316,3 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     }
 
 }
-
-
