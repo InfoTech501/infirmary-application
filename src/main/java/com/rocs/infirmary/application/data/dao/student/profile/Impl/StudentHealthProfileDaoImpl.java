@@ -20,7 +20,7 @@ public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
     /**
      * Retrieve all student health profile from the database.
      * This method queries the database to fetch all student health profile records.
-     * @return A list of all {@code Student} objects in the database, or an empty list if none exist.
+     * @return A list of all {@code studentList} objects in the database.
      */
     @Override
     public List<Student> findAllStudentHealthProfile() {
@@ -50,7 +50,7 @@ public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
      * Retrieve a student by their LRN.
      * This method fetches a specific student health profile using their unique LRN.
      * @param LRN The unique learner reference number to search for.
-     * @return The {@code studentListProfile} object matching the provided student number.
+     * @return The {@code studentListProfile} object matching the provided LRN.
      */
     @Override
     public List<Student> findStudentHealthProfileByLrn(Long LRN) {
