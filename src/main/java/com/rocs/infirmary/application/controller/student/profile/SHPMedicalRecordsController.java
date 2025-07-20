@@ -11,6 +11,7 @@ import javafx.scene.control.*;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 import java.sql.Date;
@@ -113,8 +114,30 @@ public class SHPMedicalRecordsController implements Initializable {
 
     private void confirmChangesBtnClicked() {
         if (student != null) {
-            handleRecordUpdate(student);
-            LOGGER.info("Record update confirmed");
+            Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmationAlert.setTitle("Confirm Update");
+            confirmationAlert.setHeaderText("Update Medical Record");
+            confirmationAlert.setContentText("Are you sure you want to update this medical record? This action cannot be undone.");
+
+            ButtonType updateButton = new ButtonType("Update", ButtonBar.ButtonData.OK_DONE);
+            ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+            confirmationAlert.getButtonTypes().setAll(updateButton, cancelButton);
+
+            Optional<ButtonType> result = confirmationAlert.showAndWait();
+
+            if (result.isPresent() && result.get() == updateButton) {
+                try {
+                    handleRecordUpdate(student);
+                    LOGGER.info("Medical record updated successfully for student: {}", student.getFirstName());
+                } catch (Exception e) {
+                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                    errorAlert.setTitle("Update Failed");
+                    errorAlert.setHeaderText("Error updating record");
+                    errorAlert.setContentText("An error occurred while updating the medical record. No records updated.");
+                    errorAlert.showAndWait();
+                    LOGGER.error("failed to update medical record for student: {}", student.getFirstName(), e);
+                }
+            }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "No student record selected.", ButtonType.OK);
             LOGGER.warn("No student record selected");
@@ -186,7 +209,7 @@ public class SHPMedicalRecordsController implements Initializable {
 
         Alert alert;
         if (isUpdated) {
-            parentController.fetch();
+            parentController.loadData();
             alert = new Alert(Alert.AlertType.INFORMATION, "Medical record updated successfully.", ButtonType.OK);
             Student updatedStudent = studentMedicalRecordApplication.getStudentMedicalRecordFacade().getMedicalInformationByLRN(student.getLrn());
             setSelectedStudentRecord(updatedStudent);
@@ -228,8 +251,37 @@ public class SHPMedicalRecordsController implements Initializable {
 
     private void confirmDeletion() {
         if (student != null) {
-            handleRecordDeletion(student);
-            LOGGER.info("Deletion confirmed");
+            Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmationAlert.setTitle("Confirm Deletion");
+            confirmationAlert.setHeaderText("Delete Medical Record");
+            confirmationAlert.setContentText("Are you sure you want to delete this medical record? This action cannot be undone.");
+
+            ButtonType deleteButton = new ButtonType("Delete", ButtonBar.ButtonData.OK_DONE);
+            ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+            confirmationAlert.getButtonTypes().setAll(deleteButton, cancelButton);
+
+            Optional<ButtonType> result = confirmationAlert.showAndWait();
+
+            if (result.isPresent() && result.get() == deleteButton) {
+                try {
+                    handleRecordDeletion(student);
+                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                    successAlert.setTitle("Success");
+                    successAlert.setHeaderText(null);
+                    successAlert.setContentText("Medical record deleted successfully.");
+                    successAlert.showAndWait();
+
+                    LOGGER.info("Medical record deleted successfully for student: {}", student.getFirstName());
+                } catch (Exception e) {
+                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                    errorAlert.setTitle("Deletion Failed");
+                    errorAlert.setHeaderText("Error Deleting Record");
+                    errorAlert.setContentText("An error occurred while deleting the medical record. No records deleted.");
+                    errorAlert.showAndWait();
+
+                    LOGGER.error("failed to delete medical record for student: {}", student.getFirstName(), e);
+                }
+            }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR, "No student record selected.", ButtonType.OK);
             LOGGER.warn("No records selected");
@@ -240,21 +292,15 @@ public class SHPMedicalRecordsController implements Initializable {
     private void handleRecordDeletion(Student student) {
         if (student != null) {
             boolean isDeleted = studentMedicalRecordApplication.getStudentMedicalRecordFacade().deleteStudentMedicalRecordByLrn(student.getLrn());
-            Alert alert;
             if (isDeleted) {
-                parentController.fetch();
+                parentController.loadData();
                 modalController.closeModal();
-                alert = new Alert(Alert.AlertType.INFORMATION, "Medical record deleted successfully.", ButtonType.OK);
                 LOGGER.info("Record deletion successful");
             } else {
-                alert = new Alert(Alert.AlertType.ERROR, "Failed to delete medical record. Please try again.", ButtonType.OK);
                 LOGGER.warn("Record deletion failure");
             }
-            alert.showAndWait();
         } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING, "No student record selected for deletion.", ButtonType.OK);
             LOGGER.error("No student record selected for deletion");
-            alert.showAndWait();
         }
     }
 }

@@ -122,9 +122,9 @@ public class SHPMoreInfoModalController implements Initializable {
     }
 
     private StringBuilder fullNameStringBuilder(Student student) {
-        String lastName = student.getLastName() != null ? student.getLastName() : "";
-        String firstName = student.getFirstName() != null ? student.getFirstName() : "";
-        String middleName = student.getMiddleName() != null ? student.getMiddleName() : "";
+        String lastName = student.getLastName() != null ? parentController.firstLetterAutoCapitalization(student.getLastName()) : "";
+        String firstName = student.getFirstName() != null ? parentController.firstLetterAutoCapitalization(student.getFirstName()) : "";
+        String middleName = student.getMiddleName() != null ? parentController.firstLetterAutoCapitalization(student.getMiddleName()) : "";
 
         StringBuilder fullName = new StringBuilder();
         if (!lastName.isEmpty()) {

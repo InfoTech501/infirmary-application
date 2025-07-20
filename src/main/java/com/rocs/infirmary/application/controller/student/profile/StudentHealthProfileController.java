@@ -14,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.util.Callback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,6 +22,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Controller for the Student Health Profile.
@@ -61,26 +64,54 @@ public class StudentHealthProfileController implements Initializable {
     private Button ageFilterBtn, aToZFilterBtn, zToAFilterBtn, clearFilterBtn;
     @FXML
     private StackPane rootStackPane;
-    @FXML
-    private BorderPane mainBorderPane;
+
+    private ObservableList<Student> masterStudentList;
+    private FilteredList<Student> filteredList;
+    private SortedList<Student> sortedList;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentHealthProfileController.class);
-    private ObservableList<Student> students;
     private final StudentHealthProfileApplication studentHealthProfileApplication = new StudentHealthProfileApplication();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        students = FXCollections.observableArrayList();
+        initializeCollections();
+        setupEventHandlers();
+        setupFiltering();
+        populateTableList();
+        loadData();
+//        search();
+//        sortBySex();
+    }
 
+    private void initializeCollections() {
+        masterStudentList = FXCollections.observableArrayList();
+        filteredList = new FilteredList<>(masterStudentList);
+        sortedList = new SortedList<>(filteredList);
+        sortedList.comparatorProperty().bind(studentTableView.comparatorProperty());
+        studentTableView.setItems(sortedList);
+    }
+
+    private void setupEventHandlers() {
         aToZFilterBtn.setOnAction(event -> sortAToZ());
         zToAFilterBtn.setOnAction(event -> sortZToA());
         ageFilterBtn.setOnAction(event -> sortByAge());
         clearFilterBtn.setOnAction(event -> clearFilter());
 
-        populateTableList();
-        fetch();
-        search();
-        sortBySex();
+        studentTableView.setRowFactory(tv -> {
+            TableRow<Student> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (!row.isEmpty() && event.getClickCount() == 2) {
+                    try
+                    {
+                        onClickShowMoreInformation(row.getItem());
+                        LOGGER.info("Row selected: {}", row.getItem().getFirstName());
+                    } catch (IOException e) {
+                        LOGGER.error("Row selection failure", e);
+                    }
+                }
+            });
+            return row;
+        });
     }
 
     /**
@@ -98,46 +129,85 @@ public class StudentHealthProfileController implements Initializable {
         ageColumn.setCellValueFactory(new PropertyValueFactory<>("age"));
         adviserColumn.setCellValueFactory(new PropertyValueFactory<>("studentAdviser"));
 
-        ObservableList<String> sectionNames = FXCollections.observableArrayList("Sections");
-        sectionComboBox.setItems(sectionNames);
-
-        ObservableList<String> genders = FXCollections.observableArrayList("Male", "Female");
-        sexComboBox.setItems(genders);
-
+        firstNameColumn.setCellFactory(createCapitalizingCellFactory());
+        lastNameColumn.setCellFactory(createCapitalizingCellFactory());
+        gradeColumn.setCellFactory(createCapitalizingCellFactory());
+        sectionColumn.setCellFactory(createCapitalizingCellFactory());
+        genderColumn.setCellFactory(createCapitalizingCellFactory());
+        adviserColumn.setCellFactory(createCapitalizingCellFactory());
         LOGGER.info("Populating student table");
     }
 
     /**
-     * A method which fetches the students' medical records.
-     * This method also checks the students' medical record status if it is active or inactive.
+     * A method which loads the students' health records.
      */
-    public void fetch() {
+    public void loadData() {
         try {
-            List<Student> studentList = studentHealthProfileApplication.getStudentHealthProfileFacade().getAllStudentHealthProfile();
-            List<Student> activeRecords = studentList.stream().filter(student -> student.getMedicalRecordStatus() == 1).toList();
-
-            students.setAll(activeRecords);
+            List<Student> profileList = studentHealthProfileApplication.getStudentHealthProfileFacade().getAllStudentHealthProfile();
+            masterStudentList.setAll(profileList);
+            populateComboBoxes(profileList);
             LOGGER.info("Fetching records successful");
         } catch (NullPointerException e) {
             LOGGER.error("Null pointer exception{}", String.valueOf(e));
         }
+    }
 
-        studentTableView.setRowFactory(tv -> {
-            TableRow<Student> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (!row.isEmpty() && event.getClickCount() == 2) {
-                    Student clikedStudent = row.getItem();
-                    try {
-                        onClickShowMoreInformation(clikedStudent);
-                        LOGGER.info("Row selected");
-                    } catch (IOException e) {
-                        LOGGER.error("Row selection failure");
-                        throw new RuntimeException(e);
-                    }
+    private void setupFiltering() {
+        filteredList.setPredicate(this::applyAllFilters);
+        searchTextField.textProperty().addListener((obs, oldVal, newVal) -> {filteredList.setPredicate(this::applyAllFilters);});
+        sectionComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {filteredList.setPredicate(this::applyAllFilters);});
+        sexComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {filteredList.setPredicate(this::applyAllFilters);});
+        LOGGER.info("Filtering system configured");
+    }
+
+    private boolean applyAllFilters(Student student) {
+        String searchText = searchTextField.getText();
+        if (searchText != null && !searchText.trim().isEmpty()) {
+            String searchLower = searchText.toLowerCase().trim();
+            boolean matchesSearch = student.getFirstName().toLowerCase().contains(searchLower) || student.getLastName().toLowerCase().contains(searchLower) || String.valueOf(student.getLrn()).contains(searchLower);
+            if (!matchesSearch) return false;
+        }
+
+        String selectedSection = sectionComboBox.getValue();
+        if (selectedSection != null && !selectedSection.equals("All Sections")) {
+            if (!selectedSection.equalsIgnoreCase(student.getSection()))
+            {
+                return false;
+            }
+        }
+
+        String selectedGender = sexComboBox.getValue();
+        if (selectedGender != null && !selectedGender.equals("All Genders"))
+        {
+            return selectedGender.equalsIgnoreCase(student.getGender());
+        }
+        return true;
+    }
+
+    private <T> Callback<TableColumn<T, String>, TableCell<T, String>> createCapitalizingCellFactory() {
+        return column -> new TableCell<>() {
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null)
+                {
+                    setText(null);
                 }
-            });
-            return row;
-        });
+                else {
+                    setText(firstLetterAutoCapitalization(item));
+                }
+            }
+        };
+    }
+
+    /**
+     * A utility that capitalizes first letter of any word.
+     */
+    public String firstLetterAutoCapitalization(String input) {
+        if (input == null || input.isEmpty())
+        {
+            return input;
+        }
+        return input.substring(0,1).toUpperCase() + input.substring(1).toLowerCase();
     }
 
     private void onClickShowMoreInformation(Student selectedStudent) throws IOException {
@@ -146,8 +216,8 @@ public class StudentHealthProfileController implements Initializable {
             Parent root = loader.load();
 
             SHPMoreInfoModalController controller = loader.getController();
-            controller.setSelectedStudent(selectedStudent);
             controller.setParentController(this);
+            controller.setSelectedStudent(selectedStudent);
 
             rootStackPane.getChildren().add(root);
             LOGGER.info("Showing more info modal");
@@ -156,36 +226,23 @@ public class StudentHealthProfileController implements Initializable {
         }
     }
 
-    private void search(){
-        FilteredList<Student> filteredList = new FilteredList<>(students, b -> true);
+    private void populateComboBoxes(List<Student> students) {
+        Set<String> sections = students.stream().map(Student::getSection).filter(section -> section != null && !section.trim().isEmpty()).collect(Collectors.toSet());
+        ObservableList<String> sectionItems = FXCollections.observableArrayList();
+        sectionItems.add("All Sections");
+        sectionItems.addAll(sections.stream().sorted().toList());
+        sectionComboBox.setItems(sectionItems);
+        sectionComboBox.getSelectionModel().selectFirst();
 
-        searchTextField.textProperty().addListener((observable,oldValue , newValue)->
-                        filteredList.setPredicate(student -> {
-                            if(newValue.isBlank()){
-                                return true;
-                            }
-                            String searchKeyword = newValue.toLowerCase();
-
-                            if(student.getFirstName().toLowerCase().contains(searchKeyword)){
-                                return true;
-                            }
-                            if(student.getLastName().toLowerCase().contains(searchKeyword)){
-                                return true;
-                            }
-                            return String.valueOf(student.getLrn()).contains(searchKeyword);
-                        })
-        );
-        SortedList<Student> sortedList = new SortedList<>(filteredList);
-        sortedList.comparatorProperty().bind(studentTableView.comparatorProperty());
-        studentTableView.setItems(sortedList);
-        LOGGER.info("Sorted via keyword search");
+        ObservableList<String> genderItems = FXCollections.observableArrayList("All Genders","Male","Female");
+        sexComboBox.setItems(genderItems);
+        sexComboBox.getSelectionModel().selectFirst();
     }
 
     private void sortAToZ() {
         studentTableView.getSortOrder().clear();
         lastNameColumn.setSortType(TableColumn.SortType.ASCENDING);
         studentTableView.getSortOrder().add(lastNameColumn);
-        studentTableView.sort();
         LOGGER.info("Table sorted to A to Z");
     }
 
@@ -193,7 +250,6 @@ public class StudentHealthProfileController implements Initializable {
         studentTableView.getSortOrder().clear();
         lastNameColumn.setSortType(TableColumn.SortType.DESCENDING);
         studentTableView.getSortOrder().add(lastNameColumn);
-        studentTableView.sort();
         LOGGER.info("Table sorted to Z to A");
     }
 
@@ -201,34 +257,14 @@ public class StudentHealthProfileController implements Initializable {
         studentTableView.getSortOrder().clear();
         ageColumn.setSortType(TableColumn.SortType.ASCENDING);
         studentTableView.getSortOrder().add(ageColumn);
-        studentTableView.sort();
         LOGGER.info("Table sorted by Age");
     }
 
-    private void sortBySex() {
-        FilteredList<Student> filteredList = new FilteredList<>(students, b -> true);
-
-        sexComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                filteredList.setPredicate(student -> student.getGender().equalsIgnoreCase(newValue));
-            } else {
-                filteredList.setPredicate(b -> true);
-            }
-        });
-
-        SortedList<Student> sortedList = new SortedList<>(filteredList);
-        sortedList.comparatorProperty().bind(studentTableView.comparatorProperty());
-        studentTableView.setItems(sortedList);
-
-        LOGGER.info("Table sorted by Sex");
-    }
-
     private void clearFilter() {
-        sectionComboBox.getSelectionModel().clearSelection();
-        sexComboBox.getSelectionModel().clearSelection();
+        sectionComboBox.getSelectionModel().selectFirst();
+        sexComboBox.getSelectionModel().selectFirst();
         searchTextField.clear();
-        fetch();
-        search();
+        studentTableView.getSortOrder().clear();
         LOGGER.info("Sorting cleared");
     }
 }

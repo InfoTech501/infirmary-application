@@ -2,7 +2,6 @@ package com.rocs.infirmary.application.data.dao.student.profile.Impl;
 
 import com.rocs.infirmary.application.data.connection.ConnectionHelper;
 import com.rocs.infirmary.application.data.dao.student.profile.StudentHealthProfileDao;
-import com.rocs.infirmary.application.data.dao.utils.queryconstants.student.QueryConstants;
 import com.rocs.infirmary.application.data.model.person.student.Student;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.rocs.infirmary.application.data.dao.utils.queryconstants.student.QueryConstants.*;
 
 public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentHealthProfileDaoImpl.class);
@@ -28,10 +29,8 @@ public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
 
         try (Connection con = ConnectionHelper.getConnection()) {
             LOGGER.info("Student Health Profile Dao started");
-            QueryConstants queryConstants = new QueryConstants();
-            String query = queryConstants.selectStudentHealthProfile();
-            LOGGER.info("used query:{}",query);
-            PreparedStatement stmt = con.prepareStatement(query);
+            PreparedStatement stmt = con.prepareStatement(SELECT_STUDENT_HEALTH_PROFILE_QUERY);
+            LOGGER.info("used query:{}",stmt);
             ResultSet resultSet = stmt.executeQuery();
 
             while (resultSet.next()) {
@@ -56,9 +55,7 @@ public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
     public List<Student> findStudentHealthProfileByLrn(Long LRN) {
         List<Student> studentListProfile = new ArrayList<>();
         try (Connection con = ConnectionHelper.getConnection()) {
-            QueryConstants queryConstants = new QueryConstants();
-            String query = queryConstants.selectStudentHealthProfileByLrn();
-            PreparedStatement stmt = con.prepareStatement(query);
+            PreparedStatement stmt = con.prepareStatement(SELECT_STUDENT_HEALTH_PROFILE_BY_LRN);
             stmt.setLong(1,LRN);
             ResultSet resultSet = stmt.executeQuery();
 

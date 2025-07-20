@@ -31,6 +31,6 @@ public interface StudentMedicalRecordFacade {
      */
 
     boolean deleteStudentMedicalRecordByLrn(Long LRN);
-    boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate , String treatement, long LRN  );
+    boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate , String treatment, Long LRN  );
 
 }

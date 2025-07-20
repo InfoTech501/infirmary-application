@@ -1,7 +1,6 @@
 package com.rocs.infirmary.application.data.dao.student.record.impl;
 
 import com.rocs.infirmary.application.data.connection.ConnectionHelper;
-import com.rocs.infirmary.application.data.dao.utils.queryconstants.student.QueryConstants;
 import com.rocs.infirmary.application.data.model.person.student.Student;
 import com.rocs.infirmary.application.data.dao.student.record.StudentMedicalRecordDao;
 import org.slf4j.Logger;
@@ -15,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.rocs.infirmary.application.data.dao.utils.queryconstants.student.QueryConstants.*;
 
 /**
  * The StudentMedicalRecordDaoImpl class implements the StudentMedicalRecordDao interface
@@ -24,18 +24,13 @@ import java.util.List;
 public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentMedicalRecordDaoImpl.class);
 
-    public Student findMedicalInformation(long LRN) {
+    public Student findMedicalInformation(Long LRN) {
         LOGGER.info("get medical record started");
         Student studentMedicalRecord = null;
         try (Connection con = ConnectionHelper.getConnection()) {
 
-            QueryConstants queryConstants = new QueryConstants();
-
-            String sql = queryConstants.getAllMedicalInformationByLRN();
-
-            PreparedStatement stmt = con.prepareStatement(sql);
-            LOGGER.info("Query in use"+sql);
-
+            PreparedStatement stmt = con.prepareStatement(GET_ALL_MEDICAL_INFORMATION_BY_LRN);
+            LOGGER.info("Query in use"+ stmt);
             stmt.setLong(1, LRN);
             LOGGER.info("data inserted: "+"LRN: "+LRN);
             ResultSet rs = stmt.executeQuery();
@@ -88,13 +83,9 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
         List<Student> medicalRecords = new ArrayList<>();
         try (Connection con = ConnectionHelper.getConnection()) {
 
-            QueryConstants queryConstants = new QueryConstants();
-
-            String sql = queryConstants.getAllStudentMedicalRecords();
-
-            PreparedStatement stmt = con.prepareStatement(sql);
-            LOGGER.info("Query in use"+sql);
+            PreparedStatement stmt = con.prepareStatement(GET_ALL_STUDENTS_MEDICAL_RECORDS);
             ResultSet rs = stmt.executeQuery();
+            LOGGER.info("Query in use"+ stmt);
 
             while (rs.next()) {
                 Student studentMedicalRecord = new Student();
@@ -144,18 +135,13 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
      * while a status of 1 means the record is still active and present in the system.
      */
     @Override
-    public boolean deleteStudentMedicalRecord(long LRN) {
+    public boolean deleteStudentMedicalRecord(Long LRN) {
         LOGGER.info("Delete medical records started");
         Student studentMedicalRecord = getStudent(LRN);
 
         try (Connection con = ConnectionHelper.getConnection()) {
-
-            QueryConstants queryConstants = new QueryConstants();
-
-            String sql = queryConstants.deleteStudentMedicalRecord();
-
-            PreparedStatement preparedStatement = con.prepareStatement(sql);
-            LOGGER.info("Query in use"+sql);
+            PreparedStatement preparedStatement = con.prepareStatement(DELETE_STUDENT_MEDICAL_RECORD);
+            LOGGER.info("Query in use"+preparedStatement);
             preparedStatement.setInt(1,studentMedicalRecord.getStudentId());
             LOGGER.info("data inserted: "+"LRN: "+LRN);
             int affectedRow = preparedStatement.executeUpdate();
@@ -172,17 +158,13 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
     @Override
     public boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate, String treatment, long LRN) {
         LOGGER.info("Update Student Medical Record Started for LRN: " + LRN);
-        QueryConstants queryConstants = new QueryConstants();
         boolean updateSuccessful = false;
 
         try (Connection con = ConnectionHelper.getConnection()) {
-
-
             if (symptoms != null && !symptoms.trim().isEmpty()) {
-                String updateSymptomQuery = queryConstants.updateStudentSymptoms();
-                try (PreparedStatement stmt = con.prepareStatement(updateSymptomQuery)) {
+                try (PreparedStatement stmt = con.prepareStatement(UPDATE_STUDENT_SYMPTOMS)) {
                     LOGGER.info("Executing update for symptoms...");
-                    LOGGER.info("Query: " + updateSymptomQuery);
+                    LOGGER.info("Query: " + stmt);
                     stmt.setString(1, symptoms);
                     stmt.setLong(2, LRN);
                     LOGGER.info("Symptoms: " + symptoms + ", LRN: " + LRN);
@@ -196,10 +178,9 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
             }
 
             if (temperatureReadings != null && !temperatureReadings.trim().isEmpty()) {
-                String updateTemperatureReadingsQuery = queryConstants.updateStudentTemperatureReadings();
-                try (PreparedStatement stmt = con.prepareStatement(updateTemperatureReadingsQuery)) {
+                try (PreparedStatement stmt = con.prepareStatement(UPDATE_STUDENT_TEMPERATURE_READINGS )) {
                     LOGGER.info("Executing update for temperature readings...");
-                    LOGGER.info("Query: " + updateTemperatureReadingsQuery);
+                    LOGGER.info("Query: " + stmt);
                     stmt.setString(1, temperatureReadings);
                     stmt.setLong(2, LRN);
                     LOGGER.info("TemperatureReadings: " + temperatureReadings + ", LRN: " + LRN);
@@ -213,10 +194,9 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
             }
 
             if (visitDate != null) {
-                String updateVisitDateQuery = queryConstants.updateStudentVisitDate();
-                try (PreparedStatement stmt = con.prepareStatement(updateVisitDateQuery)) {
+                try (PreparedStatement stmt = con.prepareStatement(UPDATE_STUDENT_VISIT_DATE)) {
                     LOGGER.info("Executing update for visit date...");
-                    LOGGER.info("Query: " + updateVisitDateQuery);
+                    LOGGER.info("Query: " + stmt);
                     stmt.setTimestamp(1, new java.sql.Timestamp(visitDate.getTime()));
                     stmt.setLong(2, LRN);
                     LOGGER.info("Parameters - visitDate: " + visitDate + ", LRN: " + LRN);
@@ -229,10 +209,9 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
             }
 
             if (treatment != null && !treatment.trim().isEmpty()) {
-                String updateTreatmentQuery = queryConstants.updateStudentTreatment();
-                try (PreparedStatement stmt = con.prepareStatement(updateTreatmentQuery)) {
+                try (PreparedStatement stmt = con.prepareStatement(UPDATE_STUDENT_TREATMENT)) {
                     LOGGER.info("Executing update for treatment");
-                    LOGGER.info("Query: " + updateTreatmentQuery);
+                    LOGGER.info("Query: " + stmt);
                     stmt.setString(1, treatment);
                     stmt.setLong(2, LRN);
                     LOGGER.info("Parameters - treatment: " + treatment + ", LRN: " + LRN);
@@ -255,23 +234,20 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
 
 
 
-    private static Student getStudent(long LRN) {
+    private static Student getStudent(Long LRN) {
         Student studentMedicalRecord = null;
         LOGGER.info("Retrieving Student information");
         try (Connection con = ConnectionHelper.getConnection()) {
 
-            QueryConstants queryConstants = new QueryConstants();
-
-            String sql = queryConstants.getAllMedicalInformationByLRN();
-
-            PreparedStatement stmt = con.prepareStatement(sql);
-            LOGGER.info("Query in use"+sql);
+            PreparedStatement stmt = con.prepareStatement(GET_ALL_MEDICAL_INFORMATION_BY_LRN);
+            LOGGER.info("Query in use"+ stmt);
             stmt.setLong(1, LRN);
             LOGGER.info("data inserted: "+"LRN: "+LRN);
-            ResultSet resultSet = stmt.executeQuery();
-            while(resultSet.next()){
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next()){
                 studentMedicalRecord = new Student();
-                studentMedicalRecord.setStudentId(resultSet.getInt("student_id"));
+                studentMedicalRecord.setStudentId(rs.getInt("student_id"));
                 LOGGER.info("Data retrieved: "+"\n"
                         +"Student ID   : "+studentMedicalRecord.getStudentId()+"\n"
                 );

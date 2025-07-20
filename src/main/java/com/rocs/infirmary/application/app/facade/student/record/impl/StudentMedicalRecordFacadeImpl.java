@@ -48,14 +48,14 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
      */
     @Override
     public boolean deleteStudentMedicalRecordByLrn(Long LRN) {
-        logger.warn("Entering deleteStudentMedicalRecordByLrn with LRN: {}", LRN);
+        logger.warn("Using deleteStudentMedicalRecordByLrn with LRN: {}", LRN);
         boolean isDeleted = this.studentMedRecord.deleteStudentMedicalRecord(LRN);
         logger.warn("Exiting deleteStudentMedicalRecordByLrn with result: {}", isDeleted);
         return isDeleted;
     }
     @Override
-    public boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate, String treatment, long LRN) {
-        logger.debug("Entering updateStudentMedicalRecord with LRN: {}, symptoms: {}, temperature: {}, visitDate: {}, treatment: {}",
+    public boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate, String treatment, Long LRN) {
+        logger.debug("Using updateStudentMedicalRecord with LRN: {}, symptoms: {}, temperature: {}, visitDate: {}, treatment: {}",
                 LRN, symptoms, temperatureReadings, visitDate, treatment);
         Boolean updated =  this.studentMedRecord.updateStudentMedicalRecord(symptoms,temperatureReadings,visitDate,treatment, LRN);
         logger.debug("Exiting updateStudentMedicalRecord, update successful: {}", updated);
