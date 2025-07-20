@@ -87,20 +87,26 @@ public class SHPMedicalRecordsController implements Initializable {
      */
     public void setSelectedStudentRecord(Student student) {
         this.student = student;
-        Student record = studentMedicalRecordApplication.getStudentMedicalRecordFacade().getMedicalInformationByLRN(student.getLrn());
+        Student studentMedicalRecord = studentMedicalRecordApplication.getStudentMedicalRecordFacade().getMedicalInformationByLRN(student.getLrn());
 
-        if (record != null) {
-            illnessLabel.setText(student.getSymptoms());
-            visitDateLabel.setText(String.valueOf(student.getVisitDate()));
-            temperatureLabel.setText(student.getTemperatureReadings());
-            bloodPressureLabel.setText(student.getBloodPressure());
-            pulseRateLabel.setText(String.valueOf(student.getPulseRate()));
-            respiratoryRate.setText(String.valueOf(student.getRespiratoryRate()));
-            treatmentLabel.setText(student.getTreatment());
+        if (studentMedicalRecord != null) {
+            illnessLabel.setText(studentMedicalRecord.getSymptoms() != null ? studentMedicalRecord.getSymptoms() : "");
+            visitDateLabel.setText(studentMedicalRecord.getVisitDate() != null ? String.valueOf(studentMedicalRecord.getVisitDate()) : "");
+            temperatureLabel.setText(student.getTemperatureReadings() != null ? String.valueOf(studentMedicalRecord.getTemperatureReadings()) : "");
+            bloodPressureLabel.setText(student.getBloodPressure() != null ? String.valueOf(studentMedicalRecord.getBloodPressure()) : "");
+            pulseRateLabel.setText(studentMedicalRecord.getPulseRate() != null ? String.valueOf(student.getPulseRate()) : "");
+            respiratoryRate.setText(studentMedicalRecord.getRespiratoryRate() != null ? String.valueOf(student.getRespiratoryRate()) : "");
+            treatmentLabel.setText(studentMedicalRecord.getTreatment() != null ? String.valueOf(student.getTreatment()) : "");
 
             LOGGER.info("Student data successfully set");
         } else {
             illnessLabel.setText("No record found");
+            visitDateLabel.setText(" ");
+            temperatureLabel.setText(" ");
+            bloodPressureLabel.setText(" ");
+            pulseRateLabel.setText(" ");
+            respiratoryRate.setText(" ");
+            treatmentLabel.setText(" ");
             LOGGER.info("No record found");
         }
     }
@@ -170,7 +176,7 @@ public class SHPMedicalRecordsController implements Initializable {
             return;
         }
 
-        boolean updated = studentMedicalRecordApplication.getStudentMedicalRecordFacade().updateStudentMedicalRecord(
+        boolean isUpdated = studentMedicalRecordApplication.getStudentMedicalRecordFacade().updateStudentMedicalRecord(
                 illness.isEmpty() ? null : illness,
                 temperature.isEmpty() ? null : temperature,
                 visitDate,
@@ -179,7 +185,7 @@ public class SHPMedicalRecordsController implements Initializable {
         );
 
         Alert alert;
-        if (updated) {
+        if (isUpdated) {
             parentController.fetch();
             alert = new Alert(Alert.AlertType.INFORMATION, "Medical record updated successfully.", ButtonType.OK);
             Student updatedStudent = studentMedicalRecordApplication.getStudentMedicalRecordFacade().getMedicalInformationByLRN(student.getLrn());

@@ -125,7 +125,7 @@ public class StudentHealthProfileController implements Initializable {
         studentTableView.setRowFactory(tv -> {
             TableRow<Student> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
-                if (!row.isEmpty() && event.getClickCount() == 1) {
+                if (!row.isEmpty() && event.getClickCount() == 2) {
                     Student clikedStudent = row.getItem();
                     try {
                         onClickShowMoreInformation(clikedStudent);

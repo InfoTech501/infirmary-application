@@ -108,15 +108,37 @@ public class SHPMoreInfoModalController implements Initializable {
     }
 
     private void setStudentLabelData(Student student) {
-        studentFullNameLabel.setText(student.getLastName() + ", " + student.getFirstName()+ " " + student.getMiddleName());
+        final StringBuilder fullName = fullNameStringBuilder(student);
+
+        studentFullNameLabel.setText(fullName.toString());
         ageLabel.setText(String.valueOf(student.getAge()));
-        addressLabel.setText(student.getAddress());
-        sexLabel.setText(student.getGender());
-        contactNumberLabel.setText(student.getContactNumber());
-        birthdateLabel.setText(String.valueOf(student.getBirthdate()));
+        addressLabel.setText(student.getAddress() != null ? String.valueOf(student.getAddress()) : "");
+        sexLabel.setText(student.getGender() != null ? String.valueOf(student.getGender()) : "");
+        contactNumberLabel.setText(student.getContactNumber() != null ? String.valueOf(student.getContactNumber()) : "");
+        birthdateLabel.setText(String.valueOf(student.getBirthdate()) != null ? String.valueOf(student.getBirthdate()) : "");
 
         getMedicalRecords(student);
         LOGGER.info("Medical records successfully set");
+    }
+
+    private StringBuilder fullNameStringBuilder(Student student) {
+        String lastName = student.getLastName() != null ? student.getLastName() : "";
+        String firstName = student.getFirstName() != null ? student.getFirstName() : "";
+        String middleName = student.getMiddleName() != null ? student.getMiddleName() : "";
+
+        StringBuilder fullName = new StringBuilder();
+        if (!lastName.isEmpty()) {
+            fullName.append(lastName);
+        }
+        if (!firstName.isEmpty()){
+            if (!fullName.isEmpty()) fullName.append(", ");
+            fullName.append(firstName);
+        }
+        if (!middleName.isEmpty()) {
+            if (!fullName.isEmpty()) fullName.append(" ");
+            fullName.append(middleName);
+        }
+        return fullName;
     }
 
     /**
@@ -128,8 +150,8 @@ public class SHPMoreInfoModalController implements Initializable {
     public void getMedicalRecords(Student studentLRN) {
         try {
             if (studentLRN != null) {
-                Student studentList = studentMedicalRecordApplication.getStudentMedicalRecordFacade().getMedicalInformationByLRN(studentLRN.getLrn());
-                ObservableList<Student> studentObservableList = FXCollections.observableArrayList(studentList);
+                Student studentMedicalRecord = studentMedicalRecordApplication.getStudentMedicalRecordFacade().getMedicalInformationByLRN(studentLRN.getLrn());
+                ObservableList<Student> studentObservableList = FXCollections.observableArrayList(studentMedicalRecord);
                 clinicHistoryTableView.setItems(studentObservableList);
                 LOGGER.info("Getting medical info by LRN: Success");
             } else {
