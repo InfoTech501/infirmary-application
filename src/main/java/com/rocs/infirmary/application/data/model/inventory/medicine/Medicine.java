@@ -77,7 +77,9 @@ public class Medicine extends Inventory{
     }
 
     @Override
-    public String toString() { return itemName;}
+    public String toString() {
+        return itemName;
+    }
 
 }
 

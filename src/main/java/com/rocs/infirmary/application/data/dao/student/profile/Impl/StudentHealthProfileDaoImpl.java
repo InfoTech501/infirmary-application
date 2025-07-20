@@ -3,6 +3,7 @@ package com.rocs.infirmary.application.data.dao.student.profile.Impl;
 import com.rocs.infirmary.application.data.connection.ConnectionHelper;
 import com.rocs.infirmary.application.data.dao.student.profile.StudentHealthProfileDao;
 import com.rocs.infirmary.application.data.dao.utils.queryconstants.student.QueryConstants;
+import com.rocs.infirmary.application.data.model.person.student.Patient;
 import com.rocs.infirmary.application.data.model.person.student.Student;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +30,7 @@ public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next()){
                 Student studentMedicalRecord = new Student();
-                studentMedicalRecord.setLrn(resultSet.getLong("LRN"));
+                studentMedicalRecord.setLrn(resultSet.getString("LRN"));
                 studentMedicalRecord.setFirstName(resultSet.getString("first_name"));
                 studentMedicalRecord.setMiddleName(resultSet.getString("middle_name"));
                 studentMedicalRecord.setLastName(resultSet.getString("last_name"));
@@ -59,8 +60,8 @@ public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
     }
 
     @Override
-    public List<Student> findStudentHealthProfileByLrn(Long LRN) {
-        List<Student> studentListProfile = new ArrayList<>();
+    public List<Patient> findStudentHealthProfileByLrn(Long LRN) {
+        List<Patient> studentListProfile = new ArrayList<>();
         try (Connection con = ConnectionHelper.getConnection()) {
             QueryConstants queryConstants = new QueryConstants();
             String query = queryConstants.selectStudentHealthProfileByLrn();
@@ -68,7 +69,7 @@ public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
             stmt.setLong(1,LRN);
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next()){
-                Student studentMedicalRecord = new Student();
+                Patient studentMedicalRecord = new Patient();
                 studentMedicalRecord.setContactNumber(resultSet.getString("contact_number"));
                 studentMedicalRecord.setEmail(resultSet.getString("email"));
                 studentMedicalRecord.setAddress(resultSet.getString("address"));

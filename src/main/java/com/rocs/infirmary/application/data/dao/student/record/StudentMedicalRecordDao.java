@@ -1,5 +1,7 @@
 package com.rocs.infirmary.application.data.dao.student.record;
 
+import com.rocs.infirmary.application.data.model.person.nurse.Nurse;
+import com.rocs.infirmary.application.data.model.person.student.Patient;
 import com.rocs.infirmary.application.data.model.person.student.Student;
 
 import java.util.Date;
@@ -9,17 +11,17 @@ import java.util.List;
  * this handles the business logic for retrieving, deleting, updating, and adding student's medical records.
  **/
 public interface StudentMedicalRecordDao {
-    Student findMedicalInformation(long LRN);
+    Student findMedicalInformation(String LRN);
     /**
      * this is used to find all student medical records in the medical record
      * return list of StudentMedicalRecord and objects with details such as symptom, temperature readings, pulse rate, blood pressure, (edit).
      **/
-    List<Student> findAllStudentMedicalRecords();
+    List<Patient> findAllStudentMedicalRecords();
     /**
      * Retrieves all nurse information from the database.
      * @return A list of nurse information, or an empty list if no records are found.
      */
-    List<Student> getAllNurseAccounts();
+    List<Nurse> getAllNurseAccounts();
     /**
      * This is intended to delete medical record based on LRN.
      * @param LRN is a student's unique identifier assigned to each student
@@ -42,13 +44,13 @@ public interface StudentMedicalRecordDao {
      * @param record the model containing all attributes of the medicine to be added (edit this - change record into student)
      * @return true if the medical record is successfully added; false if the addition fails
      */
-    Long addStudentMedicalRecord(Student record);
+    boolean addStudentMedicalRecord(Patient record);
     /**
      * Adds a new medicine administration entry linked to an existing medical record.
      * This is intended to log information such as medicine ID, nurse in charge, description, quantity, and date administered.
      *
-     * @param record the student object containing medication and administration details
+     * @param patient the student object containing medication and administration details
      * @return true if the medicine administration record is successfully added; false otherwise
      */
-    boolean addMedicineAdministered(Student record);
+    boolean addMedicineAdministered(Patient patient);
 }

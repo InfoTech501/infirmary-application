@@ -3,12 +3,13 @@ package com.rocs.infirmary.application.data.dao.student.record.impl;
 import com.rocs.infirmary.application.data.connection.ConnectionHelper;
 import static com.rocs.infirmary.application.data.dao.utils.queryconstants.student.QueryConstants.*;
 
+import com.rocs.infirmary.application.data.model.person.nurse.Nurse;
 import com.rocs.infirmary.application.data.model.person.student.Student;
+import com.rocs.infirmary.application.data.model.person.student.Patient;
 import com.rocs.infirmary.application.data.dao.student.record.StudentMedicalRecordDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,24 +23,24 @@ import java.util.List;
 public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentMedicalRecordDaoImpl.class);
 
-    public Student findMedicalInformation(long LRN) {
+    public Student findMedicalInformation(String LRN) {
         LOGGER.info("Starting medical record retrieval for LRN: {}", LRN);
-        Student studentMedicalRecord = null;
+        Patient studentMedicalRecord = null;
 
         try (Connection con = ConnectionHelper.getConnection();
              PreparedStatement stmt = con.prepareStatement(GET_ALL_MEDICAL_INFORMATION_BY_LRN)) {
 
             LOGGER.info("Preparing query: {}", GET_ALL_MEDICAL_INFORMATION_BY_LRN);
-            stmt.setLong(1, LRN);
+            stmt.setString(1, LRN);
             LOGGER.info("Executing query with LRN: {}", LRN);
 
             try (ResultSet rs = stmt.executeQuery()) {
                 LOGGER.info("Query executed successfully");
 
                 if (rs.next()) {
-                    studentMedicalRecord = new Student();
+                    studentMedicalRecord = new Patient();
                     studentMedicalRecord.setStudentId(rs.getLong("student_id"));
-                    studentMedicalRecord.setLrn(rs.getLong("LRN"));
+                    studentMedicalRecord.setLrn(rs.getString("LRN"));
                     studentMedicalRecord.setFirstName(rs.getString("first_name"));
                     studentMedicalRecord.setMiddleName(rs.getString("middle_name"));
                     studentMedicalRecord.setLastName(rs.getString("last_name"));
@@ -57,7 +58,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                     LOGGER.info("Data retrieved:" + "\n"
                             + "Student ID        : " + studentMedicalRecord.getStudentId() + "\n"
                             + "LRN               : " + studentMedicalRecord.getLrn() + "\n"
-                            + "Name              : " + studentMedicalRecord.getFirstName() + " " + studentMedicalRecord.getLastName() + "\n"
+                            + "Name              : " + studentMedicalRecord.getFirstName() + " " + studentMedicalRecord.getMiddleName()  + " " + studentMedicalRecord.getLastName() + "\n"
                             + "Age               : " + studentMedicalRecord.getAge() + "\n"
                             + "Grade Level       : " + studentMedicalRecord.getGradeLevel() + " " + studentMedicalRecord.getSection() + "\n"
                             + "Gender            : " + studentMedicalRecord.getGender() + "\n"
@@ -81,78 +82,76 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
     }
 
     @Override
-    public List<Student> findAllStudentMedicalRecords() {
+    public List<Patient> findAllStudentMedicalRecords() {
         LOGGER.info("Fetching all student medical records...");
-        List<Student> medicalRecords = new ArrayList<>();
+        List<Patient> medicalRecords = new ArrayList<>();
 
         try (Connection con = ConnectionHelper.getConnection();
              PreparedStatement stmt = con.prepareStatement(GET_ALL_STUDENTS_MEDICAL_RECORDS);
              ResultSet rs = stmt.executeQuery()) {
 
-            LOGGER.info("Executing query: " + GET_ALL_STUDENTS_MEDICAL_RECORDS);
+            LOGGER.info("Executing query: {}", GET_ALL_STUDENTS_MEDICAL_RECORDS);
 
             while (rs.next()) {
                 try {
-                    Student studentMedicalRecord = new Student();
-
-                    studentMedicalRecord.setStudentId(rs.getLong("person_id"));
-                    studentMedicalRecord.setLrn(rs.getLong("LRN"));
-                    studentMedicalRecord.setFirstName(rs.getString("first_name"));
-                    studentMedicalRecord.setMiddleName(rs.getString("middle_name"));
-                    studentMedicalRecord.setLastName(rs.getString("last_name"));
-                    studentMedicalRecord.setGradeLevel(rs.getString("grade_level"));
-                    studentMedicalRecord.setSection(rs.getString("section"));
-                    studentMedicalRecord.setAge(rs.getInt("age"));
-                    studentMedicalRecord.setGender(rs.getString("gender"));
-                    studentMedicalRecord.setEmail(rs.getString("email"));
-                    studentMedicalRecord.setAddress(rs.getString("address"));
-                    studentMedicalRecord.setContactNumber(rs.getString("contact_number"));
-                    studentMedicalRecord.setSymptoms(rs.getString("symptoms"));
-                    studentMedicalRecord.setTemperatureReadings(rs.getString("temperature_readings"));
-                    studentMedicalRecord.setBloodPressure(rs.getString("blood_pressure"));
-                    studentMedicalRecord.setPulseRate(rs.getInt("pulse_rate"));
-                    studentMedicalRecord.setRespiratoryRate(rs.getInt("respiratory_rate"));
-                    studentMedicalRecord.setVisitDate(rs.getDate("visit_date"));
-                    studentMedicalRecord.setTreatment(rs.getString("treatment"));
+                    Patient record = new Patient();
+                    record.setStudentId(rs.getLong("person_id"));
+                    record.setLrn(rs.getString("LRN"));
+                    record.setFirstName(rs.getString("first_name"));
+                    record.setMiddleName(rs.getString("middle_name"));
+                    record.setLastName(rs.getString("last_name"));
+                    record.setGradeLevel(rs.getString("grade_level"));
+                    record.setSection(rs.getString("section"));
+                    record.setAge(rs.getInt("age"));
+                    record.setGender(rs.getString("gender"));
+                    record.setEmail(rs.getString("email"));
+                    record.setAddress(rs.getString("address"));
+                    record.setContactNumber(rs.getString("contact_number"));
+                    record.setSymptoms(rs.getString("symptoms"));
+                    record.setTemperatureReadings(rs.getString("temperature_readings"));
+                    record.setBloodPressure(rs.getString("blood_pressure"));
+                    record.setPulseRate(rs.getInt("pulse_rate"));
+                    record.setRespiratoryRate(rs.getInt("respiratory_rate"));
+                    record.setVisitDate(rs.getDate("visit_date"));
+                    record.setTreatment(rs.getString("treatment"));
+                    record.setMedicineName(rs.getString("medicine_name"));
+                    record.setDispensingOut(rs.getInt("medicine_quantity"));
 
                     String nurseFirst = rs.getString("nurse_first_name");
                     String nurseLast = rs.getString("nurse_last_name");
-                    studentMedicalRecord.setNurseInCharge((nurseFirst + " " + nurseLast).trim());
+                    record.setNurseInCharge((nurseFirst + " " + nurseLast).trim());
 
-                    studentMedicalRecord.setMedicineName(rs.getString("medicine_name"));
-                    studentMedicalRecord.setDispensingOut(rs.getInt("medicine_quantity"));
+                    LOGGER.info("Retrieved Patient Record:\n"
+                            + "Student ID       : " + record.getStudentId() + "\n"
+                            + "LRN              : " + record.getLrn() + "\n"
+                            + "Name             : " + record.getFirstName() + " " + record.getLastName() + "\n"
+                            + "Grade Level      : " + record.getGradeLevel() + "\n"
+                            + "Section          : " + record.getSection() + "\n"
+                            + "Age              : " + record.getAge() + "\n"
+                            + "Gender           : " + record.getGender() + "\n"
+                            + "Email            : " + record.getEmail() + "\n"
+                            + "Address          : " + record.getAddress() + "\n"
+                            + "Contact Number   : " + record.getContactNumber() + "\n"
+                            + "Symptoms         : " + record.getSymptoms() + "\n"
+                            + "Temperature      : " + record.getTemperatureReadings() + "\n"
+                            + "Blood Pressure   : " + record.getBloodPressure() + "\n"
+                            + "Pulse Rate       : " + record.getPulseRate() + "\n"
+                            + "Respiratory Rate : " + record.getRespiratoryRate() + "\n"
+                            + "Visit Date       : " + record.getVisitDate() + "\n"
+                            + "Treatment        : " + record.getTreatment() + "\n"
+                            + "Nurse In-Charge  : " + record.getNurseInCharge() + "\n"
+                            + "Medicine Name    : " + record.getMedicineName() + "\n"
+                            + "Dispensing Out   : " + record.getDispensingOut());
 
-                    LOGGER.info("Retrieved Student Record:\n"
-                            + "Student ID       : " + studentMedicalRecord.getStudentId() + "\n"
-                            + "LRN              : " + studentMedicalRecord.getLrn() + "\n"
-                            + "Name             : " + studentMedicalRecord.getFirstName() + " " + studentMedicalRecord.getLastName() + "\n"
-                            + "Grade Level      : " + studentMedicalRecord.getGradeLevel() + "\n"
-                            + "Section          : " + studentMedicalRecord.getSection() + "\n"
-                            + "Age              : " + studentMedicalRecord.getAge() + "\n"
-                            + "Gender           : " + studentMedicalRecord.getGender() + "\n"
-                            + "Email            : " + studentMedicalRecord.getEmail() + "\n"
-                            + "Address          : " + studentMedicalRecord.getAddress() + "\n"
-                            + "Contact Number   : " + studentMedicalRecord.getContactNumber() + "\n"
-                            + "Symptoms         : " + studentMedicalRecord.getSymptoms() + "\n"
-                            + "Temperature      : " + studentMedicalRecord.getTemperatureReadings() + "\n"
-                            + "Blood Pressure   : " + studentMedicalRecord.getBloodPressure() + "\n"
-                            + "Pulse Rate       : " + studentMedicalRecord.getPulseRate() + "\n"
-                            + "Respiratory Rate : " + studentMedicalRecord.getRespiratoryRate() + "\n"
-                            + "Visit Date       : " + studentMedicalRecord.getVisitDate() + "\n"
-                            + "Treatment        : " + studentMedicalRecord.getTreatment() + "\n"
-                            + "Nurse In-Charge  : " + studentMedicalRecord.getNurseInCharge() + "\n"
-                            + "Medicine Name    : " + studentMedicalRecord.getMedicineName() + "\n"
-                            + "Dispensing Out   : " + studentMedicalRecord.getDispensingOut());
-
-                    medicalRecords.add(studentMedicalRecord);
+                    medicalRecords.add(record);
 
                 } catch (Exception ex) {
-                    LOGGER.warn("Error mapping record. Row skipped: " + ex.getMessage());
+                    LOGGER.warn("Error mapping record. Row skipped: {}", ex.getMessage());
                 }
             }
 
         } catch (SQLException e) {
-            LOGGER.error("SQLException Occurred: " + e.getMessage(), e);
+            LOGGER.error("SQLException occurred while retrieving student medical records: {}", e.getMessage(), e);
             throw new RuntimeException("Error fetching student medical records", e);
         }
 
@@ -160,8 +159,8 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
     }
 
     @Override
-    public List<Student> getAllNurseAccounts() {
-        List<Student> nurses = new ArrayList<>();
+    public List<Nurse> getAllNurseAccounts() {
+        List<Nurse> nurses = new ArrayList<>();
 
         try (Connection con = ConnectionHelper.getConnection();
              PreparedStatement stmt = con.prepareStatement(GET_ALL_NURSE_EMPLOYEE);
@@ -169,13 +168,17 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
 
             while (rs.next()) {
                 try {
-                    Student nurse = new Student();
-                    nurse.setStudentId(rs.getLong("id"));
+                    Nurse nurse = new Nurse();
+                    nurse.setNurseInChargeId(rs.getLong("id"));
                     nurse.setFirstName(rs.getString("first_name"));
                     nurse.setMiddleName(rs.getString("middle_name"));
                     nurse.setLastName(rs.getString("last_name"));
+
+                    String fullName = nurse.getFirstName() + " " + nurse.getLastName();
+                    nurse.setNurseInCharge(fullName.trim());
+
                     nurses.add(nurse);
-                    LOGGER.info("Mapped Nurse: {} {}", nurse.getFirstName(), nurse.getLastName());
+                    LOGGER.info("Mapped Nurse: {}", fullName.trim());
                 } catch (Exception ex) {
                     LOGGER.warn("Error mapping nurse record. Row skipped: {}", ex.getMessage());
                 }
@@ -190,14 +193,14 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
     }
 
     @Override
-    public Long addStudentMedicalRecord(Student record) {
+    public boolean addStudentMedicalRecord(Patient record) {
         try (Connection con = ConnectionHelper.getConnection()) {
             con.setAutoCommit(false);
 
             Long ailmentId = addNewAilment(con, record.getSymptoms());
             if (ailmentId == null) {
                 LOGGER.warn("No ailment_id found for symptoms: {}", record.getSymptoms());
-                return null;
+                return false;
             }
 
             try (PreparedStatement medStmt = con.prepareStatement(ADD_STUDENT_MEDICAL_RECORD)) {
@@ -213,37 +216,38 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                 medStmt.setString(10, record.getTreatment());
                 medStmt.setInt(11, 1);
 
-                int affectedRow = medStmt.executeUpdate();
-                if (affectedRow > 0) {
+                int affectedRows = medStmt.executeUpdate();
+                if (affectedRows > 0) {
                     try (PreparedStatement selectStmt = con.prepareStatement(GET_LAST_INSERTED_MEDICAL_RECORD_ID)) {
-
                         selectStmt.setLong(1, record.getStudentId());
                         try (ResultSet rs = selectStmt.executeQuery()) {
                             if (rs.next()) {
                                 Long medRecordId = rs.getLong("id");
-                                LOGGER.info("Retrieved inserted medical_record ID: {}", medRecordId);
+                                record.setMedicalRecordId(medRecordId);
+                                LOGGER.debug("Assigned medicalRecordId to patient: {}", medRecordId);
                                 con.commit();
-                                return medRecordId;
+                                return true;
                             } else {
-                                LOGGER.warn("Insert succeeded but no medical record ID found.");
+                                LOGGER.warn("Insert succeeded but no medical record ID returned.");
                                 con.rollback();
                             }
                         }
                     }
                 } else {
-                    LOGGER.warn("Medical record insert affected 0 rows.");
+                    LOGGER.warn("Insert affected 0 rows for student ID {}", record.getStudentId());
                     con.rollback();
                 }
+
             } catch (SQLException e) {
-                LOGGER.error("Error inserting medical record", e);
+                LOGGER.error("Error inserting medical record: {}", e.getMessage(), e);
                 con.rollback();
             }
 
         } catch (SQLException e) {
-            LOGGER.error("Connection or rollback failed", e);
+            LOGGER.error("Connection or rollback failed: {}", e.getMessage(), e);
         }
 
-        return null;
+        return false;
     }
 
     private Long addNewAilment(Connection con, String symptoms) {
@@ -287,12 +291,12 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
     }
 
     @Override
-    public boolean addMedicineAdministered(Student record) {
+    public boolean addMedicineAdministered(Patient record) {
         try (Connection con = ConnectionHelper.getConnection();
              PreparedStatement stmt = con.prepareStatement(ADD_MEDICINE_ADMINISTERED)) {
 
             stmt.setLong(1, record.getMedicineId());
-            stmt.setLong(2, record.getSetMedicalRecordId());
+            stmt.setLong(2, record.getMedicalRecordId());
             stmt.setLong(3, record.getNurseInChargeId());
             stmt.setString(4, record.getTreatment());
             stmt.setInt(5, record.getDispensingOut());

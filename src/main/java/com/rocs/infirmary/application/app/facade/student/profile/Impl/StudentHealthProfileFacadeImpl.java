@@ -3,6 +3,7 @@ package com.rocs.infirmary.application.app.facade.student.profile.Impl;
 import com.rocs.infirmary.application.app.facade.student.profile.StudentHealthProfileFacade;
 import com.rocs.infirmary.application.data.dao.student.profile.Impl.StudentHealthProfileDaoImpl;
 import com.rocs.infirmary.application.data.dao.student.profile.StudentHealthProfileDao;
+import com.rocs.infirmary.application.data.model.person.student.Patient;
 import com.rocs.infirmary.application.data.model.person.student.Student;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +21,8 @@ public class StudentHealthProfileFacadeImpl implements StudentHealthProfileFacad
     }
 
     @Override
-    public List<Student> getStudentHealthProfileByLRN(Long LRN) {
-        List<Student> studentListProfile = studentHealthProfileDao.findStudentHealthProfileByLrn(LRN);
+    public List<Patient> getStudentHealthProfileByLRN(Long LRN) {
+        List<Patient> studentListProfile = studentHealthProfileDao.findStudentHealthProfileByLrn(LRN);
         return studentListProfile;
     }
 }

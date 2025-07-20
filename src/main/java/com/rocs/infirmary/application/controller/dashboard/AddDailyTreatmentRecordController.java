@@ -2,6 +2,8 @@ package com.rocs.infirmary.application.controller.dashboard;
 
 import static com.rocs.infirmary.application.controller.helper.ControllerHelper.showDialog;
 
+import com.rocs.infirmary.application.data.model.person.nurse.Nurse;
+import com.rocs.infirmary.application.data.model.person.student.Patient;
 import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
 import com.rocs.infirmary.application.module.medical.record.management.application.MedicalRecordInfoMgtApplication;
 import com.rocs.infirmary.application.data.model.person.student.Student;
@@ -24,6 +26,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * {@code AddDailyTreatmentRecordController} is used to handle event processes of adding new daily treatment record of a student
@@ -38,7 +42,7 @@ public class AddDailyTreatmentRecordController implements Initializable {
     @FXML
     private TextField nameField;
     @FXML
-    public TextField ageField;
+    private TextField ageField;
     @FXML
     private TextField gradeSectionField;
     @FXML
@@ -52,7 +56,7 @@ public class AddDailyTreatmentRecordController implements Initializable {
     @FXML
     private TextField symptomsField;
     @FXML
-    private ComboBox<Student> nurseInChargeComboBox;
+    private ComboBox<Nurse> nurseInChargeComboBox;
     @FXML
     private TextField treatmentField;
     @FXML
@@ -73,9 +77,8 @@ public class AddDailyTreatmentRecordController implements Initializable {
         addLrnAutoFillListener();
         List<Medicine> available = inventoryApp.getMedicineInventoryFacade().getAllMedicine();
         medicineNameComboBox.setItems(FXCollections.observableArrayList(available));
-        List<Student> nurses = medicalRecordInfoMgtApplication.getStudentMedicalRecordFacade().getAllNurseAccounts();
+        List<Nurse> nurses = medicalRecordInfoMgtApplication.getStudentMedicalRecordFacade().getAllNurseAccounts();
         nurseInChargeComboBox.setItems(FXCollections.observableArrayList(nurses));
-
     }
     /**
      * Sets the controller responsible for updating the clinic visit log view.
@@ -124,7 +127,7 @@ public class AddDailyTreatmentRecordController implements Initializable {
             showDialog("Warning", "Treatment cannot be empty.");
             return;
         } else if (dispense.isEmpty() || !dispense.matches("^\\d+$")) {
-            showDialog("Warning", "Dispensing quantity must be numeric.");
+            showDialog("Warning", "Dispensing quantity must be a number.");
             return;
         } else if (datePickerTextField.getValue() == null) {
             showDialog("Warning", "Visit date must be selected.");
@@ -135,27 +138,72 @@ public class AddDailyTreatmentRecordController implements Initializable {
     }
 
     @FXML
+    private void handleCancelButton(ActionEvent actionEvent) {
+        ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
+    }
+
     private void addDailyRecord() {
         try {
-            Student record = createStudentMedicalRecordFromForm();
-            if (record == null) return;
+            Patient patient = createStudentMedicalRecordFromForm();
+            if (patient == null) return;
 
             Medicine matchedMedicine = SelectedMedicine(medicineNameComboBox.getEditor().getText());
             if (matchedMedicine == null) return;
-            if (!updateInventoryDispensed(record, matchedMedicine)) return;
-            if (!populateExistingStudentInfo(record)) return;
-            record.setMedicineId(matchedMedicine.getMedicineId());
+            if (!updateInventoryDispensed(patient, matchedMedicine)) return;
+            if (!populateExistingStudentInfo(patient)) return;
+            patient.setMedicineId(matchedMedicine.getMedicineId());
 
-            if (!saveMedicalRecordAndTreatment(record)) return;
+            if (!saveMedicalRecordAndTreatment(patient)) return;
             if (clinicVisitLogPageController != null) {
-                clinicVisitLogPageController.addStudentMedicalRecord(record);
+                clinicVisitLogPageController.addStudentMedicalRecord(patient);
             }
+
             showDialog("Notification", "Success, Record Added Successfully.");
             ((Stage) lrnField.getScene().getWindow()).close();
+
         } catch (Exception e) {
             LOGGER.error("Unhandled exception in addDailyRecord", e);
             showDialog("Error", "Unexpected error. Record not saved.");
         }
+    }
+
+    private Patient createStudentMedicalRecordFromForm() {
+        Patient patient = new Patient();
+
+        String lrn = lrnField.getText().trim();
+        double temperature = Double.parseDouble(bodyTempField.getText().trim());
+        int pulse = Integer.parseInt(pulseRateField.getText().trim());
+        int respiration = Integer.parseInt(respiratoryRateField.getText().trim());
+        int dispensingOut = Integer.parseInt(invDispensingOutField.getText().trim());
+
+        patient.setLrn(lrn);
+        String[] nameParts = nameField.getText().trim().split("\\s+");
+        patient.setFirstName(nameParts.length > 0 ? nameParts[0] : "");
+        patient.setMiddleName(nameParts.length == 3 ? nameParts[1] : "");
+        patient.setLastName(nameParts.length == 3 ? nameParts[2] : (nameParts.length == 2 ? nameParts[1] : ""));
+        String[] parts = gradeSectionField.getText().split(" - ");
+        patient.setGradeLevel(parts.length > 0 ? parts[0].trim() : "");
+        patient.setSection(parts.length > 1 ? parts[1].trim() : "");
+        patient.setTemperatureReadings(String.valueOf(temperature));
+        patient.setPulseRate(pulse);
+        patient.setRespiratoryRate(respiration);
+        patient.setBloodPressure(bloodPressureField.getText().trim());
+        patient.setDispensingOut(dispensingOut);
+        patient.setSymptoms(symptomsField.getText().trim());
+        patient.setTreatment(treatmentField.getText().trim());
+        patient.setMedicineName(medicineNameComboBox.getEditor().getText().trim());
+        Nurse selectedNurse = nurseInChargeComboBox.getSelectionModel().getSelectedItem();
+        if (selectedNurse != null) {
+            patient.setNurseInChargeId(selectedNurse.getNurseInChargeId());
+            String fullName = Stream.of(selectedNurse.getFirstName(), selectedNurse.getMiddleName(), selectedNurse.getLastName()).filter(n -> n != null && !n.isBlank())
+                    .map(String::trim)
+                    .collect(Collectors.joining(" "));
+            patient.setNurseInCharge(fullName);
+        }
+        LocalDate selectedDate = datePickerTextField.getValue();
+        patient.setVisitDate(Date.from(selectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+
+        return patient;
     }
 
     private Medicine SelectedMedicine(String rawInput) {
@@ -177,8 +225,8 @@ public class AddDailyTreatmentRecordController implements Initializable {
         return null;
     }
 
-    private boolean updateInventoryDispensed(Student record, Medicine medicine) {
-        int dispensingQty = record.getDispensingOut();
+    private boolean updateInventoryDispensed(Patient patient, Medicine medicine) {
+        int dispensingQty = patient.getDispensingOut();
         int updatedQty = medicine.getQuantity() - dispensingQty;
 
         if (updatedQty <= 0) {
@@ -212,16 +260,19 @@ public class AddDailyTreatmentRecordController implements Initializable {
         return true;
     }
 
-    private boolean saveMedicalRecordAndTreatment(Student record) {
+    private boolean saveMedicalRecordAndTreatment(Patient patient) {
         try {
-            Long medRecordId = medicalRecordInfoMgtApplication.getStudentMedicalRecordFacade().addStudentMedicalRecord(record);
-
-            if (medRecordId == null) {
+            boolean saved = medicalRecordInfoMgtApplication.getStudentMedicalRecordFacade().addStudentMedicalRecord(patient);
+            if (!saved) {
                 showDialog("Warning", "Failed to save medical record.");
                 return false;
             }
-            record.setMedicalRecordId(medRecordId);
-            boolean administered = medicalRecordInfoMgtApplication.getStudentMedicalRecordFacade().addMedicineAdministered(record);
+            if (patient.getMedicalRecordId() == null) {
+                showDialog("Warning", "Medical record ID was not assigned. Cannot proceed with medicine administration.");
+                return false;
+            }
+
+            boolean administered = medicalRecordInfoMgtApplication.getStudentMedicalRecordFacade().addMedicineAdministered(patient);
             if (!administered) {
                 showDialog("Warning", "Failed to save medicine administration record.");
                 return false;
@@ -231,80 +282,36 @@ public class AddDailyTreatmentRecordController implements Initializable {
             showDialog("Error", "Failed to save treatment record.");
             return false;
         }
+
         return true;
     }
 
     private void addLrnAutoFillListener() {
         lrnField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == null || newValue.isBlank()) return;
+            if (newValue == null || newValue.isBlank()) {
+                return;
+            }
+
+            String lrn = newValue.trim();
             try {
-                long lrn = Long.parseLong(newValue.trim());
-                Student existing = medicalRecordInfoMgtApplication.getStudentMedicalRecordFacade().getMedicalInformationByLRN(lrn);
-                if (existing != null) {
-                    List<String> nameParts = Arrays.asList(existing.getFirstName(), existing.getMiddleName(), existing.getLastName());
-                    StringBuilder nameBuilder = new StringBuilder();
-                    for (String parts : nameParts) {
-                        if (parts != null && !parts.isBlank()) {
-                            if (nameBuilder.length() > 0) nameBuilder.append(" ");
-                            nameBuilder.append(parts.trim());
-                        }
-                    }
-                    nameField.setText(nameBuilder.toString());
-                    gradeSectionField.setText(
-                            (existing.getGradeLevel() != null ? existing.getGradeLevel().trim() : "") + " - " +
-                                    (existing.getSection() != null ? existing.getSection().trim() : "")
-                    );
-                    ageField.setText(String.valueOf(existing.getAge()));
+                Student matchedStudent = medicalRecordInfoMgtApplication.getStudentMedicalRecordFacade().getMedicalInformationByLRN(lrn);
+                if (matchedStudent != null) {
+                    String fullName = Stream.of(matchedStudent.getFirstName(), matchedStudent.getMiddleName(), matchedStudent.getLastName())
+                            .filter(part -> part != null && !part.isBlank())
+                            .map(String::trim)
+                            .collect(Collectors.joining(" "));
+                    nameField.setText(fullName);
+                    String grade = matchedStudent.getGradeLevel() != null ? matchedStudent.getGradeLevel().trim() : "";
+                    String section = matchedStudent.getSection() != null ? matchedStudent.getSection().trim() : "";
+                    gradeSectionField.setText(grade + " - " + section);
+                    ageField.setText(String.valueOf(matchedStudent.getAge()));
                 }
-            } catch (NumberFormatException e) {
-                showDialog("Warning", "Invalid LRN format. Please enter only numeric values.");
-                LOGGER.warn("LRN input is not a valid number: {}", newValue, e);
+
+            } catch (Exception e) {
+                showDialog("Warning", "Error retrieving student data. Please check LRN input.");
+                LOGGER.warn("Exception occurred while retrieving student info for LRN '{}': {}", lrn, e.getMessage(), e);
             }
         });
-    }
-
-    private Student createStudentMedicalRecordFromForm() {
-        Student student = new Student();
-
-        long lrn = Long.parseLong(lrnField.getText().trim());
-        double temperature = Double.parseDouble(bodyTempField.getText().trim());
-        int pulse = Integer.parseInt(pulseRateField.getText().trim());
-        int respiration = Integer.parseInt(respiratoryRateField.getText().trim());
-        int dispensingOut = Integer.parseInt(invDispensingOutField.getText().trim());
-
-        student.setLrn(lrn);
-        String[] nameParts = nameField.getText().trim().split("\\s+");
-        student.setFirstName(nameParts.length > 0 ? nameParts[0] : "");
-        student.setMiddleName(nameParts.length == 3 ? nameParts[1] : "");
-        student.setLastName(nameParts.length == 3 ? nameParts[2] : (nameParts.length == 2 ? nameParts[1] : ""));
-        String[] parts = gradeSectionField.getText().split(" - ");
-        student.setGradeLevel(parts.length > 0 ? parts[0].trim() : "");
-        student.setSection(parts.length > 1 ? parts[1].trim() : "");
-        student.setTemperatureReadings(String.valueOf(temperature));
-        student.setPulseRate(pulse);
-        student.setRespiratoryRate(respiration);
-        student.setBloodPressure(bloodPressureField.getText().trim());
-        student.setDispensingOut(dispensingOut);
-        student.setSymptoms(symptomsField.getText().trim());
-        student.setTreatment(treatmentField.getText().trim());
-
-        Student selectedNurse = nurseInChargeComboBox.getSelectionModel().getSelectedItem();
-        if (selectedNurse != null) {
-            student.setNurseInChargeId(selectedNurse.getStudentId());
-            student.setNurseInCharge(selectedNurse.getFirstName() + " " + selectedNurse.getLastName());
-        }
-
-        student.setMedicineName(medicineNameComboBox.getEditor().getText().trim());
-
-        LocalDate selectedDate = datePickerTextField.getValue();
-        student.setVisitDate(Date.from(selectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-
-        return student;
-    }
-
-    @FXML
-    private void handleCancelButton(ActionEvent actionEvent) {
-        ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
     }
 
 }

@@ -1,5 +1,7 @@
 package com.rocs.infirmary.application.app.facade.student.record;
 
+import com.rocs.infirmary.application.data.model.person.nurse.Nurse;
+import com.rocs.infirmary.application.data.model.person.student.Patient;
 import com.rocs.infirmary.application.data.model.person.student.Student;
 
 import java.util.Date;
@@ -13,17 +15,19 @@ public interface StudentMedicalRecordFacade {
      * Retrieves a student's important details and student record.
      * @param LRN The LRN (Learner Reference Number) of the student.
      */
-    Student getMedicalInformationByLRN(Long LRN);
+    Student getMedicalInformationByLRN(String LRN);
     /**
      * Retrieves all student medical records from the database.
+     *
      * @return A list of student medical records, or an empty list if no records are found.
      */
-    List<Student> getAllStudentMedicalRecords();
+    List<Patient> getAllStudentMedicalRecords();
     /**
      * Retrieves all nurse information from the database.
+     *
      * @return A list of nurse information, or an empty list if no records are found.
      */
-    List<Student> getAllNurseAccounts();
+    List<Nurse> getAllNurseAccounts();
     /**
      * This intended to delete a student's medical record based on their Learner Reference Number (LRN).
      * The LRN is a unique identifier assigned to each student. This value is used to locate and delete the corresponding medical record.
@@ -42,16 +46,15 @@ public interface StudentMedicalRecordFacade {
     /**
      * Adds a new student medical record to the system.
      *
-     * @param record the student object containing all necessary attributes
+     * @param patient the student object containing all necessary attributes
      * @return true if the medical record was successfully added; false otherwise
      */
-    Long addStudentMedicalRecord(Student record);
+    boolean addStudentMedicalRecord(Patient patient);
     /**
      * adds a medicine administration entry for a student.
      * This intended to insert a record into the medicine_administered table and links it to an existing medical record.
      *
      * @return true if the record was successfully logged; false otherwise
      */
-    boolean addMedicineAdministered(Student record);
-
+    boolean addMedicineAdministered(Patient patient);
 }

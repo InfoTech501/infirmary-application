@@ -1,5 +1,6 @@
 package com.rocs.infirmary.application.controller.dashboard;
 
+import com.rocs.infirmary.application.data.model.person.student.Patient;
 import com.rocs.infirmary.application.module.medical.record.management.application.MedicalRecordInfoMgtApplication;
 import com.rocs.infirmary.application.data.model.person.student.Student;
 import javafx.beans.property.SimpleStringProperty;
@@ -11,7 +12,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * {@code ClinicVisitLogPageController} is used to handle event processes of the Medical Record of the Student,
@@ -35,7 +37,7 @@ public class ClinicVisitLogPageController implements Initializable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClinicVisitLogPageController.class);
     @FXML
-    private TableView<Student> visitLogTable;
+    private TableView<Patient> visitLogTable;
     @FXML
     private TableColumn<Student, String> nameColumn;
     @FXML
@@ -55,7 +57,7 @@ public class ClinicVisitLogPageController implements Initializable {
     private int rowsPerPage = 10;
     private int currentPage = 1;
 
-    private List<Student> fullStudentList;
+    private List<Patient> fullStudentList;
     private final MedicalRecordInfoMgtApplication medicalRecordInfoMgtApplication = new MedicalRecordInfoMgtApplication();
 
     @Override
@@ -82,10 +84,9 @@ public class ClinicVisitLogPageController implements Initializable {
         });
         symptomsColumn.setCellValueFactory(new PropertyValueFactory<>("symptoms"));
         visitDateColumn.setCellValueFactory(cellData -> {
-            Date visitDate = cellData.getValue().getVisitDate();
-            String formatted = visitDate != null
-                    ? new SimpleDateFormat("MMM dd, yyyy").format(visitDate)
-                    : "N/A";
+            Patient patient = (Patient) cellData.getValue();
+            Date visitDate = patient.getVisitDate();
+            String formatted = visitDate != null ? new SimpleDateFormat("MMM dd, yyyy").format(visitDate) : "N/A";
             return new SimpleStringProperty(formatted);
         });
         visitDateColumn.setStyle("-fx-alignment: CENTER;");
@@ -94,25 +95,11 @@ public class ClinicVisitLogPageController implements Initializable {
 
     private void setupTableColumns() {
         nameColumn.setCellValueFactory(cellData -> {
-            Student student = cellData.getValue();
-
-            List<String> nameParts = Arrays.asList(
-                    student.getFirstName(),
-                    student.getMiddleName(),
-                    student.getLastName()
-            );
-
-            StringBuilder fullNameBuilder = new StringBuilder();
-            for (String part : nameParts) {
-                if (part != null && !part.isBlank()) {
-                    if (fullNameBuilder.length() > 0) {
-                        fullNameBuilder.append(" ");
-                    }
-                    fullNameBuilder.append(part.trim());
-                }
-            }
-            String fullName = fullNameBuilder.toString();
-
+            Student s = cellData.getValue();
+            String fullName = Stream.of(s.getFirstName(), s.getMiddleName(), s.getLastName())
+                    .filter(part -> part != null && !part.isBlank())
+                    .map(String::trim)
+                    .collect(Collectors.joining(" "));
             return new SimpleStringProperty(fullName);
         });
 
@@ -127,20 +114,22 @@ public class ClinicVisitLogPageController implements Initializable {
         symptomsColumn.setStyle("-fx-alignment: CENTER;");
 
         visitDateColumn.setCellValueFactory(cellData -> {
-            Date visitDate = cellData.getValue().getVisitDate();
+            Patient patient = (Patient) cellData.getValue();
+            Date visitDate = patient.getVisitDate();
             String formatted = visitDate != null ? new SimpleDateFormat("MMM dd, yyyy").format(visitDate) : "N/A";
             return new SimpleStringProperty(formatted);
         });
+
         visitDateColumn.setStyle("-fx-alignment: CENTER;");
     }
 
     private void setupRowFactory() {
         visitLogTable.setRowFactory(tv -> {
-            TableRow<Student> row = new TableRow<>();
+            TableRow<Patient> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (!row.isEmpty() && event.getClickCount() == 2) {
-                    Student selectedStudent = row.getItem();
-                    openViewStudentVisitLogModal(selectedStudent);
+                    Patient selectedPatient = row.getItem();
+                    openViewStudentVisitLogModal(selectedPatient);
                 }
             });
             return row;
@@ -197,10 +186,10 @@ public class ClinicVisitLogPageController implements Initializable {
                 return;
             }
 
-            ObservableList<Student> tableItems = visitLogTable.getItems();
+            ObservableList<Patient> tableItems = visitLogTable.getItems();
             if (tableItems == null || tableItems.isEmpty()) return;
 
-            FilteredList<Student> filteredList = new FilteredList<>(tableItems, s -> true);
+            FilteredList<Patient> filteredList = new FilteredList<>(tableItems, s -> true);
             filteredList.setPredicate(student -> {
                 String keyword = newValue.toLowerCase();
 
@@ -223,19 +212,19 @@ public class ClinicVisitLogPageController implements Initializable {
                         || visitDate.contains(keyword);
             });
 
-            SortedList<Student> sortedList = new SortedList<>(filteredList);
+            SortedList<Patient> sortedList = new SortedList<>(filteredList);
             sortedList.comparatorProperty().bind(visitLogTable.comparatorProperty());
             visitLogTable.setItems(sortedList);
         });
     }
 
-    private void openViewStudentVisitLogModal(Student student) {
+    private void openViewStudentVisitLogModal(Patient patient) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ViewStudentVisitLog.fxml"));
             Parent root = loader.load();
 
             ViewStudentVisitLogController controller = loader.getController();
-            controller.setStudentData(student);
+            controller.setStudentData(patient);
 
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -245,7 +234,7 @@ public class ClinicVisitLogPageController implements Initializable {
 
         } catch (IOException e) {
             LOGGER.error("Error opening visit log modal for LRN '{}'",
-                    student != null ? student.getLrn() : "unknown", e);
+                    patient != null ? patient.getLrn() : "unknown", e);
         }
 
     }
@@ -269,8 +258,8 @@ public class ClinicVisitLogPageController implements Initializable {
         int fromIndex = (currentPage - 1) * rowsPerPage;
         int toIndex = Math.min(fromIndex + rowsPerPage, total);
 
-        List<Student> pageData = fullStudentList.subList(fromIndex, toIndex);
-        ObservableList<Student> pageItems = FXCollections.observableArrayList(pageData);
+        List<Patient> pageData = fullStudentList.subList(fromIndex, toIndex);
+        ObservableList<Patient> pageItems = FXCollections.observableArrayList(pageData);
         visitLogTable.setItems(pageItems);
 
         searchTextField.setText("");

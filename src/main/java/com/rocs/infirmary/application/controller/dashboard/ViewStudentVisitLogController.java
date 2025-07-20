@@ -1,5 +1,6 @@
 package com.rocs.infirmary.application.controller.dashboard;
 
+import com.rocs.infirmary.application.data.model.person.student.Patient;
 import com.rocs.infirmary.application.data.model.person.student.Student;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -66,35 +67,35 @@ public class ViewStudentVisitLogController implements Initializable {
 
     /**
      * This method displays student data on the form fields for viewing.
-     * @param student the Student object to be displayed.
+     * @param patient the Student object to be displayed.
      */
-    public void setStudentData(Student student) {
-        if (student == null) {
+    public void setStudentData(Patient patient) {
+        if (patient == null) {
             return;
         }
 
-        viewLrn.setText(formatValue(student.getLrn()));
-        viewFirstname.setText(formatValue(student.getFirstName()));
-        viewMiddleName.setText(formatValue(student.getMiddleName()));
-        viewLastname.setText(formatValue(student.getLastName()));
-        viewSex.setText(formatValue(student.getGender()));
-        viewAge.setText(formatValue(student.getAge()));
-        viewGradeSection.setText(formatValue(student.getGradeLevel() + " - " + student.getSection()));
-        viewContactNum.setText(formatValue(student.getContactNumber()));
-        viewHomeAdd.setText(formatValue(student.getAddress()));
-        viewEmailAdd.setText(formatValue(student.getEmail()));
-        viewBodyTemp.setText(formatValue(student.getTemperatureReadings()));
-        viewPulseRate.setText(formatValue(student.getPulseRate()));
-        viewRespiratoryRate.setText(formatValue(student.getRespiratoryRate()));
-        viewBloodPressure.setText(formatValue(student.getBloodPressure()) + " mmHg");
-        viewSymptoms.setText(formatValue(student.getSymptoms()));
-        viewNurseIntervention.setText(formatValue(student.getNurseInCharge()));
-        viewTreatment.setText(formatValue(student.getTreatment()));
-        viewMedicineName.setText(formatValue(student.getMedicineName()));
-        viewDispensingOut.setText(formatValue(student.getDispensingOut()));
-        if (student.getVisitDate() != null) {
+        viewLrn.setText(formatValue(patient.getLrn()));
+        viewFirstname.setText(formatValue(patient.getFirstName()));
+        viewMiddleName.setText(formatValue(patient.getMiddleName()));
+        viewLastname.setText(formatValue(patient.getLastName()));
+        viewSex.setText(formatValue(patient.getGender()));
+        viewAge.setText(formatValue(patient.getAge()));
+        viewGradeSection.setText(formatValue(patient.getGradeLevel() + " - " + patient.getSection()));
+        viewContactNum.setText(formatValue(patient.getContactNumber()));
+        viewHomeAdd.setText(formatValue(patient.getAddress()));
+        viewEmailAdd.setText(formatValue(patient.getEmail()));
+        viewBodyTemp.setText(formatValue(patient.getTemperatureReadings()));
+        viewPulseRate.setText(formatValue(patient.getPulseRate()));
+        viewRespiratoryRate.setText(formatValue(patient.getRespiratoryRate()));
+        viewBloodPressure.setText(formatValue(patient.getBloodPressure()) + " mmHg");
+        viewSymptoms.setText(formatValue(patient.getSymptoms()));
+        viewNurseIntervention.setText(formatValue(patient.getNurseInCharge()));
+        viewTreatment.setText(formatValue(patient.getTreatment()));
+        viewMedicineName.setText(formatValue(patient.getMedicineName()));
+        viewDispensingOut.setText(formatValue(patient.getDispensingOut()));
+        if (patient.getVisitDate() != null) {
             SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy");
-            viewVisitDate.setText(sdf.format(student.getVisitDate()));
+            viewVisitDate.setText(sdf.format(patient.getVisitDate()));
         } else {
             viewVisitDate.setText("");
         }

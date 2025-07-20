@@ -1,6 +1,8 @@
 package com.rocs.infirmary.application.app.facade.student.record.impl;
 
 import com.rocs.infirmary.application.app.facade.student.record.StudentMedicalRecordFacade;
+import com.rocs.infirmary.application.data.model.person.nurse.Nurse;
+import com.rocs.infirmary.application.data.model.person.student.Patient;
 import com.rocs.infirmary.application.data.model.person.student.Student;
 import com.rocs.infirmary.application.data.dao.student.record.StudentMedicalRecordDao;
 import com.rocs.infirmary.application.data.dao.student.record.impl.StudentMedicalRecordDaoImpl;
@@ -37,7 +39,7 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
         this.studentMedRecord = studentMedRecord;
     }
 
-    public Student getMedicalInformationByLRN(Long LRN) {
+    public Student getMedicalInformationByLRN(String LRN) {
         logger.debug("Entering getMedicalInformationByLRN with LRN: {}", LRN);
         Student student = this.studentMedRecord.findMedicalInformation(LRN);
         logger.debug("Exiting getMedicalInformationByLRN with result: {}", student);
@@ -45,9 +47,9 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
     }
 
     @Override
-    public List<Student> getAllStudentMedicalRecords() {
+    public List<Patient> getAllStudentMedicalRecords() {
         logger.info("Entering getAllStudentMedicalRecords");
-        List<Student> medicalRecords = this.studentMedRecord.findAllStudentMedicalRecords();
+        List<Patient> medicalRecords = this.studentMedRecord.findAllStudentMedicalRecords();
         logger.info("Exiting getAllStudentMedicalRecords with {} records found.", medicalRecords.size());
         return medicalRecords;
     }
@@ -74,28 +76,28 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
     }
 
     @Override
-    public Long addStudentMedicalRecord(Student record) {
+    public boolean addStudentMedicalRecord(Patient record) {
         logger.debug("Entering addStudentMedicalRecord with Student: {}", record);
-        Long medicalRecordId = this.studentMedRecord.addStudentMedicalRecord(record);
-        logger.debug("Exiting addStudentMedicalRecord with returned ID: {}", medicalRecordId);
-        return medicalRecordId;
+        boolean isInserted = this.studentMedRecord.addStudentMedicalRecord(record);
+        logger.debug("Exiting addStudentMedicalRecord – success status: {}", isInserted);
+        return isInserted;
     }
 
     @Override
-    public List<Student> getAllNurseAccounts() {
+    public List<Nurse> getAllNurseAccounts() {
         logger.info("Retrieving all nurse accounts...");
-        List<Student> nurses = studentMedRecord.getAllNurseAccounts();
+        List<Nurse> nurses = studentMedRecord.getAllNurseAccounts();
         logger.info("Retrieved {} nurse records", nurses.size());
         return nurses;
     }
 
     @Override
-    public boolean addMedicineAdministered(Student record) {
+    public boolean addMedicineAdministered(Patient record) {
         logger.info("Entering addMedicineAdministered with studentId: {}, medicineId: {}",
                 record.getStudentId(), record.getMedicineId());
-        boolean wasInserted = studentMedRecord.addMedicineAdministered(record);
-        logger.info("Exiting addMedicineAdministered with insertion result: {}", wasInserted);
-        return wasInserted;
+        boolean isInserted = studentMedRecord.addMedicineAdministered(record);
+        logger.info("Exiting addMedicineAdministered with insertion result: {}", isInserted);
+        return isInserted;
     }
 
 }
