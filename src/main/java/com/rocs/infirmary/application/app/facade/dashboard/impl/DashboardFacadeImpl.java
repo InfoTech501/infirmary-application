@@ -2,7 +2,7 @@ package com.rocs.infirmary.application.app.facade.dashboard.impl;
 
 import com.rocs.infirmary.application.app.facade.dashboard.DashboardFacade;
 import com.rocs.infirmary.application.data.dao.report.dashboard.DashboardReports;
-import com.rocs.infirmary.application.data.dao.report.dashboard.impl.DashboardReportsDaoImpl;
+import com.rocs.infirmary.application.data.dao.report.dashboard.impl.DashboardReportsImpl;
 import com.rocs.infirmary.application.data.model.report.ailment.CommonAilmentsReport;
 import com.rocs.infirmary.application.data.model.report.lowstock.LowStockReport;
 import com.rocs.infirmary.application.data.model.report.visit.FrequentVisitReport;
@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 
 
 public class DashboardFacadeImpl implements DashboardFacade {
-    private DashboardReports dashboardReports = new DashboardReportsDaoImpl();
+    private DashboardReports dashboardReports = new DashboardReportsImpl();
     /**
      * {@code DashboardFacadeImpl()} is a constructor that requires parameter
      * @param dashboardReports DAO implementation of Medicine Inventory
@@ -32,7 +32,7 @@ public class DashboardFacadeImpl implements DashboardFacade {
         this.dashboardReports = dashboardReports;
     }
 
-    private final DashboardReports dashboard = new DashboardReportsDaoImpl();
+    private final DashboardReports dashboard = new DashboardReportsImpl();
     private static final Logger logger = LoggerFactory.getLogger(DashboardFacadeImpl.class);
 
     @Override

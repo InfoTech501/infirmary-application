@@ -48,10 +48,7 @@ public class LowStockNotificationController {
         alertContainer.setManaged(true);
     }
 
-    /**
-     * Closes the current modal window when the close button is clicked.
-     * @param event the mouse click event triggered by the close button
-     */
+
     @FXML
     private void onCloseButton(MouseEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
