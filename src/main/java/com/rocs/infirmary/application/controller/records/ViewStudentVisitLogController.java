@@ -1,7 +1,6 @@
-package com.rocs.infirmary.application.controller.dashboard;
+package com.rocs.infirmary.application.controller.records;
 
 import com.rocs.infirmary.application.data.model.person.student.Patient;
-import com.rocs.infirmary.application.data.model.person.student.Student;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

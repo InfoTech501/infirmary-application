@@ -1,4 +1,4 @@
-package com.rocs.infirmary.application.controller.dashboard;
+package com.rocs.infirmary.application.controller.records;
 
 import static com.rocs.infirmary.application.controller.helper.ControllerHelper.showDialog;
 

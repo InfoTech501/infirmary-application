@@ -1,4 +1,4 @@
-package com.rocs.infirmary.application.controller.dashboard;
+package com.rocs.infirmary.application.controller.records;
 
 import com.rocs.infirmary.application.data.model.person.student.Patient;
 import com.rocs.infirmary.application.module.medical.record.management.application.MedicalRecordInfoMgtApplication;
