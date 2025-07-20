@@ -41,7 +41,7 @@ public class UpdateInventoryController {
     private Long inventoryId;
     private Date expirationDate;
 
-
+    private InventoryController parentController;
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     private final Logger LOGGER = LoggerFactory.getLogger(UpdateInventoryController.class);
     private static final String PROMPT = "  (Product Name Cannot be edited here)";
@@ -73,9 +73,15 @@ public class UpdateInventoryController {
         itemTypeComboBox.setPromptText(defaultItemType);
 
     }
-
-    private boolean updateMedicine(String itemType,int quantity)throws ParseException{
+    /**
+     * this method handles the update functionality.
+     * @param quantity the new quantity to update for the medicine
+     * @return {@code true} if the medicine was successfully updated; {@code false} if not updated
+     * @throws ParseException if there is an error parsing the expiration date or other date fields
+     */
+    public boolean updateMedicine(int quantity)throws ParseException{
         boolean isUpdated = false;
+        String itemType = defaultItemType;
         try {
             if (productNameTextField != null && quantityTextField != null && expirationDatePicker != null && itemTypeComboBox != null && productNameTextField.getText() != null && !productNameTextField.getText().isBlank()&& !quantityTextField.getText().isBlank()) {
 
@@ -107,6 +113,9 @@ public class UpdateInventoryController {
      * @param actionEvent the event triggered by the confirm button click
      */
     public void onCancelButtonClick(ActionEvent actionEvent) {
+        if (parentController != null) {
+            parentController.refresh();
+        }
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         LOGGER.info("Exiting Update Inventory Modal");
         stage.close();
@@ -136,8 +145,11 @@ public class UpdateInventoryController {
             } else {
                 Optional<ButtonType> result = ControllerHelper.alertAction("Update Confirmation", "This action cannot be undone. Are you sure about this update?");
                 if (result.isPresent()&& result.get().getButtonData() == ButtonBar.ButtonData.YES) {
-                    if (updateMedicine(defaultItemType, Integer.parseInt(quantityTextField.getText()))) {
+                    if (updateMedicine(Integer.parseInt(quantityTextField.getText()))) {
                         ControllerHelper.showDialog("Notification", "Updated Successfully!");
+                        if (parentController != null) {
+                            parentController.refresh();
+                        }
                         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
                         LOGGER.info("Exiting Update Inventory Modal");
                         stage.close();
@@ -147,5 +159,12 @@ public class UpdateInventoryController {
         }catch (NullPointerException e){
             LOGGER.error("NullPointerException Occurred "+e);
         }
+    }
+    /**
+     * this method setup's the parent controller
+     * @param parentController the parent InventoryController instance to be associated with this controller
+     * */
+    public void setParentController(InventoryController parentController) {
+        this.parentController = parentController;
     }
 }
