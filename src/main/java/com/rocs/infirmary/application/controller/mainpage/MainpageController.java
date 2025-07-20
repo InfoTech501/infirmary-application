@@ -48,6 +48,7 @@ public class MainpageController implements Initializable {
         loadDashboard();
         alertHelper = new LowStockAlertHelper(lowStockNotificationServiceApplication,redCircle,notificationBtn);
         alertHelper.checkLowStockAndShowAlert(homepageScene);
+        alertHelper.startAutoUpdate(homepageScene,2);
     }
 
     private void loadDashboard() {
@@ -92,7 +93,6 @@ public class MainpageController implements Initializable {
     @FXML
     public void setInventoryBtn() throws IOException {
         switchScene("/views/InventoryPage.fxml");
-        alertHelper.checkLowStockAndShowAlert(homepageScene);
         pageLabel.setText("Inventory");
     }
 

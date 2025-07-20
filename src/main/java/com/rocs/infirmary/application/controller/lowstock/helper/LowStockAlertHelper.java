@@ -3,10 +3,14 @@ package com.rocs.infirmary.application.controller.lowstock.helper;
 import com.rocs.infirmary.application.controller.lowstock.LowStockNotificationController;
 import com.rocs.infirmary.application.data.model.report.lowstock.LowStockReport;
 import com.rocs.infirmary.application.module.lowstock.notification.service.LowStockNotificationServiceApplication;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.Node;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+
 import java.util.List;
 
 /**
@@ -57,4 +61,20 @@ public class LowStockAlertHelper {
             });
 
         }
+
+    /**
+     * Automatically checks for low stock items every few seconds.
+     * This will update the red circle and notification message on the UI
+     * without needing the user to click anything.
+     *
+     * @param nodeFromCurrentPage a UI element from the current page, used to get the window
+     * @param intervalSeconds how many seconds to check for low stock items
+     */
+    public void startAutoUpdate(Node nodeFromCurrentPage , int intervalSeconds ) {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(intervalSeconds), event -> checkLowStockAndShowAlert(nodeFromCurrentPage)));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
     }
+}
+
+
