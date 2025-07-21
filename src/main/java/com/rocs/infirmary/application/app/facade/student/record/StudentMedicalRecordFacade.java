@@ -46,10 +46,10 @@ public interface StudentMedicalRecordFacade {
     /**
      * Adds a new student medical record to the system.
      *
-     * @param patient the student object containing all necessary attributes
+     * @param newPatient the student object containing all necessary attributes
      * @return true if the medical record was successfully added; false otherwise
      */
-    boolean addStudentMedicalRecord(Patient patient);
+    boolean addStudentMedicalRecord(Patient newPatient);
     /**
      * adds a medicine administration entry for a student.
      * This intended to insert a record into the medicine_administered table and links it to an existing medical record.

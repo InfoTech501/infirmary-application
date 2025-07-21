@@ -193,37 +193,37 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
     }
 
     @Override
-    public boolean addStudentMedicalRecord(Patient record) {
+    public boolean addStudentMedicalRecord(Patient patient) {
         try (Connection con = ConnectionHelper.getConnection()) {
             con.setAutoCommit(false);
 
-            Long ailmentId = addNewAilment(con, record.getSymptoms());
+            Long ailmentId = addNewAilment(con, patient.getSymptoms());
             if (ailmentId == null) {
-                LOGGER.warn("No ailment_id found for symptoms: {}", record.getSymptoms());
+                LOGGER.warn("No ailment_id found for symptoms: {}", patient.getSymptoms());
                 return false;
             }
 
             try (PreparedStatement medStmt = con.prepareStatement(ADD_STUDENT_MEDICAL_RECORD)) {
-                medStmt.setLong(1, record.getStudentId());
+                medStmt.setLong(1, patient.getStudentId());
                 medStmt.setLong(2, ailmentId);
-                medStmt.setLong(3, record.getNurseInChargeId());
-                medStmt.setString(4, record.getSymptoms());
-                medStmt.setString(5, record.getTemperatureReadings());
-                medStmt.setString(6, record.getBloodPressure());
-                medStmt.setInt(7, record.getPulseRate());
-                medStmt.setInt(8, record.getRespiratoryRate());
-                medStmt.setTimestamp(9, new Timestamp(record.getVisitDate().getTime()));
-                medStmt.setString(10, record.getTreatment());
+                medStmt.setLong(3, patient.getNurseInChargeId());
+                medStmt.setString(4, patient.getSymptoms());
+                medStmt.setString(5, patient.getTemperatureReadings());
+                medStmt.setString(6, patient.getBloodPressure());
+                medStmt.setInt(7, patient.getPulseRate());
+                medStmt.setInt(8, patient.getRespiratoryRate());
+                medStmt.setTimestamp(9, new Timestamp(patient.getVisitDate().getTime()));
+                medStmt.setString(10, patient.getTreatment());
                 medStmt.setInt(11, 1);
 
                 int affectedRows = medStmt.executeUpdate();
                 if (affectedRows > 0) {
                     try (PreparedStatement selectStmt = con.prepareStatement(GET_LAST_INSERTED_MEDICAL_RECORD_ID)) {
-                        selectStmt.setLong(1, record.getStudentId());
+                        selectStmt.setLong(1, patient.getStudentId());
                         try (ResultSet rs = selectStmt.executeQuery()) {
                             if (rs.next()) {
                                 Long medRecordId = rs.getLong("id");
-                                record.setMedicalRecordId(medRecordId);
+                                patient.setMedicalRecordId(medRecordId);
                                 LOGGER.debug("Assigned medicalRecordId to patient: {}", medRecordId);
                                 con.commit();
                                 return true;
@@ -234,7 +234,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                         }
                     }
                 } else {
-                    LOGGER.warn("Insert affected 0 rows for student ID {}", record.getStudentId());
+                    LOGGER.warn("Insert affected 0 rows for student ID {}", patient.getStudentId());
                     con.rollback();
                 }
 
@@ -291,16 +291,16 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
     }
 
     @Override
-    public boolean addMedicineAdministered(Patient record) {
+    public boolean addMedicineAdministered(Patient patient) {
         try (Connection con = ConnectionHelper.getConnection();
              PreparedStatement stmt = con.prepareStatement(ADD_MEDICINE_ADMINISTERED)) {
 
-            stmt.setLong(1, record.getMedicineId());
-            stmt.setLong(2, record.getMedicalRecordId());
-            stmt.setLong(3, record.getNurseInChargeId());
-            stmt.setString(4, record.getTreatment());
-            stmt.setInt(5, record.getDispensingOut());
-            stmt.setTimestamp(6, new Timestamp(record.getVisitDate().getTime()));
+            stmt.setLong(1, patient.getMedicineId());
+            stmt.setLong(2, patient.getMedicalRecordId());
+            stmt.setLong(3, patient.getNurseInChargeId());
+            stmt.setString(4, patient.getTreatment());
+            stmt.setInt(5, patient.getDispensingOut());
+            stmt.setTimestamp(6, new Timestamp(patient.getVisitDate().getTime()));
 
             int affectedRows = stmt.executeUpdate();
             return affectedRows > 0;

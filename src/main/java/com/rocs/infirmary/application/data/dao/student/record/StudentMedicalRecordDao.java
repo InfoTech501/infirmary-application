@@ -41,10 +41,10 @@ public interface StudentMedicalRecordDao {
     /**
      * Adds a new student medical record to the database.
      *
-     * @param record the model containing all attributes of the medicine to be added (edit this - change record into student)
+     * @param patient the model containing all attributes of the medicine to be added (edit this - change record into student)
      * @return true if the medical record is successfully added; false if the addition fails
      */
-    boolean addStudentMedicalRecord(Patient record);
+    boolean addStudentMedicalRecord(Patient patient);
     /**
      * Adds a new medicine administration entry linked to an existing medical record.
      * This is intended to log information such as medicine ID, nurse in charge, description, quantity, and date administered.

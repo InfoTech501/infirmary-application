@@ -76,9 +76,9 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
     }
 
     @Override
-    public boolean addStudentMedicalRecord(Patient record) {
-        logger.debug("Entering addStudentMedicalRecord with Student: {}", record);
-        boolean isInserted = this.studentMedRecord.addStudentMedicalRecord(record);
+    public boolean addStudentMedicalRecord(Patient newPatient) {
+        logger.debug("Entering addStudentMedicalRecord with Student: {}", newPatient);
+        boolean isInserted = this.studentMedRecord.addStudentMedicalRecord(newPatient);
         logger.debug("Exiting addStudentMedicalRecord – success status: {}", isInserted);
         return isInserted;
     }
@@ -92,10 +92,10 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
     }
 
     @Override
-    public boolean addMedicineAdministered(Patient record) {
+    public boolean addMedicineAdministered(Patient patient) {
         logger.info("Entering addMedicineAdministered with studentId: {}, medicineId: {}",
-                record.getStudentId(), record.getMedicineId());
-        boolean isInserted = studentMedRecord.addMedicineAdministered(record);
+                patient.getStudentId(), patient.getMedicineId());
+        boolean isInserted = studentMedRecord.addMedicineAdministered(patient);
         logger.info("Exiting addMedicineAdministered with insertion result: {}", isInserted);
         return isInserted;
     }
