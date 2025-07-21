@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 
 public class Medicine extends Inventory{
 
-    private String medicineId;
+    private Long medicineId;
 
     private String itemName;
 
@@ -17,18 +17,29 @@ public class Medicine extends Inventory{
     private Timestamp expirationDate;
 
     private BooleanProperty isSelected = new SimpleBooleanProperty();
+    private boolean hasSelect;
+
 
     public Medicine() {
 
     }
-    private String isAvailable;
 
-    public Medicine(String medicineId, String itemName, String description, Timestamp expirationDate,BooleanProperty isSelected) {
+    public Medicine(Long medicineId, String itemName, String description, Timestamp expirationDate, BooleanProperty isSelected) {
         this.medicineId = medicineId;
         this.itemName = itemName;
         this.description = description;
         this.expirationDate = expirationDate;
         this.isSelected = isSelected;
+    }
+
+    private String isAvailable;
+
+    public boolean getHasSelect() {
+        return hasSelect;
+    }
+
+    public void setHasSelect(boolean hasSelect) {
+        this.hasSelect = hasSelect;
     }
 
     public boolean isSelected() {
@@ -46,8 +57,8 @@ public class Medicine extends Inventory{
         return isAvailable;
     }
 
-    public String getMedicineId(){ return medicineId; }
-    public void setMedicineId(String medicineId) { this.medicineId = medicineId; }
+    public Long getMedicineId(){ return medicineId; }
+    public void setMedicineId(Long medicineId) { this.medicineId = medicineId; }
 
 
     public String getItemName(){ return itemName; }

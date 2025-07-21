@@ -1,6 +1,7 @@
 package com.rocs.infirmary.application.controller.inventory;
 
-import com.rocs.infirmary.application.InventoryManagementApplication;
+import com.rocs.infirmary.application.controller.helper.ControllerHelper;
+import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,172 +17,359 @@ import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
+import static com.rocs.infirmary.application.controller.helper.ControllerHelper.alertAction;
+import static com.rocs.infirmary.application.controller.helper.ControllerHelper.showDialog;
+
+/**
+ * {@code AddInventoryController} is used to handle event processes of the Inventory when adding new Items
+ * this implements Initializable interface
+ **/
 public class AddInventoryController implements Initializable {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AddInventoryController.class);
     @FXML
-    private TableView<Medicine> MedDetailsTable;
+    private TableView<Medicine> medDetailsTable;
     @FXML
-    private TableColumn<Medicine, Boolean> SelectColumn;
+    private TableColumn<Medicine, Boolean> selectColumn;
     @FXML
-    private TableColumn<Medicine, String> ProductNameColumn;
+    private TableColumn<Medicine, String> productNameColumn;
     @FXML
-    private TableColumn<Medicine, Integer> QuantityColumn;
+    private TableColumn<Medicine, String> descriptionColumn;
     @FXML
-    private TableColumn<Medicine, String> ExpiryDateColumn;
+    private TextField productNameTextField;
     @FXML
-    private TextField ProductNameTextField;
+    private TextField quantityTextField;
     @FXML
-    private TextField QuantityTextField;
+    private TextField descriptionTextField;
     @FXML
-    private TextField ExpirationDateTextField;
+    private DatePicker expirationDatePicker;
+    @FXML
+    private ComboBox itemTypeComboBox;
 
     private ObservableList<Medicine> medicine;
+    private List<Medicine>inventoryItem;
+    private ObservableList<String> itemType;
+    private List<Medicine> medicineList = new ArrayList<>();
+    private Medicine medicineModel = new Medicine();
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
-    Medicine medicineModel = new Medicine();
-
+    private InventoryController parentController;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setup();
         refresh();
+        initalizeEditClick();
     }
 
     private void setup() {
-        MedDetailsTable.setEditable(true);
+        medDetailsTable.setEditable(true);
 
-        SelectColumn.setCellValueFactory(cellData -> cellData.getValue().isSelectedProperty());
-        SelectColumn.setCellFactory(CheckBoxTableCell.forTableColumn(SelectColumn));
-        SelectColumn.setEditable(true);
-        SelectColumn.setStyle("-fx-alignment: CENTER;");
+        selectColumn.setCellValueFactory(cellData -> cellData.getValue().isSelectedProperty());
+        selectColumn.setCellFactory(CheckBoxTableCell.forTableColumn(selectColumn));
+        selectColumn.setEditable(true);
+        selectColumn.setStyle("-fx-alignment: CENTER;");
 
-        ProductNameColumn.setCellValueFactory(new PropertyValueFactory<>("itemName"));
-        ProductNameColumn.setStyle("-fx-alignment: CENTER;");
-        QuantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        QuantityColumn.setStyle("-fx-alignment: CENTER;");
-        ExpiryDateColumn.setCellValueFactory(new PropertyValueFactory<>("expirationDate"));
-        ExpiryDateColumn.setStyle("-fx-alignment: CENTER;");
-
+        productNameColumn.setCellValueFactory(new PropertyValueFactory<>("itemName"));
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        itemTypeComboBox.setItems(itemType);
     }
-
-    private void refresh() {
-        List<Medicine> medicineList = inventoryManagementApplication.getMedicineInventoryFacade().findAllMedicine();
+    /**
+     * this method handles the refresh functionality for medicine table
+     ***/
+    public void refresh() {
+        List<Medicine> medicineList = inventoryManagementApplication.getMedicineInventoryFacade().getAllMedicineFromMedicineTable();
+        String[] itemTypeList = {"No selection","Medicine", "Non expiry", "other"};
         for (Medicine med : medicineList) {
             if (med.isSelectedProperty() == null) {
                 med.setIsSelected(false);
+                System.out.println(med.isSelected());
+            }
+            if(!med.isSelected()){
+                medicineModel.setHasSelect(false);
+            }else{
+                medicineModel.setHasSelect(true);
+                System.out.println(med.isSelected());
             }
         }
         medicine = FXCollections.observableArrayList(medicineList);
-        MedDetailsTable.setItems(medicine);
+        itemType = FXCollections.observableArrayList(itemTypeList);
+        inventoryItem = FXCollections.observableArrayList(inventoryManagementApplication.getMedicineInventoryFacade().getAllMedicine());
+        medDetailsTable.setItems(medicine);
+        itemTypeComboBox.setItems(itemType);
     }
-    private void showModal(ActionEvent actionEvent,String location) throws IOException {
-        Stage stage = new Stage();
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(location)));
-        stage.setScene(new Scene(root));
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(((Node)actionEvent.getSource()).getScene().getWindow() );
-        stage.show();
+    private void initalizeEditClick(){
+        medDetailsTable.setRowFactory(t->{
+            TableRow<Medicine>tableRow = new TableRow<>();
+            tableRow.setOnMouseClicked(event->{
+                if(!tableRow.isEmpty() && event.getClickCount() == 2){
+                    Medicine selectedMedicine = tableRow.getItem();
+                    try {
+                        showMedicineToEdit(selectedMedicine);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            });
+            return tableRow;
+        });
     }
-    private String getMedicineId(TextField textField){
-        String itemName = textField.getText();
-        String[] words = itemName.trim().split(" ");
-        String medicineID = "";
-
-        if (words.length == 1) {
-            medicineID += itemName.substring(0, 2).toUpperCase();
-        } else {
-            for (String word : words) {
-                medicineID += Character.toUpperCase(word.charAt(0));
-            }
-        }
-        return medicineID;
-    }
-    private List<Medicine> getSelectedMedicines() {
+    /**
+     * This method retrieves a list of medicines that are marked as selected.
+     * This method filters the medicine list and returns only those medicine that appeared selected,
+     * this happens when {@code isSelected} returns {@code true}
+     * @return a list of selected {@code Medicine} objects
+     */
+    public List<Medicine> getSelectedMedicines() {
         List<Medicine> selectedMedicine = medicine.stream()
                 .filter(Medicine::isSelected)
                 .toList();
+        for(Medicine med: selectedMedicine){
+            medicineList.add(med);
+        }
         return selectedMedicine;
     }
-    private void addMedicine() throws ParseException {
-        String medicineId = getMedicineId(ProductNameTextField);
-        int quantity = Integer.parseInt(QuantityTextField.getText());
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
-        for(Medicine med:medicine){
-            if(Objects.equals(med.getItemName(), ProductNameTextField.getText())){
-                System.out.println("existing");
-                inventoryManagementApplication.getMedicineInventoryFacade().addInventory(med.getMedicineId(),med.getItemType(),quantity);
-                break;
-            }else{
-                System.out.println("new");
-                Date expirationDate;
-                String inputDate = ExpirationDateTextField.getText();
-                expirationDate = dateFormat.parse(inputDate);
-
-                medicineModel.setMedicineId(medicineId);
-                medicineModel.setItemName(ProductNameTextField.getText());
-                medicineModel.setExpirationDate(new Timestamp(expirationDate.getTime()));
-                inventoryManagementApplication.getMedicineInventoryFacade().addMedicine(medicineModel);
-                inventoryManagementApplication.getMedicineInventoryFacade().addInventory(medicineId,"medicine",quantity);
-                break;
+    private boolean addMedicineToInventory(int quantity, String itemType,Date expirationDate){
+        refresh();
+        int quantityAvailable;
+        if(!medicine.isEmpty()){
+            for(Medicine med:medicine){
+                if(med.getItemName().equalsIgnoreCase(productNameTextField.getText()) && med.getExpirationDate().equals(expirationDate)){
+                    UpdateInventoryController updateInventoryController = new UpdateInventoryController();
+                    quantityAvailable = med.getQuantity();
+                    try {
+                       return updateInventoryController.updateMedicine((quantityAvailable+quantity));
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                }else if(med.getItemName().equalsIgnoreCase(productNameTextField.getText())){
+                    return inventoryManagementApplication.getMedicineInventoryFacade().addInventory(med.getMedicineId(), itemType, quantity, expirationDate);
+                }
             }
         }
-        refresh();
+        return false;
     }
+    private boolean addMedicine(int quantity) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date expirationDate = dateFormat.parse(String.valueOf(expirationDatePicker.getValue()));
+        String productName = productNameTextField.getText();
 
-    public void onConfirmBtnClick(ActionEvent actionEvent) throws ParseException {
-        if(ProductNameTextField.getText().isEmpty()||ProductNameTextField.getText().isBlank()||ProductNameTextField.getText()==null){
-            Dialog dialog = new Dialog();
-            dialog.setTitle("Warning");
-            ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            dialog.setContentText("Product Name cannot be empty");
-            dialog.getDialogPane().getButtonTypes().add(type);
-            dialog.showAndWait();
-        }else if(QuantityTextField.getText().isEmpty()||QuantityTextField.getText().isBlank()||QuantityTextField.getText()==null){
-            Dialog dialog = new Dialog();
-            dialog.setTitle("Warning");
-            ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            dialog.setContentText("Quantity cannot be empty");
-            dialog.getDialogPane().getButtonTypes().add(type);
-            dialog.showAndWait();
-        }else if(ExpirationDateTextField.getText().isEmpty()||ExpirationDateTextField.getText().isBlank()||ExpirationDateTextField.getText()==null){
-            Dialog dialog = new Dialog();
-            dialog.setTitle("Warning");
-            ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-            dialog.setContentText("Expiration date cannot be empty");
-            dialog.getDialogPane().getButtonTypes().add(type);
-            dialog.showAndWait();
+        try {
+           Medicine existingMedicine = medicine.stream().filter(med -> med.getItemName().equalsIgnoreCase(productName)).findFirst().orElse(null);
+            if (existingMedicine != null) {
+                Medicine existingInventoryItem = inventoryItem.stream()
+                        .filter(item -> {
+                            try {
+                                return item.getItemName().equalsIgnoreCase(productName) &&
+                                        dateFormat.parse(item.getExpirationDate().toString()).equals(expirationDate);
+                            } catch (ParseException e) {
+                                throw new RuntimeException(e);
+                            }
+                        })
+                        .findFirst()
+                        .orElse(null);
+                if (existingInventoryItem != null) {
+                    Optional<ButtonType> confirmUpdate = alertAction("Add Confirmation", "The medicine with the same name and expiration date exists in inventory. Do you still want to add this to inventory?"
+                    );
+                    if (confirmUpdate.isPresent() && confirmUpdate.get().getButtonData() == ButtonBar.ButtonData.YES) {
+                        int updatedQuantity = existingInventoryItem.getQuantity() + quantity;
+
+                        boolean updated = inventoryManagementApplication
+                                .getMedicineInventoryFacade()
+                                .updateMedicineInventory(
+                                        existingInventoryItem.getInventoryId(),
+                                        existingInventoryItem.getMedicineId(),
+                                        updatedQuantity,
+                                        itemTypeComboBox.getSelectionModel().getSelectedItem().toString(),
+                                        expirationDate
+                                );
+
+                        if (updated) {
+                            showDialog("Notification", "Quantity successfully updated in inventory.");
+                            refresh();
+                            return true;
+                        }
+                    }
+                } else {
+                    boolean inserted = inventoryManagementApplication
+                            .getMedicineInventoryFacade()
+                            .addInventory(
+                                    existingMedicine.getMedicineId(),
+                                    itemTypeComboBox.getSelectionModel().getSelectedItem().toString(),
+                                    quantity,
+                                    expirationDate
+                            );
+
+                    if (inserted) {
+                        showDialog("Notification", "Item successfully added. Check your inventory.");
+                        refresh();
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+            medicineModel.setItemName(productName);
+            medicineModel.setDescription(descriptionTextField.getText());
+
+            boolean medAdded = inventoryManagementApplication
+                    .getMedicineInventoryFacade()
+                    .addMedicine(medicineModel);
+
+            if (medAdded) {
+                refresh();
+                Optional<ButtonType> result = alertAction(
+                        "Add Confirmation",
+                        "Medicine added to the table. Do you want to add it to inventory?"
+                );
+                if (result.isPresent()&&result.get().getButtonData() == ButtonBar.ButtonData.YES) {
+                    if (addMedicineToInventory(quantity, itemTypeComboBox.getSelectionModel().getSelectedItem().toString(), expirationDate
+                    )) {
+                        showDialog("Notification", "Item successfully added. Check your inventory.");
+                        return true;
+                    }
+                }
+                return true;
+
+            }
+
+        } catch (InputMismatchException ime) {
+            LOGGER.error("Invalid user input: " + ime);
         }
-        else {
-            addMedicine();
-        }
+
+        return false;
     }
-
-    public void onRemoveBtnClick(ActionEvent actionEvent) throws IOException {
-        List<Medicine> selectedMedicine = getSelectedMedicines();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/InventoryDeleteItemModal.fxml"));
+    private void showMedicineToEdit(Medicine medicine) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MedicineEditModal.fxml"));
         Parent root = loader.load();
-        DeleteInventoryController deleteInventoryController = loader.getController();
-        for(Medicine med:selectedMedicine){
-            deleteInventoryController.showMedicine(med.getItemName(),med.getInventoryId(),med.getMedicineId());
-            System.out.println(med.getItemName());
-        }
+        UpdateMedicineController updateMedicineController = loader.getController();
+        updateMedicineController.showMedicineToEdit(medicine);
+        updateMedicineController.setParentController(this);
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
+        stage.initStyle(StageStyle.UTILITY);
         stage.show();
     }
+    /**
+     * this method handles the action triggered when the confirm button is clicked.
+     * @param actionEvent the event triggered by the confirm button click
+     */
+    public void onConfirmBtnClick(ActionEvent actionEvent) throws ParseException {
+        String parsedQuantity  = quantityTextField.getText().trim();
+        if(productNameTextField.getText()==null||productNameTextField.getText().isEmpty()|| productNameTextField.getText().isBlank()){
+            showDialog("warning","Product Name cannot be empty");
+        }else if(quantityTextField.getText()==null||quantityTextField.getText().isEmpty()|| quantityTextField.getText().isBlank()){
+            showDialog("warning","Quantity cannot be empty");
+        }else if (!parsedQuantity.matches("^\\d{1,10}$")) {
+            showDialog("Warning", "Quantity must be a whole number between 0 and " + Integer.MAX_VALUE);
+            LOGGER.warn("Invalid quantity input: " + parsedQuantity);
+        }else if (descriptionTextField.getText() == null || descriptionTextField.getText().isEmpty()||descriptionTextField.getText().isBlank()) {
+            showDialog("warning","Description cannot be empty");
+        } else if(expirationDatePicker.getValue()==null){
+            showDialog("warning","Expiration date cannot be empty");
+        } else if (itemTypeComboBox.getSelectionModel().getSelectedItem().toString() == null||itemTypeComboBox.getSelectionModel().getSelectedItem().toString().isEmpty()||itemTypeComboBox.getSelectionModel().getSelectedItem().toString().isBlank()) {
+            showDialog("warning","Item type cannot be empty");
+        } else if (!isValidTextInput(productNameTextField.getText())) {
+            showDialog("Invalid Input","Product Name must only contain letters.");
+        } else if (!isValidInputNumber(quantityTextField.getText())) {
+            showDialog("Invalid Input","Quantity must only contain number");
+        } else {
+           if(addMedicine(Integer.parseInt(quantityTextField.getText()))){
+               if (parentController != null) {
+                   parentController.refresh();
+               }
+           }
+        }
+    }
+    private boolean deleteMedicine(){
+        return inventoryManagementApplication.getMedicineInventoryFacade().deleteMedicineByItemName(medicineList);
+    }
+    /**
+     * this method handles the action triggered when the remove button is clicked.
+     * @param actionEvent the event triggered by the confirm button click
+     */
+    public void onRemoveBtnClick(ActionEvent actionEvent) throws IOException {
+        if(getSelectedMedicines().isEmpty()){
+            Dialog dialog = new Dialog();
+            dialog.setTitle("Warning");
+            ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+            dialog.setContentText("No Items selected");
+            dialog.getDialogPane().getButtonTypes().add(type);
+            dialog.showAndWait();
+        }
+        if(getSelectedMedicines().size() >= 2){
+            List<Medicine> selectedMedicine = getSelectedMedicines();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MedicineDeleteItemModal.fxml"));
+            Parent root = loader.load();
+            DeleteMedicineController deleteMedicineController = loader.getController();
+            deleteMedicineController.showMedicineList(selectedMedicine);
+            deleteMedicineController.setParentController(this);
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
+            stage.show();
+        }
+        if(getSelectedMedicines().size() == 1 ) {
+            deleteMedicine();
+            Dialog dialog = new Dialog();
+            dialog.setTitle("Notification");
+            ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+            dialog.setContentText("Deleted Successfully!");
+            dialog.getDialogPane().getButtonTypes().add(type);
+            dialog.showAndWait();
+            if(type.getButtonData().isDefaultButton()){
+                refresh();
+            }
+        }
+    }
 
-    public void onCancelBtnClick(ActionEvent actionEvent) {
+    @FXML
+    private void onSelectData(){
+        medicineModel = medDetailsTable.getSelectionModel().getSelectedItem();
+        int selectedRow = medDetailsTable.getSelectionModel().getSelectedIndex();
+        if(selectedRow < 0){
+            return;
+        }
+        productNameTextField.setText(medicineModel.getItemName());
+        productNameTextField.setStyle("-fx-alignment: LEFT;");
+        descriptionTextField.setText(medicineModel.getDescription());
+        descriptionTextField.setStyle("-fx-alignment:LEFT;");
+
+    }
+    /**
+     * this method handles the action triggered when the cancel button is clicked.
+     * @param actionEvent the event triggered by the confirm button click
+     */
+    public void onCancelBtnClick(ActionEvent actionEvent) throws IOException {
+        if (parentController != null) {
+            parentController.refresh();
+        }
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
+    }
+    private boolean isValidTextInput(String input) {
+        return input.matches("[a-zA-Z\\s]+");
+    }
+    private boolean isValidInputNumber(String input) {
+        return input.matches("^[0-9]+");
+    }
+    /**
+     * this method setup's the parent controller
+     * @param parentController the parent InventoryController instance to be associated with this controller
+     * */
+    public void setParentController(InventoryController parentController) {
+        this.parentController = parentController;
     }
 }

@@ -4,35 +4,50 @@ import com.rocs.infirmary.application.app.facade.medicine.inventory.MedicineInve
 import com.rocs.infirmary.application.data.dao.medicine.inventory.impl.MedicineInventoryDaoImpl;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * The MedicineInventoryFacadeImpl class is an implementation of the Medicine Inventory Facade Interface.
+ * It provides methods for managing the create, update and delete functionality.
+ */
 public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
 
     private MedicineInventoryDao medicineInventoryDao = new MedicineInventoryDaoImpl();
     private static final Logger logger = LoggerFactory.getLogger(MedicineInventoryFacadeImpl.class);
 
+    /**
+     * MedicineInventoryFacadeImpl()
+     * is a no argument constructor that provides an option to access the Medicine Inventory Facade without needing to provide parameters
+     */
     public MedicineInventoryFacadeImpl() {
 
     }
+    /**
+     * {@code MedicineInventoryFacadeImpl()} is a constructor that requires parameter
+     * @param medicineInventoryDao DAO implementation of Medicine Inventory
+     * this provides the business logic of the Medicine Inventory
+     * {@code this.medicineInventoryDao = medicineInventoryDao} is used to initialize the MedicineInventoryDao
+     */
     public MedicineInventoryFacadeImpl(MedicineInventoryDao medicineInventoryDao) {
         this.medicineInventoryDao = medicineInventoryDao;
     }
 
     @Override
-    public List<Medicine> findAllMedicine() {
+    public List<Medicine> getAllMedicine() {
         logger.info("Entering findAllMedicine");
         List<Medicine> medicines = this.medicineInventoryDao.findAllMedicine();
         logger.info("Exiting findAllMedicine with {} medicines found.", medicines.size());
         return medicines;
     }
     @Override
-    public boolean deleteMedicineByItemName(String itemName) {
-        logger.warn("Entering deleteMedicineByItemName with itemName: {}", itemName);
-        boolean isDeleted = medicineInventoryDao.deleteMedicine(itemName);
-        logger.warn("Exiting deleteMedicineByItemName with result: {}", isDeleted);
+    public boolean deleteMedicineByItemName(List<Medicine> medicines) {
+        logger.info("Entering deleteMedicineByItemName with itemName: {}", medicines);
+        boolean isDeleted = medicineInventoryDao.deleteMedicine(medicines);
+        logger.info("Exiting deleteMedicineByItemName with result: {}", isDeleted);
         return isDeleted;
     }
 
@@ -51,18 +66,26 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
     }
 
     @Override
-    public boolean addInventory(String medicineId, String itemType, int quantity) {
-        return this.medicineInventoryDao.addInventory(medicineId, itemType, quantity);
+    public boolean addInventory(Long medicineId, String itemType, int quantity, Date expirationDate) {
+        return this.medicineInventoryDao.addInventory(medicineId, itemType, quantity,expirationDate);
     }
     @Override
-    public List<Medicine>  findAllMedicineFromMedicineTable() {
-        return this.medicineInventoryDao.findAllMedicine();
+    public List<Medicine> getAllMedicineFromMedicineTable() {
+        return this.medicineInventoryDao.findAll();
     }
 
     @Override
-    public boolean deleteInventory(int inventoryID) {
-        return this.medicineInventoryDao.deleteInventory(inventoryID);
+    public boolean deleteInventory(List<Medicine> medicines) {
+        return this.medicineInventoryDao.deleteInventory(medicines);
     }
 
+    @Override
+    public boolean updateMedicineInventory(Long inventoryId, Long medicineId, int quantity, String itemType, Date expirationDate) {
+        return this.medicineInventoryDao.updateInventory(inventoryId,medicineId,quantity, itemType,expirationDate);
+    }
 
+    @Override
+    public boolean updateMedicine(Long medicineId, String medicineName, String description) {
+        return this.medicineInventoryDao.updateMedicine(medicineId,medicineName,description);
+    }
 }
