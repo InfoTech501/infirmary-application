@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
@@ -64,6 +63,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
         LOGGER.info("Retrieved Date :   " + new Date());
         return  MedicineInventoryList;
     }
+
 
     @Override
     public boolean deleteMedicine(List<Medicine> medicines) {
