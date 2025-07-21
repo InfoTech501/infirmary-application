@@ -108,10 +108,7 @@ public class InventoryController implements Initializable {
             return tableRow;
         });
     }
-    /**
-     * this method handles the refresh functionality for inventory table
-     ***/
-    public void refresh() {
+    private void refresh() {
         List<Medicine> medicineList = inventoryManagementApplication.getMedicineInventoryFacade().getAllMedicine();
         for (Medicine med : medicineList) {
             if (med.isSelectedProperty() == null) {
@@ -122,22 +119,19 @@ public class InventoryController implements Initializable {
         medDetailsTable.setItems(medicine);
     }
     private void showModal(ActionEvent actionEvent,String location) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(location));
-        Parent root = loader.load();
-        AddInventoryController controller = loader.getController();
-        controller.setParentController(this);
         Stage stage = new Stage();
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(location)));
         stage.setScene(new Scene(root));
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initStyle(StageStyle.UTILITY);
-        stage.showAndWait();
+        stage.initOwner(((Node)actionEvent.getSource()).getScene().getWindow() );
+        stage.show();
     }
     private void showEditInventory(Medicine medicine) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/InventoryEditItemModal.fxml"));
         Parent root = loader.load();
         UpdateInventoryController updateInventoryController = loader.getController();
         updateInventoryController.showItemToEdit(medicine);
-        updateInventoryController.setParentController(this);
+
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -245,7 +239,7 @@ public class InventoryController implements Initializable {
             Parent root = loader.load();
             DeleteInventoryController deleteInventoryController = loader.getController();
             deleteInventoryController.showMedicineList(selectedMedicine);
-            deleteInventoryController.setParentController(this);
+
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);

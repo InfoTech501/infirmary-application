@@ -21,7 +21,7 @@ import static com.rocs.infirmary.application.controller.helper.ControllerHelper.
 public class DeleteInventoryController{
     @FXML
     private GridPane medicineListContainer;
-    private InventoryController parentController;
+
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     private List<Medicine> medicineList = new ArrayList<>();
     /**
@@ -108,9 +108,6 @@ public class DeleteInventoryController{
     public void onConfirmButtonClick(ActionEvent actionEvent) {
         if(deleteMedicine()){
             showDialog("Notification","Medicine successfully Deleted");
-            if (parentController != null) {
-                parentController.refresh();
-            }
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             stage.close();
         }
@@ -120,17 +117,8 @@ public class DeleteInventoryController{
      * @param actionEvent the event triggered by the confirm button click
      */
     public void onCancelBtnClick(ActionEvent actionEvent) {
-        if (parentController != null) {
-            parentController.refresh();
-        }
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
     }
-    /**
-     * this method setup's the parent controller
-     * @param parentController the parent InventoryController instance to be associated with this controller
-     * */
-    public void setParentController(InventoryController parentController) {
-        this.parentController = parentController;
-    }
+
 }

@@ -24,7 +24,6 @@ public class DeleteMedicineController {
     private Label inventoryDeleteLabelA;
     @FXML
     private GridPane medicineListContainer;
-    private AddInventoryController parentController;
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     private List<Medicine> medicineList = new ArrayList<>();
     /**
@@ -111,9 +110,6 @@ public class DeleteMedicineController {
     public void onConfirmButtonClick(ActionEvent actionEvent) {
         if(deleteMedicine()){
             showDialog("Notification","Medicine successfully Deleted");
-            if(parentController != null){
-                parentController.refresh();
-            }
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             stage.close();
         }
@@ -123,17 +119,7 @@ public class DeleteMedicineController {
      * @param actionEvent the event triggered by the confirm button click
      */
     public void onCancelBtnClick(ActionEvent actionEvent) {
-        if(parentController != null){
-            parentController.refresh();
-        }
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
-    }
-    /**
-     * this method setup's the parent controller
-     * @param parentController the parent AddInventoryController instance to be associated with this controller
-     * */
-    public void setParentController(AddInventoryController parentController) {
-        this.parentController = parentController;
     }
 }
