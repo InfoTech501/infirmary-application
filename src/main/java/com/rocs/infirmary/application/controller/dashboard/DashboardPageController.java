@@ -1,11 +1,9 @@
 package com.rocs.infirmary.application.controller.dashboard;
 
 import com.rocs.infirmary.application.module.dashboard.information.application.DashboardInfoApplication;
-import com.rocs.infirmary.application.app.facade.dashboard.DashboardFacade;
 import com.rocs.infirmary.application.data.model.report.ailment.CommonAilmentsReport;
 import com.rocs.infirmary.application.data.model.report.medication.MedicationTrendReport;
 import com.rocs.infirmary.application.data.model.report.visit.FrequentVisitReport;
-import com.rocs.infirmary.application.service.dashboard.DashboardDataService;
 import com.rocs.infirmary.application.service.dashboard.DateRange;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -77,22 +75,12 @@ public class DashboardPageController implements Initializable {
     @FXML
     private BarChart<String, Number> studentVisitBarChart;
 
-    private DashboardFacade dashboardFacade;
-
-    private DashboardDataService dataService;
-
+    private final DashboardInfoApplication dashboardInfoApplication = new DashboardInfoApplication();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        initializeServices();
         initializeUI();
         loadDashboardData();
-    }
-
-    private void initializeServices() {
-        DashboardInfoApplication dashboardInfoApplication = new DashboardInfoApplication();
-        dashboardFacade = dashboardInfoApplication.getDashboardFacade();
-        dataService = new DashboardDataService(dashboardFacade);
     }
 
     private void initializeUI() {
@@ -138,17 +126,22 @@ public class DashboardPageController implements Initializable {
 
     private void populateTables() {
         DateRange dateRange = DateRange.monthly();
-        try {
             populateTableMedicationTrendReport(dateRange);
             populateTableCommonAilmentsReport(dateRange);
-        } catch (NullPointerException e) {
-            logger.error("Failed to populate tables: {}", e.getMessage());
+        if (medTrendRptTable == null && totalDistributedMedTrend == null) {
+            logger.error("Medication Trend Report table or column is null");
+        }
+        if (commonAilmentsRptTable == null && numOfStudCommonAilment == null) {
+            logger.error("Common Ailments Report table or column is null");
+        }
+        if (dashboardInfoApplication.getDashboardFacade() == null) {
+            logger.error("Dashboard Facade is null");
         }
     }
 
     private void populateTableMedicationTrendReport(DateRange dateRange) {
         List<MedicationTrendReport> medicationTrendReports =
-                dashboardFacade.generateMedicationReport(dateRange.getStartDate(), dateRange.getEndDate());
+                dashboardInfoApplication.getDashboardFacade().generateMedicationReport(dateRange.getStartDate(), dateRange.getEndDate());
         ObservableList<MedicationTrendReport> dataMedTrend =
                 FXCollections.observableArrayList(medicationTrendReports);
         medTrendRptTable.setItems(dataMedTrend);
@@ -162,7 +155,7 @@ public class DashboardPageController implements Initializable {
         String gradeLevel = "";
         String section = "";
 
-        List<CommonAilmentsReport> reports = dashboardFacade.generateCommonAilmentReport(
+        List<CommonAilmentsReport> reports = dashboardInfoApplication.getDashboardFacade().generateCommonAilmentReport(
                 dateRange.getStartDate(), dateRange.getEndDate(), gradeLevel, section);
         ObservableList<CommonAilmentsReport> observableCommonAilmentTable =
                 FXCollections.observableArrayList(reports);
@@ -173,40 +166,36 @@ public class DashboardPageController implements Initializable {
         commonAilmentsRptTable.sort();
     }
 
+    private int getVisitCount (DateRange dateRange, String gradeLevel) {
+        List<FrequentVisitReport> reports = dashboardInfoApplication.getDashboardFacade().generateFrequentVisitReport(
+                dateRange.getStartDate(), dateRange.getEndDate(), gradeLevel);
+        return reports.size();
+    }
+
     private void setClinicVisitReports(DateRange dateRange) {
         String GRADE_11 = "Grade 11";
         String GRADE_12 = "Grade 12";
-        int grade11Visits = dataService.getVisitCount(dateRange, GRADE_11);
-        int grade12Visits = dataService.getVisitCount(dateRange, GRADE_12);
+        int grade11Visits = getVisitCount(dateRange, GRADE_11);
+        int grade12Visits = getVisitCount(dateRange, GRADE_12);
 
         grade11ClinicVisitTodayRprt.setText(String.valueOf(grade11Visits));
         grade12ClinicVisitTodayRprt.setText(String.valueOf(grade12Visits));
     }
 
+    private int getTotalMedicationUsage(DateRange dateRange) {
+        List<MedicationTrendReport> reports = dashboardInfoApplication.getDashboardFacade().generateMedicationReport(
+                dateRange.getStartDate(), dateRange.getEndDate());
+        return reports.stream().mapToInt(MedicationTrendReport::getUsage).sum();
+    }
+
     private void setMedicationDistributionReport(DateRange dateRange) {
-        int totalUsage = dataService.getTotalMedicationUsage(dateRange);
+        int totalUsage = getTotalMedicationUsage(dateRange);
         medDistributtedTodayRprt.setText(String.valueOf(totalUsage));
-    }
-
-    private <T> void setupNumberedColumn(TableColumn<T, String> column) {
-        column.setCellFactory(col -> new TableCell<>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty ? null : String.valueOf(getIndex() + 1));
-            }
-        });
-    }
-
-    private <T> void setupCenteredColumn(TableColumn<T, String> column,
-                                         Function<T, String> valueExtractor) {
-        column.setCellValueFactory( cellData ->
-                new SimpleStringProperty(valueExtractor.apply(cellData.getValue())));
     }
 
     private void initializeBarChartWeeklyVisitByGrade(DateRange dateRange, String gradeLevel) {
         SimpleDateFormat sdf = new SimpleDateFormat("EEEEE");
-        List<FrequentVisitReport> reports = dashboardFacade.generateFrequentVisitReport(
+        List<FrequentVisitReport> reports = dashboardInfoApplication.getDashboardFacade().generateFrequentVisitReport(
                 dateRange.getStartDate(), dateRange.getEndDate(), gradeLevel);
         Map<String, Integer> visitsPerDay = new HashMap<>();
 
@@ -229,17 +218,33 @@ public class DashboardPageController implements Initializable {
         studentVisitBarChart.getData().add(series);
     }
 
+    private static <T> void setupNumberedColumn(TableColumn<T, String> column) {
+        column.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? null : String.valueOf(getIndex() + 1));
+            }
+        });
+    }
+
+    private static <T> void setupColumnValueFactory(TableColumn<T, String> column,
+                                                   Function<T, String> valueExtractor) {
+        column.setCellValueFactory( cellData ->
+                new SimpleStringProperty(valueExtractor.apply(cellData.getValue())));
+    }
+
     private void initializeTableColumns() {
         setupNumberedColumn(numberedColumnMedTrend);
-        setupCenteredColumn(medicineColumnMedTrend,
+        setupColumnValueFactory(medicineColumnMedTrend,
                 MedicationTrendReport::getMedicineName);
-        setupCenteredColumn(totalDistributedMedTrend,
+        setupColumnValueFactory(totalDistributedMedTrend,
                 reports -> String.valueOf(reports.getUsage()));
 
         setupNumberedColumn(numberedColumnCommonAilment);
-        setupCenteredColumn(illnessColumnCommonAilment,
+        setupColumnValueFactory(illnessColumnCommonAilment,
                 CommonAilmentsReport::getAilment);
-        setupCenteredColumn(numOfStudCommonAilment,
+        setupColumnValueFactory(numOfStudCommonAilment,
                 report -> String.valueOf(report.getOccurrences()));
     }
 }
