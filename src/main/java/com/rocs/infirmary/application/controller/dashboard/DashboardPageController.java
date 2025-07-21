@@ -193,6 +193,22 @@ public class DashboardPageController implements Initializable {
         medDistributtedTodayRprt.setText(String.valueOf(totalUsage));
     }
 
+    private <T> void setupNumberedColumn(TableColumn<T, String> column) {
+        column.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty ? null : String.valueOf(getIndex() + 1));
+            }
+        });
+    }
+
+    private <T> void setupCenteredColumn(TableColumn<T, String> column,
+                                         Function<T, String> valueExtractor) {
+        column.setCellValueFactory( cellData ->
+                new SimpleStringProperty(valueExtractor.apply(cellData.getValue())));
+    }
+
     private void initializeBarChartWeeklyVisitByGrade(DateRange dateRange, String gradeLevel) {
         SimpleDateFormat sdf = new SimpleDateFormat("EEEEE");
         List<FrequentVisitReport> reports = dashboardInfoApplication.getDashboardFacade().generateFrequentVisitReport(
@@ -218,33 +234,17 @@ public class DashboardPageController implements Initializable {
         studentVisitBarChart.getData().add(series);
     }
 
-    private static <T> void setupNumberedColumn(TableColumn<T, String> column) {
-        column.setCellFactory(col -> new TableCell<>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty ? null : String.valueOf(getIndex() + 1));
-            }
-        });
-    }
-
-    private static <T> void setupColumnValueFactory(TableColumn<T, String> column,
-                                                   Function<T, String> valueExtractor) {
-        column.setCellValueFactory( cellData ->
-                new SimpleStringProperty(valueExtractor.apply(cellData.getValue())));
-    }
-
     private void initializeTableColumns() {
         setupNumberedColumn(numberedColumnMedTrend);
-        setupColumnValueFactory(medicineColumnMedTrend,
+        setupCenteredColumn(medicineColumnMedTrend,
                 MedicationTrendReport::getMedicineName);
-        setupColumnValueFactory(totalDistributedMedTrend,
+        setupCenteredColumn(totalDistributedMedTrend,
                 reports -> String.valueOf(reports.getUsage()));
 
         setupNumberedColumn(numberedColumnCommonAilment);
-        setupColumnValueFactory(illnessColumnCommonAilment,
+        setupCenteredColumn(illnessColumnCommonAilment,
                 CommonAilmentsReport::getAilment);
-        setupColumnValueFactory(numOfStudCommonAilment,
+        setupCenteredColumn(numOfStudCommonAilment,
                 report -> String.valueOf(report.getOccurrences()));
     }
 }
