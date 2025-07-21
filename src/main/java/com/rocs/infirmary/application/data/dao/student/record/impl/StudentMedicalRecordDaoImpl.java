@@ -31,7 +31,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
 
             PreparedStatement stmt = con.prepareStatement(GET_ALL_MEDICAL_INFORMATION_BY_LRN);
             LOGGER.info("Query in use"+ stmt);
-            stmt.setLong(1, Long.parseLong(LRN));
+            stmt.setString(1, LRN);
             LOGGER.info("data inserted: "+"LRN: "+LRN);
             ResultSet rs = stmt.executeQuery();
 
@@ -137,7 +137,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
     @Override
     public boolean deleteStudentMedicalRecord(String LRN) {
         LOGGER.info("Delete medical records started");
-        Student studentMedicalRecord = getStudent(Long.valueOf(LRN));
+        Student studentMedicalRecord = getStudent(LRN);
 
         try (Connection con = ConnectionHelper.getConnection()) {
             PreparedStatement preparedStatement = con.prepareStatement(DELETE_STUDENT_MEDICAL_RECORD);
@@ -234,14 +234,14 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
 
 
 
-    private static Student getStudent(Long LRN) {
+    private static Student getStudent(String LRN) {
         Student studentMedicalRecord = null;
         LOGGER.info("Retrieving Student information");
         try (Connection con = ConnectionHelper.getConnection()) {
 
             PreparedStatement stmt = con.prepareStatement(GET_ALL_MEDICAL_INFORMATION_BY_LRN);
             LOGGER.info("Query in use"+ stmt);
-            stmt.setLong(1, LRN);
+            stmt.setString(1, LRN);
             LOGGER.info("data inserted: "+"LRN: "+LRN);
             ResultSet rs = stmt.executeQuery();
 
