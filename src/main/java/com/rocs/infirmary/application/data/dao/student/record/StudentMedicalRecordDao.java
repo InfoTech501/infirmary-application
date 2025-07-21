@@ -27,7 +27,7 @@ public interface StudentMedicalRecordDao {
      * @param LRN is a student's unique identifier assigned to each student
      * @return true if the medical record is successfully deleted, false when medical record is not successfully deleted
      * */
-    boolean deleteStudentMedicalRecord(long LRN);
+    boolean deleteStudentMedicalRecord(String LRN);
     /**
      * This is used to update the specified medicine record in the inventory.
      * @param symptoms is a student's symptoms
@@ -37,7 +37,7 @@ public interface StudentMedicalRecordDao {
      * @param LRN is a student's unique identifier assigned to each student
      * @return true when the medical record are successfully updated, false when the medical record are not updated successfully due to error
      * */
-    boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate , String treatment, long LRN  );
+    boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate , String treatment, String LRN  );
     /**
      * Adds a new student medical record to the database.
      *

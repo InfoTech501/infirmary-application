@@ -320,7 +320,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
      * while a status of 1 means the record is still active and present in the system.
      */
     @Override
-    public boolean deleteStudentMedicalRecord(long LRN) {
+    public boolean deleteStudentMedicalRecord(String LRN) {
         LOGGER.info("Delete medical records started");
         Student studentMedicalRecord = getStudent(LRN);
 
@@ -340,7 +340,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
     }
 
     @Override
-    public boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate, String treatment, long LRN) {
+    public boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate, String treatment, String LRN) {
         LOGGER.info("Update Student Medical Record Started for LRN: " + LRN);
         boolean updateSuccessful = false;
 
@@ -351,7 +351,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                     LOGGER.info("Executing update for symptoms...");
                     LOGGER.info("Query: " + UPDATE_STUDENT_SYMPTOMS);
                     stmt.setString(1, symptoms);
-                    stmt.setLong(2, LRN);
+                    stmt.setString(2, LRN);
                     LOGGER.info("Symptoms: " + symptoms + ", LRN: " + LRN);
                     int rows = stmt.executeUpdate();
                     LOGGER.info("Symptoms updated. Rows affected: " + rows);
@@ -367,7 +367,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                     LOGGER.info("Executing update for temperature readings...");
                     LOGGER.info("Query: " + UPDATE_STUDENT_TEMPERATURE_READINGS);
                     stmt.setString(1, temperatureReadings);
-                    stmt.setLong(2, LRN);
+                    stmt.setString(2, LRN);
                     LOGGER.info("TemperatureReadings: " + temperatureReadings + ", LRN: " + LRN);
                     int rows = stmt.executeUpdate();
                     LOGGER.info("Temperature readings updated. Rows affected: " + rows);
@@ -383,7 +383,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                     LOGGER.info("Executing update for visit date...");
                     LOGGER.info("Query: " + UPDATE_STUDENT_VISIT_DATE);
                     stmt.setTimestamp(1, new java.sql.Timestamp(visitDate.getTime()));
-                    stmt.setLong(2, LRN);
+                    stmt.setString(2, LRN);
                     LOGGER.info("Parameters - visitDate: " + visitDate + ", LRN: " + LRN);
                     int rows = stmt.executeUpdate();
                     LOGGER.info("Visit date updated. Rows affected: " + rows);
@@ -399,7 +399,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                     LOGGER.info("Executing update for treatment");
                     LOGGER.info("Query: " + UPDATE_STUDENT_TREATMENT);
                     stmt.setString(1, treatment);
-                    stmt.setLong(2, LRN);
+                    stmt.setString(2, LRN);
                     LOGGER.info("Parameters - treatment: " + treatment + ", LRN: " + LRN);
                     int rows = stmt.executeUpdate();
                     updateSuccessful = rows > 0;
@@ -418,14 +418,14 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
         }
     }
 
-    private static Student getStudent(long LRN) {
+    private static Student getStudent(String LRN) {
         Student studentMedicalRecord = null;
         LOGGER.info("Retrieving Student information");
 
         try (Connection con = ConnectionHelper.getConnection()) {
             PreparedStatement stmt = con.prepareStatement(GET_ALL_MEDICAL_INFORMATION_BY_LRN);
             LOGGER.info("Query in use" + GET_ALL_MEDICAL_INFORMATION_BY_LRN);
-            stmt.setLong(1, LRN);
+            stmt.setString(1, LRN);
             LOGGER.info("data inserted: " + "LRN: " + LRN);
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next()) {

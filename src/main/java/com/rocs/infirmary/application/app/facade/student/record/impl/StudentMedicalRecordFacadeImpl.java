@@ -59,7 +59,7 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
      * boolean returns true if the deletion was successful, otherwise false.
      */
     @Override
-    public boolean deleteStudentMedicalRecordByLrn(Long LRN) {
+    public boolean deleteStudentMedicalRecordByLrn(String LRN) {
         logger.info("Entering deleteStudentMedicalRecordByLrn with LRN: {}", LRN);
         boolean isDeleted = this.studentMedRecord.deleteStudentMedicalRecord(LRN);
         logger.info("Exiting deleteStudentMedicalRecordByLrn with result: {}", isDeleted);
@@ -67,7 +67,7 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
     }
 
     @Override
-    public boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate, String treatment, long LRN) {
+    public boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate, String treatment, String LRN) {
         logger.debug("Entering updateStudentMedicalRecord with LRN: {}, symptoms: {}, temperature: {}, visitDate: {}, treatment: {}",
                 LRN, symptoms, temperatureReadings, visitDate, treatment);
         Boolean updated =  this.studentMedRecord.updateStudentMedicalRecord(symptoms,temperatureReadings,visitDate,treatment, LRN);
