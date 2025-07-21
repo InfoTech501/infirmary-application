@@ -1,6 +1,5 @@
 package com.rocs.infirmary.application.controller.lowstock;
 
-import com.rocs.infirmary.application.controller.inventory.UpdateInventoryController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -12,8 +11,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,8 +20,6 @@ import java.util.List;
  * low stock alert notifications in the application.
  **/
 public class LowStockNotificationController {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(LowStockNotificationController.class);
 
     @FXML
     private VBox alertContainer;
@@ -101,7 +96,7 @@ public class LowStockNotificationController {
             modalStage.show();
 
         } catch (IOException e) {
-            LOGGER.error("IOException Error Occurred" +  e.getMessage());
+            System.out.println(" Error Occurred" +  e.getMessage());
         }
     }
 

@@ -12,7 +12,7 @@ public class QueryConstants {
     /**
      * query that delete medicine by its item name
      * */
-    public static String DELETE_MEDICINE_BY_ID_QUERY = "DELETE MEDICINE WHERE MEDICINE_ID IN ";
+    public static String DELETE_MEDICINE_BY_ID_QUERY = "UPDATE MEDICINE SET IS_AVAILABLE = 0 WHERE medicine.medicine_Id IN ";
     /**
      * query that filters available medicine
      * */

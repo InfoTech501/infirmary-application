@@ -19,6 +19,7 @@ public class Medicine extends Inventory{
     private BooleanProperty isSelected = new SimpleBooleanProperty();
     private boolean hasSelect;
 
+
     public Medicine() {
 
     }

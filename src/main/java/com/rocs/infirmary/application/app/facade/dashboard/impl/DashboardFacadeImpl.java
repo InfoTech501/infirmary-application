@@ -1,7 +1,7 @@
 package com.rocs.infirmary.application.app.facade.dashboard.impl;
 
 import com.rocs.infirmary.application.app.facade.dashboard.DashboardFacade;
-import com.rocs.infirmary.application.data.dao.report.dashboard.DashboardReports;
+import com.rocs.infirmary.application.data.dao.report.dashboard.DashboardReportsDao;
 import com.rocs.infirmary.application.data.dao.report.dashboard.impl.DashboardReportsDaoImpl;
 import com.rocs.infirmary.application.data.model.report.ailment.CommonAilmentsReport;
 import com.rocs.infirmary.application.data.model.report.lowstock.LowStockReport;
@@ -21,22 +21,23 @@ import org.slf4j.LoggerFactory;
 
 
 public class DashboardFacadeImpl implements DashboardFacade {
-    private DashboardReports dashboardReports = new DashboardReportsDaoImpl();
+    private DashboardReportsDao dashboardReportsDao = new DashboardReportsDaoImpl();
     /**
      * {@code DashboardFacadeImpl()} is a constructor that requires parameter
      * @param dashboardReports DAO implementation of Medicine Inventory
      * this provides the business logic of the Medicine Inventory
      * {@code this.dashboardReportsDao = dashboardReports} is used to initialize the DashboardReportsDao
      */
-    public DashboardFacadeImpl(DashboardReports dashboardReports) {
-        this.dashboardReports = dashboardReports;
+    public DashboardFacadeImpl(DashboardReportsDao dashboardReports) {
+        this.dashboardReportsDao = dashboardReports;
     }
 
-    private final DashboardReports dashboard = new DashboardReportsDaoImpl();
+    /** The data access object for Dashboard. */
+    private final DashboardReportsDao dashboard = new DashboardReportsDaoImpl();
     private static final Logger logger = LoggerFactory.getLogger(DashboardFacadeImpl.class);
 
     @Override
-    public List<LowStockReport> getLowStockMedicine() {
+    public List<LowStockReport> getAllLowStockMedicine() {
         logger.info("Entering getAllLowStockMedicine");
         List<LowStockReport> lowStockItems = dashboard.findAllLowStockMedicine();
         logger.info("Exiting getAllLowStockMedicine with {} items found.", lowStockItems.size());
