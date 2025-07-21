@@ -16,7 +16,7 @@ public interface StudentMedicalRecordFacade {
      *
      * @param LRN The LRN (Learner Reference Number) of the student.
      */
-    Student getMedicalInformationByLRN(Long LRN);
+    Student getMedicalInformationByLRN(String LRN);
 
     /**
      * Retrieves all student medical records from the database.
@@ -30,7 +30,7 @@ public interface StudentMedicalRecordFacade {
      * The LRN is a unique identifier assigned to each student. This value is used to locate and delete the corresponding medical record.
      */
 
-    boolean deleteStudentMedicalRecordByLrn(Long LRN);
-    boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate , String treatment, Long LRN  );
+    boolean deleteStudentMedicalRecordByLrn(String LRN);
+    boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate , String treatment, String LRN  );
 
 }

@@ -24,14 +24,14 @@ import static com.rocs.infirmary.application.data.dao.utils.queryconstants.stude
 public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentMedicalRecordDaoImpl.class);
 
-    public Student findMedicalInformation(Long LRN) {
+    public Student findMedicalInformation(String LRN) {
         LOGGER.info("get medical record started");
         Student studentMedicalRecord = null;
         try (Connection con = ConnectionHelper.getConnection()) {
 
             PreparedStatement stmt = con.prepareStatement(GET_ALL_MEDICAL_INFORMATION_BY_LRN);
             LOGGER.info("Query in use"+ stmt);
-            stmt.setLong(1, LRN);
+            stmt.setLong(1, Long.parseLong(LRN));
             LOGGER.info("data inserted: "+"LRN: "+LRN);
             ResultSet rs = stmt.executeQuery();
 
@@ -39,7 +39,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
             if (rs.next()) {
                 studentMedicalRecord = new Student();
                 studentMedicalRecord.setStudentId(rs.getInt("student_id"));
-                studentMedicalRecord.setLrn(rs.getLong("LRN"));
+                studentMedicalRecord.setLrn(rs.getString("LRN"));
                 studentMedicalRecord.setFirstName(rs.getString("first_name"));
                 studentMedicalRecord.setMiddleName(rs.getString("middle_name"));
                 studentMedicalRecord.setLastName(rs.getString("last_name"));
@@ -135,9 +135,9 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
      * while a status of 1 means the record is still active and present in the system.
      */
     @Override
-    public boolean deleteStudentMedicalRecord(Long LRN) {
+    public boolean deleteStudentMedicalRecord(String LRN) {
         LOGGER.info("Delete medical records started");
-        Student studentMedicalRecord = getStudent(LRN);
+        Student studentMedicalRecord = getStudent(Long.valueOf(LRN));
 
         try (Connection con = ConnectionHelper.getConnection()) {
             PreparedStatement preparedStatement = con.prepareStatement(DELETE_STUDENT_MEDICAL_RECORD);
@@ -156,7 +156,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
 
 
     @Override
-    public boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate, String treatment, long LRN) {
+    public boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate, String treatment, String LRN) {
         LOGGER.info("Update Student Medical Record Started for LRN: " + LRN);
         boolean updateSuccessful = false;
 
@@ -166,7 +166,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                     LOGGER.info("Executing update for symptoms...");
                     LOGGER.info("Query: " + stmt);
                     stmt.setString(1, symptoms);
-                    stmt.setLong(2, LRN);
+                    stmt.setString(2, LRN);
                     LOGGER.info("Symptoms: " + symptoms + ", LRN: " + LRN);
                     int rows = stmt.executeUpdate();
                     LOGGER.info("Symptoms updated. Rows affected: " + rows);
@@ -182,7 +182,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                     LOGGER.info("Executing update for temperature readings...");
                     LOGGER.info("Query: " + stmt);
                     stmt.setString(1, temperatureReadings);
-                    stmt.setLong(2, LRN);
+                    stmt.setString(2, LRN);
                     LOGGER.info("TemperatureReadings: " + temperatureReadings + ", LRN: " + LRN);
                     int rows = stmt.executeUpdate();
                     LOGGER.info("Temperature readings updated. Rows affected: " + rows);
@@ -198,7 +198,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                     LOGGER.info("Executing update for visit date...");
                     LOGGER.info("Query: " + stmt);
                     stmt.setTimestamp(1, new java.sql.Timestamp(visitDate.getTime()));
-                    stmt.setLong(2, LRN);
+                    stmt.setString(2, LRN);
                     LOGGER.info("Parameters - visitDate: " + visitDate + ", LRN: " + LRN);
                     int rows = stmt.executeUpdate();
                     LOGGER.info("Visit date updated. Rows affected: " + rows);
@@ -213,7 +213,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
                     LOGGER.info("Executing update for treatment");
                     LOGGER.info("Query: " + stmt);
                     stmt.setString(1, treatment);
-                    stmt.setLong(2, LRN);
+                    stmt.setString(2, LRN);
                     LOGGER.info("Parameters - treatment: " + treatment + ", LRN: " + LRN);
                     int rows = stmt.executeUpdate();
                     updateSuccessful = rows > 0;

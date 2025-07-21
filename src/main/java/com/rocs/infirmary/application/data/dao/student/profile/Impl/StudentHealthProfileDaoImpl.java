@@ -72,7 +72,7 @@ public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
     private Student setStudentHealthProfile(ResultSet resultSet) {
         try {
             Student studentMedicalRecord = new Student();
-            studentMedicalRecord.setLrn(resultSet.getLong("LRN"));
+            studentMedicalRecord.setLrn(resultSet.getString("LRN"));
             studentMedicalRecord.setMedicalRecordStatus(resultSet.getInt("is_active"));
             studentMedicalRecord.setFirstName(resultSet.getString("first_name"));
             studentMedicalRecord.setMiddleName(resultSet.getString("middle_name"));

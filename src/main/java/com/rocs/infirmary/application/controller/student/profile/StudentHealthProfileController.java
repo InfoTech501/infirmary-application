@@ -79,8 +79,6 @@ public class StudentHealthProfileController implements Initializable {
         setupFiltering();
         populateTableList();
         loadData();
-//        search();
-//        sortBySex();
     }
 
     private void initializeCollections() {

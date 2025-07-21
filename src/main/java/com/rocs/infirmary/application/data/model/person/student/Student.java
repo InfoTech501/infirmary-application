@@ -1,8 +1,6 @@
 package com.rocs.infirmary.application.data.model.person.student;
 
 import com.rocs.infirmary.application.data.model.person.Person;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 
 import java.util.Date;
 
@@ -11,7 +9,7 @@ public class Student extends Person {
     private int studentSectionId;
     private int studentId;
     private int studentGuardianId;
-    private Long lrn;
+    private String lrn;
     private String symptoms;
     private String temperatureReadings;
     private String bloodPressure;
@@ -59,7 +57,7 @@ public class Student extends Person {
         this.studentId = studentId;
     }
 
-    public void setLrn(long lrn) {
+    public void setLrn(String lrn) {
         this.lrn = lrn;
     }
 
@@ -99,7 +97,7 @@ public class Student extends Person {
         return studentId;
     }
 
-    public long getLrn() {
+    public String getLrn() {
         return lrn;
     }
 

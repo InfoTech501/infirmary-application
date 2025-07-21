@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface StudentMedicalRecordDao {
-    Student findMedicalInformation(Long LRN);
+    Student findMedicalInformation(String LRN);
 
     List<Student> findAllStudentMedicalRecords();
 
@@ -18,7 +18,7 @@ public interface StudentMedicalRecordDao {
      *
      */
 
-    boolean deleteStudentMedicalRecord(Long LRN);
-    boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate , String treatment, long LRN  );
+    boolean deleteStudentMedicalRecord(String LRN);
+    boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate , String treatment, String LRN  );
 
 }
