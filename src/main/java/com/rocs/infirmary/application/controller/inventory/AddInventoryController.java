@@ -1,6 +1,5 @@
 package com.rocs.infirmary.application.controller.inventory;
 
-import com.rocs.infirmary.application.controller.helper.ControllerHelper;
 import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import javafx.collections.FXCollections;
@@ -24,11 +23,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static com.rocs.infirmary.application.controller.helper.ControllerHelper.alertAction;
@@ -70,7 +66,7 @@ public class AddInventoryController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setup();
         refresh();
-        checkMedicine();
+        medicineAutofill();
         initalizeEditClick();
     }
 
@@ -152,7 +148,7 @@ public class AddInventoryController implements Initializable {
         }
         return false;
     }
-    private void checkMedicine(){
+    private void medicineAutofill(){
         FilteredList<Medicine> filteredList = new FilteredList<>(medicine, b -> true);
 
         productNameTextField.textProperty().addListener((observable, oldValue , newValue)->
