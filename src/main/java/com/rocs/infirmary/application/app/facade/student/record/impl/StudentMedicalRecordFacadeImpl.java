@@ -59,7 +59,7 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
      * boolean returns true if the deletion was successful, otherwise false.
      */
     @Override
-    public boolean deleteStudentMedicalRecordByLrn(Long medicalRecordId) {
+    public boolean deleteStudentMedicalRecordById(Long medicalRecordId) {
         logger.warn("Using deleteStudentMedicalRecordByLrn with LRN: {}", medicalRecordId);
         boolean isDeleted = this.studentMedRecord.deleteStudentMedicalRecord(medicalRecordId);
         logger.warn("Exiting deleteStudentMedicalRecordByLrn with result: {}", isDeleted);

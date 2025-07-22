@@ -255,7 +255,7 @@ public class SHPMedicalRecordsController implements Initializable {
 
     private void handleRecordDeletion(Student student) {
         if (student != null) {
-            boolean isDeleted = studentMedicalRecordApplication.getStudentMedicalRecordFacade().deleteStudentMedicalRecordByLrn(selectedStudent.getMedicalRecordId());
+            boolean isDeleted = studentMedicalRecordApplication.getStudentMedicalRecordFacade().deleteStudentMedicalRecordById(selectedStudent.getMedicalRecordId());
             if (isDeleted) {
                 parentController.loadData();
                 modalController.closeModal();
