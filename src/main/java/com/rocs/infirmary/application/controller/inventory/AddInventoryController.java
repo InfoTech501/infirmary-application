@@ -1,10 +1,10 @@
 package com.rocs.infirmary.application.controller.inventory;
 
-import com.rocs.infirmary.application.controller.helper.ControllerHelper;
 import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,11 +23,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static com.rocs.infirmary.application.controller.helper.ControllerHelper.alertAction;
@@ -69,6 +66,7 @@ public class AddInventoryController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setup();
         refresh();
+        medicineAutofill();
         initalizeEditClick();
     }
 
@@ -141,23 +139,31 @@ public class AddInventoryController implements Initializable {
     }
     private boolean addMedicineToInventory(int quantity, String itemType,Date expirationDate){
         refresh();
-        int quantityAvailable;
         if(!medicine.isEmpty()){
             for(Medicine med:medicine){
-                if(med.getItemName().equalsIgnoreCase(productNameTextField.getText()) && med.getExpirationDate().equals(expirationDate)){
-                    UpdateInventoryController updateInventoryController = new UpdateInventoryController();
-                    quantityAvailable = med.getQuantity();
-                    try {
-                       return updateInventoryController.updateMedicine((quantityAvailable+quantity));
-                    } catch (ParseException e) {
-                        throw new RuntimeException(e);
-                    }
-                }else if(med.getItemName().equalsIgnoreCase(productNameTextField.getText())){
+                if(med.getItemName().equalsIgnoreCase(productNameTextField.getText())){
                     return inventoryManagementApplication.getMedicineInventoryFacade().addInventory(med.getMedicineId(), itemType, quantity, expirationDate);
                 }
             }
         }
         return false;
+    }
+    private void medicineAutofill(){
+        FilteredList<Medicine> filteredList = new FilteredList<>(medicine, b -> true);
+
+        productNameTextField.textProperty().addListener((observable, oldValue , newValue)->
+                filteredList.setPredicate(medicine -> {
+                    if(newValue.isEmpty()||newValue.isBlank()||newValue == null){
+                        return true;
+                    }
+                    String searchKeyword = newValue.toLowerCase();
+                     if(medicine.getItemName().toLowerCase().contains(searchKeyword)){
+                        descriptionTextField.setText(medicine.getDescription());
+                        return true;
+                    }
+                    return false;
+                })
+        );
     }
     private boolean addMedicine(int quantity) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -179,11 +185,9 @@ public class AddInventoryController implements Initializable {
                         .findFirst()
                         .orElse(null);
                 if (existingInventoryItem != null) {
-                    Optional<ButtonType> confirmUpdate = alertAction("Add Confirmation", "The medicine with the same name and expiration date exists in inventory. Do you still want to add this to inventory?"
-                    );
+                    Optional<ButtonType> confirmUpdate = alertAction("Add Confirmation", "The medicine with the same name and expiration date exists in inventory. Do you still want to add this to inventory?");
                     if (confirmUpdate.isPresent() && confirmUpdate.get().getButtonData() == ButtonBar.ButtonData.YES) {
                         int updatedQuantity = existingInventoryItem.getQuantity() + quantity;
-
                         boolean updated = inventoryManagementApplication
                                 .getMedicineInventoryFacade()
                                 .updateMedicineInventory(
@@ -193,13 +197,13 @@ public class AddInventoryController implements Initializable {
                                         itemTypeComboBox.getSelectionModel().getSelectedItem().toString(),
                                         expirationDate
                                 );
-
                         if (updated) {
                             showDialog("Notification", "Quantity successfully updated in inventory.");
                             refresh();
                             return true;
                         }
                     }
+                    return false;
                 } else {
                     boolean inserted = inventoryManagementApplication
                             .getMedicineInventoryFacade()
@@ -209,7 +213,7 @@ public class AddInventoryController implements Initializable {
                                     quantity,
                                     expirationDate
                             );
-
+                    refresh();
                     if (inserted) {
                         showDialog("Notification", "Item successfully added. Check your inventory.");
                         refresh();
@@ -217,15 +221,10 @@ public class AddInventoryController implements Initializable {
                     }
                 }
 
-                return false;
             }
             medicineModel.setItemName(productName);
             medicineModel.setDescription(descriptionTextField.getText());
-
-            boolean medAdded = inventoryManagementApplication
-                    .getMedicineInventoryFacade()
-                    .addMedicine(medicineModel);
-
+            boolean medAdded = inventoryManagementApplication.getMedicineInventoryFacade().addMedicine(medicineModel);
             if (medAdded) {
                 refresh();
                 Optional<ButtonType> result = alertAction(
@@ -233,20 +232,18 @@ public class AddInventoryController implements Initializable {
                         "Medicine added to the table. Do you want to add it to inventory?"
                 );
                 if (result.isPresent()&&result.get().getButtonData() == ButtonBar.ButtonData.YES) {
-                    if (addMedicineToInventory(quantity, itemTypeComboBox.getSelectionModel().getSelectedItem().toString(), expirationDate
-                    )) {
+                    refresh();
+                    if (addMedicineToInventory(quantity, itemTypeComboBox.getSelectionModel().getSelectedItem().toString(), expirationDate)) {
                         showDialog("Notification", "Item successfully added. Check your inventory.");
                         return true;
                     }
                 }
                 return true;
-
             }
 
         } catch (InputMismatchException ime) {
             LOGGER.error("Invalid user input: " + ime);
         }
-
         return false;
     }
     private void showMedicineToEdit(Medicine medicine) throws IOException {
