@@ -104,6 +104,8 @@ public class StudentHealthProfileController implements Initializable {
         zToAFilterBtn.setOnAction(event -> sortZToA());
         ageFilterBtn.setOnAction(event -> sortByAge());
         clearFilterBtn.setOnAction(event -> clearFilter());
+        togglePrevBtn.setOnAction(event -> handlePrevPage());
+        toggleNextBtn.setOnAction(event -> handleNextPage());
 
         studentTableView.setRowFactory(tv -> {
             TableRow<Student> row = new TableRow<>();
@@ -135,9 +137,6 @@ public class StudentHealthProfileController implements Initializable {
                 updatePage();
             }
         });
-
-        togglePrevBtn.setOnAction(e -> handlePrevPage());
-        toggleNextBtn.setOnAction(e -> handleNextPage());
     }
 
     /**
