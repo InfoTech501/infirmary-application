@@ -1,5 +1,6 @@
 package com.rocs.infirmary.application.controller.student.profile;
 
+import com.rocs.infirmary.application.controller.helper.ControllerHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,6 +12,7 @@ import javafx.scene.control.*;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
@@ -52,7 +54,7 @@ public class SHPMedicalRecordsController implements Initializable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SHPMedicalRecordsController.class);
     private final StudentMedicalRecordApplication studentMedicalRecordApplication = new StudentMedicalRecordApplication();
-    private Student student;
+    private Student selectedStudent;
 
     private StudentHealthProfileController parentController;
     private SHPMoreInfoModalController modalController;
@@ -84,64 +86,48 @@ public class SHPMedicalRecordsController implements Initializable {
     /**
      * A function that sets the specific student record using the student LRN.
      *
-     * @param student the Student object containing student information and medical records
+     * @param records the Student object containing student information and medical records
      */
-    public void setSelectedStudentRecord(Student student) {
-        this.student = student;
-        Student studentMedicalRecord = studentMedicalRecordApplication.getStudentMedicalRecordFacade().getMedicalInformationByLRN(student.getLrn());
-
-        if (studentMedicalRecord != null) {
-            illnessLabel.setText(studentMedicalRecord.getSymptoms() != null ? studentMedicalRecord.getSymptoms() : "");
-            visitDateLabel.setText(studentMedicalRecord.getVisitDate() != null ? String.valueOf(studentMedicalRecord.getVisitDate()) : "");
-            temperatureLabel.setText(student.getTemperatureReadings() != null ? String.valueOf(studentMedicalRecord.getTemperatureReadings()) : "");
-            bloodPressureLabel.setText(student.getBloodPressure() != null ? String.valueOf(studentMedicalRecord.getBloodPressure()) : "");
-            pulseRateLabel.setText(studentMedicalRecord.getPulseRate() != null ? String.valueOf(student.getPulseRate()) : "");
-            respiratoryRate.setText(studentMedicalRecord.getRespiratoryRate() != null ? String.valueOf(student.getRespiratoryRate()) : "");
-            treatmentLabel.setText(studentMedicalRecord.getTreatment() != null ? String.valueOf(student.getTreatment()) : "");
-
-            LOGGER.info("Student data successfully set");
-        } else {
-            illnessLabel.setText("No record found");
-            visitDateLabel.setText(" ");
-            temperatureLabel.setText(" ");
-            bloodPressureLabel.setText(" ");
-            pulseRateLabel.setText(" ");
-            respiratoryRate.setText(" ");
-            treatmentLabel.setText(" ");
-            LOGGER.info("No record found");
+    public void setSelectedStudentRecord(List<Student> records) {
+        if (records == null || records.isEmpty()) {
+            LOGGER.warn("No records found");
+            return;
         }
+        Student studentMedicalRecord = records.getFirst();
+        this.selectedStudent = studentMedicalRecord;
+        setLabels(studentMedicalRecord);
+        LOGGER.info("Student data successfully set");
+    }
+
+    private void setLabels(Student studentMedicalRecord) {
+        illnessLabel.setText(getOrEmpty(studentMedicalRecord.getSymptoms()));
+        visitDateLabel.setText(getOrEmpty(studentMedicalRecord.getVisitDate()));
+        temperatureLabel.setText(getOrEmpty(studentMedicalRecord.getTemperatureReadings()));
+        bloodPressureLabel.setText(getOrEmpty(studentMedicalRecord.getBloodPressure()));
+        pulseRateLabel.setText(getOrEmpty(studentMedicalRecord.getPulseRate()));
+        respiratoryRate.setText(getOrEmpty(studentMedicalRecord.getRespiratoryRate()));
+        treatmentLabel.setText(getOrEmpty(studentMedicalRecord.getTreatment()));
+    }
+
+    private String getOrEmpty(Object value) {
+        return value != null ? value.toString() : "";
     }
 
     private void confirmChangesBtnClicked() {
-        if (student != null) {
-            Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-            confirmationAlert.setTitle("Confirm Update");
-            confirmationAlert.setHeaderText("Update Medical Record");
-            confirmationAlert.setContentText("Are you sure you want to update this medical record? This action cannot be undone.");
-
-            ButtonType updateButton = new ButtonType("Update", ButtonBar.ButtonData.OK_DONE);
-            ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
-            confirmationAlert.getButtonTypes().setAll(updateButton, cancelButton);
-
-            Optional<ButtonType> result = confirmationAlert.showAndWait();
-
-            if (result.isPresent() && result.get() == updateButton) {
+        if (selectedStudent != null) {
+            Optional<ButtonType> result = ControllerHelper.alertAction("Confirm Update", "Are you sure you want to update this medical record?");
+            if (result.isPresent() && result.get().getButtonData() == ButtonBar.ButtonData.YES){
                 try {
-                    handleRecordUpdate(student);
-                    LOGGER.info("Medical record updated successfully for student: {}", student.getFirstName());
+                    handleRecordUpdate(selectedStudent);
+                    LOGGER.info("Medical record updated successfully for student: {}", selectedStudent.getFirstName());
                 } catch (Exception e) {
-                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                    errorAlert.setTitle("Update Failed");
-                    errorAlert.setHeaderText("Error updating record");
-                    errorAlert.setContentText("An error occurred while updating the medical record. No records updated.");
-                    errorAlert.showAndWait();
-                    LOGGER.error("failed to update medical record for student: {}", student.getFirstName(), e);
+                    ControllerHelper.showDialog("Update failed", "Error updating record\", \"An error occurred while updating the medical record. No records updated");
+                    LOGGER.error("failed to update medical record for student: {}", selectedStudent.getFirstName(), e);
                 }
             }
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "No student record selected.", ButtonType.OK);
+            ControllerHelper.showDialog("Error", "No student record selected.");
             LOGGER.warn("No student record selected");
-            alert.showAndWait();
         }
     }
 
@@ -192,10 +178,8 @@ public class SHPMedicalRecordsController implements Initializable {
         }
 
         if (!errorMessage.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.WARNING, errorMessage.toString(), ButtonType.OK);
-            alert.setTitle("Input error");
+            ControllerHelper.showDialog("Input error", errorMessage.toString());
             LOGGER.warn("Input validation failed for medical records update: {}", errorMessage.toString().replace("\n", "; "));
-            alert.showAndWait();
             return;
         }
 
@@ -204,23 +188,24 @@ public class SHPMedicalRecordsController implements Initializable {
                 temperature.isEmpty() ? null : temperature,
                 visitDate,
                 treatment.isEmpty() ? null : treatment,
-                student.getLrn()
+                student.getMedicalRecordId()
         );
 
-        Alert alert;
         if (isUpdated) {
             parentController.loadData();
-            alert = new Alert(Alert.AlertType.INFORMATION, "Medical record updated successfully.", ButtonType.OK);
-            Student updatedStudent = studentMedicalRecordApplication.getStudentMedicalRecordFacade().getMedicalInformationByLRN(student.getLrn());
-            setSelectedStudentRecord(updatedStudent);
+            ControllerHelper.showDialog("Success", "Medical record updated successfully.");
+            loadMedicalRecords(student);
             clearTextFields();
             LOGGER.info("Medical records updated successfully for student LRN: {}", student.getLrn());
-            alert.showAndWait();
         } else {
-            alert = new Alert(Alert.AlertType.ERROR, "Failed to update medical record. Please try again.", ButtonType.OK);
+            ControllerHelper.showDialog("Error", "Failed to update medical record.");
             LOGGER.error("Medical records update failed for student LRN: {}", student.getLrn());
-            alert.showAndWait();
         }
+    }
+
+    private void loadMedicalRecords(Student student) {
+        List<Student> updatedRecord = studentMedicalRecordApplication.getStudentMedicalRecordFacade().getMedicalRecordById(student.getMedicalRecordId());
+        setSelectedStudentRecord(updatedRecord);
     }
 
     private boolean hasInvalidCharacters(String text) {
@@ -250,48 +235,27 @@ public class SHPMedicalRecordsController implements Initializable {
     }
 
     private void confirmDeletion() {
-        if (student != null) {
-            Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-            confirmationAlert.setTitle("Confirm Deletion");
-            confirmationAlert.setHeaderText("Delete Medical Record");
-            confirmationAlert.setContentText("Are you sure you want to delete this medical record? This action cannot be undone.");
-
-            ButtonType deleteButton = new ButtonType("Delete", ButtonBar.ButtonData.OK_DONE);
-            ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
-            confirmationAlert.getButtonTypes().setAll(deleteButton, cancelButton);
-
-            Optional<ButtonType> result = confirmationAlert.showAndWait();
-
-            if (result.isPresent() && result.get() == deleteButton) {
+        if (selectedStudent != null) {
+            Optional<ButtonType> result = ControllerHelper.alertAction("Confirm Deletion", "Are you sure you want to delete this medical record?");
+            if (result.isPresent() && result.get().getButtonData() == ButtonBar.ButtonData.YES){
                 try {
-                    handleRecordDeletion(student);
-                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                    successAlert.setTitle("Success");
-                    successAlert.setHeaderText(null);
-                    successAlert.setContentText("Medical record deleted successfully.");
-                    successAlert.showAndWait();
-
-                    LOGGER.info("Medical record deleted successfully for student: {}", student.getFirstName());
+                    handleRecordDeletion(selectedStudent);
+                    ControllerHelper.showDialog("Success", "Medical record deleted successfully.");
+                    LOGGER.info("Medical record deleted successfully for student: {}", selectedStudent.getFirstName());
                 } catch (Exception e) {
-                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                    errorAlert.setTitle("Deletion Failed");
-                    errorAlert.setHeaderText("Error Deleting Record");
-                    errorAlert.setContentText("An error occurred while deleting the medical record. No records deleted.");
-                    errorAlert.showAndWait();
-
-                    LOGGER.error("failed to delete medical record for student: {}", student.getFirstName(), e);
+                    ControllerHelper.showDialog("Error", "Error Deleting Record.");
+                    LOGGER.error("failed to delete medical record for student: {}", selectedStudent.getFirstName(), e);
                 }
             }
         } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "No student record selected.", ButtonType.OK);
+            ControllerHelper.showDialog("Error", "No student record selected.");
             LOGGER.warn("No records selected");
-            alert.showAndWait();
         }
     }
 
     private void handleRecordDeletion(Student student) {
         if (student != null) {
-            boolean isDeleted = studentMedicalRecordApplication.getStudentMedicalRecordFacade().deleteStudentMedicalRecordByLrn(student.getLrn());
+            boolean isDeleted = studentMedicalRecordApplication.getStudentMedicalRecordFacade().deleteStudentMedicalRecordByLrn(selectedStudent.getMedicalRecordId());
             if (isDeleted) {
                 parentController.loadData();
                 modalController.closeModal();

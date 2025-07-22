@@ -19,9 +19,9 @@ public class Student extends Person {
     private String treatment;
     private Long id;
     private int ailmentId;
-    private String medHistoryId;
     private Long nurseInChargeId;
-    private Long setMedicalRecordId ;
+
+    private Long medicalRecordId;
     private int MedicalRecordStatus;
     private String gradeLevel;
     private String studentAdviser;
@@ -109,16 +109,16 @@ public class Student extends Person {
         this.ailmentId = ailmentId;
     }
 
-    public void setMedHistoryId(String medHistoryId) {
-        this.medHistoryId = medHistoryId;
-    }
-
     public void setNurseInChargeId(Long nurseInChargeId) {
         this.nurseInChargeId = nurseInChargeId;
     }
 
-    public void setMedicalRecordId(Long medicalRecordIdId) {
-        this.setMedicalRecordId = medicalRecordIdId;
+    public Long getMedicalRecordId() {
+        return medicalRecordId;
+    }
+
+    public void setMedicalRecordId(Long medicalRecordId) {
+        this.medicalRecordId = medicalRecordId;
     }
 
     public int getMedicalRecordStatus() {

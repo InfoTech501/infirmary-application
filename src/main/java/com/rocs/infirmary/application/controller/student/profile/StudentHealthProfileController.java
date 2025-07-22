@@ -102,7 +102,7 @@ public class StudentHealthProfileController implements Initializable {
                     try
                     {
                         onClickShowMoreInformation(row.getItem());
-                        LOGGER.info("Row selected: {}", row.getItem().getFirstName());
+                        LOGGER.info("Row selected: {}", row.getItem().getLrn());
                     } catch (IOException e) {
                         LOGGER.error("Row selection failure", e);
                     }

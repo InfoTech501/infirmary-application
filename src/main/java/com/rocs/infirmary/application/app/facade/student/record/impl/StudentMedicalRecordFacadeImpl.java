@@ -26,11 +26,23 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
         this.studentMedicalRecordDao = studentMedRecord;
     }
 
-    public Student getMedicalInformationByLRN(String LRN) {
+    @Override
+    public List<Student> getMedicalInformationByLRN(String LRN) {
         logger.debug("Entering getMedicalInformationByLRN with LRN: {}", LRN);
-        Student student = this.studentMedRecord.findMedicalInformation(LRN);
-        logger.debug("Exiting getMedicalInformationByLRN with result: {}", student);
-        return student;
+        List<Student> medicalInfo = this.studentMedRecord.findMedicalInformation(LRN);
+        logger.debug("Exiting getMedicalInformationByLRN with result: {}", medicalInfo);
+        logger.debug("getMedicalInformationByLRN items found: {}", medicalInfo.size());
+        return medicalInfo;
+    }
+
+
+    @Override
+    public List<Student> getMedicalRecordById(Long medicalRecordId) {
+        logger.debug("Entering getMedicalRecordById with: {}", medicalRecordId);
+        List<Student> medicalInfo = this.studentMedRecord.findMedicalInformationById(medicalRecordId);
+        logger.debug("Exiting getMedicalRecordById with result: {}", medicalInfo);
+        logger.debug("getMedicalRecordById items found: {}", medicalInfo.size());
+        return medicalInfo;
     }
 
     @Override
@@ -47,17 +59,17 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
      * boolean returns true if the deletion was successful, otherwise false.
      */
     @Override
-    public boolean deleteStudentMedicalRecordByLrn(String LRN) {
-        logger.warn("Using deleteStudentMedicalRecordByLrn with LRN: {}", LRN);
-        boolean isDeleted = this.studentMedRecord.deleteStudentMedicalRecord(LRN);
+    public boolean deleteStudentMedicalRecordByLrn(Long medicalRecordId) {
+        logger.warn("Using deleteStudentMedicalRecordByLrn with LRN: {}", medicalRecordId);
+        boolean isDeleted = this.studentMedRecord.deleteStudentMedicalRecord(medicalRecordId);
         logger.warn("Exiting deleteStudentMedicalRecordByLrn with result: {}", isDeleted);
         return isDeleted;
     }
     @Override
-    public boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate, String treatment, String LRN) {
+    public boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate, String treatment, Long medicalRecordId) {
         logger.debug("Using updateStudentMedicalRecord with LRN: {}, symptoms: {}, temperature: {}, visitDate: {}, treatment: {}",
-                LRN, symptoms, temperatureReadings, visitDate, treatment);
-        Boolean updated =  this.studentMedRecord.updateStudentMedicalRecord(symptoms,temperatureReadings,visitDate,treatment, LRN);
+                medicalRecordId, symptoms, temperatureReadings, visitDate, treatment);
+        Boolean updated =  this.studentMedRecord.updateStudentMedicalRecord(symptoms,temperatureReadings,visitDate,treatment, medicalRecordId);
         logger.debug("Exiting updateStudentMedicalRecord, update successful: {}", updated);
         return updated;
     }

@@ -17,6 +17,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collections;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -58,7 +60,9 @@ public class SHPMoreInfoModalController implements Initializable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SHPMoreInfoModalController.class);
     private final StudentMedicalRecordApplication studentMedicalRecordApplication = new StudentMedicalRecordApplication();
-    private Student selectedStudentRecord;
+    private List<Student> selectedStudentRecord;
+    private ObservableList<Student> masterMedicalList;
+
     private StudentHealthProfileController parentController;
 
     /**
@@ -72,9 +76,31 @@ public class SHPMoreInfoModalController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        initializeCollections();
         populateClinicHistoryTable();
+        setupEventHandlers();
         editHealthInfoBtn.setOnAction(event -> switchSceneToEditHealthInfo());
         closeModalBtn.setOnAction(event -> closeModal());
+    }
+
+    private void initializeCollections() {
+        masterMedicalList = FXCollections.observableArrayList();
+        clinicHistoryTableView.setItems(masterMedicalList);
+    }
+
+    private void setupEventHandlers() {
+        clinicHistoryTableView.setRowFactory(tv -> {
+            TableRow<Student> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (!row.isEmpty() && event.getClickCount() == 1) {
+                    selectedStudentRecord = Collections.singletonList(row.getItem());
+                    editHealthInfoBtn.setDisable(false);
+                    editHealthInfoBtn.setOpacity(1.0);
+                    LOGGER.info("Row selected");
+                }
+            });
+            return row;
+        });
     }
 
     /**
@@ -108,17 +134,20 @@ public class SHPMoreInfoModalController implements Initializable {
     }
 
     private void setStudentLabelData(Student student) {
-        final StringBuilder fullName = fullNameStringBuilder(student);
+        if (masterMedicalList != null) {
+            final StringBuilder fullName = fullNameStringBuilder(student);
 
-        studentFullNameLabel.setText(fullName.toString());
-        ageLabel.setText(String.valueOf(student.getAge()));
-        addressLabel.setText(student.getAddress() != null ? String.valueOf(student.getAddress()) : "");
-        sexLabel.setText(student.getGender() != null ? String.valueOf(student.getGender()) : "");
-        contactNumberLabel.setText(student.getContactNumber() != null ? String.valueOf(student.getContactNumber()) : "");
-        birthdateLabel.setText(String.valueOf(student.getBirthdate()) != null ? String.valueOf(student.getBirthdate()) : "");
+            studentFullNameLabel.setText(fullName.toString());
+            ageLabel.setText(String.valueOf(student.getAge()));
+            addressLabel.setText(student.getAddress() != null ? String.valueOf(student.getAddress()) : "");
+            sexLabel.setText(student.getGender() != null ? String.valueOf(student.getGender()) : "");
+            contactNumberLabel.setText(student.getContactNumber() != null ? String.valueOf(student.getContactNumber()) : "");
+            birthdateLabel.setText(String.valueOf(student.getBirthdate()) != null ? String.valueOf(student.getBirthdate()) : "");
+            LOGGER.info("Medical records successfully set");
+        } else {
+            LOGGER.info("No Medical records successfully set");
+        }
 
-        getMedicalRecords(student);
-        LOGGER.info("Medical records successfully set");
     }
 
     private StringBuilder fullNameStringBuilder(Student student) {
@@ -145,14 +174,13 @@ public class SHPMoreInfoModalController implements Initializable {
      * Retrieves and displays medical records for the specified student using their LRN.
      * Sets up row selection functionality to enable editing of individual records.
      *
-     * @param studentLRN the Student object whose medical records will be retrieved using their LRN
+     * @param student the Student object whose medical records will be retrieved using their LRN
      */
-    public void getMedicalRecords(Student studentLRN) {
+    public void getMedicalRecords(Student student) {
         try {
-            if (studentLRN != null) {
-                Student studentMedicalRecord = studentMedicalRecordApplication.getStudentMedicalRecordFacade().getMedicalInformationByLRN(studentLRN.getLrn());
-                ObservableList<Student> studentObservableList = FXCollections.observableArrayList(studentMedicalRecord);
-                clinicHistoryTableView.setItems(studentObservableList);
+            if (student != null) {
+                List<Student> studentMedicalRecord = studentMedicalRecordApplication.getStudentMedicalRecordFacade().getMedicalInformationByLRN(student.getLrn());
+                masterMedicalList.setAll(studentMedicalRecord);
                 LOGGER.info("Getting medical info by LRN: Success");
             } else {
                 LOGGER.warn("No records retrieved");
@@ -160,19 +188,6 @@ public class SHPMoreInfoModalController implements Initializable {
         } catch (Exception e) {
             LOGGER.error("Error in getting medical records{}", String.valueOf(e));
         }
-
-        clinicHistoryTableView.setRowFactory(tv -> {
-            TableRow<Student> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (!row.isEmpty() && event.getClickCount() == 1) {
-                    selectedStudentRecord = row.getItem();
-                    editHealthInfoBtn.setDisable(false);
-                    editHealthInfoBtn.setOpacity(1.0);
-                    LOGGER.info("Row selected");
-                }
-            });
-            return row;
-        });
     }
 
     private void switchSceneToEditHealthInfo() {
