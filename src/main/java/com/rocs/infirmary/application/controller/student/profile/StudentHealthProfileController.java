@@ -12,7 +12,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
 import org.slf4j.Logger;
@@ -65,9 +64,20 @@ public class StudentHealthProfileController implements Initializable {
     @FXML
     private StackPane rootStackPane;
 
+    //pagination
+    @FXML
+    public ComboBox<Integer> rowsPerPageComboBox;
+    @FXML
+    public Label paginationLabel;
+    @FXML
+    public Label rowsPageLabel;
+    @FXML
+    public ToggleButton togglePrevBtn, toggleNextBtn;
+
+    private int rowsPerPage = 10;
+    private int currentPage = 1;
+
     private ObservableList<Student> masterStudentList;
-    private FilteredList<Student> filteredList;
-    private SortedList<Student> sortedList;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentHealthProfileController.class);
     private final StudentHealthProfileApplication studentHealthProfileApplication = new StudentHealthProfileApplication();
@@ -83,8 +93,8 @@ public class StudentHealthProfileController implements Initializable {
 
     private void initializeCollections() {
         masterStudentList = FXCollections.observableArrayList();
-        filteredList = new FilteredList<>(masterStudentList);
-        sortedList = new SortedList<>(filteredList);
+        FilteredList<Student> filteredList = new FilteredList<>(masterStudentList);
+        SortedList<Student> sortedList = new SortedList<>(filteredList);
         sortedList.comparatorProperty().bind(studentTableView.comparatorProperty());
         studentTableView.setItems(sortedList);
     }
@@ -110,6 +120,24 @@ public class StudentHealthProfileController implements Initializable {
             });
             return row;
         });
+
+        setupRowsPerPageSelector();
+    }
+
+    private void setupRowsPerPageSelector() {
+        rowsPerPageComboBox.setItems(FXCollections.observableArrayList(5,10,15,20));
+        rowsPerPageComboBox.setValue(rowsPerPage);
+        rowsPerPageComboBox.setOnAction(event -> {
+            Integer selected = rowsPerPageComboBox.getValue();
+            if (selected != null) {
+                rowsPerPage = selected;
+                currentPage = 1;
+                updatePage();
+            }
+        });
+
+        togglePrevBtn.setOnAction(e -> handlePrevPage());
+        toggleNextBtn.setOnAction(e -> handleNextPage());
     }
 
     /**
@@ -141,20 +169,34 @@ public class StudentHealthProfileController implements Initializable {
      */
     public void loadData() {
         try {
-            List<Student> profileList = studentHealthProfileApplication.getStudentHealthProfileFacade().getAllStudentHealthProfile();
-            masterStudentList.setAll(profileList);
-            populateComboBoxes(profileList);
+            List<Student> fullStudentList = studentHealthProfileApplication.getStudentHealthProfileFacade().getAllStudentHealthProfile();
+            masterStudentList.setAll(fullStudentList);
+            populateComboBoxes(fullStudentList);
+            updatePage();
             LOGGER.info("Fetching records successful");
         } catch (NullPointerException e) {
             LOGGER.error("Null pointer exception{}", String.valueOf(e));
         }
     }
 
+    private void updatePage() {
+        List<Student> filtered = masterStudentList.stream().filter(this::applyAllFilters).toList();
+        int total = filtered.size();
+        int fromIndex = Math.max(0, (currentPage - 1) * rowsPerPage);
+        int toIndex = Math.min(fromIndex + rowsPerPage, total);
+
+        List<Student> pageData = filtered.subList(fromIndex, toIndex);
+        ObservableList<Student> pageItems = FXCollections.observableArrayList(pageData);
+        studentTableView.setItems(pageItems);
+
+        paginationLabel.setText((fromIndex + 1) + " - " + toIndex + " of " + total);
+        rowsPageLabel.setText(String.valueOf(pageItems.size()));
+    }
+
     private void setupFiltering() {
-        filteredList.setPredicate(this::applyAllFilters);
-        searchTextField.textProperty().addListener((obs, oldVal, newVal) -> {filteredList.setPredicate(this::applyAllFilters);});
-        sectionComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {filteredList.setPredicate(this::applyAllFilters);});
-        sexComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {filteredList.setPredicate(this::applyAllFilters);});
+        searchTextField.textProperty().addListener((obs, oldVal, newVal) -> {currentPage = 1; updatePage();});
+        sectionComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {currentPage = 1; updatePage();});
+        sexComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {currentPage = 1; updatePage();});
         LOGGER.info("Filtering system configured");
     }
 
@@ -224,6 +266,22 @@ public class StudentHealthProfileController implements Initializable {
         }
     }
 
+    private void handlePrevPage() {
+        if (currentPage > 1) {
+            currentPage--;
+            updatePage();
+        }
+    }
+
+    private void handleNextPage() {
+        int total = (int) masterStudentList.stream().filter(this::applyAllFilters).count();
+        int maxPage = (int) Math.ceil((double) total / rowsPerPage);
+        if (currentPage < maxPage) {
+            currentPage++;
+            updatePage();
+        }
+    }
+
     private void populateComboBoxes(List<Student> students) {
         Set<String> sections = students.stream().map(Student::getSection).filter(section -> section != null && !section.trim().isEmpty()).collect(Collectors.toSet());
         ObservableList<String> sectionItems = FXCollections.observableArrayList();
@@ -263,6 +321,8 @@ public class StudentHealthProfileController implements Initializable {
         sexComboBox.getSelectionModel().selectFirst();
         searchTextField.clear();
         studentTableView.getSortOrder().clear();
+        currentPage = 1;
+        updatePage();
         LOGGER.info("Sorting cleared");
     }
 }
