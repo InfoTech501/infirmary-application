@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 public class InfirmaryApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
+        System.setProperty("prism.lcdtext", "false");
         FXMLLoader loader = new FXMLLoader();
 
         loader.setLocation(getClass().getResource("/views/Mainpage.fxml"));

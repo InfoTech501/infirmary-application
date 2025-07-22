@@ -209,8 +209,8 @@ public class StudentHealthProfileController implements Initializable {
 
         String selectedSection = sectionComboBox.getValue();
         if (selectedSection != null && !selectedSection.equals("All Sections")) {
-            if (!selectedSection.equalsIgnoreCase(student.getSection()))
-            {
+            String studentSectionCapitalized = firstLetterAutoCapitalization(student.getSection());
+            if (!selectedSection.equals(studentSectionCapitalized)) {
                 return false;
             }
         }
@@ -282,7 +282,7 @@ public class StudentHealthProfileController implements Initializable {
     }
 
     private void populateComboBoxes(List<Student> students) {
-        Set<String> sections = students.stream().map(Student::getSection).filter(section -> section != null && !section.trim().isEmpty()).collect(Collectors.toSet());
+        Set<String> sections = students.stream().map(Student::getSection).filter(section -> section != null && !section.trim().isEmpty()).map(this::firstLetterAutoCapitalization).collect(Collectors.toSet());
         ObservableList<String> sectionItems = FXCollections.observableArrayList();
         sectionItems.add("All Sections");
         sectionItems.addAll(sections.stream().sorted().toList());
