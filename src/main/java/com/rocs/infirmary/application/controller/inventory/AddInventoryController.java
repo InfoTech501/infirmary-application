@@ -157,9 +157,7 @@ public class AddInventoryController implements Initializable {
                         return true;
                     }
                     String searchKeyword = newValue.toLowerCase();
-                    if(productNameTextField.getText() == null || productNameTextField.getText().isEmpty() || productNameTextField.getText().isBlank()){
-                        descriptionTextField.clear();
-                    }else if(medicine.getItemName().toLowerCase().contains(searchKeyword)){
+                     if(medicine.getItemName().toLowerCase().contains(searchKeyword)){
                         descriptionTextField.setText(medicine.getDescription());
                         return true;
                     }
