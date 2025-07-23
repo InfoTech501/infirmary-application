@@ -32,13 +32,14 @@ public class MainpageController implements Initializable {
     private StackPane homepageScene;
 
     @FXML
+    private Label pageLabel;
+
+    @FXML
     private ImageView redCircle;
 
     @FXML
     private ToggleButton notificationBtn;
 
-    @FXML
-    private Label pageLabel;
 
     private final LowStockAlertHelper alertHelper = LowStockAlertHelper.getInstance();
 
