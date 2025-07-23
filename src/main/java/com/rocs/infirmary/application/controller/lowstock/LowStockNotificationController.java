@@ -1,5 +1,6 @@
 package com.rocs.infirmary.application.controller.lowstock;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -43,10 +44,6 @@ public class LowStockNotificationController {
         alertContainer.setManaged(true);
     }
 
-    /**
-     * Closes the current modal window when the close button is clicked.
-     * @param event the mouse click event triggered by the close button
-     */
     @FXML
     private void onCloseButton(MouseEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -86,7 +83,7 @@ public class LowStockNotificationController {
             modalStage.initStyle(StageStyle.TRANSPARENT);
 
             modalStage.setOnShown(e -> {
-                updateModalPosition(modalStage, ownerStage);
+                 updateModalPosition(modalStage, ownerStage);
             });
             ownerStage.xProperty().addListener((obs, oldVal, newVal) -> updateModalPosition(modalStage, ownerStage));
             ownerStage.yProperty().addListener((obs, oldVal, newVal) -> updateModalPosition(modalStage, ownerStage));

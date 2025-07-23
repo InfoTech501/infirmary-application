@@ -2,6 +2,7 @@ package com.rocs.infirmary.application.controller.mainpage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.AbstractList;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -31,24 +32,24 @@ public class MainpageController implements Initializable {
     private StackPane homepageScene;
 
     @FXML
-    private Label pageLabel;
-
-    @FXML
     private ImageView redCircle;
 
     @FXML
     private ToggleButton notificationBtn;
 
-    private LowStockNotificationServiceApplication lowStockNotificationServiceApplication = new LowStockNotificationServiceApplication();
-    private LowStockAlertHelper alertHelper;
+    @FXML
+    private Label pageLabel;
 
+    private final LowStockAlertHelper alertHelper = LowStockAlertHelper.getInstance();
 
     @Override
     public void initialize (URL url, ResourceBundle rb) {
         loadDashboard();
-        alertHelper = new LowStockAlertHelper(lowStockNotificationServiceApplication,redCircle,notificationBtn);
-        alertHelper.checkLowStockAndShowAlert(homepageScene);
-        alertHelper.startAutoUpdate(homepageScene,2);
+
+        alertHelper.bindUI(redCircle,notificationBtn);
+        alertHelper.bindService(new LowStockNotificationServiceApplication());
+        alertHelper.setMainNode(homepageScene);
+        alertHelper.checkLowStockAndShowAlert();
     }
 
     private void loadDashboard() {

@@ -1,8 +1,8 @@
 package com.rocs.infirmary.application.app.facade.dashboard.impl;
 
 import com.rocs.infirmary.application.app.facade.dashboard.DashboardFacade;
-import com.rocs.infirmary.application.data.dao.report.dashboard.DashboardReportsDao;
-import com.rocs.infirmary.application.data.dao.report.dashboard.impl.DashboardReportsDaoImpl;
+import com.rocs.infirmary.application.data.dao.report.dashboard.DashboardReports;
+import com.rocs.infirmary.application.data.dao.report.dashboard.impl.DashboardReportsImpl;
 import com.rocs.infirmary.application.data.model.report.ailment.CommonAilmentsReport;
 import com.rocs.infirmary.application.data.model.report.lowstock.LowStockReport;
 import com.rocs.infirmary.application.data.model.report.visit.FrequentVisitReport;
@@ -21,19 +21,19 @@ import org.slf4j.LoggerFactory;
 
 
 public class DashboardFacadeImpl implements DashboardFacade {
-    private DashboardReportsDao dashboardReportsDao = new DashboardReportsDaoImpl();
+    private DashboardReports dashboardReports = new DashboardReportsImpl();
     /**
      * {@code DashboardFacadeImpl()} is a constructor that requires parameter
      * @param dashboardReports DAO implementation of Medicine Inventory
      * this provides the business logic of the Medicine Inventory
      * {@code this.dashboardReportsDao = dashboardReports} is used to initialize the DashboardReportsDao
      */
-    public DashboardFacadeImpl(DashboardReportsDao dashboardReports) {
-        this.dashboardReportsDao = dashboardReports;
+    public DashboardFacadeImpl(DashboardReports dashboardReports) {
+        this.dashboardReports = dashboardReports;
     }
 
     /** The data access object for Dashboard. */
-    private final DashboardReportsDao dashboard = new DashboardReportsDaoImpl();
+    private final DashboardReports dashboard = new DashboardReportsImpl();
     private static final Logger logger = LoggerFactory.getLogger(DashboardFacadeImpl.class);
 
     @Override

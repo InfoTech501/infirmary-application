@@ -1,6 +1,7 @@
 package com.rocs.infirmary.application.controller.inventory;
 
 import com.rocs.infirmary.application.controller.helper.ControllerHelper;
+import com.rocs.infirmary.application.controller.lowstock.helper.LowStockAlertHelper;
 import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import javafx.collections.FXCollections;

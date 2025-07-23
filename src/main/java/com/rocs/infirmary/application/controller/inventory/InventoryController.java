@@ -1,5 +1,6 @@
 package com.rocs.infirmary.application.controller.inventory;
 
+import com.rocs.infirmary.application.controller.lowstock.LowStockNotificationController;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
 import javafx.collections.FXCollections;
@@ -135,6 +136,7 @@ public class InventoryController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/InventoryEditItemModal.fxml"));
         Parent root = loader.load();
         UpdateInventoryController updateInventoryController = loader.getController();
+
         updateInventoryController.showItemToEdit(medicine);
         updateInventoryController.setParentController(this);
         Stage stage = new Stage();

@@ -2,8 +2,8 @@ package com.rocs.infirmary.application.module.lowstock.notification.service;
 
 import com.rocs.infirmary.application.app.facade.dashboard.DashboardFacade;
 import com.rocs.infirmary.application.app.facade.dashboard.impl.DashboardFacadeImpl;
-import com.rocs.infirmary.application.data.dao.report.dashboard.DashboardReportsDao;
-import com.rocs.infirmary.application.data.dao.report.dashboard.impl.DashboardReportsDaoImpl;
+import com.rocs.infirmary.application.data.dao.report.dashboard.DashboardReports;
+import com.rocs.infirmary.application.data.dao.report.dashboard.impl.DashboardReportsImpl;
 /**
  * It sets up the components needed to show low stock notifications.
  * It creates a DashboardFacade using the DashboardReportsDao, which is used
@@ -15,7 +15,7 @@ public class LowStockNotificationServiceApplication  {
 
     public LowStockNotificationServiceApplication() {
 
-        DashboardReportsDao dashboardReports = new DashboardReportsDaoImpl();
+        DashboardReports dashboardReports = new DashboardReportsImpl();
         this.dashboardFacade = new DashboardFacadeImpl(dashboardReports);
 
     }

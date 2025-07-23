@@ -1,6 +1,7 @@
 package com.rocs.infirmary.application.controller.inventory;
 
 import com.rocs.infirmary.application.controller.helper.ControllerHelper;
+import com.rocs.infirmary.application.controller.lowstock.helper.LowStockAlertHelper;
 import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import javafx.collections.FXCollections;
@@ -9,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -98,6 +100,7 @@ public class UpdateInventoryController {
                 }
                 try {
                     isUpdated = inventoryManagementApplication.getMedicineInventoryFacade().updateMedicineInventory(inventoryId, medicineId, quantity, itemType, newSelectedExpirationDate);
+
                 } catch (NumberFormatException e) {
                     showDialog("Warning","Invalid quantity");
                     LOGGER.error("Invalid quantity");
@@ -146,6 +149,7 @@ public class UpdateInventoryController {
                 Optional<ButtonType> result = ControllerHelper.alertAction("Update Confirmation", "This action cannot be undone. Are you sure about this update?");
                 if (result.isPresent()&& result.get().getButtonData() == ButtonBar.ButtonData.YES) {
                     if (updateMedicine(Integer.parseInt(quantityTextField.getText()))) {
+                        LowStockAlertHelper.getInstance().checkLowStockAndShowAlert();
                         ControllerHelper.showDialog("Notification", "Updated Successfully!");
                         if (parentController != null) {
                             parentController.refresh();
