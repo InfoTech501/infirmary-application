@@ -13,19 +13,28 @@ import org.slf4j.LoggerFactory;
 
 /**
  * The StudentMedicalRecordFacadeImpl class is an implementation of the StudentMedicalRecordFacade interface.
- * It provides methods for managing students medical record.
+ * StudentMedicalRecordFacadeImpl provides implementations for managing students medical record.
  */
 public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacade {
 
     /** The data access object for Student Medical Record. */
     private final StudentMedicalRecordDao studentMedRecord = new StudentMedicalRecordDaoImpl();
-    StudentMedicalRecordDao studentMedicalRecordDao = new StudentMedicalRecordDaoImpl();
+    StudentMedicalRecordDao studentMedicalRecordDao;
     private static final Logger logger = LoggerFactory.getLogger(StudentMedicalRecordFacadeImpl.class);
 
+    /**
+     * StudentMedicalRecordFacadeImpl constructor
+     * @param studentMedRecord Is the StudentMedicalRecord data access object for managing student medical records
+     */
     public StudentMedicalRecordFacadeImpl(StudentMedicalRecordDao studentMedRecord) {
         this.studentMedicalRecordDao = studentMedRecord;
     }
 
+    /**
+     * Used to retrieve s student medical information and records using their LRN.
+     * @param LRN The LRN of the student whose medical information is to be retrieved.
+     * @return A list of student objects containing medical record information.
+     */
     @Override
     public List<Student> getMedicalInformationByLRN(String LRN) {
         logger.debug("Entering getMedicalInformationByLRN with LRN: {}", LRN);
@@ -36,6 +45,11 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
     }
 
 
+    /**
+     * Used to retrieve a specific medical record using its own unique identifier.
+     * @param medicalRecordId The unique identifier of the medical record to retrieve.
+     * @return A list of student objects containing the medical record information.
+     */
     @Override
     public List<Student> getMedicalRecordById(Long medicalRecordId) {
         logger.debug("Entering getMedicalRecordById with: {}", medicalRecordId);
@@ -45,6 +59,10 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
         return medicalInfo;
     }
 
+    /**
+     * Used to retrieve all student medical records from the database.
+     * @return A list of Student objects containing all medical records.
+     */
     @Override
     public List<Student> getAllStudentMedicalRecords() {
         logger.info("Entering getAllStudentMedicalRecords");
@@ -65,6 +83,18 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
         logger.warn("Exiting deleteStudentMedicalRecordByLrn with result: {}", isDeleted);
         return isDeleted;
     }
+
+    /**
+     * Used to update specific fields of a student medical record.
+     * This method allows selective updating of medical record information including
+     * symptoms, temperature readings, visit date, and treatment description.
+     * @param symptoms A parameter to be updated: symptoms description for the medical record.
+     * @param temperatureReadings A parameter to be updated: temperature readings for the patient.
+     * @param visitDate A parameter to be updated: date of the medical visit.
+     * @param treatment A parameter to be updated: treatment description.
+     * @param medicalRecordId The unique identifier of the medical record to be updated.
+     * @return updated if at least one field was successfully updated.
+     */
     @Override
     public boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate, String treatment, Long medicalRecordId) {
         logger.debug("Using updateStudentMedicalRecord with LRN: {}, symptoms: {}, temperature: {}, visitDate: {}, treatment: {}",

@@ -24,6 +24,12 @@ import static com.rocs.infirmary.application.data.dao.utils.queryconstants.stude
 public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentMedicalRecordDaoImpl.class);
 
+    /**
+     * Used to retrieve active medical information for a student using their LRN from the database.
+     * @param LRN The LRN of the student whose medical information is to be retrieved.
+     * @return A list of student objects containing medical record information.
+     * @throws RuntimeException if a SQLException occurs on database operation.
+     */
     @Override
     public List<Student> findMedicalInformation(String LRN) {
         LOGGER.info("get medical record started");
@@ -83,6 +89,12 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
 
     }
 
+    /**
+     * Used to retrieve medical information for a specific medical record using its unique identifier from the database.
+     * @param medicalRecordId The unique identifier of the medical record to retrieve.
+     * @return A list of student objects containing the medical record information.
+     * @throws RuntimeException if a SQLException occurs on database operation.
+     */
     @Override
     public List<Student> findMedicalInformationById(Long medicalRecordId) {
         LOGGER.info("get medical record by ID started");
@@ -139,6 +151,11 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
         return studentMedicalRecords;
     }
 
+    /**
+     * Used to retrieves all student medical records from the database.
+     * @return A list of Student objects containing all medical records.
+     * @throws RuntimeException if a SQLException occurs on database operation.
+     */
     @Override
     public List<Student> findAllStudentMedicalRecords() {
         LOGGER.info("get all medical records started");
@@ -189,12 +206,9 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
 
 
     /**
-     * Deactivates a student's medical record based on their LRN (Learner Reference Number).
-     * Instead of completely removing the data, it likely updates the status
-     * of the medical record in the database to indicate it's no longer active.
-     *
-     * A status value of 0 means the record is no longer active (deleted),
-     * while a status of 1 means the record is still active and present in the system.
+     * Used to deactivate a student medical record using medicalRecordId.
+     * A status value of 0 means the record is inactive,
+     * A status value of 1 means the record is active.
      */
     @Override
     public boolean deleteStudentMedicalRecord(Long medicalRecordId) {
@@ -214,7 +228,18 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
     }
 
 
-
+    /**
+     * Used to update specific fields of a student's medical record.
+     * The method performs individual updates for each field that needs to be changed,
+     * providing granular control over what gets updated.
+     * @param symptoms A parameter to be updated: symptoms description.
+     * @param temperatureReadings A parameter to be updated: temperature readings.
+     * @param visitDate A parameter to be updated: visit date.
+     * @param treatment A parameter to be updated: treatment information.
+     * @param medicalRecordId The unique identifier of the medical record to be updated.
+     * @return true if at least one field was successfully updated, false if no updates were performed or all update operations failed.
+     * @throws RuntimeException if a SQLException occurs on database operation.
+     */
     @Override
     public boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate, String treatment, Long medicalRecordId) {
         LOGGER.info("Update Student Medical Record Started with medical record id: " + medicalRecordId);
