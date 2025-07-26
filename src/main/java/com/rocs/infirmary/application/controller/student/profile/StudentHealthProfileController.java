@@ -251,11 +251,11 @@ public class StudentHealthProfileController implements Initializable {
 
     private void onClickShowMoreInformation(Student selectedStudent) throws IOException {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/StudentHealthMoreInfoModal.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/StudentHealthProfileModal.fxml"));
+            loader.setControllerFactory(param -> new StudentHealthProfileModalController(this));
             Parent root = loader.load();
 
-            SHPMoreInfoModalController controller = loader.getController();
-            controller.setParentController(this);
+            StudentHealthProfileModalController controller = loader.getController();
             controller.setSelectedStudent(selectedStudent);
 
             rootStackPane.getChildren().add(root);

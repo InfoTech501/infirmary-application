@@ -16,7 +16,7 @@ public class StudentHealthProfileFacadeImpl implements StudentHealthProfileFacad
     /**
      * Data access object for student health profile operations.
      */
-    StudentHealthProfileDao studentHealthProfileDao;
+    private final StudentHealthProfileDao studentHealthProfileDao;
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentHealthProfileFacadeImpl.class);
 
     /**

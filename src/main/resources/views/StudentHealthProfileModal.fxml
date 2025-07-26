@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane fx:id="rootModal" maxHeight="-Infinity" prefHeight="726.0" prefWidth="1400.0" style="-fx-background-color: white;  -fx-background-radius: 8;" StackPane.alignment="BOTTOM_CENTER" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.student.profile.SHPMoreInfoModalController">
+<StackPane fx:id="rootModal" maxHeight="-Infinity" prefHeight="726.0" prefWidth="1400.0" style="-fx-background-color: white;  -fx-background-radius: 8;" StackPane.alignment="BOTTOM_CENTER" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.student.profile.StudentHealthProfileModalController">
     <effect>
         <DropShadow color="#00000055" offsetY="-100" radius="0" />
     </effect>

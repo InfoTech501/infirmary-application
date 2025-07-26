@@ -1,5 +1,6 @@
 package com.rocs.infirmary.application.controller.student.profile;
 
+import com.rocs.infirmary.application.controller.student.record.ManageStudentMedicalRecordsController;
 import com.rocs.infirmary.application.module.student.record.StudentMedicalRecordApplication;
 import com.rocs.infirmary.application.data.model.person.student.Student;
 import javafx.collections.FXCollections;
@@ -26,7 +27,7 @@ import java.util.ResourceBundle;
  * Displays detailed medical history and allows selection of medical records.
  * Implements Initializable interface.
  */
-public class SHPMoreInfoModalController implements Initializable {
+public class StudentHealthProfileModalController implements Initializable {
     @FXML
     private TableView<Student> clinicHistoryTableView;
     @FXML
@@ -58,19 +59,19 @@ public class SHPMoreInfoModalController implements Initializable {
     @FXML
     private TableColumn<Student, String> respiratoryRateColumn;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SHPMoreInfoModalController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(StudentHealthProfileModalController.class);
     private final StudentMedicalRecordApplication studentMedicalRecordApplication = new StudentMedicalRecordApplication();
     private List<Student> selectedStudentRecord;
     private ObservableList<Student> masterMedicalList;
 
-    private StudentHealthProfileController parentController;
+    private final StudentHealthProfileController parentController;
 
     /**
-     * Sets the parent controller reference for communication with the parent view.
+     * Constructs a StudentHealthProfileModalController with parent.
      *
      * @param parentController the StudentHealthProfileController instance that manages the main view
      */
-    public void setParentController(StudentHealthProfileController parentController) {
+    public StudentHealthProfileModalController(StudentHealthProfileController parentController) {
         this.parentController = parentController;
     }
 
@@ -192,15 +193,14 @@ public class SHPMoreInfoModalController implements Initializable {
 
     private void switchSceneToEditHealthInfo() {
        try {
-           FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/SHPMedicalRecords.fxml"));
+           FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ManageStudentMedicalRecords.fxml"));
+           loader.setControllerFactory(param -> new ManageStudentMedicalRecordsController(this.parentController, this));
            Parent root = loader.load();
 
            tableViewWrapper.getChildren().setAll(root);
 
-           SHPMedicalRecordsController controller = loader.getController();
+           ManageStudentMedicalRecordsController controller = loader.getController();
            controller.setSelectedStudentRecord(selectedStudentRecord);
-           controller.setParentController(this.parentController);
-           controller.setModalController(this);
            LOGGER.info("Switch scene successful");
        } catch (IOException e) {
            LOGGER.warn("Switching scene failure");

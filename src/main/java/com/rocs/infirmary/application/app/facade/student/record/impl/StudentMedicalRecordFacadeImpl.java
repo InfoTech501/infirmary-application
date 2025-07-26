@@ -18,8 +18,7 @@ import org.slf4j.LoggerFactory;
 public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacade {
 
     /** The data access object for Student Medical Record. */
-    private final StudentMedicalRecordDao studentMedRecord = new StudentMedicalRecordDaoImpl();
-    StudentMedicalRecordDao studentMedicalRecordDao;
+    private final StudentMedicalRecordDao studentMedRecord;
     private static final Logger logger = LoggerFactory.getLogger(StudentMedicalRecordFacadeImpl.class);
 
     /**
@@ -27,7 +26,7 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
      * @param studentMedRecord Is the StudentMedicalRecord data access object for managing student medical records
      */
     public StudentMedicalRecordFacadeImpl(StudentMedicalRecordDao studentMedRecord) {
-        this.studentMedicalRecordDao = studentMedRecord;
+        this.studentMedRecord = studentMedRecord;
     }
 
     /**

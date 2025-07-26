@@ -1,6 +1,8 @@
-package com.rocs.infirmary.application.controller.student.profile;
+package com.rocs.infirmary.application.controller.student.record;
 
 import com.rocs.infirmary.application.controller.helper.ControllerHelper;
+import com.rocs.infirmary.application.controller.student.profile.StudentHealthProfileController;
+import com.rocs.infirmary.application.controller.student.profile.StudentHealthProfileModalController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +25,7 @@ import java.sql.Date;
  * Displays detailed medical history and allows management of student medical records.
  * Implements Initializable interface.
  */
-public class SHPMedicalRecordsController implements Initializable {
+public class ManageStudentMedicalRecordsController implements Initializable {
     @FXML
     private Label illnessLabel;
     @FXML
@@ -52,28 +54,21 @@ public class SHPMedicalRecordsController implements Initializable {
     @FXML
     private Button deleteMedicalRecordBtn;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SHPMedicalRecordsController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ManageStudentMedicalRecordsController.class);
     private final StudentMedicalRecordApplication studentMedicalRecordApplication = new StudentMedicalRecordApplication();
     private Student selectedStudent;
 
-    private StudentHealthProfileController parentController;
-    private SHPMoreInfoModalController modalController;
+    private final StudentHealthProfileController parentController;
+    private final StudentHealthProfileModalController modalController;
 
     /**
-     * Sets the parent controller reference for communication with the parent view.
+     * Constructs a ManageStudentMedicalRecordsController with parent and modal controller.
      *
      * @param parentController the StudentHealthProfileController instance that manages the main view
+     * @param modalController the StudentHealthProfileModalController instance that manages modal dialog.
      */
-    public void setParentController(StudentHealthProfileController parentController) {
+    public ManageStudentMedicalRecordsController(StudentHealthProfileController parentController, StudentHealthProfileModalController modalController) {
         this.parentController = parentController;
-    }
-
-    /**
-     * Sets the modal controller reference to enable modal operations like closing the modal after a record deletion.
-     *
-     * @param modalController the SHPMoreInfoModalController instance that manages the modal dialog
-     */
-    public void setModalController(SHPMoreInfoModalController modalController) {
         this.modalController = modalController;
     }
 
