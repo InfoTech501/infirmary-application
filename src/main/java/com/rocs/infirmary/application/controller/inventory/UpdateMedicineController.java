@@ -27,6 +27,7 @@ public class UpdateMedicineController {
     @FXML
     private TextArea descriptionTextField;
     private Long medicineId;
+    private AddInventoryController parentController;
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     private final Logger LOGGER = LoggerFactory.getLogger(UpdateInventoryController.class);
     /**
@@ -54,6 +55,9 @@ public class UpdateMedicineController {
      * @param actionEvent the event triggered by the confirm button click
      */
     public void onCancelButtonClick(ActionEvent actionEvent) {
+        if(parentController != null){
+            parentController.refresh();
+        }
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         LOGGER.info("Exiting Update Medicine Modal");
         stage.close();
@@ -78,7 +82,9 @@ public class UpdateMedicineController {
                if (result.isPresent()&& result.get().getButtonData() == ButtonBar.ButtonData.YES) {
                    if (updateMedicine()) {
                        ControllerHelper.showDialog("Notification", "Updated Successfully!");
-
+                        if(parentController != null){
+                            parentController.refresh();
+                        }
                        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
                        LOGGER.info("Exiting Update Medicine Modal");
                        stage.close();
@@ -91,5 +97,12 @@ public class UpdateMedicineController {
     }
     private boolean isValidTextInput(String input) {
         return input.matches("[a-zA-Z\\s]+");
+    }
+    /**
+     * this method setup's the parent controller
+     * @param parentController the parent AddInventoryController instance to be associated with this controller
+     * */
+    public void setParentController(AddInventoryController parentController) {
+        this.parentController = parentController;
     }
 }
