@@ -12,6 +12,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,6 +32,8 @@ public class LowStockNotificationController {
 
     @FXML
     private Label alertMessage;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(LowStockNotificationController.class);
 
 
     /**
@@ -93,7 +97,7 @@ public class LowStockNotificationController {
             modalStage.show();
 
         } catch (IOException e) {
-            System.out.println(" Error Occurred" +  e.getMessage());
+            LOGGER.error("IO Exception Occurred" + e.getMessage());
         }
     }
 

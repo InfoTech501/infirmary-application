@@ -39,7 +39,6 @@ public class LowStockAlertHelper {
     public static LowStockAlertHelper getInstance() {
         if(instance == null) {
            instance = new LowStockAlertHelper();
-
         }
         return instance;
     }
