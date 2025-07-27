@@ -1,6 +1,6 @@
 package com.rocs.infirmary.application.controller.records;
 
-import com.rocs.infirmary.application.data.model.person.student.Patient;
+import com.rocs.infirmary.application.data.model.medicalrecord.MedicalRecord;
 import com.rocs.infirmary.application.module.medical.record.management.application.MedicalRecordInfoMgtApplication;
 import com.rocs.infirmary.application.data.model.person.student.Student;
 import javafx.beans.property.SimpleStringProperty;
@@ -37,15 +37,15 @@ public class ClinicVisitLogPageController implements Initializable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClinicVisitLogPageController.class);
     @FXML
-    private TableView<Patient> visitLogTable;
+    private TableView<MedicalRecord> visitLogTable;
     @FXML
     private TableColumn<Student, String> nameColumn;
     @FXML
-    private TableColumn<Student, String> gradeSectionColumn;
+    private TableColumn<MedicalRecord, String> gradeSectionColumn;
     @FXML
-    private TableColumn<Student, String> symptomsColumn;
+    private TableColumn<MedicalRecord, String> symptomsColumn;
     @FXML
-    private TableColumn<Student, String> visitDateColumn;
+    private TableColumn<MedicalRecord, String> visitDateColumn;
     @FXML
     private TextField searchTextField;
     @FXML
@@ -57,7 +57,7 @@ public class ClinicVisitLogPageController implements Initializable {
     private int rowsPerPage = 10;
     private int currentPage = 1;
 
-    private List<Patient> fullStudentList;
+    private List<MedicalRecord> fullStudentList;
     private final MedicalRecordInfoMgtApplication medicalRecordInfoMgtApplication = new MedicalRecordInfoMgtApplication();
 
     @Override
@@ -67,8 +67,47 @@ public class ClinicVisitLogPageController implements Initializable {
         setupRowFactory();
         setupRowsPerPageSelector();
         refresh();
-        studentSearch();
         updatePage();
+        studentSearch();
+    }
+
+    /**
+     * This method opens the modal window to add a new daily treatment record.
+     * @param actionEvent triggered when the Add Entry button is clicked.
+     */
+    public void handleAddEntryButton(ActionEvent actionEvent) throws IOException {
+        showModalAddEntry(actionEvent,"/views/AddDailyTreatmentRecord.fxml");
+    }
+
+    /**
+     * This method adds a new student record to the current page and refreshes the TableView.
+     * @param newRecord the student record to add.
+     */
+    public void addStudentMedicalRecord(Student newRecord) {
+        if (newRecord == null) return;
+
+        fullStudentList = medicalRecordInfoMgtApplication
+                .getPatientMedicalRecordFacade().getAllPatientMedicalRecords();
+        updatePage();
+    }
+
+    @FXML
+    private void handleToggleLeft(ActionEvent actionEvent) {
+        if (currentPage > 1) {
+            currentPage--;
+            updatePage();
+        }
+    }
+
+    @FXML
+    private void handleToggleRight(ActionEvent actionEvent) {
+        int totalRecords = fullStudentList != null ? fullStudentList.size() : 0;
+        int maxPage = (int) Math.ceil((double) totalRecords / rowsPerPage);
+
+        if (currentPage < maxPage) {
+            currentPage++;
+            updatePage();
+        }
     }
 
     private void setup() {
@@ -84,7 +123,7 @@ public class ClinicVisitLogPageController implements Initializable {
         });
         symptomsColumn.setCellValueFactory(new PropertyValueFactory<>("symptoms"));
         visitDateColumn.setCellValueFactory(cellData -> {
-            Patient patient = (Patient) cellData.getValue();
+            MedicalRecord patient = (MedicalRecord) cellData.getValue();
             Date visitDate = patient.getVisitDate();
             String formatted = visitDate != null ? new SimpleDateFormat("MMM dd, yyyy").format(visitDate) : "N/A";
             return new SimpleStringProperty(formatted);
@@ -114,7 +153,7 @@ public class ClinicVisitLogPageController implements Initializable {
         symptomsColumn.setStyle("-fx-alignment: CENTER;");
 
         visitDateColumn.setCellValueFactory(cellData -> {
-            Patient patient = (Patient) cellData.getValue();
+            MedicalRecord patient = (MedicalRecord) cellData.getValue();
             Date visitDate = patient.getVisitDate();
             String formatted = visitDate != null ? new SimpleDateFormat("MMM dd, yyyy").format(visitDate) : "N/A";
             return new SimpleStringProperty(formatted);
@@ -125,10 +164,10 @@ public class ClinicVisitLogPageController implements Initializable {
 
     private void setupRowFactory() {
         visitLogTable.setRowFactory(tv -> {
-            TableRow<Patient> row = new TableRow<>();
+            TableRow<MedicalRecord> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (!row.isEmpty() && event.getClickCount() == 2) {
-                    Patient selectedPatient = row.getItem();
+                    MedicalRecord selectedPatient = row.getItem();
                     openViewStudentVisitLogModal(selectedPatient);
                 }
             });
@@ -152,31 +191,25 @@ public class ClinicVisitLogPageController implements Initializable {
 
     private void refresh() {
         fullStudentList = medicalRecordInfoMgtApplication
-                .getStudentMedicalRecordFacade()
-                .getAllStudentMedicalRecords();
-
+                .getPatientMedicalRecordFacade().getAllPatientMedicalRecords();
         updatePage();
     }
 
-    /**
-     * This method opens the modal window to add a new daily treatment record.
-     * @param actionEvent triggered when the Add Entry button is clicked.
-     */
-    public void handleAddEntryButton(ActionEvent actionEvent) throws IOException {
-        showModalAddEntry(actionEvent,"/views/AddDailyTreatmentRecord.fxml");
-    }
-    private void showModalAddEntry(ActionEvent actionEvent, String location) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(location));
-        Parent root = loader.load();
+    private void updatePage() {
+        int total = fullStudentList.size();
+        int fromIndex = (currentPage - 1) * rowsPerPage;
+        int toIndex = Math.min(fromIndex + rowsPerPage, total);
 
-        AddDailyTreatmentRecordController controller = loader.getController();
-        controller.setClinicVisitLogPageController(this);
+        List<MedicalRecord> pageData = fullStudentList.subList(fromIndex, toIndex);
+        ObservableList<MedicalRecord> pageItems = FXCollections.observableArrayList(pageData);
+        visitLogTable.setItems(pageItems);
 
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initStyle(StageStyle.UTILITY);
-        stage.setScene(new Scene(root));
-        stage.showAndWait();
+        searchTextField.setText("");
+        studentSearch();
+
+        int displayedCount = pageItems.size();
+        paginationLabel.setText((fromIndex + 1) + " - " + toIndex + " of " + total);
+        rowsPageLabel.setText(String.valueOf(displayedCount));
     }
 
     private void studentSearch() {
@@ -186,10 +219,10 @@ public class ClinicVisitLogPageController implements Initializable {
                 return;
             }
 
-            ObservableList<Patient> tableItems = visitLogTable.getItems();
+            ObservableList<MedicalRecord> tableItems = visitLogTable.getItems();
             if (tableItems == null || tableItems.isEmpty()) return;
 
-            FilteredList<Patient> filteredList = new FilteredList<>(tableItems, s -> true);
+            FilteredList<MedicalRecord> filteredList = new FilteredList<>(tableItems, s -> true);
             filteredList.setPredicate(student -> {
                 String keyword = newValue.toLowerCase();
 
@@ -212,19 +245,34 @@ public class ClinicVisitLogPageController implements Initializable {
                         || visitDate.contains(keyword);
             });
 
-            SortedList<Patient> sortedList = new SortedList<>(filteredList);
+            SortedList<MedicalRecord> sortedList = new SortedList<>(filteredList);
             sortedList.comparatorProperty().bind(visitLogTable.comparatorProperty());
             visitLogTable.setItems(sortedList);
         });
     }
 
-    private void openViewStudentVisitLogModal(Patient patient) {
+
+    private void showModalAddEntry(ActionEvent actionEvent, String location) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(location));
+        Parent root = loader.load();
+
+        AddDailyTreatmentRecordController controller = loader.getController();
+        controller.setClinicVisitLogPageController(this);
+
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initStyle(StageStyle.UTILITY);
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
+    }
+
+    private void openViewStudentVisitLogModal(MedicalRecord medicalRecord) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ViewStudentVisitLog.fxml"));
             Parent root = loader.load();
 
             ViewStudentVisitLogController controller = loader.getController();
-            controller.setStudentData(patient);
+            controller.setStudentData(medicalRecord);
 
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -234,59 +282,10 @@ public class ClinicVisitLogPageController implements Initializable {
 
         } catch (IOException e) {
             LOGGER.error("Error opening visit log modal for LRN '{}'",
-                    patient != null ? patient.getLrn() : "unknown", e);
+                    medicalRecord != null ? medicalRecord.getStudentLrn() : "unknown", e);
         }
 
     }
 
-    /**
-     * This method adds a new student record to the current page and refreshes the TableView.
-     * @param newRecord the student record to add.
-     */
-    public void addStudentMedicalRecord(Student newRecord) {
-        if (newRecord == null) return;
-
-        fullStudentList = medicalRecordInfoMgtApplication
-                .getStudentMedicalRecordFacade()
-                .getAllStudentMedicalRecords();
-
-        updatePage();
-    }
-
-    private void updatePage() {
-        int total = fullStudentList.size();
-        int fromIndex = (currentPage - 1) * rowsPerPage;
-        int toIndex = Math.min(fromIndex + rowsPerPage, total);
-
-        List<Patient> pageData = fullStudentList.subList(fromIndex, toIndex);
-        ObservableList<Patient> pageItems = FXCollections.observableArrayList(pageData);
-        visitLogTable.setItems(pageItems);
-
-        searchTextField.setText("");
-        studentSearch();
-
-        int displayedCount = pageItems.size();
-        paginationLabel.setText((fromIndex + 1) + " - " + toIndex + " of " + total);
-        rowsPageLabel.setText(String.valueOf(displayedCount));
-    }
-
-    @FXML
-    private void handleToggleLeft(ActionEvent actionEvent) {
-        if (currentPage > 1) {
-            currentPage--;
-            updatePage();
-        }
-    }
-
-    @FXML
-    private void handleToggleRight(ActionEvent actionEvent) {
-        int totalRecords = fullStudentList != null ? fullStudentList.size() : 0;
-        int maxPage = (int) Math.ceil((double) totalRecords / rowsPerPage);
-
-        if (currentPage < maxPage) {
-            currentPage++;
-            updatePage();
-        }
-    }
 }
 

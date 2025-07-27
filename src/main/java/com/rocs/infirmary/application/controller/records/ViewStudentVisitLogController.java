@@ -1,6 +1,6 @@
 package com.rocs.infirmary.application.controller.records;
 
-import com.rocs.infirmary.application.data.model.person.student.Patient;
+import com.rocs.infirmary.application.data.model.medicalrecord.MedicalRecord;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -66,35 +66,36 @@ public class ViewStudentVisitLogController implements Initializable {
 
     /**
      * This method displays student data on the form fields for viewing.
-     * @param patient the Student object to be displayed.
+     *
+     * @param medicalRecord the Student object to be displayed.
      */
-    public void setStudentData(Patient patient) {
-        if (patient == null) {
+    public void setStudentData(MedicalRecord medicalRecord) {
+        if (medicalRecord == null) {
             return;
         }
 
-        viewLrn.setText(formatValue(patient.getLrn()));
-        viewFirstname.setText(formatValue(patient.getFirstName()));
-        viewMiddleName.setText(formatValue(patient.getMiddleName()));
-        viewLastname.setText(formatValue(patient.getLastName()));
-        viewSex.setText(formatValue(patient.getGender()));
-        viewAge.setText(formatValue(patient.getAge()));
-        viewGradeSection.setText(formatValue(patient.getGradeLevel() + " - " + patient.getSection()));
-        viewContactNum.setText(formatValue(patient.getContactNumber()));
-        viewHomeAdd.setText(formatValue(patient.getAddress()));
-        viewEmailAdd.setText(formatValue(patient.getEmail()));
-        viewBodyTemp.setText(formatValue(patient.getTemperatureReadings()));
-        viewPulseRate.setText(formatValue(patient.getPulseRate()));
-        viewRespiratoryRate.setText(formatValue(patient.getRespiratoryRate()));
-        viewBloodPressure.setText(formatValue(patient.getBloodPressure()) + " mmHg");
-        viewSymptoms.setText(formatValue(patient.getSymptoms()));
-        viewNurseIntervention.setText(formatValue(patient.getNurseInCharge()));
-        viewTreatment.setText(formatValue(patient.getTreatment()));
-        viewMedicineName.setText(formatValue(patient.getMedicineName()));
-        viewDispensingOut.setText(formatValue(patient.getDispensingOut()));
-        if (patient.getVisitDate() != null) {
+        viewLrn.setText(formatValue(medicalRecord.getStudentLrn()));
+        viewFirstname.setText(formatValue(medicalRecord.getFirstName()));
+        viewMiddleName.setText(formatValue(medicalRecord.getMiddleName()));
+        viewLastname.setText(formatValue(medicalRecord.getLastName()));
+        viewSex.setText(formatValue(medicalRecord.getGender()));
+        viewAge.setText(formatValue(medicalRecord.getAge()));
+        viewGradeSection.setText(formatValue(medicalRecord.getGradeLevel() + " - " + medicalRecord.getSection()));
+        viewContactNum.setText(formatValue(medicalRecord.getContactNumber()));
+        viewHomeAdd.setText(formatValue(medicalRecord.getAddress()));
+        viewEmailAdd.setText(formatValue(medicalRecord.getEmail()));
+        viewBodyTemp.setText(formatValue(medicalRecord.getTemperatureReadings()));
+        viewPulseRate.setText(formatValue(medicalRecord.getPulseRate()));
+        viewRespiratoryRate.setText(formatValue(medicalRecord.getRespiratoryRate()));
+        viewBloodPressure.setText(formatValue(medicalRecord.getBloodPressure()) + " mmHg");
+        viewSymptoms.setText(formatValue(medicalRecord.getSymptoms()));
+        viewNurseIntervention.setText(formatValue(medicalRecord.getNurseInCharge()));
+        viewTreatment.setText(formatValue(medicalRecord.getTreatment()));
+        viewMedicineName.setText(formatValue(medicalRecord.getMedicineName()));
+        viewDispensingOut.setText(formatValue(medicalRecord.getDispensingOut()));
+        if (medicalRecord.getVisitDate() != null) {
             SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd, yyyy");
-            viewVisitDate.setText(sdf.format(patient.getVisitDate()));
+            viewVisitDate.setText(sdf.format(medicalRecord.getVisitDate()));
         } else {
             viewVisitDate.setText("");
         }

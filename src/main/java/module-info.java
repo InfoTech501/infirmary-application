@@ -25,5 +25,7 @@ module com.rocs.infirmaryapplication {
     exports com.rocs.infirmary.application.controller.mainpage;
     exports com.rocs.infirmary.application.controller.records;
     opens com.rocs.infirmary.application.controller.records to javafx.fxml;
+    exports com.rocs.infirmary.application.data.model.medicalrecord;
+    opens com.rocs.infirmary.application.data.model.medicalrecord to javafx.fxml;
 
 }

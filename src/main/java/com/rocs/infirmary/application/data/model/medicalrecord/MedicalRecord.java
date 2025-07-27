@@ -1,13 +1,14 @@
-package com.rocs.infirmary.application.data.model.person.student;
+package com.rocs.infirmary.application.data.model.medicalrecord;
+
+import com.rocs.infirmary.application.data.model.person.student.Student;
 
 import java.util.Date;
 
-public class Patient extends Student {
+public class MedicalRecord extends Student {
 
-    private Long patientId;
     private Long studentId;
+    private String studentLrn;
     private Long nurseInChargeId;
-    private Long ailmentId;
     private Long medicineId;
     private Long medicalRecordId;
     private String symptoms;
@@ -15,25 +16,20 @@ public class Patient extends Student {
     private String temperatureReadings;
     private String treatment;
     private String medicineName;
-    private String chiefComplaint;
-    private String ailmentName;
     private String nurseInCharge;
     private int pulseRate;
     private int respiratoryRate;
     private int dispensingOut;
     private Date visitDate;
 
-    public Long getPatientId() { return patientId; }
-    public void setPatientId(Long patientId) { this.patientId = patientId; }
-
     public Long getStudentId() { return studentId; }
     public void setStudentId(Long studentId) { this.studentId = studentId; }
 
+    public String getStudentLrn() { return studentLrn; }
+    public void setStudentLrn(String studentLrn) { this.studentLrn = studentLrn; }
+
     public Long getNurseInChargeId() { return nurseInChargeId; }
     public void setNurseInChargeId(Long nurseInChargeId) { this.nurseInChargeId = nurseInChargeId; }
-
-    public Long getAilmentId() { return ailmentId; }
-    public void setAilmentId(Long ailmentId) { this.ailmentId = ailmentId; }
 
     public Long getMedicineId() { return medicineId; }
     public void setMedicineId(Long medicineId) { this.medicineId = medicineId; }
@@ -55,12 +51,6 @@ public class Patient extends Student {
 
     public String getMedicineName() { return medicineName; }
     public void setMedicineName(String medicineName) { this.medicineName = medicineName; }
-
-    public String getChiefComplaint() { return chiefComplaint; }
-    public void setChiefComplaint(String chiefComplaint) { this.chiefComplaint = chiefComplaint; }
-
-    public String getAilmentName() { return ailmentName; }
-    public void setAilmentName(String ailmentName) { this.ailmentName = ailmentName; }
 
     public String getNurseInCharge() {  return nurseInCharge; }
     public void setNurseInCharge(String nurseInCharge) { this.nurseInCharge = nurseInCharge; }

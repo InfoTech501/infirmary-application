@@ -3,8 +3,8 @@ package com.rocs.infirmary.application.data.dao.student.profile.Impl;
 import com.rocs.infirmary.application.data.connection.ConnectionHelper;
 import com.rocs.infirmary.application.data.dao.student.profile.StudentHealthProfileDao;
 import com.rocs.infirmary.application.data.dao.utils.queryconstants.student.QueryConstants;
-import com.rocs.infirmary.application.data.model.person.student.Patient;
 import com.rocs.infirmary.application.data.model.person.student.Student;
+import com.rocs.infirmary.application.data.model.medicalrecord.MedicalRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,8 +60,8 @@ public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
     }
 
     @Override
-    public List<Patient> findStudentHealthProfileByLrn(Long LRN) {
-        List<Patient> studentListProfile = new ArrayList<>();
+    public List<MedicalRecord> findStudentHealthProfileByLrn(Long LRN) {
+        List<MedicalRecord> studentListProfile = new ArrayList<>();
         try (Connection con = ConnectionHelper.getConnection()) {
             QueryConstants queryConstants = new QueryConstants();
             String query = queryConstants.selectStudentHealthProfileByLrn();
@@ -69,7 +69,7 @@ public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
             stmt.setLong(1,LRN);
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next()){
-                Patient studentMedicalRecord = new Patient();
+                MedicalRecord studentMedicalRecord = new MedicalRecord();
                 studentMedicalRecord.setContactNumber(resultSet.getString("contact_number"));
                 studentMedicalRecord.setEmail(resultSet.getString("email"));
                 studentMedicalRecord.setAddress(resultSet.getString("address"));

@@ -6,15 +6,11 @@ public class Student extends Person {
 
     private int studentSectionId;
     private Long studentId;
-    private int studentGuardianId;
+    private Long studentGuardianId;
     private String lrn;
     private Long id;
-    private String medHistoryId;
-    private Long setMedicalRecordId ;
-    private Long getMedicaRecordStatus;
     private String gradeLevel;
     private String studentAdviser;
-    private String bloodPressure;
 
     public String getStudentAdviser() {
         return studentAdviser;
@@ -37,11 +33,6 @@ public class Student extends Person {
 
     public String getLrn() { return lrn; }
     public void setLrn(String lrn) { this.lrn = lrn; }
-
-    public Long getSetMedicalRecordId() { return setMedicalRecordId; }
-    public void setMedicalRecordId(Long medicalRecordIdId) { this.setMedicalRecordId = medicalRecordIdId; }
-
-    public Long getMedicalRecordStatus() { return getMedicaRecordStatus; }
 
     @Override
     public String toString() {
