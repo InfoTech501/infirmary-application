@@ -76,11 +76,12 @@ public class AddDailyTreatmentRecordController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         lrnField.requestFocus();
         addLrnAutoFillListener();
+        setupMedicineNameComboBoxDisplay();
         List<Medicine> available = inventoryApp.getMedicineInventoryFacade().getAllMedicine();
         medicineNameComboBox.setItems(FXCollections.observableArrayList(available));
         List<Employee> nurses = medicalRecordInfoMgtApplication.getEmployeeInformationFacade().getAllNurseAccounts();
         nurseInChargeComboBox.setItems(FXCollections.observableArrayList(nurses));
-        setupMedicineNameComboBoxDisplay();
+
     }
 
     private void addLrnAutoFillListener() {
