@@ -41,11 +41,17 @@ public class MedicalRecordInfoMgtApplication {
     public StudentMedicalRecordFacade getStudentMedicalRecordFacade() {
         return studentMedicalRecordFacade;
     }
-
+    /**
+     * This gets the for managing employee information.
+     * @return the StudentMedicalRecordFacade instance.
+     */
     public EmployeeInformationFacade getEmployeeInformationFacade() {
         return employeeInformationFacade;
     }
-
+    /**
+     * This gets the for managing patient medical records.
+     * @return the StudentMedicalRecordFacade instance.
+     */
     public PatientMedicalRecordFacade getPatientMedicalRecordFacade() {
         return patientMedicalRecordFacade;
     }
