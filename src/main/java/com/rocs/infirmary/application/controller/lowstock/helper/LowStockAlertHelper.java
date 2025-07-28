@@ -85,14 +85,11 @@ public class LowStockAlertHelper {
             toggleButton.setOnMouseClicked(null);
             return;
         }
-        List<String> productInfo = lowStockItems.stream()
-                .map(lowStockReport -> lowStockReport.getDescription() + " (Quantity : " + lowStockReport.getQuantityAvailable() + ")")
-                .toList();
 
         redCircle.setVisible(true);
         toggleButton.setOnMouseClicked(event -> {
             Stage currentPage = (Stage) node.getScene().getWindow();
-            LowStockNotificationController.showLowStockModal(currentPage, productInfo);
+            LowStockNotificationController.showLowStockModal(currentPage, lowStockItems);
         });
     }
 }

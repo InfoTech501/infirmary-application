@@ -1,5 +1,6 @@
 package com.rocs.infirmary.application.controller.lowstock;
 
+import com.rocs.infirmary.application.data.model.report.lowstock.LowStockReport;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * {@code LowStockNotificationController} handles the UI for displaying
@@ -60,7 +62,7 @@ public class LowStockNotificationController {
      * @param ownerStage       the main window where the alert should appear beside
      * @param lowStockMedicine a list of Inventory Medicine that are low in stock
      */
-    public static void showLowStockModal(Stage ownerStage, List<String> lowStockMedicine) {
+    public static void showLowStockModal(Stage ownerStage, List<LowStockReport> lowStockMedicine) {
 
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -69,8 +71,12 @@ public class LowStockNotificationController {
 
             LowStockNotificationController controller = loader.getController();
 
+            String productList = lowStockMedicine.stream()
+                    .map(lowStockReport -> lowStockReport.getDescription() + " (Quantity: " + lowStockReport.getQuantityAvailable() + ")")
+                    .collect(Collectors.joining("\n"));
+
             String message = lowStockMedicine.size() + " product(s) have low stock. Check those products to re-order\n"
-                    + "before the stock reaches zero.\n\nProduct(s):\n" + String.join("\n", lowStockMedicine );
+                    + "before the stock reaches zero.\n\nProduct(s):\n" + productList;
 
 
             controller.setAlertDetails("Low Stock Alert", message);
