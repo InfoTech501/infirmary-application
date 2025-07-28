@@ -53,7 +53,6 @@ public class InventoryController implements Initializable {
     private DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     private List<Medicine> medicineList = new ArrayList<>();
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setup();
@@ -61,6 +60,7 @@ public class InventoryController implements Initializable {
         itemSearch();
         initalizeEditClick();
     }
+
     private void setup() {
         medDetailsTable.setEditable(true);
         selectColumn.setCellValueFactory(cellData -> cellData.getValue().isSelectedProperty());
@@ -108,10 +108,7 @@ public class InventoryController implements Initializable {
             return tableRow;
         });
     }
-    /**
-     * this method handles the refresh functionality for inventory table
-     ***/
-    public void refresh() {
+    private void refresh() {
         List<Medicine> medicineList = inventoryManagementApplication.getMedicineInventoryFacade().getAllMedicine();
         for (Medicine med : medicineList) {
             if (med.isSelectedProperty() == null) {
@@ -122,23 +119,19 @@ public class InventoryController implements Initializable {
         medDetailsTable.setItems(medicine);
     }
     private void showModal(ActionEvent actionEvent,String location) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(location));
-        Parent root = loader.load();
-        AddInventoryController controller = loader.getController();
-        controller.setParentController(this);
         Stage stage = new Stage();
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(location)));
         stage.setScene(new Scene(root));
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initStyle(StageStyle.UTILITY);
-        stage.showAndWait();
+        stage.initOwner(((Node)actionEvent.getSource()).getScene().getWindow() );
+        stage.show();
     }
     private void showEditInventory(Medicine medicine) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/InventoryEditItemModal.fxml"));
         Parent root = loader.load();
         UpdateInventoryController updateInventoryController = loader.getController();
-
         updateInventoryController.showItemToEdit(medicine);
-        updateInventoryController.setParentController(this);
+
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
         stage.initModality(Modality.APPLICATION_MODAL);
@@ -156,16 +149,16 @@ public class InventoryController implements Initializable {
         FilteredList<Medicine> filteredList = new FilteredList<>(medicine, b -> true);
 
         searchTextField.textProperty().addListener((observable, oldValue , newValue)->
-                        filteredList.setPredicate(medicine -> {
-                            if(newValue.isEmpty()||newValue.isBlank()||newValue == null){
-                                return true;
-                            }
-                            String searchKeyword = newValue.toLowerCase();
-                            if(medicine.getItemName().toLowerCase().contains(searchKeyword)){
-                                return true;
-                            }
-                            return false;
-                        })
+                filteredList.setPredicate(medicine -> {
+                    if(newValue.isEmpty()||newValue.isBlank()||newValue == null){
+                        return true;
+                    }
+                    String searchKeyword = newValue.toLowerCase();
+                    if(medicine.getItemName().toLowerCase().contains(searchKeyword)){
+                        return true;
+                    }
+                    return false;
+                })
         );
         SortedList<Medicine> sortedList = new SortedList<>(filteredList);
         sortedList.comparatorProperty().bind(medDetailsTable.comparatorProperty());
@@ -246,7 +239,7 @@ public class InventoryController implements Initializable {
             Parent root = loader.load();
             DeleteInventoryController deleteInventoryController = loader.getController();
             deleteInventoryController.showMedicineList(selectedMedicine);
-            deleteInventoryController.setParentController(this);
+
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -267,6 +260,5 @@ public class InventoryController implements Initializable {
             }
         }
     }
+
 }
-
-
