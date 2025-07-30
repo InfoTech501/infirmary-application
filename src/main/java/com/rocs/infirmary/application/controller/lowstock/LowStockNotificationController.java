@@ -71,12 +71,12 @@ public class LowStockNotificationController {
 
             LowStockNotificationController controller = loader.getController();
 
-            String productList = lowStockMedicine.stream()
+            String lowStockProductNames = lowStockMedicine.stream()
                     .map(lowStockReport -> lowStockReport.getDescription() + " (Quantity: " + lowStockReport.getQuantityAvailable() + ")")
                     .collect(Collectors.joining("\n"));
 
             String message = lowStockMedicine.size() + " product(s) have low stock. Check those products to re-order\n"
-                    + "before the stock reaches zero.\n\nProduct(s):\n" + productList;
+                    + "before the stock reaches zero.\n\nProduct(s):\n" + lowStockProductNames;
 
 
             controller.setAlertDetails("Low Stock Alert", message);
