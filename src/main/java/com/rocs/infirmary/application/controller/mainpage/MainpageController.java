@@ -6,12 +6,16 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 import com.rocs.infirmary.application.InfirmaryApplication;
+import com.rocs.infirmary.application.controller.lowstock.helper.LowStockAlertHelper;
+import com.rocs.infirmary.application.module.lowstock.notification.service.application.LowStockNotificationServiceApplication;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 
 /**
@@ -29,10 +33,24 @@ public class MainpageController implements Initializable {
     @FXML
     private Label pageLabel;
 
+    @FXML
+    private ImageView redCircle;
+
+    @FXML
+    private ToggleButton toggleButton;
+
+    private  LowStockAlertHelper lowStockAlertHelper ;
+    private final LowStockNotificationServiceApplication lowStockService = new LowStockNotificationServiceApplication();
+
 
     @Override
     public void initialize (URL url, ResourceBundle rb) {
         loadDashboard();
+        lowStockAlertHelper = LowStockAlertHelper.getInstance();
+        lowStockAlertHelper.bindService(lowStockService);
+        lowStockAlertHelper.bindUI(redCircle,toggleButton);
+        lowStockAlertHelper.setMainNode(homepageScene);
+        lowStockAlertHelper.checkLowStockAndShowAlert();
     }
 
     private void loadDashboard() {

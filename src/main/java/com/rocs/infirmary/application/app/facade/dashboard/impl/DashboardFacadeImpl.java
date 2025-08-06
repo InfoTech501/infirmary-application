@@ -21,8 +21,17 @@ import org.slf4j.LoggerFactory;
 public class DashboardFacadeImpl implements DashboardFacade {
 
     /** The data access object for Dashboard. */
-    private final DashboardReports dashboard = new DashboardReportsImpl();
+    private DashboardReports dashboard = new DashboardReportsImpl();
     private static final Logger logger = LoggerFactory.getLogger(DashboardFacadeImpl.class);
+    /**
+     * {@code DashboardFacadeImpl()} is a constructor that requires parameter
+     * @param dashboard DAO implementation of Dashboard
+     * this provides the business logic of the Dashboard
+     * {@code this.dashboard = dashboard} is used to initialize the DashboardReports
+     */
+    public DashboardFacadeImpl(DashboardReports dashboard) {
+        this.dashboard = dashboard;
+    }
 
     @Override
     public List<LowStockReport> getAllLowStockMedicine() {
