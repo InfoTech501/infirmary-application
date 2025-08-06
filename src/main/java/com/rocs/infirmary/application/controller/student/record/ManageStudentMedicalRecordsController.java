@@ -3,6 +3,8 @@ package com.rocs.infirmary.application.controller.student.record;
 import com.rocs.infirmary.application.controller.helper.ControllerHelper;
 import com.rocs.infirmary.application.controller.student.profile.StudentHealthProfileController;
 import com.rocs.infirmary.application.controller.student.profile.StudentHealthProfileModalController;
+import com.rocs.infirmary.application.data.model.medicalrecord.MedicalRecord;
+import com.rocs.infirmary.application.controller.student.record.MedicalRecordInputValidation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +19,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.regex.Pattern;
 import java.sql.Date;
 
 /**
@@ -54,12 +55,12 @@ public class ManageStudentMedicalRecordsController implements Initializable {
     @FXML
     private Button deleteMedicalRecordBtn;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ManageStudentMedicalRecordsController.class);
-    private final StudentMedicalRecordApplication studentMedicalRecordApplication = new StudentMedicalRecordApplication();
     private Student selectedStudent;
-
+    private MedicalRecord selectedMedicalRecord;
     private final StudentHealthProfileController parentController;
     private final StudentHealthProfileModalController modalController;
+    private static final Logger LOGGER = LoggerFactory.getLogger(ManageStudentMedicalRecordsController.class);
+    private final StudentMedicalRecordApplication studentMedicalRecordApplication = new StudentMedicalRecordApplication();
 
     /**
      * Constructs a ManageStudentMedicalRecordsController with parent and modal controller.
@@ -81,27 +82,27 @@ public class ManageStudentMedicalRecordsController implements Initializable {
     /**
      * A function that sets the specific student record using the student LRN.
      *
-     * @param records the Student object containing student information and medical records
+     * @param student the Student object containing student information and medical records
+     * @param selectedMedicalRecord the MedicalRecord object containing medical records
      */
-    public void setSelectedStudentRecord(List<Student> records) {
-        if (records == null || records.isEmpty()) {
+    public void setSelectedStudentRecord(Student student, MedicalRecord selectedMedicalRecord) {
+        this.selectedStudent = student;
+        if (student == null) {
             LOGGER.warn("No records found");
             return;
         }
-        Student studentMedicalRecord = records.getFirst();
-        this.selectedStudent = studentMedicalRecord;
-        setLabels(studentMedicalRecord);
-        LOGGER.info("Student data successfully set");
+        setLabels(selectedMedicalRecord);
+        LOGGER.info("passed student record{}", selectedMedicalRecord);
     }
 
-    private void setLabels(Student studentMedicalRecord) {
-        illnessLabel.setText(getOrEmpty(studentMedicalRecord.getSymptoms()));
-        visitDateLabel.setText(getOrEmpty(studentMedicalRecord.getVisitDate()));
-        temperatureLabel.setText(getOrEmpty(studentMedicalRecord.getTemperatureReadings()));
-        bloodPressureLabel.setText(getOrEmpty(studentMedicalRecord.getBloodPressure()));
-        pulseRateLabel.setText(getOrEmpty(studentMedicalRecord.getPulseRate()));
-        respiratoryRate.setText(getOrEmpty(studentMedicalRecord.getRespiratoryRate()));
-        treatmentLabel.setText(getOrEmpty(studentMedicalRecord.getTreatment()));
+    private void setLabels(MedicalRecord medicalRecord) {
+        illnessLabel.setText(getOrEmpty(medicalRecord.getSymptoms()));
+        visitDateLabel.setText(getOrEmpty(medicalRecord.getVisitDate()));
+        temperatureLabel.setText(getOrEmpty(medicalRecord.getTemperatureReadings()));
+        bloodPressureLabel.setText(getOrEmpty(medicalRecord.getBloodPressure()));
+        pulseRateLabel.setText(getOrEmpty(medicalRecord.getPulseRate()));
+        respiratoryRate.setText(getOrEmpty(medicalRecord.getRespiratoryRate()));
+        treatmentLabel.setText(getOrEmpty(medicalRecord.getTreatment()));
     }
 
     private String getOrEmpty(Object value) {
@@ -114,7 +115,6 @@ public class ManageStudentMedicalRecordsController implements Initializable {
             if (result.isPresent() && result.get().getButtonData() == ButtonBar.ButtonData.YES){
                 try {
                     handleRecordUpdate(selectedStudent);
-                    LOGGER.info("Medical record updated successfully for student: {}", selectedStudent.getFirstName());
                 } catch (Exception e) {
                     ControllerHelper.showDialog("Update failed", "Error updating record\", \"An error occurred while updating the medical record. No records updated");
                     LOGGER.error("failed to update medical record for student: {}", selectedStudent.getFirstName(), e);
@@ -127,54 +127,19 @@ public class ManageStudentMedicalRecordsController implements Initializable {
     }
 
     private void handleRecordUpdate(Student student) {
-        StringBuilder errorMessage = new StringBuilder();
         String illness = updateIllnessTextField.getText().trim();
         String temperature = updateTemperatureTextField.getText().trim();
         String treatment = updateTreatmentTextField.getText().trim();
-        Date visitDate = null;
+        LocalDate visitLocalDate = updateVisitDatePicker.getValue();
+        Date visitDate = (visitLocalDate != null) ? Date.valueOf(visitLocalDate) : null;
 
-        try {
-            LocalDate selectedDate = updateVisitDatePicker.getValue();
-            if (selectedDate != null) {
-                visitDate = Date.valueOf(selectedDate);
-            }
-        } catch (Exception e) {
-            LOGGER.error("Error processing visit date: {}", e.getMessage());
-            errorMessage.append("Invalid visit date format.\n");
-        }
+        String validationErrors = MedicalRecordInputValidation.validateMedicalRecordInputs(
+                illness, temperature, treatment, visitLocalDate
+        );
 
-        if (!illness.isEmpty()) {
-            if (illness.length() > 250) {
-                errorMessage.append("Illness must be less than 250 characters.\n");
-            } else if (hasInvalidCharacters(illness)) {
-                errorMessage.append("Illness contains invalid characters.\n");
-            }
-        }
-
-
-        if (!temperature.isEmpty() && !isValidTemperature(temperature)) {
-            errorMessage.append("Temperature must be a valid number between 30.0 and 50.0°C (e.g., 37.5).\n");
-        }
-
-        if (!treatment.isEmpty()) {
-            if (treatment.length() > 500) {
-                errorMessage.append("Treatment must be less than 500 characters.\n");
-            } else if (hasInvalidCharacters(treatment)) {
-                errorMessage.append("Treatment contains invalid characters.\n");
-            }
-        }
-
-        if (visitDate != null && isVisitDateInFuture(visitDate)) {
-            errorMessage.append("Visit date cannot be in the future.\n");
-        }
-
-        if (illness.isEmpty() && temperature.isEmpty() && treatment.isEmpty() && visitDate == null) {
-            errorMessage.append("Please provide at least one field to update.\n");
-        }
-
-        if (!errorMessage.isEmpty()) {
-            ControllerHelper.showDialog("Input error", errorMessage.toString());
-            LOGGER.warn("Input validation failed for medical records update: {}", errorMessage.toString().replace("\n", "; "));
+        if (!validationErrors.isEmpty()) {
+            ControllerHelper.showDialog("Input error", validationErrors);
+            LOGGER.warn("Input validation failed: {}", validationErrors.replace("\n", "; "));
             return;
         }
 
@@ -183,7 +148,7 @@ public class ManageStudentMedicalRecordsController implements Initializable {
                 temperature.isEmpty() ? null : temperature,
                 visitDate,
                 treatment.isEmpty() ? null : treatment,
-                student.getMedicalRecordId()
+                student.getLrn()
         );
 
         if (isUpdated) {
@@ -191,36 +156,45 @@ public class ManageStudentMedicalRecordsController implements Initializable {
             ControllerHelper.showDialog("Success", "Medical record updated successfully.");
             loadMedicalRecords(student);
             clearTextFields();
-            LOGGER.info("Medical records updated successfully for student LRN: {}", student.getLrn());
         } else {
             ControllerHelper.showDialog("Error", "Failed to update medical record.");
-            LOGGER.error("Medical records update failed for student LRN: {}", student.getLrn());
         }
     }
 
     private void loadMedicalRecords(Student student) {
-        List<Student> updatedRecord = studentMedicalRecordApplication.getStudentMedicalRecordFacade().getMedicalRecordById(student.getMedicalRecordId());
-        setSelectedStudentRecord(updatedRecord);
-    }
-
-    private boolean hasInvalidCharacters(String text) {
-        Pattern pattern = Pattern.compile("[^a-zA-Z0-9\\s\\-'.,()]");
-        return pattern.matcher(text).find();
-    }
-
-    private boolean isValidTemperature(String temperature) {
         try {
-            double temp = Double.parseDouble(temperature);
-            return temp >= 30.0 && temp <= 50.0;
-        } catch (NumberFormatException e) {
-            LOGGER.error("Number format exception{}", String.valueOf(e));
-            return false;
+            List<MedicalRecord> records = studentMedicalRecordApplication.getStudentMedicalRecordFacade().getMedicalInformationByLRN(student.getLrn());
+            if (records != null && !records.isEmpty()) {
+                final MedicalRecord updatedRecord = getMedicalRecord(records);
+                this.selectedMedicalRecord = updatedRecord;
+                setLabels(updatedRecord);
+
+                LOGGER.info("Medical record labels refreshed for: {}", student.getLrn());
+            } else {
+                LOGGER.warn("No medical records found for: {}", student.getLrn());
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error refreshing medical record data: {}", e.getMessage(), e);
         }
     }
 
-    private boolean isVisitDateInFuture(Date visitDate) {
-        return visitDate.after(new Date(System.currentTimeMillis()));
+    private MedicalRecord getMedicalRecord(List<MedicalRecord> records) {
+        MedicalRecord updatedRecord = null;
+        if (selectedMedicalRecord != null && selectedMedicalRecord.getMedicalRecordId() != null) {
+            for (MedicalRecord record : records) {
+                if (record.getMedicalRecordId() != null && record.getMedicalRecordId().equals(selectedMedicalRecord.getMedicalRecordId())) {
+                    updatedRecord = record;
+                    break;
+                }
+            }
+        }
+        if (updatedRecord == null) {
+            updatedRecord = records.getFirst();
+        }
+        return updatedRecord;
     }
+
+
 
     private void clearTextFields() {
         updateIllnessTextField.clear();
@@ -250,7 +224,7 @@ public class ManageStudentMedicalRecordsController implements Initializable {
 
     private void handleRecordDeletion(Student student) {
         if (student != null) {
-            boolean isDeleted = studentMedicalRecordApplication.getStudentMedicalRecordFacade().deleteStudentMedicalRecordById(selectedStudent.getMedicalRecordId());
+            boolean isDeleted = studentMedicalRecordApplication.getStudentMedicalRecordFacade().deleteStudentMedicalRecordByLrn(student.getLrn());
             if (isDeleted) {
                 parentController.loadData();
                 modalController.closeModal();

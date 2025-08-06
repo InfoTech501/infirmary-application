@@ -74,23 +74,24 @@ public class QueryConstants {
             ") WHERE rn = 1";
 
     /**
-     * query that retrieves all student health profile using lrn
+     * query that retrieves all active student health profile using lrn
      * */
-    public static final String SELECT_STUDENT_HEALTH_PROFILE_BY_LRN = "SELECT mr.is_active, p.first_name, p.middle_name,p.last_name,p.contact_number,p.email,p.address,mr.symptoms,mr.temperature_readings,visit_date,nurse.first_name as NURSE_FIRST_NAME, nurse.last_name as NURSE_LAST_NAME,mr.treatment\n" +
-            "FROM MEDICAL_RECORD mr\n" +
-            "JOIN PERSON p ON mr.STUDENT_ID = p.ID\n" +
-            "JOIN STUDENT ON mr.STUDENT_ID = student.ID\n" +
-            "JOIN SECTION ON student.SECTION_SECTION_ID = section.SECTION_ID\n" +
-            "JOIN Person nurse ON mr.nurse_in_charge_id = nurse.id\n" +
-            "LEFT JOIN PERSON adviser ON section.ADVISER_ID = adviser.ID\n" +
-            "WHERE LRN = ?";
-
-    public String selectStudentHealthProfile() {
-        return SELECT_STUDENT_HEALTH_PROFILE_QUERY;
-    }
-
-    public String selectStudentHealthProfileByLrn() {
-        return SELECT_STUDENT_HEALTH_PROFILE_BY_LRN;
-    }
+    public static final String SELECT_STUDENT_HEALTH_PROFILE_BY_LRN = """
+            SELECT
+            mr.is_active, p.first_name, p.middle_name, p.last_name,
+            p.contact_number,p.email,p.address, mr.symptoms, mr.temperature_readings, visit_date,
+            nurse.first_name as NURSE_FIRST_NAME, nurse.last_name as NURSE_LAST_NAME,
+            mr.treatment,
+            mr.blood_pressure,
+            mr.respiratory_rate,
+            mr.pulse_rate,
+            mr.temperature_readings
+            FROM MEDICAL_RECORD mr
+            JOIN PERSON p ON mr.STUDENT_ID = p.ID
+            JOIN STUDENT ON mr.STUDENT_ID = student.ID
+            JOIN SECTION ON student.SECTION_SECTION_ID = section.SECTION_ID
+            JOIN Person nurse ON mr.nurse_in_charge_id = nurse.id
+            LEFT JOIN PERSON adviser ON section.ADVISER_ID = adviser.ID
+            WHERE LRN = ? AND mr.IS_ACTIVE = 1""";
 
 }

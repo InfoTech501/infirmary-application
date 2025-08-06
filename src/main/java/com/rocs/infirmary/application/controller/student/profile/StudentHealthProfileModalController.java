@@ -1,7 +1,8 @@
 package com.rocs.infirmary.application.controller.student.profile;
 
 import com.rocs.infirmary.application.controller.student.record.ManageStudentMedicalRecordsController;
-import com.rocs.infirmary.application.module.student.record.StudentMedicalRecordApplication;
+import com.rocs.infirmary.application.data.model.medicalrecord.MedicalRecord;
+import com.rocs.infirmary.application.module.student.profile.StudentHealthProfileApplication;
 import com.rocs.infirmary.application.data.model.person.student.Student;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,18 +30,26 @@ import java.util.ResourceBundle;
  */
 public class StudentHealthProfileModalController implements Initializable {
     @FXML
-    private TableView<Student> clinicHistoryTableView;
+    private TableView<MedicalRecord> clinicHistoryTableView;
     @FXML
-    private TableColumn<Student, String> illnessColumn;
+    private TableColumn<MedicalRecord, String> illnessColumn;
     @FXML
-    private TableColumn<Student, String> dateColumn;
+    private TableColumn<MedicalRecord, String> dateColumn;
     @FXML
-    private TableColumn<Student, String> medicationColumn;
+    private TableColumn<MedicalRecord, String> medicationColumn;
     @FXML
-    private TableColumn<Student, String> nurseColumn;
+    private TableColumn<MedicalRecord, String> nurseColumn;
+    @FXML
+    private TableColumn<MedicalRecord, String> temperatureColumn;
+    @FXML
+    private TableColumn<MedicalRecord, String> bloodPressureColumn;
+    @FXML
+    private TableColumn<MedicalRecord, String> pulseRateColumn;
+    @FXML
+    private TableColumn<MedicalRecord, String> respiratoryRateColumn;
     //labels
     @FXML
-    private Label studentFullNameLabel, ageLabel, addressLabel, contactNumberLabel, sexLabel, birthdateLabel;
+    private Label studentFullNameLabel, ageLabel, addressLabel, contactNumberLabel, sexLabel, birthdateLabel, lrnLabel;
     @FXML
     private Button editHealthInfoBtn;
     @FXML
@@ -50,19 +59,13 @@ public class StudentHealthProfileModalController implements Initializable {
     @FXML
     private Button closeModalBtn;
 
-    @FXML
-    private TableColumn<Student, String> temperatureColumn;
-    @FXML
-    private TableColumn<Student, String> bloodPressureColumn;
-    @FXML
-    private TableColumn<Student, String> pulseRateColumn;
-    @FXML
-    private TableColumn<Student, String> respiratoryRateColumn;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentHealthProfileModalController.class);
-    private final StudentMedicalRecordApplication studentMedicalRecordApplication = new StudentMedicalRecordApplication();
-    private List<Student> selectedStudentRecord;
-    private ObservableList<Student> masterMedicalList;
+
+    private final StudentHealthProfileApplication studentHealthProfileApplication = new StudentHealthProfileApplication();
+
+    private Student student;
+    private MedicalRecord selectedMedicalRecord;
+    private ObservableList<MedicalRecord> masterMedicalList;
 
     private final StudentHealthProfileController parentController;
 
@@ -91,16 +94,17 @@ public class StudentHealthProfileModalController implements Initializable {
 
     private void setupEventHandlers() {
         clinicHistoryTableView.setRowFactory(tv -> {
-            TableRow<Student> row = new TableRow<>();
+            TableRow<MedicalRecord> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (!row.isEmpty() && event.getClickCount() == 1) {
-                    selectedStudentRecord = Collections.singletonList(row.getItem());
+                    selectedMedicalRecord =row.getItem();
                     editHealthInfoBtn.setDisable(false);
                     editHealthInfoBtn.setOpacity(1.0);
                     LOGGER.info("Row selected");
                 }
             });
             return row;
+
         });
     }
 
@@ -111,10 +115,31 @@ public class StudentHealthProfileModalController implements Initializable {
      * @param student the Student object containing student information and medical records
      */
     public void setSelectedStudent(Student student) {
+        this.student = student;
         getMedicalRecords(student);
         setStudentLabelData(student);
         editHealthInfoBtn.setDisable(true);
         editHealthInfoBtn.setOpacity(0);
+    }
+
+    /**
+     * Retrieves and displays medical records for the specified student using their LRN.
+     * Sets up row selection functionality to enable editing of individual records.
+     *
+     * @param student the Student object whose medical records will be retrieved using their LRN
+     */
+    public void getMedicalRecords(Student student) {
+        try {
+            if (student != null) {
+                List<MedicalRecord> studentMedicalRecord = studentHealthProfileApplication.getStudentHealthProfileFacade().getStudentHealthProfileByLRN(student.getLrn());
+                masterMedicalList.setAll(studentMedicalRecord);
+                LOGGER.info("Getting medical info by LRN: Success");
+            } else {
+                LOGGER.warn("No records retrieved");
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error in getting medical records{}", String.valueOf(e));
+        }
     }
 
     /**
@@ -129,7 +154,7 @@ public class StudentHealthProfileModalController implements Initializable {
         respiratoryRateColumn.setCellValueFactory(new PropertyValueFactory<>("respiratoryRate"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("visitDate"));
         medicationColumn.setCellValueFactory(new PropertyValueFactory<>("treatment"));
-        nurseColumn.setCellValueFactory(new PropertyValueFactory<>("nurseInChargeLastName"));
+        nurseColumn.setCellValueFactory(new PropertyValueFactory<>("nurseInCharge"));
 
         LOGGER.info("Populating table");
     }
@@ -144,6 +169,7 @@ public class StudentHealthProfileModalController implements Initializable {
             sexLabel.setText(student.getGender() != null ? String.valueOf(student.getGender()) : "");
             contactNumberLabel.setText(student.getContactNumber() != null ? String.valueOf(student.getContactNumber()) : "");
             birthdateLabel.setText(String.valueOf(student.getBirthdate()) != null ? String.valueOf(student.getBirthdate()) : "");
+            lrnLabel.setText(student.getLrn());
             LOGGER.info("Medical records successfully set");
         } else {
             LOGGER.info("No Medical records successfully set");
@@ -171,26 +197,6 @@ public class StudentHealthProfileModalController implements Initializable {
         return fullName;
     }
 
-    /**
-     * Retrieves and displays medical records for the specified student using their LRN.
-     * Sets up row selection functionality to enable editing of individual records.
-     *
-     * @param student the Student object whose medical records will be retrieved using their LRN
-     */
-    public void getMedicalRecords(Student student) {
-        try {
-            if (student != null) {
-                List<Student> studentMedicalRecord = studentMedicalRecordApplication.getStudentMedicalRecordFacade().getMedicalInformationByLRN(student.getLrn());
-                masterMedicalList.setAll(studentMedicalRecord);
-                LOGGER.info("Getting medical info by LRN: Success");
-            } else {
-                LOGGER.warn("No records retrieved");
-            }
-        } catch (Exception e) {
-            LOGGER.error("Error in getting medical records{}", String.valueOf(e));
-        }
-    }
-
     private void switchSceneToEditHealthInfo() {
        try {
            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ManageStudentMedicalRecords.fxml"));
@@ -200,7 +206,7 @@ public class StudentHealthProfileModalController implements Initializable {
            tableViewWrapper.getChildren().setAll(root);
 
            ManageStudentMedicalRecordsController controller = loader.getController();
-           controller.setSelectedStudentRecord(selectedStudentRecord);
+           controller.setSelectedStudentRecord(this.student, selectedMedicalRecord);
            LOGGER.info("Switch scene successful");
        } catch (IOException e) {
            LOGGER.warn("Switching scene failure");

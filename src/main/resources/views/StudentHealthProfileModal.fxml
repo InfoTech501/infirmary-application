@@ -48,27 +48,33 @@
                       <HBox prefHeight="79.0" prefWidth="1360.0" spacing="40.0">
                           <VBox prefHeight="79.0" prefWidth="0.0" HBox.hgrow="ALWAYS">
                               <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
-                                  <Label text="Age:"/>
-                                  <Label fx:id="ageLabel" text="Age"/>
+                                  <Label text="Age:" />
+                                  <Label fx:id="ageLabel" text="Age" />
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
-                                  <Label text="Sex:"/>
-                                  <Label fx:id="sexLabel" text="Sex"/>
+                                  <Label text="Sex:" />
+                                  <Label fx:id="sexLabel" text="Sex" />
                               </HBox>
                               <HBox prefHeight="30.0" prefWidth="382.0" spacing="10.0" VBox.vgrow="ALWAYS">
-                                  <Label text="Birthdate:"/>
-                                  <Label fx:id="birthdateLabel" text="Birthdate"/>
+                                  <Label text="Birthdate:" />
+                                  <Label fx:id="birthdateLabel" text="Birthdate" />
                               </HBox>
                           </VBox>
                           <VBox prefHeight="79.0" prefWidth="614.0" HBox.hgrow="ALWAYS">
                               <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
-                                  <Label text="Address:"/>
-                                  <Label fx:id="addressLabel" text="Address"/>
+                                  <Label text="Address:" />
+                                  <Label fx:id="addressLabel" text="Address" />
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
-                                  <Label text="Contact Number:"/>
-                                  <Label fx:id="contactNumberLabel" text="Contact Number"/>
+                                  <Label text="Contact Number:" />
+                                  <Label fx:id="contactNumberLabel" text="Contact Number" />
                               </HBox>
+                     <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                        <children>
+                           <Label text="LRN:" />
+                           <Label fx:id="lrnLabel" text="LRN" />
+                        </children>
+                     </HBox>
                           </VBox>
                       </HBox>
                   </VBox>
@@ -78,10 +84,9 @@
                   <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="82.0" prefWidth="1400.0" VBox.vgrow="ALWAYS">
                         <Label text="Recent Clinic History:" />
                       <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
-                          <Button fx:id="editHealthInfoBtn" mnemonicParsing="false" prefHeight="48.0" prefWidth="255.0"
-                                  text="Update Medical Record">
+                          <Button fx:id="editHealthInfoBtn" mnemonicParsing="false" prefHeight="48.0" prefWidth="255.0" text="Update Medical Record">
                             <HBox.margin>
-                                <Insets right="20.0"/>
+                                <Insets right="20.0" />
                             </HBox.margin>
                           </Button>
                       </HBox>

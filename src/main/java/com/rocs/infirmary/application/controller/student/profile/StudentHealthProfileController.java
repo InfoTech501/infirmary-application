@@ -114,7 +114,7 @@ public class StudentHealthProfileController implements Initializable {
                     try
                     {
                         onClickShowMoreInformation(row.getItem());
-                        LOGGER.info("Row selected: {}", row.getItem().getLrn());
+
                     } catch (IOException e) {
                         LOGGER.error("Row selection failure", e);
                     }
@@ -152,14 +152,14 @@ public class StudentHealthProfileController implements Initializable {
         sectionColumn.setCellValueFactory(new PropertyValueFactory<>("section"));
         genderColumn.setCellValueFactory(new PropertyValueFactory<>("gender"));
         ageColumn.setCellValueFactory(new PropertyValueFactory<>("age"));
-        adviserColumn.setCellValueFactory(new PropertyValueFactory<>("studentAdviser"));
+//        adviserColumn.setCellValueFactory(new PropertyValueFactory<>("studentAdviser"));
 
         firstNameColumn.setCellFactory(createCapitalizingCellFactory());
         lastNameColumn.setCellFactory(createCapitalizingCellFactory());
         gradeColumn.setCellFactory(createCapitalizingCellFactory());
         sectionColumn.setCellFactory(createCapitalizingCellFactory());
         genderColumn.setCellFactory(createCapitalizingCellFactory());
-        adviserColumn.setCellFactory(createCapitalizingCellFactory());
+//        adviserColumn.setCellFactory(createCapitalizingCellFactory());
         LOGGER.info("Populating student table");
     }
 
