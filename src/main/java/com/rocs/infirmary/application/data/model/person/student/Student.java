@@ -2,121 +2,65 @@ package com.rocs.infirmary.application.data.model.person.student;
 
 import com.rocs.infirmary.application.data.model.person.Person;
 
-import java.util.Date;
-
+/**
+ * Student model class representing student information.
+ */
 public class Student extends Person {
 
     private int studentSectionId;
-    private int studentId;
-    private int studentGuardianId;
-    private long lrn;
-    private String symptoms;
-    private String temperatureReadings;
-    private Date visitDate;
-    private String treatment;
-    private long id;
-    private int ailmentId;
-    private String medHistoryId;
-    private int nurseInChargeId;
-    private int setMedicalRecordId ;
-    private int getMedicaRecordStatus;
+    private Long studentId;
+    private Long studentGuardianId;
+    private String lrn;
+    private Long id;
     private String gradeLevel;
-    private String studentAdviser;
-    private String nurseInCharge;
 
-    public String getNurseInCharge() {
-        return nurseInCharge;
-    }
-
-    public void setNurseInCharge(String nurseInCharge) {
-        this.nurseInCharge = nurseInCharge;
-    }
-
-    public String getStudentAdviser() {
-        return studentAdviser;
-    }
-
-    public void setStudentAdviser(String studentAdviser) {
-        this.studentAdviser = studentAdviser;
-    }
-
+    /**
+     * This gets the grade level.
+     * @return the Grade Level.
+     */
     public String getGradeLevel() {
         return gradeLevel;
     }
-
+    /**
+     * This sets the grade level.
+     * @param gradeLevel is the Grade Level to be set.
+     */
     public void setGradeLevel(String gradeLevel) {
         this.gradeLevel = gradeLevel;
     }
 
-    public void setStudentId(int studentId) {
+    /**
+     * This gets the student id.
+     * @return the Student id.
+     */
+    public Long getStudentId() {
+        return studentId;
+    }
+    /**
+     * This sets the student id.
+     * @param studentId is the Student id to be set.
+     */
+    public void setStudentId(Long studentId) {
         this.studentId = studentId;
     }
 
-    public void setLrn(long lrn) {
+    /**
+     * This gets the lrn.
+     * @return the Lrn.
+     */
+    public String getLrn() {
+        return lrn;
+    }
+    /**
+     * This sets the lrn.
+     * @param lrn is the Lrn to be set.
+     */
+    public void setLrn(String lrn) {
         this.lrn = lrn;
     }
 
-    public String getSymptoms() {
-        return symptoms;
-    }
-
-    public void setSymptoms(String symptoms) {
-        this.symptoms = symptoms;
-    }
-
-    public String getTemperatureReadings() {
-        return temperatureReadings;
-    }
-
-    public void setTemperatureReadings(String temperatureReadings) {
-        this.temperatureReadings = temperatureReadings;
-    }
-
-    public Date getVisitDate() {
-        return visitDate;
-    }
-
-    public void setVisitDate(Date visitDate) {
-        this.visitDate = visitDate;
-    }
-
-    public String getTreatment() {
-        return treatment;
-    }
-
-    public void setTreatment(String treatment) {
-        this.treatment = treatment;
-    }
-
-    public int getStudentId() {
-        return studentId;
-    }
-
-    public long getLrn() {
-        return lrn;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public void setAilmentId(int ailmentId) {
-        this.ailmentId = ailmentId;
-    }
-
-    public void setMedHistoryId(String medHistoryId) {
-        this.medHistoryId = medHistoryId;
-    }
-
-    public void setNurseInChargeId(int nurseInChargeId) {
-        this.nurseInChargeId = nurseInChargeId;
-    }
-
-    public void setMedicalRecordId(int medicalRecordIdId) {
-        this.setMedicalRecordId = medicalRecordIdId;
-    }
-
-    public int getMedicalRecordStatus() {
-        return getMedicaRecordStatus;
+    @Override
+    public String toString() {
+        return getFirstName() + " " + getLastName();
     }
 }
