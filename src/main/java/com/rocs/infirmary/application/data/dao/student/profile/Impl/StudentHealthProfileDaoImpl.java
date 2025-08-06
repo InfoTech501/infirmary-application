@@ -5,6 +5,7 @@ import com.rocs.infirmary.application.data.dao.student.profile.StudentHealthProf
 import com.rocs.infirmary.application.data.dao.utils.queryconstants.student.QueryConstants;
 import com.rocs.infirmary.application.data.model.person.student.Student;
 import com.rocs.infirmary.application.data.model.medicalrecord.MedicalRecord;
+import com.rocs.infirmary.application.data.model.person.employee.Employee;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,13 +31,14 @@ public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next()){
                 Student studentMedicalRecord = new Student();
+                Employee employeeInformation = new Employee();
                 studentMedicalRecord.setLrn(resultSet.getString("LRN"));
                 studentMedicalRecord.setFirstName(resultSet.getString("first_name"));
                 studentMedicalRecord.setMiddleName(resultSet.getString("middle_name"));
                 studentMedicalRecord.setLastName(resultSet.getString("last_name"));
                 studentMedicalRecord.setSection(resultSet.getString("section"));
                 studentMedicalRecord.setGradeLevel(resultSet.getString("grade_level"));
-                studentMedicalRecord.setStudentAdviser(resultSet.getString("adviser_first_name"));
+                employeeInformation.setAdviser(resultSet.getString("adviser_first_name"));
 
                 LOGGER.info("Retrieved Data: LRN: {}\nFirst Name: {}\nMiddle Name: {}\n Last Name: {}\nSection: {}\n Grade Level: {}\n Adviser: {}",
                         studentMedicalRecord.getLrn(),
@@ -45,7 +47,7 @@ public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
                         studentMedicalRecord.getLastName(),
                         studentMedicalRecord.getSection(),
                         studentMedicalRecord.getGradeLevel(),
-                        studentMedicalRecord.getStudentAdviser()
+                        employeeInformation.getAdviser()
                 );
 
                 studentList.add(studentMedicalRecord);

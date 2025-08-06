@@ -27,6 +27,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -57,7 +58,7 @@ public class ClinicVisitLogPageController implements Initializable {
     private int rowsPerPage = 10;
     private int currentPage = 1;
 
-    private List<MedicalRecord> fullStudentList;
+    private List<MedicalRecord> fullStudentList = new ArrayList<>();
     private final MedicalRecordInfoMgtApplication medicalRecordInfoMgtApplication = new MedicalRecordInfoMgtApplication();
 
     @Override
@@ -84,11 +85,13 @@ public class ClinicVisitLogPageController implements Initializable {
      * @param newRecord the student record to add.
      */
     public void addStudentMedicalRecord(Student newRecord) {
-        if (newRecord == null) return;
+        if (newRecord != null) {
+            List<MedicalRecord> records = medicalRecordInfoMgtApplication
+                    .getPatientMedicalRecordFacade().getAllPatientMedicalRecords();
 
-        fullStudentList = medicalRecordInfoMgtApplication
-                .getPatientMedicalRecordFacade().getAllPatientMedicalRecords();
-        updatePage();
+            fullStudentList = records != null ? records : new ArrayList<>();
+            updatePage();
+        }
     }
 
     @FXML
@@ -101,8 +104,7 @@ public class ClinicVisitLogPageController implements Initializable {
 
     @FXML
     private void handleToggleRight(ActionEvent actionEvent) {
-        int totalRecords = fullStudentList != null ? fullStudentList.size() : 0;
-        int maxPage = (int) Math.ceil((double) totalRecords / rowsPerPage);
+        int maxPage = (int) Math.ceil((double) fullStudentList.size() / rowsPerPage);
 
         if (currentPage < maxPage) {
             currentPage++;
@@ -176,12 +178,16 @@ public class ClinicVisitLogPageController implements Initializable {
     }
 
     private void setupRowsPerPageSelector() {
-        rowsPerPageComboBox.setItems(FXCollections.observableArrayList(1,2,3,4,5,6,7,8,9,10));
+        List<Integer> rowOptions = IntStream.rangeClosed(1, 10)
+                .boxed()
+                .collect(Collectors.toList());
+
+        rowsPerPageComboBox.setItems(FXCollections.observableArrayList(rowOptions));
         rowsPerPageComboBox.setValue(rowsPerPage);
 
         rowsPerPageComboBox.setOnAction(event -> {
-            Object selectedItem = rowsPerPageComboBox.getSelectionModel().getSelectedItem();
-            if (selectedItem instanceof Integer selectedRows) {
+            Integer selectedRows = rowsPerPageComboBox.getSelectionModel().getSelectedItem();
+            if (selectedRows != null) {
                 rowsPerPage = selectedRows;
                 currentPage = 1;
                 updatePage();
@@ -196,11 +202,12 @@ public class ClinicVisitLogPageController implements Initializable {
     }
 
     private void updatePage() {
-        int total = fullStudentList.size();
+        List<MedicalRecord> studentList = fullStudentList != null ? fullStudentList : new ArrayList<>();
+        int total = studentList.size();
         int fromIndex = (currentPage - 1) * rowsPerPage;
         int toIndex = Math.min(fromIndex + rowsPerPage, total);
 
-        List<MedicalRecord> pageData = fullStudentList.subList(fromIndex, toIndex);
+        List<MedicalRecord> pageData = studentList.subList(fromIndex, toIndex);
         ObservableList<MedicalRecord> pageItems = FXCollections.observableArrayList(pageData);
         visitLogTable.setItems(pageItems);
 
@@ -282,7 +289,7 @@ public class ClinicVisitLogPageController implements Initializable {
 
         } catch (IOException e) {
             LOGGER.error("Error opening visit log modal for LRN '{}'",
-                    medicalRecord != null ? medicalRecord.getStudentLrn() : "unknown", e);
+                    medicalRecord != null ? medicalRecord.getLrn() : "unknown", e);
         }
 
     }

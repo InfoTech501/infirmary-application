@@ -1,6 +1,8 @@
 package com.rocs.infirmary.application.data.dao.employee.impl;
 
 import com.rocs.infirmary.application.data.connection.ConnectionHelper;
+import static com.rocs.infirmary.application.data.dao.utils.queryconstants.employee.QueryConstants.*;
+
 import com.rocs.infirmary.application.data.dao.employee.EmployeeDao;
 import com.rocs.infirmary.application.data.dao.student.record.impl.StudentMedicalRecordDaoImpl;
 import com.rocs.infirmary.application.data.model.person.employee.Employee;
@@ -14,8 +16,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.rocs.infirmary.application.data.dao.utils.queryconstants.employee.QueryConstants.*;
-
+/**
+ * The EmployeeDaoImpl class implements the EmployeeDao interface
+ * it provides methods for interacting with the infirmary database.
+ * It includes methods for retrieving employee information.
+ */
 public class EmployeeDaoImpl implements EmployeeDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentMedicalRecordDaoImpl.class);
 

@@ -3,7 +3,9 @@ package com.rocs.infirmary.application.app.facade.employee;
 import com.rocs.infirmary.application.data.model.person.employee.Employee;
 
 import java.util.List;
-
+/**
+ * The EmployeeInformationFacade interface defines methods for managing employee information.
+ */
 public interface EmployeeInformationFacade {
 
     /**

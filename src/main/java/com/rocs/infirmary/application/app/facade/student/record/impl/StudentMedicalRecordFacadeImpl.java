@@ -1,10 +1,12 @@
 package com.rocs.infirmary.application.app.facade.student.record.impl;
 
 import com.rocs.infirmary.application.app.facade.student.record.StudentMedicalRecordFacade;
-import com.rocs.infirmary.application.data.model.person.student.Student;
+import com.rocs.infirmary.application.data.model.medicalrecord.MedicalRecord;
 import com.rocs.infirmary.application.data.dao.student.record.StudentMedicalRecordDao;
 
 import java.util.Date;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,18 +22,18 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
     /**
      * {@code StudentMedicalRecordFacadeImpl()} is a constructor that requires parameter
      * @param studentMedRecord DAO implementation of Student Medical Record
-     * this provides the business logic of the Medicine Inventory
+     * this provides the business logic of the Student Medical Record
      * {@code this.studentMedRecord = studentMedicalRecordDao} is used to initialize the StudentMedicalRecordDao
      */
     public StudentMedicalRecordFacadeImpl(StudentMedicalRecordDao studentMedRecord) {
         this.studentMedRecord = studentMedRecord;
     }
 
-    public Student getMedicalInformationByLRN(String LRN) {
+    public List<MedicalRecord> getMedicalInformationByLRN(String LRN) {
         logger.debug("Entering getMedicalInformationByLRN with LRN: {}", LRN);
-        Student student = this.studentMedRecord.findMedicalInformation(LRN);
-        logger.debug("Exiting getMedicalInformationByLRN with result: {}", student);
-        return student;
+        List<MedicalRecord> studentRecord = this.studentMedRecord.findMedicalInformation(LRN);
+        logger.debug("Exiting getMedicalInformationByLRN with result: {}", studentRecord);
+        return studentRecord;
     }
 
     /**

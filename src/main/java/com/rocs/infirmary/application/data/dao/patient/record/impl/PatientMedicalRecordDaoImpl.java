@@ -1,9 +1,12 @@
 package com.rocs.infirmary.application.data.dao.patient.record.impl;
 
 import com.rocs.infirmary.application.data.connection.ConnectionHelper;
+import static com.rocs.infirmary.application.data.dao.utils.queryconstants.record.QueryConstants.*;
+
 import com.rocs.infirmary.application.data.dao.patient.record.PatientMedicalRecordDao;
 import com.rocs.infirmary.application.data.dao.student.record.impl.StudentMedicalRecordDaoImpl;
 import com.rocs.infirmary.application.data.model.medicalrecord.MedicalRecord;
+import com.rocs.infirmary.application.data.model.person.employee.Employee;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,8 +14,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.rocs.infirmary.application.data.dao.utils.queryconstants.record.QueryConstants.*;
-
+/**
+ * The PatientMedicalRecordDaoImpl class implements the PatientMedicalRecordDao interface
+ * it provides methods for interacting with the infirmary database.
+ * It includes methods for retrieving and adding patient medical records.
+ */
 public class PatientMedicalRecordDaoImpl implements PatientMedicalRecordDao {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentMedicalRecordDaoImpl.class);
@@ -32,7 +38,7 @@ public class PatientMedicalRecordDaoImpl implements PatientMedicalRecordDao {
                 try {
                     MedicalRecord record = new MedicalRecord();
                     record.setStudentId(rs.getLong("person_id"));
-                    record.setStudentLrn(rs.getString("LRN"));
+                    record.setLrn(rs.getString("LRN"));
                     record.setFirstName(rs.getString("first_name"));
                     record.setMiddleName(rs.getString("middle_name"));
                     record.setLastName(rs.getString("last_name"));
@@ -59,7 +65,7 @@ public class PatientMedicalRecordDaoImpl implements PatientMedicalRecordDao {
 
                     LOGGER.info("Retrieved Patient Record:\n"
                             + "Student ID       : " + record.getStudentId() + "\n"
-                            + "LRN              : " + record.getStudentLrn() + "\n"
+                            + "LRN              : " + record.getLrn() + "\n"
                             + "Name             : " + record.getFirstName() + " " + record.getLastName() + "\n"
                             + "Grade Level      : " + record.getGradeLevel() + "\n"
                             + "Section          : " + record.getSection() + "\n"
@@ -94,20 +100,23 @@ public class PatientMedicalRecordDaoImpl implements PatientMedicalRecordDao {
         return medicalRecords;
     }
 
-    public boolean addMedicalRecord(MedicalRecord medicalRecord) {
+    public boolean addMedicalRecord(MedicalRecord medicalRecord, Employee employee) {
         try (Connection con = ConnectionHelper.getConnection()) {
             con.setAutoCommit(false);
 
-            Long ailmentId = addNewAilment(con, medicalRecord.getSymptoms());
+            Long ailmentId = findAilmentIdBySymptoms(con, medicalRecord.getSymptoms());
             if (ailmentId == null) {
-                LOGGER.warn("No ailment_id found for symptoms: {}", medicalRecord.getSymptoms());
+                ailmentId = addNewAilment(con, medicalRecord.getSymptoms());
+            }
+            if (ailmentId == null) {
+                LOGGER.warn("No ailment_id found or inserted for symptoms: {}", medicalRecord.getSymptoms());
                 return false;
             }
 
             try (PreparedStatement medStmt = con.prepareStatement(ADD_STUDENT_MEDICAL_RECORD)) {
                 medStmt.setLong(1, medicalRecord.getStudentId());
                 medStmt.setLong(2, ailmentId);
-                medStmt.setLong(3, medicalRecord.getNurseInChargeId());
+                medStmt.setLong(3, employee.getNurseInChargeId());
                 medStmt.setString(4, medicalRecord.getSymptoms());
                 medStmt.setString(5, medicalRecord.getTemperatureReadings());
                 medStmt.setString(6, medicalRecord.getBloodPressure());
@@ -151,54 +160,60 @@ public class PatientMedicalRecordDaoImpl implements PatientMedicalRecordDao {
         return false;
     }
 
-    private Long addNewAilment(Connection con, String symptoms) {
+    private Long findAilmentIdBySymptoms(Connection con, String symptoms) {
         String cleaned = symptoms.toLowerCase().trim();
         if (cleaned.isEmpty()) return null;
 
-        try {
-            try (PreparedStatement stmt = con.prepareStatement(FIND_AILMENT_ID_BY_SYMPTOMS)) {
-                stmt.setString(1, cleaned);
-                try (ResultSet rs = stmt.executeQuery()) {
-                    if (rs.next()) {
-                        Long existingId = rs.getLong("ailment_id");
-                        LOGGER.info("Found existing ailment '{}', ID: {}", cleaned, existingId);
-                        return existingId;
-                    }
+        try (PreparedStatement stmt = con.prepareStatement(FIND_AILMENT_ID_BY_SYMPTOMS)) {
+            stmt.setString(1, cleaned);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Long existingId = rs.getLong("ailment_id");
+                    LOGGER.info("Found existing ailment '{}', ID: {}", cleaned, existingId);
+                    return existingId;
                 }
-            }
-
-            try (PreparedStatement insertStmt = con.prepareStatement(ADD_NEW_AILMENTS, new String[] { "ailment_id" })) {
-                insertStmt.setString(1, cleaned);
-                int affected = insertStmt.executeUpdate();
-
-                if (affected > 0) {
-                    try (ResultSet rs = insertStmt.getGeneratedKeys()) {
-                        if (rs.next()) {
-                            Long newId = rs.getLong(1);
-                            LOGGER.info("Inserted new ailment '{}', ID: {}", cleaned, newId);
-                            return newId;
-                        }
-                    }
-                } else {
-                    LOGGER.warn("Insert failed for new ailment '{}'", cleaned);
-                }
-            } catch (SQLException e) {
-                LOGGER.error("Error inserting new ailment '{}'", cleaned, e);
             }
         } catch (SQLException e) {
             LOGGER.error("Error checking existing ailment for '{}'", cleaned, e);
         }
+
+        return null;
+    }
+
+    private Long addNewAilment(Connection con, String symptoms) {
+        String cleaned = symptoms.toLowerCase().trim();
+        if (cleaned.isEmpty()) return null;
+
+        try (PreparedStatement insertStmt = con.prepareStatement(ADD_NEW_AILMENTS, new String[] { "ailment_id" })) {
+            insertStmt.setString(1, cleaned);
+            int affected = insertStmt.executeUpdate();
+
+            if (affected > 0) {
+                try (ResultSet rs = insertStmt.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        Long newId = rs.getLong(1);
+                        LOGGER.info("Inserted new ailment '{}', ID: {}", cleaned, newId);
+                        return newId;
+                    }
+                }
+            } else {
+                LOGGER.warn("Insert failed for new ailment '{}'", cleaned);
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Error inserting new ailment '{}'", cleaned, e);
+        }
+
         return null;
     }
 
     @Override
-    public boolean addMedicineAdministered(MedicalRecord medicalRecord) {
+    public boolean addMedicineAdministered(MedicalRecord medicalRecord, Employee employee) {
         try (Connection con = ConnectionHelper.getConnection();
              PreparedStatement stmt = con.prepareStatement(ADD_MEDICINE_ADMINISTERED)) {
 
             stmt.setLong(1, medicalRecord.getMedicineId());
             stmt.setLong(2, medicalRecord.getMedicalRecordId());
-            stmt.setLong(3, medicalRecord.getNurseInChargeId());
+            stmt.setLong(3, employee.getNurseInChargeId());
             stmt.setString(4, medicalRecord.getTreatment());
             stmt.setInt(5, medicalRecord.getDispensingOut());
             stmt.setTimestamp(6, new Timestamp(medicalRecord.getVisitDate().getTime()));

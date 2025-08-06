@@ -86,14 +86,17 @@ public class AddDailyTreatmentRecordController implements Initializable {
 
     private void addLrnAutoFillListener() {
         lrnField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == null || newValue.isBlank()) {
+            if (newValue == null || newValue.isBlank() || newValue.trim().length() < 12) {
                 return;
             }
 
             String lrn = newValue.trim();
+            LOGGER.info("Attempting to autofill for LRN: {}", lrn);
             try {
-                Student matchedStudent = medicalRecordInfoMgtApplication.getStudentMedicalRecordFacade().getMedicalInformationByLRN(lrn);
-                if (matchedStudent != null) {
+                List<MedicalRecord> existingStudentRecord = medicalRecordInfoMgtApplication.getStudentMedicalRecordFacade().getMedicalInformationByLRN(lrn);
+
+                if (existingStudentRecord != null && !existingStudentRecord.isEmpty()) {
+                    MedicalRecord matchedStudent = existingStudentRecord.get(0);
                     String fullName = Stream.of(matchedStudent.getFirstName(), matchedStudent.getMiddleName(), matchedStudent.getLastName())
                             .filter(part -> part != null && !part.isBlank())
                             .map(String::trim)
@@ -104,7 +107,6 @@ public class AddDailyTreatmentRecordController implements Initializable {
                     gradeSectionField.setText(grade + " - " + section);
                     ageField.setText(String.valueOf(matchedStudent.getAge()));
                 }
-
             } catch (Exception e) {
                 showDialog("Warning", "Error retrieving student data. Please check LRN input.");
                 LOGGER.warn("Exception occurred while retrieving student info for LRN '{}': {}", lrn, e.getMessage(), e);
@@ -202,8 +204,12 @@ public class AddDailyTreatmentRecordController implements Initializable {
             if (!updateInventoryDispensed(medicalRecord, matchedMedicine)) return;
             if (!populateExistingStudentInfo(medicalRecord)) return;
             medicalRecord.setMedicineId(matchedMedicine.getMedicineId());
-
-            if (!saveMedicalRecordAndTreatment(medicalRecord)) return;
+            Employee selectedNurse = nurseInChargeComboBox.getSelectionModel().getSelectedItem();
+            if (selectedNurse == null || selectedNurse.getNurseInChargeId() == null) {
+                showDialog("Error", "Please select a nurse in charge.");
+                return;
+            }
+            if (!saveMedicalRecordAndTreatment(medicalRecord, selectedNurse)) return;
             if (clinicVisitLogPageController != null) {
                 clinicVisitLogPageController.addStudentMedicalRecord(medicalRecord);
             }
@@ -219,6 +225,7 @@ public class AddDailyTreatmentRecordController implements Initializable {
 
     private MedicalRecord createStudentMedicalRecordFromForm() {
         MedicalRecord patient = new MedicalRecord();
+        Employee employee = new Employee();
 
         String lrn = lrnField.getText().trim();
         double temperature = Double.parseDouble(bodyTempField.getText().trim());
@@ -226,7 +233,7 @@ public class AddDailyTreatmentRecordController implements Initializable {
         int respiration = Integer.parseInt(respiratoryRateField.getText().trim());
         int dispensingOut = Integer.parseInt(invDispensingOutField.getText().trim());
 
-        patient.setStudentLrn(lrn);
+        patient.setLrn(lrn);
         String[] nameParts = nameField.getText().trim().split("\\s+");
         patient.setFirstName(nameParts.length > 0 ? nameParts[0] : "");
         patient.setMiddleName(nameParts.length == 3 ? nameParts[1] : "");
@@ -250,7 +257,7 @@ public class AddDailyTreatmentRecordController implements Initializable {
         }
         Employee selectedNurse = nurseInChargeComboBox.getSelectionModel().getSelectedItem();
         if (selectedNurse != null) {
-            patient.setNurseInChargeId(selectedNurse.getNurseInChargeId());
+            employee.setNurseInChargeId(selectedNurse.getNurseInChargeId());
             String fullName = Stream.of(selectedNurse.getFirstName(), selectedNurse.getMiddleName(), selectedNurse.getLastName()).filter(n -> n != null && !n.isBlank())
                     .map(String::trim)
                     .collect(Collectors.joining(" "));
@@ -305,14 +312,16 @@ public class AddDailyTreatmentRecordController implements Initializable {
     }
 
     private boolean populateExistingStudentInfo(MedicalRecord medicalRecord) {
-        Student existingStudent = medicalRecordInfoMgtApplication.getStudentMedicalRecordFacade()
-                .getMedicalInformationByLRN(medicalRecord.getStudentLrn());
+        List<MedicalRecord> existingStudentRecord = medicalRecordInfoMgtApplication
+                .getStudentMedicalRecordFacade()
+                .getMedicalInformationByLRN(medicalRecord.getLrn());
 
-        if (existingStudent == null) {
+        if (existingStudentRecord == null || existingStudentRecord.isEmpty()) {
             showDialog("Warning", "Student with this LRN was not found. Please register the student first.");
             return false;
         }
 
+        MedicalRecord existingStudent = existingStudentRecord.get(0);
         medicalRecord.setStudentId(existingStudent.getStudentId());
         medicalRecord.setFirstName(existingStudent.getFirstName());
         medicalRecord.setMiddleName(existingStudent.getMiddleName());
@@ -323,9 +332,9 @@ public class AddDailyTreatmentRecordController implements Initializable {
         return true;
     }
 
-    private boolean saveMedicalRecordAndTreatment(MedicalRecord medicalRecord) {
+    private boolean saveMedicalRecordAndTreatment(MedicalRecord medicalRecord, Employee employee) {
         try {
-            boolean saved = medicalRecordInfoMgtApplication.getPatientMedicalRecordFacade().addMedicalRecord(medicalRecord);
+            boolean saved = medicalRecordInfoMgtApplication.getPatientMedicalRecordFacade().addMedicalRecord(medicalRecord, employee);
             if (!saved) {
                 showDialog("Warning", "Failed to save medical record.");
                 return false;
@@ -335,7 +344,7 @@ public class AddDailyTreatmentRecordController implements Initializable {
                 return false;
             }
 
-            boolean administered = medicalRecordInfoMgtApplication.getPatientMedicalRecordFacade().addMedicineAdministered(medicalRecord);
+            boolean administered = medicalRecordInfoMgtApplication.getPatientMedicalRecordFacade().addMedicineAdministered(medicalRecord, employee);
             if (!administered) {
                 showDialog("Warning", "Failed to save medicine administration record.");
                 return false;

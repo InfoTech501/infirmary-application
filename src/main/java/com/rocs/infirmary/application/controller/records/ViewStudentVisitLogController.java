@@ -74,7 +74,7 @@ public class ViewStudentVisitLogController implements Initializable {
             return;
         }
 
-        viewLrn.setText(formatValue(medicalRecord.getStudentLrn()));
+        viewLrn.setText(formatValue(medicalRecord.getLrn()));
         viewFirstname.setText(formatValue(medicalRecord.getFirstName()));
         viewMiddleName.setText(formatValue(medicalRecord.getMiddleName()));
         viewLastname.setText(formatValue(medicalRecord.getLastName()));
@@ -105,11 +105,8 @@ public class ViewStudentVisitLogController implements Initializable {
         return value != null ? String.valueOf(value) : "";
     }
 
-    /**
-     * This method handles the action triggered when the cancel button is clicked.
-     * @param actionEvent the event triggered by the confirm button click
-     */
-    public void handleCloseButton(ActionEvent actionEvent) {
+    @FXML
+    private void handleCloseButton(ActionEvent actionEvent) {
         ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
     }
 }

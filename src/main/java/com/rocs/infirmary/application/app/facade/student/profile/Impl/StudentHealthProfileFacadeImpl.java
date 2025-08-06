@@ -9,7 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-
+/**
+ * The StudentHealthProfileFacadeImpl class is an implementation of the StudentHealthProfileFacade interface.
+ * It provides methods for managing student health profile.
+ */
 public class StudentHealthProfileFacadeImpl implements StudentHealthProfileFacade {
     StudentHealthProfileDao studentHealthProfileDao = new StudentHealthProfileDaoImpl();
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentHealthProfileFacadeImpl.class);
