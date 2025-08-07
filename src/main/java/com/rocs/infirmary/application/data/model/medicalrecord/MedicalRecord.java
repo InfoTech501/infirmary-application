@@ -221,7 +221,8 @@ public class MedicalRecord extends Student {
     @Override
     public String toString() {
         return "MedicalRecord{" +
-                " symptoms='" + symptoms + '\'' +
+                " medical record id ='" + medicalRecordId + '\'' +
+                ", symptoms='" + symptoms + '\'' +
                 ", temperatureReadings='" + temperatureReadings + '\'' +
                 ", bloodPressure='" + bloodPressure + '\'' +
                 ", pulseRate='" + pulseRate + '\'' +

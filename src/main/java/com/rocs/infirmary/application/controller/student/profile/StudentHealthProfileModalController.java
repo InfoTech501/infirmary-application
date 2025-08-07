@@ -93,18 +93,17 @@ public class StudentHealthProfileModalController implements Initializable {
     }
 
     private void setupEventHandlers() {
-        clinicHistoryTableView.setRowFactory(tv -> {
-            TableRow<MedicalRecord> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (!row.isEmpty() && event.getClickCount() == 1) {
-                    selectedMedicalRecord =row.getItem();
-                    editHealthInfoBtn.setDisable(false);
-                    editHealthInfoBtn.setOpacity(1.0);
-                    LOGGER.info("Row selected");
-                }
-            });
-            return row;
-
+        clinicHistoryTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                selectedMedicalRecord = newSelection;
+                editHealthInfoBtn.setDisable(false);
+                editHealthInfoBtn.setOpacity(1.0);
+                LOGGER.info("Row selected: {}", selectedMedicalRecord.getMedicalRecordId());
+            } else {
+                selectedMedicalRecord = null;
+                editHealthInfoBtn.setDisable(true);
+                editHealthInfoBtn.setOpacity(0.0);
+            }
         });
     }
 

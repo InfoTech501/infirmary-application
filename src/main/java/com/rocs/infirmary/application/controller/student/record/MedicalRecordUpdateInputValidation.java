@@ -7,9 +7,17 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.regex.Pattern;
 
-public class MedicalRecordInputValidation {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MedicalRecordInputValidation.class);
+public class MedicalRecordUpdateInputValidation {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MedicalRecordUpdateInputValidation.class);
 
+    /**
+     * A function that validates input on managing health records with these parameters:
+     *
+     * @param illness the parameter illness of MedicalRecords object
+     * @param temperature the parameter temperature of MedicalRecords object
+     * @param treatment the parameter treatment of MedicalRecords object
+     * @param visitDate the parameter visit date of MedicalRecords object
+     */
     public static String validateMedicalRecordInputs(String illness, String temperature, String treatment, LocalDate visitDate) {
         StringBuilder errorMessage = new StringBuilder();
 

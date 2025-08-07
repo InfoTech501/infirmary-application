@@ -65,6 +65,7 @@ public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
             while (resultSet.next()){
                 MedicalRecord medicalRecord = new MedicalRecord();
 
+                medicalRecord.setMedicalRecordId(resultSet.getLong("id"));
                 medicalRecord.setFirstName(resultSet.getString("first_name"));
                 medicalRecord.setMiddleName(resultSet.getString("middle_name"));
                 medicalRecord.setLastName(resultSet.getString("last_name"));
@@ -92,6 +93,7 @@ public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
     private MedicalRecord setStudentHealthProfile(ResultSet resultSet) {
         try {
             MedicalRecord medicalRecord = new MedicalRecord();
+            Employee employee = new Employee();
             medicalRecord.setLrn(resultSet.getString("LRN"));
             medicalRecord.setFirstName(resultSet.getString("first_name"));
             medicalRecord.setMiddleName(resultSet.getString("middle_name"));
@@ -103,8 +105,22 @@ public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
             medicalRecord.setAddress(resultSet.getString("address"));
             medicalRecord.setBirthdate(resultSet.getDate("birthdate"));
             medicalRecord.setAge(resultSet.getInt("age"));
+            employee.setAdviser(resultSet.getString("adviser_last_name"));
 
-            LOGGER.info("Retrieved Data: {}\nFirst Name: LRN: {}\nFirst Name: {}\nMiddle Name: {}\n Last Name: {}\nSection: {}\n Grade Level: {}\n Gender: {}\n Contact Number: {}\n Address: {}\n Birthdate: {}\n Age:",
+            LOGGER.info(
+                    "Retrieved Data: \n" +
+                            "LRN: {}\n" +
+                            "First Name: {}\n" +
+                            "Middle Name: {}\n" +
+                            "Last Name: {}\n" +
+                            "Section: {}\n" +
+                            "Grade Level: {}\n" +
+                            "Gender: {}\n" +
+                            "Contact Number: {}\n" +
+                            "Address: {}\n" +
+                            "Birthdate: {}\n" +
+                            "Age: {}\n" +
+                            "Adviser: {}",
                     medicalRecord.getLrn(),
                     medicalRecord.getFirstName(),
                     medicalRecord.getMiddleName(),
@@ -115,7 +131,8 @@ public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
                     medicalRecord.getContactNumber(),
                     medicalRecord.getAddress(),
                     medicalRecord.getBirthdate(),
-                    medicalRecord.getAge()
+                    medicalRecord.getAge(),
+                    employee.getAdviser()
             );
             return medicalRecord;
         } catch (Exception e) {

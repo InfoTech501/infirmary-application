@@ -17,10 +17,20 @@ public class StudentHealthProfileFacadeImpl implements StudentHealthProfileFacad
     private final StudentHealthProfileDao studentHealthProfileDao;
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentHealthProfileFacadeImpl.class);
 
+    /**
+     * {@code StudentHealthProfileFacadeImpl()} is a constructor that requires parameter
+     * @param studentHealthProfileDao DAO implementation of Student Health Profile!
+     * this provides the business logic of the Student Health Profile
+     * {@code this.studentHealthProfileDao = studentHealthProfileDao} is used to initialize the StudentHealthProfileDao
+     */
     public StudentHealthProfileFacadeImpl(StudentHealthProfileDao studentHealthProfileDao) {
         this.studentHealthProfileDao = studentHealthProfileDao;
     }
 
+    /**
+     * This is used to get the list of all the student's health profile
+     * @return list of student health profiles
+     */
     @Override
     public List<Student> getAllStudentHealthProfile() {
         List<Student> studentList = studentHealthProfileDao.findAllStudentHealthProfile();
@@ -28,6 +38,10 @@ public class StudentHealthProfileFacadeImpl implements StudentHealthProfileFacad
         return studentList;
     }
 
+    /**
+     * This is used to get the list of all the student's medical health based on their Learner Reference Number (LRN).
+     * @return list of student health profile
+     */
     @Override
     public List<MedicalRecord> getStudentHealthProfileByLRN(String LRN) {
         LOGGER.info("getting all student health profiles might return empty");

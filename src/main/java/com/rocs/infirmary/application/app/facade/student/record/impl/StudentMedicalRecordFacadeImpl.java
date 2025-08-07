@@ -41,18 +41,22 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
      * boolean returns true if the deletion was successful, otherwise false.
      */
     @Override
-    public boolean deleteStudentMedicalRecordByLrn(String LRN) {
-        logger.info("Entering deleteStudentMedicalRecordByLrn with LRN: {}", LRN);
-        boolean isDeleted = this.studentMedRecord.deleteStudentMedicalRecord(LRN);
+    public boolean deleteStudentMedicalRecordByLrn(String LRN, Long medicalRecordId) {
+        logger.info("Entering deleteStudentMedicalRecordByLrn with LRN: {}, medical record id: {}", LRN, medicalRecordId);
+        boolean isDeleted = this.studentMedRecord.deleteStudentMedicalRecord(LRN, medicalRecordId);
         logger.info("Exiting deleteStudentMedicalRecordByLrn with result: {}", isDeleted);
         return isDeleted;
     }
 
+    /**
+     * This is used to update a student's medical record, referencing their Learner Reference Number (LRN).
+     * boolean returns true if the update was successful, otherwise false.
+     */
     @Override
-    public boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate, String treatment, String LRN) {
+    public boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate, String treatment, String LRN, Long medicalRecordId) {
         logger.debug("Entering updateStudentMedicalRecord with LRN: {}, symptoms: {}, temperature: {}, visitDate: {}, treatment: {}",
                 LRN, symptoms, temperatureReadings, visitDate, treatment);
-        Boolean updated =  this.studentMedRecord.updateStudentMedicalRecord(symptoms,temperatureReadings,visitDate,treatment, LRN);
+        boolean updated =  this.studentMedRecord.updateStudentMedicalRecord(symptoms,temperatureReadings,visitDate,treatment, LRN, medicalRecordId);
         logger.debug("Exiting updateStudentMedicalRecord, update successful: {}", updated);
         return updated;
     }

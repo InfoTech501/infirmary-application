@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <StackPane fx:id="rootModal" maxHeight="-Infinity" prefHeight="726.0" prefWidth="1400.0" style="-fx-background-color: white;  -fx-background-radius: 8;" StackPane.alignment="BOTTOM_CENTER" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.student.profile.StudentHealthProfileModalController">
     <effect>
@@ -32,7 +33,10 @@
                     <padding>
                         <Insets left="20.0" right="20.0" />
                     </padding>
-                      <Label fx:id="studentFullNameLabel" text="Student Full Name" />
+                      <Label fx:id="studentFullNameLabel" text="Student Full Name">
+                  <font>
+                     <Font size="15.0" />
+                  </font></Label>
                     <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                         <Button fx:id="closeModalBtn" mnemonicParsing="false" text="Close" />
                     </HBox>
@@ -52,10 +56,10 @@
                                   <Label fx:id="ageLabel" text="Age" />
                               </HBox>
                               <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
-                                  <Label text="Sex:" />
-                                  <Label fx:id="sexLabel" text="Sex" />
+                                  <Label text="Sex:" HBox.hgrow="ALWAYS" />
+                                  <Label fx:id="sexLabel" text="Sex" HBox.hgrow="ALWAYS" />
                               </HBox>
-                              <HBox prefHeight="30.0" prefWidth="382.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                              <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
                                   <Label text="Birthdate:" />
                                   <Label fx:id="birthdateLabel" text="Birthdate" />
                               </HBox>
@@ -69,12 +73,10 @@
                                   <Label text="Contact Number:" />
                                   <Label fx:id="contactNumberLabel" text="Contact Number" />
                               </HBox>
-                     <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
-                        <children>
-                           <Label text="LRN:" />
-                           <Label fx:id="lrnLabel" text="LRN" />
-                        </children>
-                     </HBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                                  <Label text="LRN:"/>
+                                  <Label fx:id="lrnLabel" text="LRN"/>
+                              </HBox>
                           </VBox>
                       </HBox>
                   </VBox>

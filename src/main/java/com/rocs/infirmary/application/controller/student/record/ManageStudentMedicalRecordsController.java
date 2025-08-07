@@ -4,7 +4,7 @@ import com.rocs.infirmary.application.controller.helper.ControllerHelper;
 import com.rocs.infirmary.application.controller.student.profile.StudentHealthProfileController;
 import com.rocs.infirmary.application.controller.student.profile.StudentHealthProfileModalController;
 import com.rocs.infirmary.application.data.model.medicalrecord.MedicalRecord;
-import com.rocs.infirmary.application.controller.student.record.MedicalRecordInputValidation;
+import com.rocs.infirmary.application.module.student.profile.StudentHealthProfileApplication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,6 +61,7 @@ public class ManageStudentMedicalRecordsController implements Initializable {
     private final StudentHealthProfileModalController modalController;
     private static final Logger LOGGER = LoggerFactory.getLogger(ManageStudentMedicalRecordsController.class);
     private final StudentMedicalRecordApplication studentMedicalRecordApplication = new StudentMedicalRecordApplication();
+    private final StudentHealthProfileApplication studentHealthProfileApplication = new StudentHealthProfileApplication();
 
     /**
      * Constructs a ManageStudentMedicalRecordsController with parent and modal controller.
@@ -87,6 +88,8 @@ public class ManageStudentMedicalRecordsController implements Initializable {
      */
     public void setSelectedStudentRecord(Student student, MedicalRecord selectedMedicalRecord) {
         this.selectedStudent = student;
+        this.selectedMedicalRecord = selectedMedicalRecord;
+
         if (student == null) {
             LOGGER.warn("No records found");
             return;
@@ -133,7 +136,7 @@ public class ManageStudentMedicalRecordsController implements Initializable {
         LocalDate visitLocalDate = updateVisitDatePicker.getValue();
         Date visitDate = (visitLocalDate != null) ? Date.valueOf(visitLocalDate) : null;
 
-        String validationErrors = MedicalRecordInputValidation.validateMedicalRecordInputs(
+        String validationErrors = MedicalRecordUpdateInputValidation.validateMedicalRecordInputs(
                 illness, temperature, treatment, visitLocalDate
         );
 
@@ -148,50 +151,62 @@ public class ManageStudentMedicalRecordsController implements Initializable {
                 temperature.isEmpty() ? null : temperature,
                 visitDate,
                 treatment.isEmpty() ? null : treatment,
-                student.getLrn()
+                student.getLrn(),
+                selectedMedicalRecord.getMedicalRecordId()
         );
 
         if (isUpdated) {
             parentController.loadData();
             ControllerHelper.showDialog("Success", "Medical record updated successfully.");
-            loadMedicalRecords(student);
+
+            refreshDataAfterUpdate(student);
             clearTextFields();
         } else {
             ControllerHelper.showDialog("Error", "Failed to update medical record.");
         }
     }
 
-    private void loadMedicalRecords(Student student) {
+    private void refreshDataAfterUpdate(Student student) {
         try {
-            List<MedicalRecord> records = studentMedicalRecordApplication.getStudentMedicalRecordFacade().getMedicalInformationByLRN(student.getLrn());
-            if (records != null && !records.isEmpty()) {
-                final MedicalRecord updatedRecord = getMedicalRecord(records);
-                this.selectedMedicalRecord = updatedRecord;
-                setLabels(updatedRecord);
+            LOGGER.info("Refreshing parent controller data...");
+            parentController.loadData();
 
-                LOGGER.info("Medical record labels refreshed for: {}", student.getLrn());
-            } else {
-                LOGGER.warn("No medical records found for: {}", student.getLrn());
-            }
+            LOGGER.info("Refreshing current view data...");
+            refreshMedicalRecords(student);
+
+            LOGGER.info("All data refreshed successfully after update");
         } catch (Exception e) {
-            LOGGER.error("Error refreshing medical record data: {}", e.getMessage(), e);
+            LOGGER.error("Error occurred while refreshing data after update: {}", e.getMessage(), e);
         }
     }
 
-    private MedicalRecord getMedicalRecord(List<MedicalRecord> records) {
-        MedicalRecord updatedRecord = null;
-        if (selectedMedicalRecord != null && selectedMedicalRecord.getMedicalRecordId() != null) {
-            for (MedicalRecord record : records) {
-                if (record.getMedicalRecordId() != null && record.getMedicalRecordId().equals(selectedMedicalRecord.getMedicalRecordId())) {
-                    updatedRecord = record;
-                    break;
+    private void refreshMedicalRecords(Student student) {
+        try {
+            List<MedicalRecord> records = studentHealthProfileApplication.getStudentHealthProfileFacade().getStudentHealthProfileByLRN(student.getLrn());
+            if (records != null && !records.isEmpty()) {
+                MedicalRecord updatedRecord = findMedicalRecordById(records, selectedMedicalRecord.getMedicalRecordId());
+                if (updatedRecord != null) {
+                    this.selectedMedicalRecord = updatedRecord;
+                    setLabels(updatedRecord);
+                    LOGGER.info("Current medical record refreshed successful: {}", updatedRecord.getMedicalRecordId());
+                } else {
+                    LOGGER.warn("Updated medical record not found for ID: {}", selectedMedicalRecord.getMedicalRecordId());
+                    this.selectedMedicalRecord = records.getFirst();
+                    setLabels(this.selectedMedicalRecord);
                 }
+            } else {
+                LOGGER.warn("No medical records found during refresh for LRN: {}", student.getLrn());
             }
+        } catch (Exception e) {
+            LOGGER.error("Error refreshing current medical record: {}", e.getMessage(), e);
         }
-        if (updatedRecord == null) {
-            updatedRecord = records.getFirst();
-        }
-        return updatedRecord;
+    }
+
+    private MedicalRecord findMedicalRecordById(List<MedicalRecord> records, Long medicalRecordId) {
+        if (medicalRecordId == null || records == null ) {
+              return null;
+         }
+        return records.stream().filter(record -> record.getMedicalRecordId() != null && record.getMedicalRecordId().equals(medicalRecordId)).findFirst().orElse(null);
     }
 
 
@@ -209,8 +224,6 @@ public class ManageStudentMedicalRecordsController implements Initializable {
             if (result.isPresent() && result.get().getButtonData() == ButtonBar.ButtonData.YES){
                 try {
                     handleRecordDeletion(selectedStudent);
-                    ControllerHelper.showDialog("Success", "Medical record deleted successfully.");
-                    LOGGER.info("Medical record deleted successfully for student: {}", selectedStudent.getFirstName());
                 } catch (Exception e) {
                     ControllerHelper.showDialog("Error", "Error Deleting Record.");
                     LOGGER.error("failed to delete medical record for student: {}", selectedStudent.getFirstName(), e);
@@ -224,12 +237,14 @@ public class ManageStudentMedicalRecordsController implements Initializable {
 
     private void handleRecordDeletion(Student student) {
         if (student != null) {
-            boolean isDeleted = studentMedicalRecordApplication.getStudentMedicalRecordFacade().deleteStudentMedicalRecordByLrn(student.getLrn());
+            boolean isDeleted = studentMedicalRecordApplication.getStudentMedicalRecordFacade().deleteStudentMedicalRecordByLrn(student.getLrn(), selectedMedicalRecord.getMedicalRecordId());
             if (isDeleted) {
-                parentController.loadData();
+                 refreshDataAfterUpdate(student);
                 modalController.closeModal();
-                LOGGER.info("Record deletion successful");
+                ControllerHelper.showDialog("Success", "Medical record deleted successfully.");
+                LOGGER.info("Medical record deleted successfully for student: {}", selectedStudent.getFirstName());
             } else {
+                ControllerHelper.showDialog("Failed to update", "Medical record not deleted.");
                 LOGGER.warn("Record deletion failure");
             }
         } else {

@@ -19,7 +19,7 @@ public interface StudentMedicalRecordFacade {
      * This intended to delete a student's medical record based on their Learner Reference Number (LRN).
      * The LRN is a unique identifier assigned to each student. This value is used to locate and delete the corresponding medical record.
      */
-    boolean deleteStudentMedicalRecordByLrn(String LRN);
+    boolean deleteStudentMedicalRecordByLrn(String LRN, Long medicalRecordId);
     /**
      * This intended to update a student's medical record.
      * @param symptoms is the reported symptoms of the student
@@ -27,7 +27,8 @@ public interface StudentMedicalRecordFacade {
      * @param visitDate is the visit date of the student
      * @param treatment is the treatment provided by the nurse
      * @param LRN is a unique identifier assigned to each student
+     * @param medicalRecordId is a unique identifier assigned to each records of student medical records
      * @return true if the student medical record is successfully updated and false if not
      */
-    boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate , String treatment, String LRN  );
+    boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate , String treatment, String LRN, Long medicalRecordId  );
 }

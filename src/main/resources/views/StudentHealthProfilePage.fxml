@@ -117,7 +117,6 @@
                         <TableColumn fx:id="sectionColumn" text="Section" />
                         <TableColumn fx:id="genderColumn" text="Sex" />
                         <TableColumn fx:id="ageColumn" text="Age" />
-                        <TableColumn fx:id="adviserColumn" text="Adviser" />
                     </columns>
                     <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

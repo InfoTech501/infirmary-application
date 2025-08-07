@@ -1,5 +1,6 @@
 package com.rocs.infirmary.application.controller.student.profile;
 
+import com.rocs.infirmary.application.data.model.person.employee.Employee;
 import com.rocs.infirmary.application.module.student.profile.StudentHealthProfileApplication;
 import com.rocs.infirmary.application.data.model.person.student.Student;
 import javafx.collections.FXCollections;
@@ -49,8 +50,6 @@ public class StudentHealthProfileController implements Initializable {
     private TableColumn<Student, String> genderColumn;
     @FXML
     private TableColumn<Student, String> ageColumn;
-    @FXML
-    private TableColumn<Student, String> adviserColumn;
 
     // search
     @FXML
@@ -152,14 +151,12 @@ public class StudentHealthProfileController implements Initializable {
         sectionColumn.setCellValueFactory(new PropertyValueFactory<>("section"));
         genderColumn.setCellValueFactory(new PropertyValueFactory<>("gender"));
         ageColumn.setCellValueFactory(new PropertyValueFactory<>("age"));
-//        adviserColumn.setCellValueFactory(new PropertyValueFactory<>("studentAdviser"));
 
         firstNameColumn.setCellFactory(createCapitalizingCellFactory());
         lastNameColumn.setCellFactory(createCapitalizingCellFactory());
         gradeColumn.setCellFactory(createCapitalizingCellFactory());
         sectionColumn.setCellFactory(createCapitalizingCellFactory());
         genderColumn.setCellFactory(createCapitalizingCellFactory());
-//        adviserColumn.setCellFactory(createCapitalizingCellFactory());
         LOGGER.info("Populating student table");
     }
 
