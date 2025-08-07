@@ -32,7 +32,7 @@ public class DashboardFacadeImpl implements DashboardFacade {
     public DashboardFacadeImpl(DashboardReports dashboard) {
         this.dashboard = dashboard;
     }
-
+    public DashboardFacadeImpl(){}
     @Override
     public List<LowStockReport> getAllLowStockMedicine() {
         logger.info("Entering getAllLowStockMedicine");
