@@ -32,6 +32,10 @@ public class DashboardFacadeImpl implements DashboardFacade {
     public DashboardFacadeImpl(DashboardReports dashboard) {
         this.dashboard = dashboard;
     }
+    /**
+     * DashboardFacadeImpl()
+     * is a no argument constructor that provides an option to access the Dashboard Facade without needing to provide parameters
+     */
     public DashboardFacadeImpl(){}
     @Override
     public List<LowStockReport> getAllLowStockMedicine() {
