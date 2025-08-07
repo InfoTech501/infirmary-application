@@ -10,7 +10,7 @@ import org.testfx.framework.junit5.ApplicationTest;
 
 import java.io.IOException;
 
-public class InventoryControllerTest extends ApplicationTest {
+public class ViewInventoryControllerTest extends ApplicationTest {
 
     @Override
     public void start(Stage stage) throws IOException {
