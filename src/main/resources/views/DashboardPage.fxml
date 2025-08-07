@@ -1,273 +1,117 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="731.0" prefWidth="1125.0" styleClass="..\styles\buttons.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
-   <center>
-      <ScrollPane fitToWidth="true" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-          <VBox prefHeight="905.0" prefWidth="1097.0" BorderPane.alignment="CENTER">
-              <children>
-               <VBox prefHeight="110.0" prefWidth="1077.0">
-                      <children>
-                          <HBox prefHeight="100.0" prefWidth="926.0">
-                              <children>
-                                  <HBox alignment="BASELINE_LEFT" prefHeight="100.0" prefWidth="597.0">
-                                      <children>
-                                          <VBox prefHeight="100.0" prefWidth="523.0">
-                                              <children>
-                                                  <VBox alignment="CENTER_LEFT" prefHeight="37.0" prefWidth="514.0">
-                                                      <children>
-                                                          <Label style="-fx-font-size: 20;" styleClass="label" stylesheets="@../styles/fonts.css" text="Welcome to TCSNHS Infirmary System" />
-                                                      </children>
-                                                  </VBox>
-                                                  <VBox alignment="CENTER_LEFT" prefHeight="37.0" prefWidth="514.0">
-                                                      <children>
-                                                          <Label fx:id="usernameDisplay" style="-fx-font-size: 20;" styleClass="label" stylesheets="@../styles/fonts.css" text="Mr/ Mrs. @Username" />
-                                                      </children>
-                                                  </VBox>
-                                                  <VBox prefHeight="37.0" prefWidth="514.0">
-                                                      <children>
-                                                          <Label style="-fx-font-size: 15;" styleClass="label" stylesheets="@../styles/fonts.css" text="Nurse" />
-                                                      </children>
-                                                  </VBox>
-                                              </children>
-                                          </VBox>
-                                      </children>
-                                  </HBox>
-                                  <HBox prefHeight="100.0" prefWidth="479.0" />
-                                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="296.0">
-                                      <children>
-                                          <Label fx:id="dateDisplay" style="-fx-font-size: 15;" styleClass="label" stylesheets="@../styles/fonts.css" text="MONTH / DD / YYYY" />
-                                      </children>
-                                  </HBox>
-                              </children>
-                          </HBox>
-                      </children>
-                   <VBox.margin>
-                     <Insets bottom="10.0" top="10.0" />
-                  </VBox.margin>
-               </VBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0">
-                      <children>
-                          <Label style="-fx-font-size: 15;" styleClass="label-dashboard-reports" stylesheets="@../styles/fonts.css" text="Today's Summary Report" />
-                          <HBox prefHeight="182.0" prefWidth="1124.0">
-                              <children>
-                           <GridPane prefHeight="136.0" prefWidth="277.0">
-                             <columnConstraints>
-                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="188.8" minWidth="10.0" prefWidth="188.8" />
-                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.4000244140625" minWidth="10.0" prefWidth="74.59999999999997" />
-                             </columnConstraints>
-                             <rowConstraints>
-                               <RowConstraints fx:id="totalClinicVisitTodayRprt" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                             </rowConstraints>
-                              <children>
-                                 <Label style="-fx-font-size: 13;" styleClass="label-dashboard-reports" stylesheets="@../styles/fonts.css" text="#" />
-                                 <Label style="-fx-font-size: 13;" styleClass="label-dashboard-reports" stylesheets="@../styles/fonts.css" text="Total Clinic Visitors" GridPane.rowIndex="1" />
-                                 <ImageView fitHeight="57.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                  <ImageView accessibleRole="PARENT" fitHeight="53.0" fitWidth="71.0" nodeOrientation="INHERIT" pickOnBounds="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
-                                      <image>
-                                          <Image url="@../assets/total-clinic-visitors-icon.png" />
-                                      </image>
-                                  </ImageView>
-                              </children>
-                              <padding>
-                                 <Insets left="10.0" right="10.0" />
-                              </padding>
-                           </GridPane>
-                           <GridPane prefHeight="136.0" prefWidth="269.0">
-                              <columnConstraints>
-                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="188.8" minWidth="10.0" prefWidth="188.8" />
-                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.4000244140625" minWidth="10.0" prefWidth="74.59999999999997" />
-                              </columnConstraints>
-                              <rowConstraints>
-                                 <RowConstraints fx:id="admittedStudTodayRprt" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              </rowConstraints>
-                              <children>
-                                 <Label style="-fx-font-size: 13;" styleClass="label-dashboard-reports" stylesheets="@../styles/fonts.css" text="#" />
-                                 <Label prefHeight="19.0" prefWidth="181.0" style="-fx-font-size: 13;" styleClass="label-dashboard-reports" stylesheets="@../styles/fonts.css" text="Admitted Students" GridPane.rowIndex="1" />
-                                 <ImageView fitHeight="57.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                 <ImageView accessibleRole="PARENT" fitHeight="53.0" fitWidth="71.0" nodeOrientation="INHERIT" pickOnBounds="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
-                                    <image>
-                                       <Image url="@../assets/admitted-students-icon.png" />
-                                    </image>
-                                 </ImageView>
-                              </children>
-                              <padding>
-                                 <Insets left="10.0" right="10.0" />
-                              </padding>
-                           </GridPane>
-                           <GridPane prefHeight="136.0" prefWidth="277.0">
-                              <columnConstraints>
-                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="188.8" minWidth="10.0" prefWidth="188.8" />
-                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.4000244140625" minWidth="10.0" prefWidth="74.59999999999997" />
-                              </columnConstraints>
-                              <rowConstraints>
-                                 <RowConstraints fx:id="stillAdmittedStudTodayRprt" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              </rowConstraints>
-                              <children>
-                                 <Label style="-fx-font-size: 13;" styleClass="label-dashboard-reports" stylesheets="@../styles/fonts.css" text="#" />
-                                 <Label style="-fx-font-size: 13;" styleClass="label-dashboard-reports" stylesheets="@../styles/fonts.css" text="Students that are still" GridPane.rowIndex="1" />
-                                 <ImageView fitHeight="57.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                 <ImageView accessibleRole="PARENT" fitHeight="53.0" fitWidth="71.0" nodeOrientation="INHERIT" pickOnBounds="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
-                                    <image>
-                                       <Image url="@../assets/still-admitted-students-icon.png" />
-                                    </image>
-                                 </ImageView>
-                                 <Label style="-fx-font-size: 13;" styleClass="label-dashboard-reports" stylesheets="@../styles/fonts.css" text="admitted" GridPane.rowIndex="2" />
-                              </children>
-                              <padding>
-                                 <Insets left="10.0" right="10.0" />
-                              </padding>
-                           </GridPane>
-                           <GridPane prefHeight="136.0" prefWidth="277.0">
-                              <columnConstraints>
-                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="188.8" minWidth="10.0" prefWidth="188.8" />
-                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.4000244140625" minWidth="10.0" prefWidth="74.59999999999997" />
-                              </columnConstraints>
-                              <rowConstraints>
-                                 <RowConstraints fx:id="medDistributtedTodayRprt" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              </rowConstraints>
-                              <children>
-                                 <Label style="-fx-font-size: 13;" styleClass="label-dashboard-reports" stylesheets="@../styles/fonts.css" text="#" />
-                                 <Label style="-fx-font-size: 13;" styleClass="label-dashboard-reports" stylesheets="@../styles/fonts.css" text="Total Medicine Distributted" GridPane.rowIndex="1" />
-                                 <ImageView fitHeight="57.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                 <ImageView accessibleRole="PARENT" fitHeight="53.0" fitWidth="71.0" nodeOrientation="INHERIT" pickOnBounds="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
-                                    <image>
-                                       <Image url="@../assets/total-medicine-distributed-icon.png" />
-                                    </image>
-                                 </ImageView>
-                              </children>
-                              <padding>
-                                 <Insets left="10.0" right="10.0" />
-                              </padding>
-                           </GridPane>
-                              </children>
-                          </HBox>
-                      </children>
-                  <VBox.margin>
-                     <Insets bottom="10.0" top="10.0" />
-                  </VBox.margin>
-                  </VBox>
-                  <VBox prefHeight="275.0" prefWidth="1077.0">
-                      <children>
-                          <Label prefHeight="22.0" prefWidth="224.0" style="-fx-font-size: 15;" styleClass="label-dashboard-reports" stylesheets="@../styles/fonts.css" text="Weekly Report Student Visits" />
-                          <StackPane prefHeight="179.0" prefWidth="1124.0">
-                              <children>
-                                  <AnchorPane fx:id="chartForm" prefHeight="200.0" prefWidth="200.0">
-                                      <children>
-                                          <BarChart fx:id="studentVisitBarChart" layoutX="14.0" layoutY="10.0" prefHeight="243.0" prefWidth="1061.0">
-                                              <xAxis>
-                                                  <CategoryAxis prefHeight="30.0" prefWidth="1041.0" side="BOTTOM" />
-                                              </xAxis>
-                                              <yAxis>
-                                                  <NumberAxis prefHeight="184.0" prefWidth="34.0" side="LEFT" />
-                                              </yAxis>
-                                          </BarChart>
-                                      </children>
-                                  </AnchorPane>
-                              </children>
-                          </StackPane>
-                      </children>
-                  <VBox.margin>
-                     <Insets bottom="10.0" top="10.0" />
-                  </VBox.margin>
-                  </VBox>
-                  <VBox prefHeight="238.0" prefWidth="1076.0">
-                      <children>
-                          <HBox prefHeight="242.0" prefWidth="1076.0">
-                              <children>
-                                  <HBox prefHeight="200.0" prefWidth="527.0">
-                                      <children>
-                                          <VBox prefHeight="190.0" prefWidth="509.0">
-                                              <children>
-                                                  <VBox alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="570.0">
-                                                      <children>
-                                                          <Label style="-fx-font-size: 15;" styleClass="label-dashboard-reports" stylesheets="@../styles/fonts.css" text="Common Ailments (Monthly)" />
-                                                      </children>
-                                                  </VBox>
-                                                  <VBox prefHeight="202.0" prefWidth="510.0">
-                                                      <children>
-                                                          <TableView fx:id="commonAilmetsRptTable" prefHeight="144.0" prefWidth="509.0">
-                                                              <columns>
-                                                                  <TableColumn prefWidth="175.0" text="#" />
-                                                                  <TableColumn prefWidth="175.0" text="Illness" />
-                                                                  <TableColumn prefWidth="175.0" text="No. of Students" />
-                                                              </columns>
-                                                          </TableView>
-                                                      </children>
-                                                  </VBox>
-                                              </children>
-                                          </VBox>
-                                      </children>
-                                      <HBox.margin>
-                                          <Insets left="20.0" right="20.0" />
-                                      </HBox.margin>
-                                  </HBox>
-                           <HBox prefHeight="200.0" prefWidth="527.0">
-                              <children>
-                                 <VBox prefHeight="190.0" prefWidth="509.0">
-                                    <children>
-                                       <VBox alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="570.0">
-                                          <children>
-                                             <Label style="-fx-font-size: 15;" styleClass="label-dashboard-reports" stylesheets="@../styles/fonts.css" text="Medication Trend (Monthly)" />
-                                          </children>
-                                       </VBox>
-                                       <VBox prefHeight="202.0" prefWidth="510.0">
-                                          <children>
-                                             <TableView fx:id="MedTrendRptTable" prefHeight="144.0" prefWidth="509.0">
-                                                <columns>
-                                                   <TableColumn prefWidth="175.0" text="#" />
-                                                   <TableColumn prefWidth="175.0" text="Illness" />
-                                                   <TableColumn prefWidth="175.0" text="No. of Students" />
-                                                </columns>
-                                             </TableView>
-                                          </children>
-                                       </VBox>
-                                    </children>
-                                 </VBox>
-                              </children>
-                           </HBox>
-                              </children>
-                          </HBox>
-                      </children>
-                  <VBox.margin>
-                     <Insets bottom="10.0" top="10.0" />
-                  </VBox.margin>
-                  </VBox>
-              </children>
-            <padding>
-               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-            </padding>
-          </VBox>
-         <BorderPane.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </BorderPane.margin>
-      </ScrollPane>
-   </center>
+<BorderPane prefHeight="1043.0" prefWidth="1327.0" styleClass="..\styles\buttons.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.dashboard.DashboardPageController">
+    <center>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="ALWAYS" BorderPane.alignment="CENTER">
+            <VBox spacing="50.0" BorderPane.alignment="CENTER">
+                <padding>
+                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                </padding>
+                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="926.0" VBox.vgrow="ALWAYS">
+                    <VBox prefHeight="100.0" prefWidth="523.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                        <Label style="-fx-font-size: 20;" styleClass="label" stylesheets="@../styles/fonts.css" text="Welcome to TCSNHS Infirmary System" />
+                        <Label fx:id="usernameDisplay" prefHeight="30.0" prefWidth="396.0" style="-fx-font-size: 20;" styleClass="label" stylesheets="@../styles/fonts.css" text="Mr/ Mrs. @Username" />
+                        <Label style="-fx-font-size: 15;" styleClass="label" stylesheets="@../styles/fonts.css" text="Nurse" />
+                    </VBox>
+                    <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="296.0" HBox.hgrow="ALWAYS">
+                        <Label fx:id="dateDisplay" prefHeight="22.0" prefWidth="198.0" style="-fx-font-size: 15;" styleClass="label" stylesheets="@../styles/fonts.css" text="MONTH / DD / YYYY" HBox.hgrow="ALWAYS" />
+                    </HBox>
+                </HBox>
+                <VBox alignment="CENTER_LEFT" prefHeight="217.0" prefWidth="1272.0" spacing="20.0">
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+                    <Label style="-fx-font-size: 15;" styleClass="label-dashboard-reports" stylesheets="@../styles/fonts.css" text="Today's Summary Report" />
+                    <HBox prefHeight="146.0" prefWidth="1272.0" spacing="10.0">
+                        <padding>
+                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </padding>
+                        <HBox alignment="CENTER_LEFT" prefHeight="178.0" spacing="10.0" style="-fx-background-color: #DCFCE7;" HBox.hgrow="ALWAYS">
+                            <padding>
+                                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                            </padding>
+                            <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                                <Label fx:id="grade11ClinicVisitTodayRprt" prefHeight="19.0" prefWidth="75.0" style="-fx-font-size: 13;" styleClass="label-dashboard-reports" stylesheets="@../styles/fonts.css" text="#" />
+                                <Label prefHeight="19.0" prefWidth="160.0" style="-fx-font-size: 13;" styleClass="label-dashboard-reports" stylesheets="@../styles/fonts.css" text="Grade 11 Clinic Visitors" wrapText="true" />
+                            </VBox>
+                            <ImageView accessibleRole="PARENT" fitHeight="50.0" fitWidth="50.0" nodeOrientation="INHERIT" pickOnBounds="true">
+                                <Image url="@../assets/total-clinic-visitors-icon.png" />
+                            </ImageView>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="178.0" spacing="10.0" style="-fx-background-color: #DCFCE7;" HBox.hgrow="ALWAYS">
+                            <padding>
+                                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                            </padding>
+                            <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                                <Label fx:id="grade12ClinicVisitTodayRprt" prefHeight="19.0" prefWidth="83.0" style="-fx-font-size: 13;" styleClass="label-dashboard-reports" stylesheets="@../styles/fonts.css" text="#" />
+                                <Label prefHeight="19.0" prefWidth="158.0" style="-fx-font-size: 13;" styleClass="label-dashboard-reports" stylesheets="@../styles/fonts.css" text="Grade 12 Clinic Visitors" textOverrun="WORD_ELLIPSIS" wrapText="true" VBox.vgrow="ALWAYS" />
+                            </VBox>
+                            <ImageView accessibleRole="PARENT" fitHeight="50.0" fitWidth="50.0" nodeOrientation="INHERIT" pickOnBounds="true">
+                                <Image url="@../assets/admitted-students-icon.png" />
+                            </ImageView>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" spacing="10.0" style="-fx-background-color: #DCFCE7;" HBox.hgrow="ALWAYS">
+                            <padding>
+                                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                            </padding>
+                            <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                                <Label fx:id="medDistributtedTodayRprt" prefHeight="19.0" prefWidth="78.0" style="-fx-font-size: 13;" styleClass="label-dashboard-reports" stylesheets="@../styles/fonts.css" text="#" />
+                                <Label style="-fx-font-size: 13;" styleClass="label-dashboard-reports" stylesheets="@../styles/fonts.css" text="Total Medicine Distributted" wrapText="true" />
+                            </VBox>
+                            <ImageView accessibleRole="PARENT" fitHeight="50.0" fitWidth="50.0" nodeOrientation="INHERIT" pickOnBounds="true">
+                                <Image url="@../assets/total-medicine-distributed-icon.png" />
+                            </ImageView>
+                        </HBox>
+                    </HBox>
+                </VBox>
+                <VBox spacing="20.0">
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
+                    <Label prefHeight="22.0" prefWidth="224.0" style="-fx-font-size: 15;" styleClass="label-dashboard-reports" stylesheets="@../styles/fonts.css" text="Weekly Report Student Visits" />
+                    <VBox>
+                        <BarChart fx:id="studentVisitBarChart" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="318.0" stylesheets="@../styles/barchart.css">
+                            <xAxis>
+                                <CategoryAxis prefHeight="30.0" prefWidth="1041.0" side="BOTTOM" />
+                            </xAxis>
+                            <yAxis>
+                                <NumberAxis prefHeight="184.0" prefWidth="34.0" side="LEFT" />
+                            </yAxis>
+                        </BarChart>
+                    </VBox>
+                </VBox>
+                <HBox spacing="10.0">
+                    <VBox prefHeight="190.0" prefWidth="509.0" spacing="20.0" HBox.hgrow="ALWAYS">
+                        <Label style="-fx-font-size: 15;" styleClass="label-dashboard-reports" stylesheets="@../styles/fonts.css" text="Common Ailments (Monthly)" />
+                        <TableView fx:id="commonAilmentsRptTable" prefHeight="144.0" prefWidth="509.0" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="numberedColumnCommonAilment" prefWidth="175.0" text="#" />
+                                <TableColumn fx:id="illnessColumnCommonAilment" prefWidth="175.0" text="Illness" />
+                                <TableColumn fx:id="numOfStudCommonAilment" prefWidth="175.0" text="No. of Students" />
+                            </columns>
+                        </TableView>
+                    </VBox>
+                    <VBox prefHeight="202.0" prefWidth="510.0" spacing="20.0" HBox.hgrow="ALWAYS">
+                        <Label style="-fx-font-size: 15;" styleClass="label-dashboard-reports" stylesheets="@../styles/fonts.css" text="Medication Trend (Monthly)" />
+                        <TableView fx:id="medTrendRptTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="numberedColumnMedTrend" prefWidth="175.0" text="#" />
+                                <TableColumn fx:id="medicineColumnMedTrend" prefWidth="175.0" text="Medicine" />
+                                <TableColumn fx:id="totalDistributedMedTrend" prefWidth="175.0" text="Distributed" />
+                            </columns>
+                        </TableView>
+                    </VBox>
+                </HBox>
+            </VBox>
+            <BorderPane.margin>
+                <Insets />
+            </BorderPane.margin>
+        </ScrollPane>
+    </center>
 </BorderPane>
