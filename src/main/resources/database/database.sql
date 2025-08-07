@@ -64,7 +64,7 @@ create table student (
   primary key (id));
 
 create table ailments (
-  ailment_id number(30) not null,
+  ailment_id number(30) generated as identity,
   description varchar2(255 char),
   primary key (ailment_id));
 
@@ -300,26 +300,26 @@ insert into employee (id, employee_id)
 values (5, 'EMP-0005');
 
 -- INSERT AILMENTS DATA
-insert into ailments (ailment_id, description)
-values (1, 'Headache');
-insert into ailments (ailment_id, description)
-values (2, 'Cold');
-insert into ailments (ailment_id, description)
-values (3, 'Fever');
-insert into ailments (ailment_id, description)
-values (4, 'Dry Cough');
-insert into ailments (ailment_id, description)
-values (5, 'Stomachache');
-insert into ailments (ailment_id, description)
-values (6, 'Skin Rash');
-insert into ailments (ailment_id, description)
-values (7, 'Shortness of Breath');
-insert into ailments (ailment_id, description)
-values (8, 'Dizziness');
-insert into ailments (ailment_id, description)
-values (9, 'Sore Throat');
-insert into ailments (ailment_id, description)
-values (10, 'Allergic Reaction');
+insert into ailments (description)
+values ('Headache');
+insert into ailments (description)
+values ('Cold');
+insert into ailments (description)
+values ('Fever');
+insert into ailments (description)
+values ('Dry Cough');
+insert into ailments (description)
+values ('Stomachache');
+insert into ailments (description)
+values ('Skin Rash');
+insert into ailments (description)
+values ('Shortness of Breath');
+insert into ailments (description)
+values ('Dizziness');
+insert into ailments (description)
+values ('Sore Throat');
+insert into ailments (description)
+values ('Allergic Reaction');
 
 --INSERT MEDICINE DATA
 insert into medicine (item_name, description, is_available)

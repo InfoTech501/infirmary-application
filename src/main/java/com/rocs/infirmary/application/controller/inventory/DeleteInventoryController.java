@@ -12,16 +12,16 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.rocs.infirmary.application.controller.helper.ControllerHelper.showDialog;
+
 /**
- * {@code AddInventoryController} is used to handle event processes of the Inventory when deleting Items
+ * {@code DeleteInventoryController} is used to handle event processes of the Inventory when deleting Items
  **/
 public class DeleteInventoryController{
     @FXML
-    private Label inventoryDeleteLabelA;
-    @FXML
-    private Label inventoryDeleteLabelB;
-    @FXML
     private GridPane medicineListContainer;
+    private InventoryController parentController;
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     private List<Medicine> medicineList = new ArrayList<>();
     /**
@@ -99,33 +99,18 @@ public class DeleteInventoryController{
         }
     }
     private boolean deleteMedicine(){
-        boolean deleted = false;
-        for (Medicine med : medicineList) {
-            deleted = inventoryManagementApplication.getMedicineInventoryFacade().deleteInventory(med.getInventoryId());
-        }
-        return deleted;
+        return inventoryManagementApplication.getMedicineInventoryFacade().deleteInventory(medicineList);
     }
     /**
      * this method handles the action triggered when the confirm button is clicked.
      * @param actionEvent the event triggered by the confirm button click
      */
     public void onConfirmButtonClick(ActionEvent actionEvent) {
-        String medicineName = inventoryDeleteLabelA.getText();
-        if (!isValidString(medicineName)) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Invalid Input");
-            alert.setHeaderText(null);
-            alert.setContentText("Medicine name must be a string.");
-            alert.showAndWait();return;
-        }
-        boolean isDeleted = deleteMedicine();
-        if(isDeleted){
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Notification");
-            alert.setHeaderText(null);
-            alert.setContentText("Deleted successfully!");
-            alert.showAndWait();
-
+        if(deleteMedicine()){
+            showDialog("Notification","Medicine successfully Deleted");
+            if (parentController != null) {
+                parentController.refresh();
+            }
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             stage.close();
         }
@@ -135,11 +120,17 @@ public class DeleteInventoryController{
      * @param actionEvent the event triggered by the confirm button click
      */
     public void onCancelBtnClick(ActionEvent actionEvent) {
+        if (parentController != null) {
+            parentController.refresh();
+        }
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
     }
-
-    private boolean isValidString(String input) {
-        return input != null && input.matches("[a-zA-Z\\s]+");
+    /**
+     * this method setup's the parent controller
+     * @param parentController the parent InventoryController instance to be associated with this controller
+     * */
+    public void setParentController(InventoryController parentController) {
+        this.parentController = parentController;
     }
 }

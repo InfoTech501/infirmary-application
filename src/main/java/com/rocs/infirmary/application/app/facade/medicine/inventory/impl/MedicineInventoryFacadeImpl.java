@@ -44,10 +44,10 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
         return medicines;
     }
     @Override
-    public boolean deleteMedicineByItemName(String itemName) {
-        logger.warn("Entering deleteMedicineByItemName with itemName: {}", itemName);
-        boolean isDeleted = medicineInventoryDao.deleteMedicine(itemName);
-        logger.warn("Exiting deleteMedicineByItemName with result: {}", isDeleted);
+    public boolean deleteMedicineByItemName(List<Medicine> medicines) {
+        logger.info("Entering deleteMedicineByItemName with itemName: {}", medicines);
+        boolean isDeleted = medicineInventoryDao.deleteMedicine(medicines);
+        logger.info("Exiting deleteMedicineByItemName with result: {}", isDeleted);
         return isDeleted;
     }
 
@@ -66,23 +66,26 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
     }
 
     @Override
-    public boolean addInventory(String medicineId, String itemType, int quantity) {
-        return this.medicineInventoryDao.addInventory(medicineId, itemType, quantity);
+    public boolean addInventory(Long medicineId, String itemType, int quantity, Date expirationDate) {
+        return this.medicineInventoryDao.addInventory(medicineId, itemType, quantity,expirationDate);
     }
     @Override
     public List<Medicine> getAllMedicineFromMedicineTable() {
-        return this.medicineInventoryDao.findAllMedicine();
+        return this.medicineInventoryDao.findAll();
     }
 
     @Override
-    public boolean deleteInventory(int inventoryId) {
-        return this.medicineInventoryDao.deleteInventory(inventoryId);
+    public boolean deleteInventory(List<Medicine> medicines) {
+        return this.medicineInventoryDao.deleteInventory(medicines);
     }
 
     @Override
-    public boolean updateMedicineInventory(String medicineId, int quantity, String description, Date expirationDate) {
-        return this.medicineInventoryDao.updateMedicine(medicineId,quantity,description,expirationDate);
+    public boolean updateMedicineInventory(Long inventoryId, Long medicineId, int quantity, String itemType, Date expirationDate) {
+        return this.medicineInventoryDao.updateInventory(inventoryId,medicineId,quantity, itemType,expirationDate);
     }
 
-
+    @Override
+    public boolean updateMedicine(Long medicineId, String medicineName, String description) {
+        return this.medicineInventoryDao.updateMedicine(medicineId,medicineName,description);
+    }
 }

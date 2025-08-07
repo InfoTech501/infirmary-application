@@ -127,7 +127,7 @@
                                           <TableColumn fx:id="selectColumn" prefWidth="75.33334350585938" text="Select" />
                                           <TableColumn fx:id="productNameColumn" prefWidth="286.0" text="Product Name" />
                                           <TableColumn fx:id="quantityColumn" prefWidth="193.33331298828125" text="Quantity" />
-                                          <TableColumn fx:id="descriptionColumn" prefWidth="256.666748046875" text="Description" />
+                                          <TableColumn fx:id="itemTypeColumn" prefWidth="256.666748046875" text="Item Type" />
                                           <TableColumn fx:id="expiryDateColumn" prefWidth="244.66668701171875" text="Expiry Date" />
                                           <TableColumn fx:id="BatchNoColumn" prefWidth="214.66656494140625" text="Batch No." />
                                        </columns>

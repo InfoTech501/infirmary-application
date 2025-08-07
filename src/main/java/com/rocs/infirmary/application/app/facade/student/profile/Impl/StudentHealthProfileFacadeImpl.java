@@ -4,11 +4,15 @@ import com.rocs.infirmary.application.app.facade.student.profile.StudentHealthPr
 import com.rocs.infirmary.application.data.dao.student.profile.Impl.StudentHealthProfileDaoImpl;
 import com.rocs.infirmary.application.data.dao.student.profile.StudentHealthProfileDao;
 import com.rocs.infirmary.application.data.model.person.student.Student;
+import com.rocs.infirmary.application.data.model.medicalrecord.MedicalRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-
+/**
+ * The StudentHealthProfileFacadeImpl class is an implementation of the StudentHealthProfileFacade interface.
+ * It provides methods for managing student health profile.
+ */
 public class StudentHealthProfileFacadeImpl implements StudentHealthProfileFacade {
     StudentHealthProfileDao studentHealthProfileDao = new StudentHealthProfileDaoImpl();
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentHealthProfileFacadeImpl.class);
@@ -20,8 +24,8 @@ public class StudentHealthProfileFacadeImpl implements StudentHealthProfileFacad
     }
 
     @Override
-    public List<Student> getStudentHealthProfileByLRN(Long LRN) {
-        List<Student> studentListProfile = studentHealthProfileDao.findStudentHealthProfileByLrn(LRN);
+    public List<MedicalRecord> getStudentHealthProfileByLRN(Long LRN) {
+        List<MedicalRecord> studentListProfile = studentHealthProfileDao.findStudentHealthProfileByLrn(LRN);
         return studentListProfile;
     }
 }
