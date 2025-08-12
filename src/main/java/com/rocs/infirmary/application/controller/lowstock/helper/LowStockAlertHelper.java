@@ -15,25 +15,15 @@ import java.util.List;
  */
 public class LowStockAlertHelper {
 
-    private  LowStockNotificationServiceApplication lowStockService;
-    private  ImageView redCircle;
-    private  ToggleButton toggleButton;
-    private  Node node;
-
-    private static LowStockAlertHelper instance;
-
-    private LowStockAlertHelper(){}
+    private static LowStockNotificationServiceApplication lowStockService;
+    private static ImageView redCircle;
+    private static ToggleButton toggleButton;
+    private static Node node;
     /**
-     * Returns the instance of this helper class.
-     *
-     * @return the one and only LowStockAlertHelper instance
+     * LowStockAlertHelper()
+     * is a no-argument constructor that allows creating a LowStockAlertHelper
      */
-    public static LowStockAlertHelper getInstance() {
-        if(instance == null) {
-            instance = new LowStockAlertHelper();
-        }
-        return instance;
-    }
+    public LowStockAlertHelper(){}
     /**
      * Binds the red  icon and the toggle button to this helper.
      * These UI elements are needed to show alerts
@@ -67,7 +57,7 @@ public class LowStockAlertHelper {
      * Checks for low stock items. If found, shows redCircle and
      * sets toggleButton to open the alert modal with product info.
      */
-    public void checkLowStockAndShowAlert() {
+    public static void checkLowStockAndShowAlert() {
 
         List<LowStockReport> lowStockItems = lowStockService.getDashboardFacade().getAllLowStockMedicine();
 
