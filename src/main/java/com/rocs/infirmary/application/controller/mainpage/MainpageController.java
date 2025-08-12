@@ -39,16 +39,16 @@ public class MainpageController implements Initializable {
     @FXML
     private ToggleButton toggleButton;
 
-    private  LowStockAlertHelper lowStockAlertHelper = new LowStockAlertHelper() ;
+    private  LowStockAlertHelper alertHelper = new LowStockAlertHelper() ;
     private final LowStockNotificationServiceApplication lowStockService = new LowStockNotificationServiceApplication();
 
 
     @Override
     public void initialize (URL url, ResourceBundle rb) {
         loadDashboard();
-        lowStockAlertHelper.bindService(lowStockService);
-        lowStockAlertHelper.bindUI(redCircle,toggleButton);
-        lowStockAlertHelper.setMainNode(homepageScene);
+        alertHelper.bindService(lowStockService);
+        alertHelper.bindUI(redCircle,toggleButton);
+        alertHelper.setMainNode(homepageScene);
         LowStockAlertHelper.checkLowStockAndShowAlert();
     }
 
