@@ -293,16 +293,6 @@ public class AddInventoryController implements Initializable {
     private boolean deleteMedicine(){
         return inventoryManagementApplication.getMedicineInventoryFacade().deleteMedicineByItemName(medicineList);
     }
-    private boolean deleteInventory() {
-        List<Long> medicineIds = getSelectedMedicines().stream()
-                .map(Medicine::getInventoryId)
-                .toList();
-        List<Medicine> filteredMedicines = medicineList.stream()
-                .filter(med -> medicineIds.contains(med.getInventoryId()))
-                .toList();
-        return inventoryManagementApplication.getMedicineInventoryFacade().deleteMedicineByItemName(filteredMedicines);
-    }
-
     /**
      * this method handles the action triggered when the remove button is clicked.
      * @param actionEvent the event triggered by the confirm button click
@@ -331,8 +321,6 @@ public class AddInventoryController implements Initializable {
         }
         if(getSelectedMedicines().size() == 1 ) {
             deleteMedicine();
-            System.out.println("deleted Medicine : " + deleteMedicine());
-            deleteInventory();
             Dialog dialog = new Dialog();
             dialog.setTitle("Notification");
             ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
