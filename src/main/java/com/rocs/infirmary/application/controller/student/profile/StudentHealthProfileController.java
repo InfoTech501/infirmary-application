@@ -76,7 +76,7 @@ public class StudentHealthProfileController implements Initializable {
     private int rowsPerPage = 10;
     private int currentPage = 1;
 
-    private ObservableList<Student> masterStudentList;
+    private final ObservableList<Student> masterStudentList = FXCollections.observableArrayList();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentHealthProfileController.class);
     private final StudentHealthProfileApplication studentHealthProfileApplication = new StudentHealthProfileApplication();
@@ -91,7 +91,6 @@ public class StudentHealthProfileController implements Initializable {
     }
 
     private void initializeCollections() {
-        masterStudentList = FXCollections.observableArrayList();
         FilteredList<Student> filteredList = new FilteredList<>(masterStudentList);
         SortedList<Student> sortedList = new SortedList<>(filteredList);
         sortedList.comparatorProperty().bind(studentTableView.comparatorProperty());
