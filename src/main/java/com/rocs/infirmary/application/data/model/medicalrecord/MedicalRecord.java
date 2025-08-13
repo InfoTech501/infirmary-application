@@ -217,5 +217,19 @@ public class MedicalRecord extends Student {
     public void setVisitDate(Date visitDate) {
         this.visitDate = visitDate;
     }
+
+    @Override
+    public String toString() {
+        return "MedicalRecord{" +
+                " medical record id ='" + medicalRecordId + '\'' +
+                ", symptoms='" + symptoms + '\'' +
+                ", temperatureReadings='" + temperatureReadings + '\'' +
+                ", bloodPressure='" + bloodPressure + '\'' +
+                ", pulseRate='" + pulseRate + '\'' +
+                ", treatment='" + treatment + '\'' +
+                ", visitDate=" + visitDate +
+                ", nurseInCharge='" + nurseInCharge + '\'' +
+                '}';
+    }
 }
 

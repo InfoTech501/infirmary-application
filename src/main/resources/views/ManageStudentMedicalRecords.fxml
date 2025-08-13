@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="530.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.student.record.ManageStudentMedicalRecordsController">
+
+   <stylesheets>
+      <URL value="@../styles/buttons.css" />
+      <URL value="@../styles/label.css" />
+      <URL value="@../styles/table.css" />
+      <URL value="@../styles/label.css" />
+   </stylesheets>
+
+   <center>
+       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+           <VBox prefHeight="310.0" prefWidth="518.0" spacing="10.0">
+               <GridPane hgap="20.0" prefHeight="378.0" prefWidth="220.0" vgap="10.0" VBox.vgrow="ALWAYS">
+                   <columnConstraints>
+                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" />
+                       <ColumnConstraints hgrow="SOMETIMES" maxWidth="367.00001525878906" minWidth="10.0" prefWidth="314.3999694824219" />
+                   </columnConstraints>
+                   <rowConstraints>
+                       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+                       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+                       <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" />
+                   </rowConstraints>
+                   <Label text="Illness/ Symptoms:" />
+                   <Label fx:id="illnessLabel" text="data" GridPane.columnIndex="1" />
+
+                   <Label text="Visit date:" GridPane.rowIndex="1" />
+                   <Label fx:id="visitDateLabel" text="data" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                   <Label text="Temperature:" GridPane.rowIndex="2" />
+                   <Label fx:id="temperatureLabel" text="data" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                   <Label text="Blood Pressure:" GridPane.rowIndex="3" />
+                   <Label fx:id="bloodPressureLabel" text="data" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                   <Label text="Pulse Rate:" GridPane.rowIndex="4" />
+                   <Label fx:id="pulseRateLabel" text="data" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+                   <Label text="Respiratory Rate:" GridPane.rowIndex="5" />
+                   <Label fx:id="respiratoryRate" text="data" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+                   <Label text="Treatment:" GridPane.rowIndex="6" />
+                   <Label fx:id="treatmentLabel" text="data" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+               </GridPane>
+           </VBox>
+
+
+           <VBox prefHeight="329.0" prefWidth="882.0" spacing="15.0" HBox.hgrow="ALWAYS">
+               <VBox prefWidth="1070.0">
+                   <Label text="Illness/ Symptoms" />
+                   <TextField fx:id="updateIllnessTextField" prefHeight="40.0" prefWidth="1070.0" />
+               </VBox>
+               <VBox prefWidth="1070.0">
+                   <Label text="Temperature" />
+                   <TextField fx:id="updateTemperatureTextField" prefHeight="40.0" prefWidth="1070.0" />
+               </VBox>
+               <VBox prefWidth="1070.0">
+                   <Label text="Treatment" />
+                   <TextField fx:id="updateTreatmentTextField" prefHeight="40.0" prefWidth="1070.0" />
+               </VBox>
+               <VBox prefWidth="1070.0">
+                   <Label text="Visit Date" />
+                   <DatePicker fx:id="updateVisitDatePicker" prefHeight="40.0" prefWidth="312.0" />
+               </VBox>
+            <padding>
+               <Insets right="20.0" />
+            </padding>
+           </VBox>
+         <padding>
+            <Insets top="30.0" />
+         </padding>
+       </HBox>
+
+   </center>
+   <bottom>
+      <ButtonBar BorderPane.alignment="CENTER">
+        <buttons>
+          <Button fx:id="confirmChangesBtn" mnemonicParsing="false" prefHeight="60.0" text="Confirm Changes" />
+            <Button fx:id="deleteMedicalRecordBtn" mnemonicParsing="false" prefHeight="60.0" text="Delete Medical Record">
+                    <HBox.margin>
+                        <Insets right="20.0" />
+                    </HBox.margin>
+                </Button>
+        </buttons>
+         <padding>
+            <Insets bottom="5.0" left="30.0" top="5.0" />
+         </padding>
+      </ButtonBar>
+   </bottom>
+   <top>
+       <VBox prefWidth="1400.0" BorderPane.alignment="CENTER">
+           <BorderPane.margin>
+               <Insets bottom="20.0" top="20.0" />
+           </BorderPane.margin>
+           <VBox alignment="CENTER_LEFT" prefWidth="1400.0" VBox.vgrow="ALWAYS">
+               <Label text="MANAGE MEDICAL RECORDS" VBox.vgrow="ALWAYS" />
+           </VBox>
+       </VBox>
+   </top>
+</BorderPane>

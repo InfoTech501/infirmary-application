@@ -2,6 +2,8 @@ package com.rocs.infirmary.application.data.model.person.student;
 
 import com.rocs.infirmary.application.data.model.person.Person;
 
+import java.util.Date;
+
 /**
  * Student model class representing student information.
  */

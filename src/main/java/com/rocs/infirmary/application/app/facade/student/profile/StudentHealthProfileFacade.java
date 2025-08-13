@@ -19,6 +19,6 @@ public interface StudentHealthProfileFacade {
      *
      * @param LRN The LRN (Learner Reference Number) of the student.
      */
-    List<MedicalRecord> getStudentHealthProfileByLRN(Long LRN);
+    List<MedicalRecord> getStudentHealthProfileByLRN(String LRN);
 
 }
