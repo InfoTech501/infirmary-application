@@ -1,6 +1,6 @@
 package com.rocs.infirmary.application.controller.lowstock;
 
-import com.rocs.infirmary.application.data.model.report.lowstock.LowStockReport;
+import com.rocs.infirmary.application.data.model.report.lowstock.LowStockItems;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -61,7 +61,7 @@ public class LowStockNotificationController {
      * @param ownerStage       the main window where the alert should appear beside
      * @param lowStockMedicine a list of Inventory Medicine that are low in stock
      */
-    public static void showLowStockModal(Stage ownerStage, List<LowStockReport> lowStockMedicine) {
+    public static void showLowStockModal(Stage ownerStage, List<LowStockItems> lowStockMedicine) {
 
         try {
             FXMLLoader loader = new FXMLLoader();

@@ -4,7 +4,7 @@ import com.rocs.infirmary.application.app.facade.dashboard.DashboardFacade;
 import com.rocs.infirmary.application.data.dao.report.dashboard.DashboardReports;
 import com.rocs.infirmary.application.data.dao.report.dashboard.impl.DashboardReportsImpl;
 import com.rocs.infirmary.application.data.model.report.ailment.CommonAilmentsReport;
-import com.rocs.infirmary.application.data.model.report.lowstock.LowStockReport;
+import com.rocs.infirmary.application.data.model.report.lowstock.LowStockItems;
 import com.rocs.infirmary.application.data.model.report.visit.FrequentVisitReport;
 import com.rocs.infirmary.application.data.model.report.medication.MedicationTrendReport;
 
@@ -38,9 +38,9 @@ public class DashboardFacadeImpl implements DashboardFacade {
      */
     public DashboardFacadeImpl(){}
     @Override
-    public List<LowStockReport> getAllLowStockMedicine() {
+    public List<LowStockItems> getAllLowStockMedicine() {
         logger.info("Entering getAllLowStockMedicine");
-        List<LowStockReport> lowStockItems = dashboard.findAllLowStockMedicine();
+        List<LowStockItems> lowStockItems = dashboard.findAllLowStockMedicine();
         logger.info("Exiting getAllLowStockMedicine with {} items found.", lowStockItems.size());
         return lowStockItems;
     }

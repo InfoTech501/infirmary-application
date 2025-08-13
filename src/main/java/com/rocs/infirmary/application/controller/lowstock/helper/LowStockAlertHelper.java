@@ -1,7 +1,7 @@
 package com.rocs.infirmary.application.controller.lowstock.helper;
 
 import com.rocs.infirmary.application.controller.lowstock.LowStockNotificationController;
-import com.rocs.infirmary.application.data.model.report.lowstock.LowStockReport;
+import com.rocs.infirmary.application.data.model.report.lowstock.LowStockItems;
 import com.rocs.infirmary.application.module.lowstock.notification.service.application.LowStockNotificationServiceApplication;
 import javafx.scene.Node;
 import javafx.scene.control.ToggleButton;
@@ -59,7 +59,7 @@ public class LowStockAlertHelper {
      */
     public static void checkLowStockAndShowAlert() {
 
-        List<LowStockReport> lowStockItems = lowStockService.getDashboardFacade().getAllLowStockMedicine();
+        List<LowStockItems> lowStockItems = lowStockService.getDashboardFacade().getAllLowStockMedicine();
 
         if (lowStockItems.isEmpty()) {
             redCircle.setVisible(false);
