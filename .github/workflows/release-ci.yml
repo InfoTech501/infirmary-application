@@ -1,4 +1,4 @@
-name: Branch Staging and Release
+name: Release
 
 on:
   push:
@@ -6,13 +6,10 @@ on:
 
 permissions:
   contents: write
-  issues: write
-  pull-requests: write
 
 jobs:
-  prepare-release-staging: # for staging releases
+  release:
     runs-on: ubuntu-latest
-    if: "!contains(github.event.head_commit.message, '[skip staging]') && !contains(github.event.head_commit.message, 'chore(release-staging):')"
 
     steps:
       - name: Checkout code
@@ -26,59 +23,10 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'adopt'
-          java-version: '17'
+      - name: Install semantic-release
+        run: npm install semantic-release @semantic-release/github @semantic-release/commit-analyzer conventional-changelog-conventionalcommits
 
-      - name: Install semantic-release plugins
-        run: npm install semantic-release @semantic-release/git @semantic-release/changelog @semantic-release/github @semantic-release/exec @semantic-release/commit-analyzer conventional-changelog-conventionalcommits
-
-      - name: Configure Git
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-
-      - name: Run release staging script
-        run: |
-          chmod +x .github/workflows/release-staging.sh
-          .github/workflows/release-staging.sh
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-
-  semantic_release: # runs only if creating a new release, when releasing use this on merging commit: chore(release-staging):
-    runs-on: ubuntu-latest
-    if: contains(github.event.head_commit.message, 'chore(release-staging):')
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.GH_TOKEN }}
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'adopt'
-          java-version: '17'
-
-      - name: Install semantic-release plugins
-        run: npm install semantic-release @semantic-release/git @semantic-release/changelog @semantic-release/github @semantic-release/exec @semantic-release/commit-analyzer conventional-changelog-conventionalcommits@7.0.2
-
-      - name: Semantic release
+      - name: Run semantic release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: npx semantic-release
-
-      - name: Clean up staging branch
-        run: |
-          git push origin --delete release-staging || echo "Staging branch already deleted"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
