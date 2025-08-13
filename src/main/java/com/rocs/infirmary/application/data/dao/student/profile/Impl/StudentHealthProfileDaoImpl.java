@@ -16,78 +16,130 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.rocs.infirmary.application.data.dao.utils.queryconstants.student.QueryConstants.*;
+
 public class StudentHealthProfileDaoImpl implements StudentHealthProfileDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentHealthProfileDaoImpl.class);
+
+    /**
+     * Retrieve all student health profile from the database.
+     * This method queries the database to fetch all student health profile records.
+     * @return A list of all {@code studentList} objects in the database.
+     */
     @Override
     public List<Student> findAllStudentHealthProfile() {
         List<Student> studentList = new ArrayList<>();
 
         try (Connection con = ConnectionHelper.getConnection()) {
             LOGGER.info("Student Health Profile Dao started");
-            QueryConstants queryConstants = new QueryConstants();
-            String query = queryConstants.selectStudentHealthProfile();
-            LOGGER.info("used query:{}",query);
-            PreparedStatement stmt = con.prepareStatement(query);
+            PreparedStatement stmt = con.prepareStatement(SELECT_STUDENT_HEALTH_PROFILE_QUERY);
+            LOGGER.info("used query:{}",stmt);
             ResultSet resultSet = stmt.executeQuery();
-            while (resultSet.next()){
-                Student studentMedicalRecord = new Student();
-                Employee employeeInformation = new Employee();
-                studentMedicalRecord.setLrn(resultSet.getString("LRN"));
-                studentMedicalRecord.setFirstName(resultSet.getString("first_name"));
-                studentMedicalRecord.setMiddleName(resultSet.getString("middle_name"));
-                studentMedicalRecord.setLastName(resultSet.getString("last_name"));
-                studentMedicalRecord.setSection(resultSet.getString("section"));
-                studentMedicalRecord.setGradeLevel(resultSet.getString("grade_level"));
-                employeeInformation.setAdviser(resultSet.getString("adviser_first_name"));
 
-                LOGGER.info("Retrieved Data: LRN: {}\nFirst Name: {}\nMiddle Name: {}\n Last Name: {}\nSection: {}\n Grade Level: {}\n Adviser: {}",
-                        studentMedicalRecord.getLrn(),
-                        studentMedicalRecord.getFirstName(),
-                        studentMedicalRecord.getMiddleName(),
-                        studentMedicalRecord.getLastName(),
-                        studentMedicalRecord.getSection(),
-                        studentMedicalRecord.getGradeLevel(),
-                        employeeInformation.getAdviser()
-                );
-
-                studentList.add(studentMedicalRecord);
+            while (resultSet.next()) {
+                studentList.add(setStudentHealthProfile(resultSet));
             }
-            LOGGER.info("successfully retrieved profiles: {}",studentList.size());
         } catch (SQLException e) {
             LOGGER.error("Sql exception occurred {}",e.getMessage());
             throw new RuntimeException(e);
         }
-
+        LOGGER.debug("Student database is empty.");
         return studentList;
     }
 
+    /**
+     * Retrieve a student by their LRN.
+     * This method fetches a specific student health profile using their unique LRN.
+     * @param LRN The unique learner reference number to search for.
+     * @return The {@code studentListProfile} object matching the provided LRN.
+     */
     @Override
-    public List<MedicalRecord> findStudentHealthProfileByLrn(Long LRN) {
+    public List<MedicalRecord> findStudentHealthProfileByLrn(String LRN) {
         List<MedicalRecord> studentListProfile = new ArrayList<>();
         try (Connection con = ConnectionHelper.getConnection()) {
-            QueryConstants queryConstants = new QueryConstants();
-            String query = queryConstants.selectStudentHealthProfileByLrn();
-            PreparedStatement stmt = con.prepareStatement(query);
-            stmt.setLong(1,LRN);
+            PreparedStatement stmt = con.prepareStatement(SELECT_STUDENT_HEALTH_PROFILE_BY_LRN);
+            stmt.setString(1,LRN);
+            LOGGER.info("findStudentHealthProfileByLrn used query:{}",stmt);
             ResultSet resultSet = stmt.executeQuery();
+
             while (resultSet.next()){
-                MedicalRecord studentMedicalRecord = new MedicalRecord();
-                studentMedicalRecord.setContactNumber(resultSet.getString("contact_number"));
-                studentMedicalRecord.setEmail(resultSet.getString("email"));
-                studentMedicalRecord.setAddress(resultSet.getString("address"));
-                studentMedicalRecord.setFirstName(resultSet.getString("first_name"));
-                studentMedicalRecord.setMiddleName(resultSet.getString("middle_name"));
-                studentMedicalRecord.setLastName(resultSet.getString("last_name"));
-                studentMedicalRecord.setSymptoms(resultSet.getString("symptoms"));
-                studentMedicalRecord.setTemperatureReadings(resultSet.getString("temperature_readings"));
-                studentMedicalRecord.setTreatment(resultSet.getString("treatment"));
-                studentMedicalRecord.setVisitDate(resultSet.getTimestamp("visit_date"));
-                studentMedicalRecord.setNurseInCharge(resultSet.getString("nurse_in_charge"));
-                studentListProfile.add(studentMedicalRecord);
+                MedicalRecord medicalRecord = new MedicalRecord();
+
+                medicalRecord.setMedicalRecordId(resultSet.getLong("id"));
+                medicalRecord.setFirstName(resultSet.getString("first_name"));
+                medicalRecord.setMiddleName(resultSet.getString("middle_name"));
+                medicalRecord.setLastName(resultSet.getString("last_name"));
+                medicalRecord.setContactNumber(resultSet.getString("contact_number"));
+                medicalRecord.setEmail(resultSet.getString("email"));
+                medicalRecord.setAddress(resultSet.getString("address"));
+                medicalRecord.setSymptoms(resultSet.getString("symptoms"));
+                medicalRecord.setTemperatureReadings(resultSet.getString("temperature_readings"));
+                medicalRecord.setBloodPressure(resultSet.getString("blood_pressure"));
+                medicalRecord.setPulseRate(resultSet.getInt("pulse_rate"));
+                medicalRecord.setTreatment(resultSet.getString("treatment"));
+                medicalRecord.setRespiratoryRate(resultSet.getInt("respiratory_rate"));
+                medicalRecord.setVisitDate(resultSet.getTimestamp("visit_date"));
+                medicalRecord.setNurseInCharge(resultSet.getString("nurse_first_name"));
+                studentListProfile.add(medicalRecord);
+
+                LOGGER.info("Retrieved medical record: {}", medicalRecord);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return studentListProfile;
     }
+
+    private MedicalRecord setStudentHealthProfile(ResultSet resultSet) {
+        try {
+            MedicalRecord medicalRecord = new MedicalRecord();
+            Employee employee = new Employee();
+            medicalRecord.setLrn(resultSet.getString("LRN"));
+            medicalRecord.setFirstName(resultSet.getString("first_name"));
+            medicalRecord.setMiddleName(resultSet.getString("middle_name"));
+            medicalRecord.setLastName(resultSet.getString("last_name"));
+            medicalRecord.setSection(resultSet.getString("section"));
+            medicalRecord.setGradeLevel(resultSet.getString("grade_level"));
+            medicalRecord.setGender(resultSet.getString("gender"));
+            medicalRecord.setContactNumber(resultSet.getString("contact_number"));
+            medicalRecord.setAddress(resultSet.getString("address"));
+            medicalRecord.setBirthdate(resultSet.getDate("birthdate"));
+            medicalRecord.setAge(resultSet.getInt("age"));
+            employee.setAdviser(resultSet.getString("adviser_last_name"));
+
+            LOGGER.info(
+                    "Retrieved Data: \n" +
+                            "LRN: {}\n" +
+                            "First Name: {}\n" +
+                            "Middle Name: {}\n" +
+                            "Last Name: {}\n" +
+                            "Section: {}\n" +
+                            "Grade Level: {}\n" +
+                            "Gender: {}\n" +
+                            "Contact Number: {}\n" +
+                            "Address: {}\n" +
+                            "Birthdate: {}\n" +
+                            "Age: {}\n" +
+                            "Adviser: {}",
+                    medicalRecord.getLrn(),
+                    medicalRecord.getFirstName(),
+                    medicalRecord.getMiddleName(),
+                    medicalRecord.getLastName(),
+                    medicalRecord.getSection(),
+                    medicalRecord.getGradeLevel(),
+                    medicalRecord.getGender(),
+                    medicalRecord.getContactNumber(),
+                    medicalRecord.getAddress(),
+                    medicalRecord.getBirthdate(),
+                    medicalRecord.getAge(),
+                    employee.getAdviser()
+            );
+            return medicalRecord;
+        } catch (Exception e) {
+            LOGGER.error("An SQL Exception occurred.{}", e.getMessage());
+        }
+        LOGGER.debug("set student failed");
+        return setStudentHealthProfile(resultSet);
+    }
+
 }

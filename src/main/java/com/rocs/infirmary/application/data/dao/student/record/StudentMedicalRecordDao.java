@@ -19,9 +19,10 @@ public interface StudentMedicalRecordDao {
     /**
      * This is intended to delete medical record based on LRN.
      * @param LRN is a student's unique identifier assigned to each student
+     * @param medicalRecordId is a medical records' unique identifier assigned to each medical record of a student
      * @return true if the medical record is successfully deleted, false when medical record is not successfully deleted
      * */
-    boolean deleteStudentMedicalRecord(String LRN);
+    boolean deleteStudentMedicalRecord(String LRN, Long medicalRecordId);
     /**
      * This is used to update the specified medicine record in the inventory.
      * @param symptoms is a student's symptoms
@@ -29,7 +30,8 @@ public interface StudentMedicalRecordDao {
      * @param visitDate is used to update the medicine description
      * @param treatment is used to update the medicine's expiration date
      * @param LRN is a student's unique identifier assigned to each student
+     * @param medicalRecordId is a medical records' unique identifier assigned to each medical record of a student
      * @return true when the medical record are successfully updated, false when the medical record are not updated successfully due to error
      * */
-    boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate , String treatment, String LRN  );
+    boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate , String treatment, String LRN, Long medicalRecordId );
 }
