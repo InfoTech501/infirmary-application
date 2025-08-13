@@ -199,6 +199,14 @@ public class Person {
         this.email = email;
     }
 
+    public Date getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
+    }
+
     @Override
     public String toString() {
         return "Person{" +

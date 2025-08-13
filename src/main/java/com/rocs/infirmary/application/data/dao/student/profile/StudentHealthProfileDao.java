@@ -21,5 +21,5 @@ public interface StudentHealthProfileDao {
      * return list of StudentMedicalRecord and objects with details such as full name, grade level, age, gender, section,
      * symptom, temperature readings, pulse rate, blood pressure, respiratory rate, and visit date.
      */
-    List<MedicalRecord> findStudentHealthProfileByLrn(Long LRN);
+    List<MedicalRecord> findStudentHealthProfileByLrn(String LRN);
 }

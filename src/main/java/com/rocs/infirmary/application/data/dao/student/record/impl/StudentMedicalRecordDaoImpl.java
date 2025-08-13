@@ -91,7 +91,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
      * while a status of 1 means the record is still active and present in the system.
      */
     @Override
-    public boolean deleteStudentMedicalRecord(String LRN) {
+    public boolean deleteStudentMedicalRecord(String LRN, Long medicalRecordId) {
         LOGGER.info("Delete medical records started");
         Student studentMedicalRecord = getStudent(LRN);
 
@@ -99,8 +99,9 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
 
             PreparedStatement preparedStatement = con.prepareStatement(DELETE_STUDENT_MEDICAL_RECORD);
             LOGGER.info("Query in use" + DELETE_STUDENT_MEDICAL_RECORD);
-            preparedStatement.setLong(1, studentMedicalRecord.getStudentId());
-            LOGGER.info("data inserted: " + "LRN: " + LRN);
+            preparedStatement.setLong(1, medicalRecordId);
+            preparedStatement.setLong(2, studentMedicalRecord.getStudentId());
+            LOGGER.info("data inserted: " + "LRN: " + LRN + "Medical record id:" + medicalRecordId);
             int affectedRow = preparedStatement.executeUpdate();
             return affectedRow > 0;
         } catch (SQLException e) {
@@ -111,81 +112,92 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
     }
 
     @Override
-    public boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate, String treatment, String LRN) {
-        LOGGER.info("Update Student Medical Record Started for LRN: " + LRN);
+    public boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate, String treatment, String LRN, Long medicalRecordId) {
+        LOGGER.info("Update student medical record started for LRN: {} and medical record ID: {}", LRN, medicalRecordId);
         boolean updateSuccessful = false;
 
+        if (medicalRecordId == null) {
+            LOGGER.error("Medical record ID cannot be null");
+            return false;
+        }
+
         try (Connection con = ConnectionHelper.getConnection()) {
-
-            if (symptoms != null && !symptoms.trim().isEmpty()) {
-                try (PreparedStatement stmt = con.prepareStatement(UPDATE_STUDENT_SYMPTOMS)) {
-                    LOGGER.info("Executing update for symptoms...");
-                    LOGGER.info("Query: " + UPDATE_STUDENT_SYMPTOMS);
-                    stmt.setString(1, symptoms);
-                    stmt.setString(2, LRN);
-                    LOGGER.info("Symptoms: " + symptoms + ", LRN: " + LRN);
-                    int rows = stmt.executeUpdate();
-                    LOGGER.info("Symptoms updated. Rows affected: " + rows);
-                    updateSuccessful = rows > 0;
-                } catch (SQLException e) {
-                    LOGGER.info("SQL Exception Occurred on Symptoms " + symptoms);
-                    System.out.println("SQL Exception Occurred when updating Symptom : " + e.getMessage());
+            con.setAutoCommit(false);
+            try {
+                if (symptoms != null && !symptoms.trim().isEmpty()) {
+                    String query = UPDATE_STUDENT_SYMPTOMS;
+                    try (PreparedStatement stmt = con.prepareStatement(query)) {
+                        LOGGER.info("Executing update for symptoms.");
+                        stmt.setString(1, symptoms);
+                        stmt.setLong(2, medicalRecordId);
+                        LOGGER.info("Symptoms: {}, Medical record id: {}", symptoms, medicalRecordId);
+                        int rows = stmt.executeUpdate();
+                        LOGGER.info("Symptoms updated. Rows affected: {}", rows);
+                        updateSuccessful = rows > 0;
+                    }
                 }
+
+                if (temperatureReadings != null && !temperatureReadings.trim().isEmpty()) {
+                    String query = UPDATE_STUDENT_TEMPERATURE_READINGS;
+                    try (PreparedStatement stmt = con.prepareStatement(query)) {
+                        LOGGER.info("Executing update for temperature readings.");
+                        stmt.setString(1, temperatureReadings);
+                        stmt.setLong(2, medicalRecordId);
+                        LOGGER.info("TemperatureReadings: {}, Medical record id: {}", temperatureReadings, medicalRecordId);
+                        int rows = stmt.executeUpdate();
+                        LOGGER.info("Temperature readings updated. Rows affected: {}", rows);
+                        updateSuccessful = updateSuccessful || rows > 0;
+                    }
+                }
+
+                if (visitDate != null) {
+                    String query = UPDATE_STUDENT_VISIT_DATE;
+                    try (PreparedStatement stmt = con.prepareStatement(query)) {
+                        LOGGER.info("Executing update for visit date.");
+                        stmt.setTimestamp(1, new java.sql.Timestamp(visitDate.getTime()));
+                        stmt.setLong(2, medicalRecordId);
+                        LOGGER.info("Parameters - visitDate: {}, Medical record id: {}", visitDate, medicalRecordId);
+                        int rows = stmt.executeUpdate();
+                        LOGGER.info("Visit date updated. Rows affected: {}", rows);
+                        updateSuccessful = updateSuccessful || rows > 0;
+                    }
+                }
+
+                if (treatment != null && !treatment.trim().isEmpty()) {
+                    String query = UPDATE_STUDENT_TREATMENT;
+                    try (PreparedStatement stmt = con.prepareStatement(query)) {
+                        LOGGER.info("Executing update for treatment");
+                        stmt.setString(1, treatment);
+                        stmt.setLong(2, medicalRecordId);
+                        LOGGER.info("Parameters - treatment: {}, Medical Record ID: {}", treatment, medicalRecordId);
+                        int rows = stmt.executeUpdate();
+                        LOGGER.info("Treatment updated, Rows affected: {}", rows);
+                        updateSuccessful = updateSuccessful || rows > 0;
+                    }
+                }
+
+                if (updateSuccessful) {
+                    con.commit();
+                    LOGGER.info("All updates committed successfully on medical record id: {}", medicalRecordId);
+                } else {
+                    con.rollback();
+                    LOGGER.warn("No updates made the transaction rolled back");
+                }
+
+            } catch (SQLException e) {
+                con.rollback();
+                LOGGER.error("Error on update the transaction rolled back: {}", e.getMessage());
+                throw e;
+            } finally {
+                con.setAutoCommit(true);
             }
 
-            if (temperatureReadings != null && !temperatureReadings.trim().isEmpty()) {
-                try (PreparedStatement stmt = con.prepareStatement(UPDATE_STUDENT_TEMPERATURE_READINGS)) {
-                    LOGGER.info("Executing update for temperature readings...");
-                    LOGGER.info("Query: " + UPDATE_STUDENT_TEMPERATURE_READINGS);
-                    stmt.setString(1, temperatureReadings);
-                    stmt.setString(2, LRN);
-                    LOGGER.info("TemperatureReadings: " + temperatureReadings + ", LRN: " + LRN);
-                    int rows = stmt.executeUpdate();
-                    LOGGER.info("Temperature readings updated. Rows affected: " + rows);
-                    updateSuccessful = rows > 0;
-                } catch (SQLException e) {
-                    LOGGER.info("SQL Exception Occurred on Temperature Readings" + e.getMessage());
-                    System.out.println("SQL Exception Occurred when Updating Temperature Readings : " + e.getMessage());
-                }
-            }
-
-            if (visitDate != null) {
-                try (PreparedStatement stmt = con.prepareStatement(UPDATE_STUDENT_VISIT_DATE)) {
-                    LOGGER.info("Executing update for visit date...");
-                    LOGGER.info("Query: " + UPDATE_STUDENT_VISIT_DATE);
-                    stmt.setTimestamp(1, new java.sql.Timestamp(visitDate.getTime()));
-                    stmt.setString(2, LRN);
-                    LOGGER.info("Parameters - visitDate: " + visitDate + ", LRN: " + LRN);
-                    int rows = stmt.executeUpdate();
-                    LOGGER.info("Visit date updated. Rows affected: " + rows);
-                    updateSuccessful = rows > 0;
-                } catch (SQLException e) {
-                    LOGGER.info("SQL Exception Occurred on Visit Date " + e.getMessage());
-                    System.out.println("SQL Exception Occurred when Updating Visit Date : " + e.getMessage());
-                }
-            }
-
-            if (treatment != null && !treatment.trim().isEmpty()) {
-                try (PreparedStatement stmt = con.prepareStatement(UPDATE_STUDENT_TREATMENT)) {
-                    LOGGER.info("Executing update for treatment");
-                    LOGGER.info("Query: " + UPDATE_STUDENT_TREATMENT);
-                    stmt.setString(1, treatment);
-                    stmt.setString(2, LRN);
-                    LOGGER.info("Parameters - treatment: " + treatment + ", LRN: " + LRN);
-                    int rows = stmt.executeUpdate();
-                    updateSuccessful = rows > 0;
-                } catch (SQLException e) {
-                    LOGGER.info("SQL Exception Occurred on Treatment " + e.getMessage());
-                    System.out.println("SQL Exception Occurred when Updating Treatment : " + e.getMessage());
-                }
-            }
-
-            LOGGER.info("Update Student Medical Record Completed for LRN: " + LRN);
+            LOGGER.info("Update Student medical record completed for LRN: {} and Medical record id: {}", LRN, medicalRecordId);
             return updateSuccessful;
 
         } catch (SQLException e) {
-            LOGGER.error("SQL Exception Occurred" + e.getMessage());
-            throw new RuntimeException(e);
+            LOGGER.error("SQL Exception Occurred: {}", e.getMessage());
+            throw new RuntimeException("Failed to update medical record", e);
         }
     }
 
