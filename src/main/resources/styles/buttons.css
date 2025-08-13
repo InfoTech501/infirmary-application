@@ -65,7 +65,6 @@
     -fx-background-color: #066C3D;
     -fx-text-fill: white;
     -fx-transition: 0.3s;
-
 }
 
 
@@ -102,67 +101,23 @@
 -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 10, 5);
 }
 
-#Filter_Button_A,#Filter_Button_Z,#ClearFilterButton, #AgeFilterBtn {
-    -fx-background-color: #FFFFFF;
-    -fx-border-radius: 10px;
-    -fx-padding: 10px;
-    -fx-text-fill: #737791;
-    -fx-border-width: 1px;
-    -fx-border-color: #d3d3d3;
-
-}
-
-#Filter_Button_A:focused {
-    -fx-background-color: #066C3D;
-    -fx-text-fill: white;
-}
-#Filter_Button_Z:focused {
-    -fx-background-color: #066C3D;
-    -fx-text-fill: white;
-}
 #ClearFilterButton:focused {
-
     -fx-background-color: #066C3D;
     -fx-text-fill: white;
 }
 
-#AgeFilterBtn :focused{
-    -fx-background-color: #066C3D;
-    -fx-text-fill: white;
-}
-
-
-#Filter_Button_A:hover {
-   -fx-background-color: #066C3D;
-    -fx-text-fill: white;
-
-}
-
-#Filter_Button_Z:hover {
-       -fx-background-color: #066C3D;
-       -fx-text-fill: white;
-
-}
-#ClearFilterButton:hover {
-      -fx-background-color: #066C3D;
-      -fx-text-fill: white;
-
-}
-
-#AgeFilterBtn:hover{
- -fx-background-color: #066C3D;
- -fx-text-fill: white;
-}
-
-
-#SexComboBox, #SectionComboBox{
+#sexComboBox, #sectionComboBox{
      -fx-background-color: #ffffff;
-     -fx-border-color: #d3d3d3;
      -fx-border-radius: 10px;
-     -fx-font-size: 14px;
-
+     -fx-text-fill: #737791;
+     -fx-font-family: 'Lexend';
 }
 
+#sexComboBox:hover, #sectionComboBox:hover{
+     -fx-background-color: #066C3D;
+     -fx-text-fill: white;
+     -fx-transition: 0.3s;
+}
 
 #ButtonConfirm {
     -fx-background-color: #2E2E2E;
@@ -188,6 +143,24 @@ fx-font-weight: 400;
     -fx-font-size: 15px;
 }
 
+#deleteMedicalRecordBtn {
+-fx-background-color:#D32F2F;
+-fx-text-fill: white;
+}
+
+#deleteMedicalRecordBtn:hover {
+-fx-background-color:#D32F2F;
+}
+
+#editHealthInfoBtn{
+-fx-background-color:#1976D2;
+-fx-text-fill: white;
+}
+
+#editHealthInfoBtn:hover {
+-fx-background-color:#1976D2;
+}
+
 #AgeComboBox .cell {
     -fx-alignment: center;
     -fx-text-alignment: center;
@@ -196,7 +169,7 @@ fx-font-weight: 400;
 
 }
 
-#SexComboBox .cell {
+#sexComboBox .cell {
 -fx-alignment: center;
     -fx-text-alignment: center;
       -fx-translate-x: 11px;
@@ -206,7 +179,7 @@ fx-font-weight: 400;
 
 
 
-#SectionComboBox .cell {
+#sectionComboBox .cell {
 -fx-alignment: center;
     -fx-text-alignment: center;
       -fx-translate-x: 10px;
