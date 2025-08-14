@@ -5,10 +5,10 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -16,116 +16,168 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="711.0" prefWidth="1125.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
-    <stylesheets>
-        <URL value="@../styles/buttons.css" />
-        <URL value="@../styles/label.css" />
-        <URL value="@../styles/table.css" />
-        <URL value="@../styles/label.css" />
-    </stylesheets>
-   <center>
-      <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <content>
-            <HBox prefHeight="978.0" prefWidth="1122.0">
-               <children>
-                  <HBox prefHeight="100.0" prefWidth="200.0" />
-                  <HBox prefHeight="100.0" prefWidth="200.0" />
-                  <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="58.0" prefWidth="754.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="172.79999389648438" minWidth="10.0" prefWidth="152.3999816894531" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="186.00000610351563" minWidth="10.0" prefWidth="141.40001220703124" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="153.19997558593752" minWidth="10.0" prefWidth="119.79995117187502" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="206.40005493164062" minWidth="10.0" prefWidth="119.00004882812505" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="199.4000183105469" minWidth="10.0" prefWidth="113.59995117187498" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="143.5999877929687" minWidth="10.0" prefWidth="109.60002441406255" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints maxHeight="53.600010299682616" minHeight="10.0" prefHeight="30.4" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <HBox.margin>
-                        <Insets top="90.0" />
-                     </HBox.margin>
-                     <children>
-                        <ComboBox fx:id="SectionComboBox" prefHeight="46.0" prefWidth="125.0" promptText="Section">
-                           <GridPane.margin>
-                              <Insets left="15.0" />
-                           </GridPane.margin>
-                        </ComboBox>
-                        <ComboBox fx:id="SexComboBox" prefHeight="46.0" prefWidth="125.0" promptText="Sex" GridPane.columnIndex="1" />
-                        <Button fx:id="AgeFilterBtn" mnemonicParsing="false" prefHeight="42.0" prefWidth="106.0" text="Age" GridPane.columnIndex="2" />
-                        <Button fx:id="Filter_Button_A" mnemonicParsing="false" prefHeight="42.0" prefWidth="106.0" text="A-Z" GridPane.columnIndex="3">
-                           <padding>
-                              <Insets right="15.0" />
-                           </padding>
-                        </Button>
-                        <Button fx:id="Filter_Button_Z" mnemonicParsing="false" prefHeight="42.0" prefWidth="106.0" text="Z-A" GridPane.columnIndex="4" />
-                        <Button fx:id="ClearFilterButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="125.0" text="Clear Filter" GridPane.columnIndex="5" />
-                     </children>
-                  </GridPane>
-                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="782.0" prefWidth="1195.0">
-                     <HBox.margin>
-                        <Insets left="-750.0" top="150.0" />
-                     </HBox.margin>
-                     <children>
-                        <TableView prefHeight="782.0" prefWidth="1154.0">
-                          <columns>
-                            <TableColumn fx:id="SelectColumn" prefWidth="104.00002479553223" text="Select" />
-                            <TableColumn fx:id="LRNColumn" prefWidth="143.1999740600586" text="LRN" />
-                              <TableColumn fx:id="FirstnameColumn1" prefWidth="190.4000244140625" text="Firstname" />
-                              <TableColumn fx:id="LastnameColumn" prefWidth="208.79998779296875" text="Lastname" />
-                              <TableColumn fx:id="GradeColumn" prefWidth="229.5999755859375" text="Grade &amp; Section" />
-                              <TableColumn fx:id="AdviserColumn" prefWidth="207.9998779296875" text="Adviser" />
-                          </columns>
-                           <HBox.margin>
-                              <Insets right="100.0" />
-                           </HBox.margin>
-                        </TableView>
-                     </children>
-                  </HBox>
-                  <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="58.0" prefWidth="669.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="303.79998779296875" minWidth="10.0" prefWidth="190.4000244140625" />
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="479.9999755859375" minWidth="10.0" prefWidth="479.9999755859375" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <HBox.margin>
-                        <Insets left="-1200.0" right="5.0" top="15.0" />
-                     </HBox.margin>
-                     <children>
+<StackPane fx:id="rootStackPane" prefHeight="677.0" prefWidth="1266.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.student.profile.StudentHealthProfileController">
+    <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+        <stylesheets>
+            <URL value="@../styles/buttons.css" />
+            <URL value="@../styles/label.css" />
+            <URL value="@../styles/table.css" />
+            <URL value="@../styles/label.css" />
+        </stylesheets>
+        <top>
+            <HBox prefHeight="113.0" prefWidth="1124.0" BorderPane.alignment="CENTER">
+                <VBox prefHeight="142.0" prefWidth="1124.0" HBox.hgrow="ALWAYS">
+                    <HBox alignment="CENTER_LEFT" prefHeight="37.0" prefWidth="1124.0" spacing="10.0" VBox.vgrow="ALWAYS">
+                        <padding>
+                            <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
+                        </padding>
+                        <opaqueInsets>
+                            <Insets />
+                        </opaqueInsets>
+
                         <ImageView fitHeight="36.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../assets/filter-icon.png" />
-                           </image>
-                           <GridPane.margin>
-                              <Insets left="20.0" />
-                           </GridPane.margin>
+                            <Image url="@../assets/filter-icon.png" />
                         </ImageView>
-                        <Label text="Filter List">
-                           <GridPane.margin>
-                              <Insets left="70.0" />
-                           </GridPane.margin>
-                        </Label>
-                        <TextField fx:id="SearchTextField" prefHeight="42.0" prefWidth="487.0" promptText="Search" GridPane.columnIndex="1">
-                           <GridPane.margin>
-                              <Insets />
-                           </GridPane.margin>
-                        </TextField>
-                     </children>
-                  </GridPane>
-                  <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="71.0" prefWidth="252.0">
-                     <HBox.margin>
-                        <Insets left="180.0" right="1000.0" top="50.0" />
-                     </HBox.margin>
-                     <children>
-                        <Button fx:id="ShowInformationButton" mnemonicParsing="false" prefHeight="45.0" prefWidth="242.0" text="SHOW MORE INFORMATION" />
-                     </children>
-                  </HBox>
-               </children>
+
+                        <Label text="Filter List" />
+
+                        <TextField fx:id="searchTextField" prefHeight="42.0" prefWidth="487.0" promptText="Find LRN, First and Last name" />
+                    </HBox>
+
+                    <!--control buttons -->
+                    <HBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="1124.0" spacing="40.0" VBox.vgrow="ALWAYS">
+                        <!--left wrapper-->
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                            <padding>
+                                <Insets left="20.0" />
+                            </padding>
+                            <GridPane alignment="CENTER" hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="668.0" vgap="10.0" HBox.hgrow="ALWAYS">
+
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                </columnConstraints>
+
+                                <rowConstraints>
+                                    <RowConstraints maxHeight="53.600010299682616" minHeight="10.0" prefHeight="30.4" vgrow="SOMETIMES" />
+                                </rowConstraints>
+
+                                <HBox.margin>
+                                    <Insets />
+                                </HBox.margin>
+
+                                <!--buttons-->
+                                <ComboBox fx:id="sectionComboBox" prefHeight="46.0" prefWidth="125.0" promptText="Section" GridPane.columnIndex="0" />
+
+                                <ComboBox fx:id="sexComboBox" prefHeight="46.0" prefWidth="125.0" promptText="Sex" GridPane.columnIndex="1" />
+
+                                <Button fx:id="ageFilterBtn" mnemonicParsing="false" prefHeight="46.0" prefWidth="106.0" text="Age" GridPane.columnIndex="2" />
+
+                                <Button fx:id="aToZFilterBtn" mnemonicParsing="false" prefHeight="46.0" prefWidth="106.0" text="A-Z" GridPane.columnIndex="3" />
+
+                                <Button fx:id="zToAFilterBtn" mnemonicParsing="false" prefHeight="46.0" prefWidth="106.0" text="Z-A" GridPane.columnIndex="4" />
+
+                                <Button fx:id="clearFilterBtn" mnemonicParsing="false" prefHeight="46.0" prefWidth="125.0" text="Clear Filter" GridPane.columnIndex="5" />
+
+                            </GridPane>
+                        </HBox>
+
+                        <!--right wrapper-->
+                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                            <opaqueInsets>
+                                <Insets />
+                            </opaqueInsets>
+                            <padding>
+                                <Insets right="20.0" />
+                            </padding>
+                            <!--                       <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="242.0" text="SHOW MORE INFORMATION" />-->
+                        </HBox>
+                    </HBox>
+                </VBox>
             </HBox>
-         </content>
-      </ScrollPane>
-   </center>
-</BorderPane>
+        </top>
+        <center>
+            <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                <TableView fx:id="studentTableView" minHeight="-Infinity" prefWidth="1110.0" HBox.hgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="lrnColumn" text="LRN" />
+                        <TableColumn fx:id="firstNameColumn" text="Firstname" />
+                        <TableColumn fx:id="lastNameColumn" text="Lastname" />
+                        <TableColumn fx:id="gradeColumn" text="Grade" />
+                        <TableColumn fx:id="sectionColumn" text="Section" />
+                        <TableColumn fx:id="genderColumn" text="Sex" />
+                        <TableColumn fx:id="ageColumn" text="Age" />
+                    </columns>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                    </columnResizePolicy>
+                </TableView>
+            </HBox>
+        </center>
+      <bottom>
+          <HBox alignment="CENTER_RIGHT" prefHeight="70.0" prefWidth="1266.0" BorderPane.alignment="CENTER_RIGHT">
+              <HBox alignment="CENTER_RIGHT" prefHeight="42.0" prefWidth="1080.0" HBox.hgrow="ALWAYS">
+                  <GridPane alignment="TOP_RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="19.0" prefWidth="488.0">
+                      <columnConstraints>
+                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="209.0" minWidth="10.0" prefWidth="114.0" />
+                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="0.0" prefWidth="34.0" />
+                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="71.0" />
+                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="74.0" />
+                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="299.0" minWidth="10.0" prefWidth="81.0" />
+                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="272.0" minWidth="10.0" prefWidth="56.0" />
+                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="272.0" minWidth="10.0" prefWidth="59.0" />
+                      </columnConstraints>
+                      <rowConstraints>
+                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      </rowConstraints>
+                      <HBox.margin>
+                          <Insets left="575.0" />
+                      </HBox.margin>
+                      <Label prefHeight="18.0" prefWidth="152.0" style="-fx-font-size: 14;" styleClass="label-rows-page" text="Rows per Page:" />
+                      <Label fx:id="rowsPageLabel" contentDisplay="CENTER" style="-fx-font-size: 14;" styleClass="label-rows" text="10" underline="true" GridPane.columnIndex="1">
+                          <opaqueInsets>
+                              <Insets />
+                          </opaqueInsets>
+                      </Label>
+                      <Label fx:id="paginationLabel" prefHeight="18.0" prefWidth="98.0" style="-fx-font-size: 14;" stylesheets="@../styles/fonts.css" text="1-5 of 13" underline="true" GridPane.columnIndex="4" />
+                      <ToggleButton fx:id="togglePrevBtn" minWidth="44.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="54.0" style="-fx-background-color: #ffffff;" GridPane.columnIndex="5">
+                          <graphic>
+                              <ImageView accessibleRole="TOGGLE_BUTTON" fitHeight="29.0" fitWidth="20.0"
+                                         nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                                  <Image url="@../assets/left-icon.png"/>
+                              </ImageView>
+                          </graphic>
+                      </ToggleButton>
+                      <ToggleButton fx:id="toggleNextBtn" minWidth="44.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="54.0" style="-fx-background-color: #ffffff;" GridPane.columnIndex="6">
+                          <graphic>
+                              <ImageView accessibleRole="TOGGLE_BUTTON" fitHeight="29.0" fitWidth="20.0"
+                                         nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                                  <Image url="@../assets/right-icon.png"/>
+                              </ImageView>
+                          </graphic>
+                      </ToggleButton>
+                      <Label text="Showing:" GridPane.columnIndex="3" />
+                      <ComboBox fx:id="rowsPerPageComboBox" opacity="0.7" prefWidth="150.0" GridPane.columnIndex="2">
+                          <GridPane.margin>
+                              <Insets bottom="10.0" right="10.0" top="10.0" />
+                          </GridPane.margin>
+                      </ComboBox>
+                  </GridPane>
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
+              </HBox>
+          </HBox>
+      </bottom>
+    </BorderPane>
+</StackPane>

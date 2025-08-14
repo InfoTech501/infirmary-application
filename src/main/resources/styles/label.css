@@ -1,46 +1,37 @@
 #StudentProfileLabel {
-
--fx-font-weight: 1000;
+-fx-font-weight: 900;
 -fx-font-size: 35px;
 }
+
 #StudentHealthLabel {
  -fx-font-weight: 900;
 -fx-font-size: 17px;
-
 }
+
 #StudentLabel {
 -fx-font-weight: 900;
 -fx-font-size: 17px;
-
 }
+
 #SkinLabel {
-
 -fx-font-size: 14px;
 }
+
 #heartDiseaseLabel {
-
 -fx-font-size: 14px;
 }
 
-
-#AdviserNameLabel{
-
+#AdviserNameLabel {
 -fx-font-weight: none;
 -fx-font-size: 12px;
-
-
 }
-#MoreInformationLabel  {
 
+#MoreInformationLabel  {
  -fx-font-weight: 900;
 -fx-font-size: 35px;
-
-
 }
 
-
-#ResetHistoryLabel{
-
+#ResetHistoryLabel {
 -fx-font-size: 15px;
 -fx-font-weight: 700;
  -fx-text-fill: #737791;
@@ -51,14 +42,10 @@
 -fx-font-size: 17px;
 }
 
-
 #StudentHealthProfileLabel{
  -fx-font-weight: 700;
 -fx-font-size: 15px;
-
 }
-
-
 
 #ButtonEditHealthInfo {
 -fx-background-color: #FFFFFF;
@@ -66,18 +53,23 @@
 -fx-border-color: black;
 -fx-border-radius:15px;
 }
+
 #ContactNumLabel{
 -fx-font-size: 14px;
 }
+
 #EmailAddressLabel{
 -fx-font-size: 14px;
 }
+
 #AddressLabel{
 -fx-font-size: 14px;
 }
+
 #HealthProbLabel{
 -fx-font-size: 15px;
 }
+
 #LabelEditInformation{
  -fx-font-weight: 700;
 -fx-font-size: 35px;
@@ -89,46 +81,32 @@
 }
 
 #LabelStudentHealthInfo {
-
 -fx-font-weight: 900;
  -fx-font-size:20px;
 }
 
 #LabelLRN,#LabelFirstname,#LabelLastname,#LabelSex,#LabelAge,#LabelGradeLevel,#LabelSection,#LabelContactNumber,#LabelHomeAddress,#LabelEmailAddress,#LabelEmailAddress,#LabelHealthProblem{
 -fx-font-size:14px;
-
-
 }
-
 
 #NursePromptLabel {
 -fx-font-size:11px;
 }
 
-
-
-
 #InventoryPageLabel {
--fx-font-weight: 1000;
+-fx-font-weight: 900;
 -fx-font-size: 35px;
 }
-
-
-
 
 #LabelAddItemsInventory{
  -fx-font-weight: 700;
  -fx-font-size: 35px;
 }
 
-
-
-
 #RemoveItemsLabel{
  -fx-font-weight: 700;
  -fx-font-size: 45px;
 }
-
 
 #InventoryDeleteLabel_A{
 -fx-font-weight: 400;
@@ -150,15 +128,11 @@
  -fx-font-size: 35px;
 }
 
-
 #ListLabel {
     -fx-font-size: 17px;
     -fx-font-weight: bold;
 }
 
-
 #ProductNameLabel, #QuantityLabel, #ExpirationDateLabel, #descriptionLabel, #DosageLabel,#itemTypeChoicebox,#itemTypeLabel{
  -fx-text-fill: #A9A9A9;
 }
-
-

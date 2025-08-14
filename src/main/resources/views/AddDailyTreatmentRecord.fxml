@@ -1,23 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.records.AddDailyTreatmentRecordController">
    <top>
       <VBox prefHeight="130.0" prefWidth="1575.0" BorderPane.alignment="CENTER">
          <children>
-            <Label fx:id="DailyTreatmentRecordLabel" style="-fx-font-size: 32; -fx-font-weight: bold;" styleClass="label-add-treatment-record" stylesheets="@../styles/fonts.css" text="DAILY TREATMENT RECORD (STUDENT)">
+            <Label fx:id="DailyTreatmentRecordLabel" style="-fx-font-size: 32; -fx-font-weight: bold;" styleClass="label-add-treatment-record" stylesheets="@../styles/fonts.css" text="DAILY TREATMENT RECORD">
                <padding>
                   <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
                </padding>
@@ -46,8 +37,8 @@
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="725.0" minWidth="0.0" prefWidth="0.0" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints maxHeight="61.333343505859375" minHeight="10.0" prefHeight="54.66667175292969" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="61.333343505859375" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="89.0" minHeight="10.0" prefHeight="62.0" valignment="CENTER" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <Label fx:id="studInfoLabel" style="-fx-font-size: 22; -fx-font-weight: 700;" styleClass="label-student-info" stylesheets="@../styles/fonts.css" text="Student Info" GridPane.columnIndex="1">
@@ -58,22 +49,22 @@
                               <Insets />
                            </GridPane.margin>
                         </Label>
-                        <TextField fx:id="LrnField" opacity="0.6" prefHeight="55.0" prefWidth="300.0" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="LRN-text-field" text="LRN" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <TextField fx:id="lrnField" opacity="0.6" prefHeight="55.0" prefWidth="300.0" promptText="LRN" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="LRN-text-field" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin></TextField>
-                        <TextField fx:id="nameField" opacity="0.6" prefHeight="55.0" prefWidth="300.0" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="name-text-field" text="Name (Last, First M.I)" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                        <TextField fx:id="nameField" opacity="0.6" prefHeight="55.0" prefWidth="300.0" promptText="Name (First and Last)" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="name-text-field" GridPane.columnIndex="3" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin></TextField>
-                        <TextField fx:id="ageField" layoutX="400.0" layoutY="77.0" opacity="0.6" prefHeight="55.0" prefWidth="300.0" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="age-text-field" text="Age" GridPane.columnIndex="5" GridPane.rowIndex="1">
+                        <TextField fx:id="ageField" layoutX="400.0" layoutY="77.0" opacity="0.6" prefHeight="55.0" prefWidth="300.0" promptText="Age" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="age-text-field" GridPane.columnIndex="5" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin></TextField>
-                        <TextField fx:id="gradeSectionField" layoutX="789.0" layoutY="77.0" opacity="0.6" prefHeight="55.0" prefWidth="300.0" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="grade-section-text-field" text="Grade &amp; Section" GridPane.columnIndex="7" GridPane.rowIndex="1">
+                        <TextField fx:id="gradeSectionField" layoutX="789.0" layoutY="77.0" opacity="0.6" prefHeight="55.0" prefWidth="300.0" promptText="Grade &amp; Section" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="grade-section-text-field" GridPane.columnIndex="7" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin></TextField>
@@ -99,8 +90,8 @@
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="725.0" minWidth="0.0" prefWidth="0.0" />
                      </columnConstraints>
                      <rowConstraints>
-                        <RowConstraints maxHeight="61.333343505859375" minHeight="10.0" prefHeight="54.66667175292969" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="61.333343505859375" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="62.0" valignment="CENTER" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
                         <Label fx:id="vitalSignsLabel" style="-fx-font-size: 22; -fx-font-weight: 700;" styleClass="vital-signs-label" stylesheets="@../styles/fonts.css" text="Vital Signs" GridPane.columnIndex="1">
@@ -111,28 +102,28 @@
                               <Insets />
                            </GridPane.margin>
                         </Label>
-                        <TextField fx:id="bodyTempField" opacity="0.6" prefHeight="55.0" prefWidth="300.0" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="body-temp-text-field" text="Body Temperature" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <TextField fx:id="bodyTempField" opacity="0.6" prefHeight="55.0" prefWidth="300.0" promptText="Body Temperature" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="body-temp-text-field" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding></TextField>
-                        <TextField fx:id="pulseRateField" opacity="0.6" prefHeight="55.0" prefWidth="300.0" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="pulse-rate-text-field" text="Pulse Rate" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                        <TextField fx:id="pulseRateField" opacity="0.6" prefHeight="55.0" prefWidth="300.0" promptText="Pulse Rate" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="pulse-rate-text-field" GridPane.columnIndex="3" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding></TextField>
-                        <TextField fx:id="respiratoryRateField" layoutX="400.0" layoutY="77.0" opacity="0.6" prefHeight="55.0" prefWidth="300.0" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="resp-rate-text-field" text="Respiratory Rate" GridPane.columnIndex="5" GridPane.rowIndex="1">
+                        <TextField fx:id="respiratoryRateField" layoutX="400.0" layoutY="77.0" opacity="0.6" prefHeight="55.0" prefWidth="300.0" promptText="Respiratory Rate" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="resp-rate-text-field" GridPane.columnIndex="5" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding></TextField>
-                        <TextField fx:id="bloodPressureField" layoutX="789.0" layoutY="77.0" opacity="0.6" prefHeight="55.0" prefWidth="300.0" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="blood-pressure-text-field" text="Blood Pressure" GridPane.columnIndex="7" GridPane.rowIndex="1">
+                        <TextField fx:id="bloodPressureField" layoutX="789.0" layoutY="77.0" opacity="0.6" prefHeight="55.0" prefWidth="300.0" promptText="Blood Pressure" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="blood-pressure-text-field" GridPane.columnIndex="7" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin></TextField>
@@ -158,10 +149,14 @@
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="725.0" minWidth="0.0" prefWidth="0.0" />
                      </columnConstraints>
                      <rowConstraints>
-                        <RowConstraints maxHeight="61.333343505859375" minHeight="10.0" prefHeight="54.66667175292969" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="61.333343505859375" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="62.0" valignment="CENTER" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
+                        <ComboBox fx:id="medicineNameComboBox" editable="true" opacity="0.7" prefHeight="55.0" prefWidth="300.0" promptText="Medicine Name" styleClass="medicineNameComboBox" GridPane.columnIndex="7" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </GridPane.margin></ComboBox>
                         <Label fx:id="otherLabel" style="-fx-font-size: 22; -fx-font-weight: 700;" styleClass="other-label" stylesheets="@../styles/fonts.css" text="Other" GridPane.columnIndex="1">
                            <padding>
                               <Insets bottom="20.0" right="10.0" top="20.0" />
@@ -170,34 +165,25 @@
                               <Insets />
                            </GridPane.margin>
                         </Label>
-                        <TextField fx:id="chiefComplaitField" opacity="0.6" prefHeight="55.0" prefWidth="486.0" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="chief-complait-text-field" text="Chief Complait" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <TextField fx:id="symptomsField" opacity="0.6" prefHeight="55.0" prefWidth="486.0" promptText="Symptoms" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="symptoms-text-field" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding></TextField>
-                        <TextField fx:id="nurseInterventionField" opacity="0.6" prefHeight="55.0" prefWidth="300.0" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="nurse-intervention-text-field" text="Nurse Intervention" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                        <TextField fx:id="treatmentField" layoutX="400.0" layoutY="77.0" opacity="0.6" prefHeight="55.0" prefWidth="300.0" promptText="Treatment" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="treatment-text-field" GridPane.columnIndex="3" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding></TextField>
-                        <TextField fx:id="symptomsField" layoutX="400.0" layoutY="77.0" opacity="0.6" prefHeight="55.0" prefWidth="300.0" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="symptoms-text-field" text="Symptoms" GridPane.columnIndex="5" GridPane.rowIndex="1">
+                        <ComboBox fx:id="nurseInChargeComboBox" opacity="0.7" prefHeight="55.0" prefWidth="300.0" promptText="Nurse-In-Charge" GridPane.columnIndex="5" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding></TextField>
-                        <TextField fx:id="invDispensingInField" layoutX="789.0" layoutY="77.0" opacity="0.6" prefHeight="55.0" prefWidth="300.0" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="inv-dispensing-in-text-field" text="Inventory (Dispensing IN)" GridPane.columnIndex="7" GridPane.rowIndex="1">
-                           <GridPane.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </GridPane.margin>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding></TextField>
+                        </ComboBox>
                      </children>
                      <HBox.margin>
                         <Insets left="55.0" right="5.0" />
@@ -220,34 +206,25 @@
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="725.0" minWidth="0.0" prefWidth="0.0" />
                      </columnConstraints>
                      <rowConstraints>
-                        <RowConstraints maxHeight="61.333343505859375" minHeight="10.0" prefHeight="54.66667175292969" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="61.333343505859375" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="62.0" valignment="CENTER" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <TextField fx:id="invDispensingOutField" opacity="0.6" prefHeight="55.0" prefWidth="300.0" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="inv-dispensing-out-text-field" text="Inventory (Dispensing OUT)" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <TextField fx:id="invDispensingOutField" opacity="0.6" prefHeight="55.0" prefWidth="300.0" promptText="Dispensing OUT" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="inv-dispensing-out-text-field" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding></TextField>
-                        <TextField fx:id="dateTimeField" opacity="0.6" prefHeight="55.0" prefWidth="300.0" style="-fx-font-size: 18; -fx-border-radius: 5;" styleClass="date-time-text-field" text="Select Date and Time" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                        <DatePicker fx:id="datePickerTextField" opacity="0.7" prefHeight="55.0" prefWidth="300.0" promptText="Select Visit Date" style="-fx-border-radius: 5;" styleClass="date-picker" GridPane.columnIndex="3" GridPane.rowIndex="1">
                            <GridPane.margin>
-                              <Insets left="5.0" right="5.0" />
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
-                        </TextField>
-                        <ToggleButton mnemonicParsing="false" style="-fx-background-color: white;" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                           <graphic>
-                              <ImageView fitHeight="31.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../assets/calendar-icon.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                           <GridPane.margin>
-                              <Insets left="260.0" />
-                           </GridPane.margin>
-                        </ToggleButton>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </DatePicker>
                      </children>
                      <HBox.margin>
                         <Insets left="55.0" right="5.0" />
@@ -276,7 +253,7 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <ToggleButton fx:id="toggleRecordConfirm" mnemonicParsing="false" prefHeight="63.0" prefWidth="932.0" style="-fx-font-size: 18; -fx-background-color: #2C2C2C; -fx-text-fill: white;" styleClass="treatment-record-confirm-btn" stylesheets="@../styles/fonts.css" text="Confirm" textFill="WHITE" GridPane.columnIndex="4">
+                        <ToggleButton fx:id="toggleRecordConfirm" mnemonicParsing="false" onAction="#handleConfirmButton" prefHeight="63.0" prefWidth="932.0" style="-fx-font-size: 18; -fx-background-color: #2C2C2C; -fx-text-fill: white;" styleClass="treatment-record-confirm-btn" stylesheets="@../styles/fonts.css" text="Confirm" textFill="WHITE" GridPane.columnIndex="4">
                            <GridPane.margin>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </GridPane.margin>
@@ -284,7 +261,7 @@
                               <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
                            </padding>
                         </ToggleButton>
-                        <ToggleButton fx:id="toggleRecordCancel" layoutX="20.0" layoutY="44.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="179.0" style="-fx-font-size: 18; -fx-background-color: white; -fx-text-fill: black; -fx-border-color: black;" styleClass="treatment-record-confirm-btn" stylesheets="@../styles/fonts.css" text="Cancel" textFill="WHITE" GridPane.columnIndex="5">
+                        <ToggleButton fx:id="toggleRecordCancel" layoutX="20.0" layoutY="44.0" mnemonicParsing="false" onAction="#handleCancelButton" prefHeight="57.0" prefWidth="179.0" style="-fx-font-size: 18; -fx-background-color: white; -fx-text-fill: black; -fx-border-color: black;" styleClass="treatment-record-confirm-btn" stylesheets="@../styles/fonts.css" text="Cancel" textFill="WHITE" GridPane.columnIndex="5">
                            <padding>
                               <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
                            </padding>

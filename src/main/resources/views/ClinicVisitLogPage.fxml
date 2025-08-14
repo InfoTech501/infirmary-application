@@ -1,24 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleButton?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="731.0" prefWidth="1125.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="731.0" prefWidth="1125.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.records.ClinicVisitLogPageController">
     <stylesheets>
         <URL value="@../styles/buttons.css" />
         <URL value="@../styles/label.css" />
@@ -27,33 +15,34 @@
         <URL value="@../styles/fonts.css" />
     </stylesheets>
    <center>
-      <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <BorderPane.margin>
-            <Insets bottom="10.0" left="10.0" right="5.0" top="10.0" />
-         </BorderPane.margin>
-         <content>
-            <VBox prefHeight="969.0" prefWidth="1100.0">
+      <Pane>
+         <children>
+            <VBox layoutY="19.0" prefHeight="969.0" prefWidth="1100.0">
                <children>
                   <GridPane prefHeight="87.0" prefWidth="1100.0">
                      <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="296.0" minWidth="10.0" prefWidth="133.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="551.0" minWidth="10.0" prefWidth="355.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="514.0" minWidth="10.0" prefWidth="445.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="242.0" minWidth="10.0" prefWidth="165.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="296.0" minWidth="10.0" prefWidth="84.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="551.0" minWidth="10.0" prefWidth="326.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="611.0" minWidth="10.0" prefWidth="513.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="242.0" minWidth="10.0" prefWidth="177.0" />
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <Label prefHeight="23.0" prefWidth="137.0" style="-fx-font-size: 18;" stylesheets="@../styles/fonts.css" text="Search Name" />
-                        <TextField fx:id="searchTextField" opacity="0.39" prefHeight="40.0" prefWidth="356.0" style="-fx-border-radius: 10;" styleClass="search-text-field" text="Search" GridPane.columnIndex="1">
+                        <Label prefHeight="23.0" prefWidth="70.0" style="-fx-font-size: 18;" stylesheets="@../styles/fonts.css" text="Search">
+                           <GridPane.margin>
+                              <Insets left="15.0" />
+                           </GridPane.margin>
+                        </Label>
+                        <TextField fx:id="searchTextField" opacity="0.39" prefHeight="40.0" prefWidth="356.0" promptText="Search" style="-fx-border-radius: 10;" styleClass="search-text-field" GridPane.columnIndex="1">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
                         </TextField>
                         <VBox prefHeight="67.0" prefWidth="179.0" GridPane.columnIndex="3">
                            <children>
-                              <ToggleButton fx:id="toggleAddEntry" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="67.0" prefWidth="125.0" style="-fx-background-color: #1976D2;" styleClass="add-entry-btn" text="Add Entry" textFill="WHITE">
+                              <ToggleButton fx:id="toggleAddEntry" contentDisplay="CENTER" mnemonicParsing="false" onAction="#handleAddEntryButton" prefHeight="67.0" prefWidth="125.0" style="-fx-background-color: #1976D2;" styleClass="add-entry-btn" text="Add Entry" textFill="WHITE">
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>
@@ -76,62 +65,49 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <VBox prefHeight="801.0" prefWidth="1080.0">
+                        <VBox prefHeight="628.0" prefWidth="1080.0">
                            <children>
                               <Pane>
                                  <children>
-                                    <TableView fx:id="VisitLogTable" prefHeight="908.0" prefWidth="1075.0" styleClass="clinic-visit-table-view" >
+                                    <TableView fx:id="visitLogTable" prefWidth="1075.0" styleClass="clinic-visit-table-view">
                                       <columns>
-                                        <TableColumn prefWidth="155.0" text="Name" />
-                                        <TableColumn prefWidth="104.0" text="Grade &amp; Section" />
-                                          <TableColumn prefWidth="118.0" text="Temperature" />
-                                          <TableColumn prefWidth="96.0" text="Pulse" />
-                                          <TableColumn prefWidth="126.0" text="Blood Pressure" />
-                                          <TableColumn prefWidth="149.0" text="Symptoms" />
-                                          <TableColumn minWidth="6.0" prefWidth="98.0" text="Dispensing IN" />
-                                          <TableColumn minWidth="0.0" prefWidth="104.0" text="Dispensing OUT" />
-                                          <TableColumn prefWidth="102.0" text="XX" />
+                                        <TableColumn fx:id="nameColumn" prefWidth="268.75" text="Name" />
+                                        <TableColumn fx:id="gradeSectionColumn" prefWidth="268.75" text="Grade &amp; Section" />
+                                          <TableColumn fx:id="symptomsColumn" prefWidth="268.75" text="Symptoms" />
+                                          <TableColumn fx:id="visitDateColumn" prefWidth="265.0" text="Visit Date" />
                                       </columns>
                                     </TableView>
                                  </children>
                               </Pane>
-                              <VBox prefHeight="128.0" prefWidth="1080.0">
+                              <VBox prefHeight="100.0" prefWidth="1080.0">
                                  <children>
-                                    <HBox prefHeight="41.0" prefWidth="1080.0">
+                                    <HBox prefHeight="42.0" prefWidth="1080.0">
                                        <children>
-                                          <GridPane alignment="TOP_RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="37.0" prefWidth="401.0">
+                                          <GridPane alignment="TOP_RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="19.0" prefWidth="488.0">
                                             <columnConstraints>
-                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="156.0" minWidth="10.0" prefWidth="112.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="116.0" minWidth="2.0" prefWidth="23.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="243.0" minWidth="10.0" prefWidth="62.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="299.0" minWidth="10.0" prefWidth="75.0" />
+                                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="209.0" minWidth="10.0" prefWidth="114.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="0.0" prefWidth="34.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="71.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="131.0" minWidth="10.0" prefWidth="74.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="299.0" minWidth="10.0" prefWidth="81.0" />
                                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="272.0" minWidth="10.0" prefWidth="56.0" />
-                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="272.0" minWidth="10.0" prefWidth="45.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="272.0" minWidth="10.0" prefWidth="59.0" />
                                             </columnConstraints>
                                             <rowConstraints>
                                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <HBox.margin>
-                                                <Insets left="680.0" />
+                                                <Insets left="575.0" />
                                              </HBox.margin>
                                              <children>
-                                                <Label style="-fx-font-size: 14;" styleClass="label-rows-page" text="Rows per Page:" />
-                                                <Label contentDisplay="CENTER" style="-fx-font-size: 14;" styleClass="label-rows" text="10" GridPane.columnIndex="1">
+                                                <Label prefHeight="18.0" prefWidth="152.0" style="-fx-font-size: 14;" styleClass="label-rows-page" text="Rows per Page:" />
+                                                <Label fx:id="rowsPageLabel" contentDisplay="CENTER" style="-fx-font-size: 14;" styleClass="label-rows" text="10" underline="true" GridPane.columnIndex="1">
                                                    <opaqueInsets>
                                                       <Insets />
                                                    </opaqueInsets>
                                                 </Label>
-                                                <ToggleButton fx:id="toggleDropdownRow" minWidth="40.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="40.0" style="-fx-background-color: #ffffff;" GridPane.columnIndex="2">
-                                                   <graphic>
-                                                      <ImageView accessibleRole="TOGGLE_BUTTON" fitHeight="29.0" fitWidth="20.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@../assets/dropdown-icon.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </ToggleButton>
-                                                <Label style="-fx-font-size: 14;" stylesheets="@../styles/fonts.css" text="1-5 of 13" GridPane.columnIndex="3" />
-                                                <ToggleButton fx:id="toggleLeft" minWidth="44.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="54.0" style="-fx-background-color: #ffffff;" GridPane.columnIndex="4">
+                                                <Label fx:id="paginationLabel" prefHeight="18.0" prefWidth="98.0" style="-fx-font-size: 14;" stylesheets="@../styles/fonts.css" text="1-5 of 13" underline="true" GridPane.columnIndex="4" />
+                                                <ToggleButton fx:id="toggleLeft" minWidth="44.0" mnemonicParsing="false" onAction="#handleToggleLeft" prefHeight="26.0" prefWidth="54.0" style="-fx-background-color: #ffffff;" GridPane.columnIndex="5">
                                                    <graphic>
                                                       <ImageView accessibleRole="TOGGLE_BUTTON" fitHeight="29.0" fitWidth="20.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                                                          <image>
@@ -140,7 +116,7 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </ToggleButton>
-                                                <ToggleButton fx:id="toggleRight" minWidth="44.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="54.0" style="-fx-background-color: #ffffff;" GridPane.columnIndex="5">
+                                                <ToggleButton fx:id="toggleRight" minWidth="44.0" mnemonicParsing="false" onAction="#handleToggleRight" prefHeight="26.0" prefWidth="54.0" style="-fx-background-color: #ffffff;" GridPane.columnIndex="6">
                                                    <graphic>
                                                       <ImageView accessibleRole="TOGGLE_BUTTON" fitHeight="29.0" fitWidth="20.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                                                          <image>
@@ -149,9 +125,18 @@
                                                       </ImageView>
                                                    </graphic>
                                                 </ToggleButton>
+                                                <Label text="Showing:" GridPane.columnIndex="3" />
+                                                <ComboBox fx:id="rowsPerPageComboBox" opacity="0.7" prefWidth="150.0" GridPane.columnIndex="2">
+                                                   <GridPane.margin>
+                                                      <Insets bottom="10.0" right="10.0" top="10.0" />
+                                                   </GridPane.margin>
+                                                </ComboBox>
                                              </children>
                                           </GridPane>
                                        </children>
+                                       <padding>
+                                          <Insets top="20.0" />
+                                       </padding>
                                     </HBox>
                                  </children>
                               </VBox>
@@ -164,7 +149,7 @@
                   </GridPane>
                </children>
             </VBox>
-         </content>
-      </ScrollPane>
+         </children>
+      </Pane>
    </center>
 </BorderPane>
