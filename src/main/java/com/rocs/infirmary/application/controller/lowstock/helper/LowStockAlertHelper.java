@@ -37,10 +37,8 @@ public class LowStockAlertHelper {
     }
     /**
      * Sets the service that checks which products are low in stock.
-     *
      * @param lowStockService the service used to get low stock items
      */
-
     public void bindService(LowStockNotificationServiceApplication lowStockService){
         this.lowStockService = lowStockService;
     }

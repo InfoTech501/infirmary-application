@@ -26,7 +26,6 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.rocs.infirmary.application.controller.helper.ControllerHelper.alertAction;
 import static com.rocs.infirmary.application.controller.helper.ControllerHelper.showDialog;
