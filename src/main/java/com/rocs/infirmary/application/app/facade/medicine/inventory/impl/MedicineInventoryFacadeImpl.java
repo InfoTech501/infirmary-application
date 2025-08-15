@@ -61,6 +61,7 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
 
     @Override
     public boolean addMedicine(Medicine medicine) {
+        logger.info("Adding medicine: {}", medicine.getMedicineId());
         return this.medicineInventoryDao.addMedicine(medicine);
 
     }
@@ -71,21 +72,26 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
     }
     @Override
     public List<Medicine> getAllMedicineFromMedicineTable() {
+        logger.info("Fetching all medicine from medicine table");
         return this.medicineInventoryDao.findAll();
     }
 
     @Override
     public boolean deleteInventory(List<Medicine> medicines) {
+        logger.info("Deleting inventory for medicines: {}", medicines);
         return this.medicineInventoryDao.deleteInventory(medicines);
     }
 
     @Override
     public boolean updateMedicineInventory(Long inventoryId, Long medicineId, int quantity, String itemType, Date expirationDate) {
-        return this.medicineInventoryDao.updateInventory(inventoryId,medicineId,quantity, itemType,expirationDate);
+        logger.info("Updating inventory — Inventory ID: {}, Medicine ID: {}, Quantity: {}, Type: {}, Expiration: {}", inventoryId, medicineId, quantity, itemType, expirationDate);
+        return this.medicineInventoryDao.updateInventory(inventoryId, medicineId, quantity, itemType, expirationDate);
+
     }
 
     @Override
     public boolean updateMedicine(Long medicineId, String medicineName, String description) {
-        return this.medicineInventoryDao.updateMedicine(medicineId,medicineName,description);
+        logger.info("Updating medicine — ID: {}, Name: {}", medicineId, medicineName);
+        return this.medicineInventoryDao.updateMedicine(medicineId, medicineName, description);
     }
 }
