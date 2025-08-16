@@ -2,17 +2,33 @@ package com.rocs.infirmary.application.controller.inventory;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.testfx.framework.junit5.ApplicationTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.testfx.api.FxRobot;
+import org.testfx.framework.junit5.ApplicationExtension;
+import org.testfx.framework.junit5.Start;
 
 import java.io.IOException;
 
-public class ViewInventoryControllerTest extends ApplicationTest {
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-    @Override
+
+@ExtendWith(ApplicationExtension.class)
+public class ViewInventoryControllerTest {
+
+    private Button QuantityButton;
+    private  Button Inventory_Filter_Button_A;
+    private  Button Inventory_Filter_Button_Z;
+    private TextField searchTextField;
+    private Button InventoryClearFilterButton;
+
+
+    @Start
     public void start(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/views/InventoryPage.fxml"));
@@ -22,28 +38,44 @@ public class ViewInventoryControllerTest extends ApplicationTest {
         stage.setScene(scene);
         stage.show();
     }
-    @Disabled
+
+    @BeforeEach
+    void setup (FxRobot robot){
+        QuantityButton = robot.lookup("#QuantityButton").queryAs(Button.class);
+        Inventory_Filter_Button_A = robot.lookup("#Inventory_Filter_Button_A").queryAs(Button.class);
+        Inventory_Filter_Button_Z = robot.lookup("#Inventory_Filter_Button_Z").queryAs(Button.class);
+        InventoryClearFilterButton = robot.lookup("#InventoryClearFilterButton").queryAs(Button.class);
+        searchTextField = robot.lookup("#searchTextField").queryAs(TextField.class);
+
+        assertNotNull(QuantityButton);
+        assertNotNull(Inventory_Filter_Button_A);
+        assertNotNull(Inventory_Filter_Button_Z);
+        assertNotNull(InventoryClearFilterButton);
+        assertNotNull(searchTextField);
+    }
+
+
     @Test
-    public void viewInventoryTest() {
+    public void viewInventoryTest(FxRobot robot) {
 
         // Test searching and filtering of items
-        clickOn("#QuantityButton");
-        sleep(1000);
-        clickOn("#Inventory_Filter_Button_A");
-        sleep(1000);
-        clickOn("#Inventory_Filter_Button_Z");
-        sleep(1000);
-        clickOn("#searchTextField");
-        sleep(1000);
-        write("Antacid");
-        sleep(1000);
-        clickOn("#InventoryClearFilterButton");
-        sleep(1000);
-        clickOn("#searchTextField");
-        sleep(1000);
-        write("Aspirin");
-        sleep(1000);
-        clickOn("#InventoryClearFilterButton");
-        sleep(1000);
+        robot.clickOn(QuantityButton);
+        robot.sleep(1000);
+        robot.clickOn(Inventory_Filter_Button_A);
+        robot.sleep(1000);
+        robot.clickOn(Inventory_Filter_Button_Z);
+        robot.sleep(1000);
+        robot.clickOn(searchTextField);
+        robot.sleep(1000);
+        robot.write("Antacid");
+        robot.sleep(1000);
+        robot.clickOn(InventoryClearFilterButton);
+        robot.sleep(1000);
+        robot.clickOn(searchTextField);
+        robot.sleep(1000);
+        robot.write("Aspirin");
+        robot.sleep(1000);
+        robot.clickOn(InventoryClearFilterButton);
+        robot.sleep(1000);
     }
 }
