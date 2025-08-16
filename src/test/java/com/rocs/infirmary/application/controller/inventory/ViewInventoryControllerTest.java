@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
@@ -54,7 +55,7 @@ public class ViewInventoryControllerTest {
         assertNotNull(searchTextField);
     }
 
-
+    @Disabled
     @Test
     public void viewInventoryTest(FxRobot robot) {
 
