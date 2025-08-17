@@ -30,12 +30,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(ApplicationExtension.class)
 public class ViewInventoryControllerTest {
 
-    private Button QuantityButton;
-    private  Button Inventory_Filter_Button_A;
-    private  Button Inventory_Filter_Button_Z;
+    private Button quantityButton;
+    private  Button inventory_Filter_Button_A;
+    private  Button inventory_Filter_Button_Z;
     private TextField searchTextField;
-    private Button InventoryClearFilterButton;
-
+    private Button inventoryClearFilterButton;
     private TableView<Medicine> medDetailsTable;
 
 
@@ -52,26 +51,26 @@ public class ViewInventoryControllerTest {
 
     @BeforeEach
     void setup (FxRobot robot){
-        QuantityButton = robot.lookup("#QuantityButton").queryAs(Button.class);
+        quantityButton = robot.lookup("#QuantityButton").queryAs(Button.class);
         medDetailsTable = robot.lookup("#medDetailsTable").queryAs(TableView.class);
-        Inventory_Filter_Button_A = robot.lookup("#Inventory_Filter_Button_A").queryAs(Button.class);
-        Inventory_Filter_Button_Z = robot.lookup("#Inventory_Filter_Button_Z").queryAs(Button.class);
-        InventoryClearFilterButton = robot.lookup("#InventoryClearFilterButton").queryAs(Button.class);
+        inventory_Filter_Button_A = robot.lookup("#Inventory_Filter_Button_A").queryAs(Button.class);
+        inventory_Filter_Button_Z = robot.lookup("#Inventory_Filter_Button_Z").queryAs(Button.class);
+        inventoryClearFilterButton = robot.lookup("#InventoryClearFilterButton").queryAs(Button.class);
         searchTextField = robot.lookup("#searchTextField").queryAs(TextField.class);
 
         assertNotNull(searchTextField);
-        assertNotNull(QuantityButton);
+        assertNotNull(quantityButton);
         assertNotNull(medDetailsTable);
-        assertNotNull(Inventory_Filter_Button_A);
-        assertNotNull(Inventory_Filter_Button_Z);
-        assertNotNull(InventoryClearFilterButton);
+        assertNotNull(inventory_Filter_Button_A);
+        assertNotNull(inventory_Filter_Button_Z);
+        assertNotNull(inventoryClearFilterButton);
 
     }
 
     @Disabled
     @Test
     public void testQuantityButton(FxRobot robot){
-        robot.clickOn(QuantityButton);
+        robot.clickOn(quantityButton);
         assertEquals(medDetailsTable.getItems().stream().map(Medicine::getQuantity).toList(),
                 medDetailsTable.getItems().stream().map(Medicine::getQuantity).sorted().toList());
     }
@@ -79,7 +78,7 @@ public class ViewInventoryControllerTest {
     @Disabled
     @Test
     public void testInventory_Filter_Button_A(FxRobot robot){
-        robot.clickOn(Inventory_Filter_Button_A);
+        robot.clickOn(inventory_Filter_Button_A);
         assertEquals(medDetailsTable.getItems().stream().map(Medicine::getItemName).toList(),
                 medDetailsTable.getItems().stream().map(Medicine::getItemName).sorted().toList());
     }
@@ -87,7 +86,7 @@ public class ViewInventoryControllerTest {
     @Disabled
     @Test
     public void testInventory_Filter_Button_Z(FxRobot robot){
-        robot.clickOn(Inventory_Filter_Button_Z);
+        robot.clickOn(inventory_Filter_Button_Z);
         assertEquals(medDetailsTable.getItems().stream().map(Medicine::getItemName).toList(),
                 medDetailsTable.getItems().stream().map(Medicine::getItemName).sorted(Comparator.reverseOrder()).toList());
     }
@@ -97,8 +96,8 @@ public class ViewInventoryControllerTest {
     @Test
     public void testInventoryClearFilterButton(FxRobot robot){
         List<String> originalArrangement = medDetailsTable.getItems().stream().map(Medicine::getItemName).toList();
-        robot.clickOn(Inventory_Filter_Button_A);
-        robot.clickOn(InventoryClearFilterButton);
+        robot.clickOn(inventory_Filter_Button_A);
+        robot.clickOn(inventoryClearFilterButton);
         List <String> afterFilterArrangment = medDetailsTable.getItems().stream().map(Medicine::getItemName).toList();
         assertEquals(afterFilterArrangment,originalArrangement);
     }
@@ -108,7 +107,7 @@ public class ViewInventoryControllerTest {
     public void testInventoryClearFilterButtonInTextField(FxRobot robot) {
         robot.clickOn(searchTextField);
         robot.write("Aspirin");
-        robot.clickOn(InventoryClearFilterButton);
+        robot.clickOn(inventoryClearFilterButton);
         assertEquals("", searchTextField.getText());
     }
 
