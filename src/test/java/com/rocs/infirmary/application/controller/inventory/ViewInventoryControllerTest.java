@@ -1,8 +1,12 @@
 package com.rocs.infirmary.application.controller.inventory;
 
+import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+
+import java.util.List;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -14,9 +18,13 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
-import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import java.io.IOException;
+import java.util.Comparator;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @ExtendWith(ApplicationExtension.class)
@@ -27,6 +35,8 @@ public class ViewInventoryControllerTest {
     private  Button Inventory_Filter_Button_Z;
     private TextField searchTextField;
     private Button InventoryClearFilterButton;
+
+    private TableView<Medicine> medDetailsTable;
 
 
     @Start
@@ -43,40 +53,74 @@ public class ViewInventoryControllerTest {
     @BeforeEach
     void setup (FxRobot robot){
         QuantityButton = robot.lookup("#QuantityButton").queryAs(Button.class);
+        medDetailsTable = robot.lookup("#medDetailsTable").queryAs(TableView.class);
         Inventory_Filter_Button_A = robot.lookup("#Inventory_Filter_Button_A").queryAs(Button.class);
         Inventory_Filter_Button_Z = robot.lookup("#Inventory_Filter_Button_Z").queryAs(Button.class);
         InventoryClearFilterButton = robot.lookup("#InventoryClearFilterButton").queryAs(Button.class);
         searchTextField = robot.lookup("#searchTextField").queryAs(TextField.class);
 
+        assertNotNull(searchTextField);
         assertNotNull(QuantityButton);
+        assertNotNull(medDetailsTable);
         assertNotNull(Inventory_Filter_Button_A);
         assertNotNull(Inventory_Filter_Button_Z);
         assertNotNull(InventoryClearFilterButton);
-        assertNotNull(searchTextField);
+
     }
 
     @Disabled
     @Test
-    public void viewInventoryTest(FxRobot robot) {
-
-        // Test searching and filtering of items
+    public void testQuantityButton(FxRobot robot){
         robot.clickOn(QuantityButton);
-        robot.sleep(1000);
+        assertEquals(medDetailsTable.getItems().stream().map(Medicine::getQuantity).toList(),
+                medDetailsTable.getItems().stream().map(Medicine::getQuantity).sorted().toList());
+    }
+
+    @Disabled
+    @Test
+    public void testInventory_Filter_Button_A(FxRobot robot){
         robot.clickOn(Inventory_Filter_Button_A);
-        robot.sleep(1000);
+        assertEquals(medDetailsTable.getItems().stream().map(Medicine::getItemName).toList(),
+                medDetailsTable.getItems().stream().map(Medicine::getItemName).sorted().toList());
+    }
+
+    @Disabled
+    @Test
+    public void testInventory_Filter_Button_Z(FxRobot robot){
         robot.clickOn(Inventory_Filter_Button_Z);
-        robot.sleep(1000);
-        robot.clickOn(searchTextField);
-        robot.sleep(1000);
-        robot.write("Antacid");
-        robot.sleep(1000);
+        assertEquals(medDetailsTable.getItems().stream().map(Medicine::getItemName).toList(),
+                medDetailsTable.getItems().stream().map(Medicine::getItemName).sorted(Comparator.reverseOrder()).toList());
+    }
+
+
+    @Disabled
+    @Test
+    public void testInventoryClearFilterButton(FxRobot robot){
+        List<String> originalArrangement = medDetailsTable.getItems().stream().map(Medicine::getItemName).toList();
+        robot.clickOn(Inventory_Filter_Button_A);
         robot.clickOn(InventoryClearFilterButton);
-        robot.sleep(1000);
+        List <String> afterFilterArrangment = medDetailsTable.getItems().stream().map(Medicine::getItemName).toList();
+        assertEquals(afterFilterArrangment,originalArrangement);
+    }
+
+    @Disabled
+    @Test
+    public void testInventoryClearFilterButtonInTextField(FxRobot robot) {
         robot.clickOn(searchTextField);
-        robot.sleep(1000);
         robot.write("Aspirin");
-        robot.sleep(1000);
         robot.clickOn(InventoryClearFilterButton);
-        robot.sleep(1000);
+        assertEquals("", searchTextField.getText());
+    }
+
+    @Disabled
+    @Test
+    public void testSearchTextField(FxRobot robot){
+        robot.clickOn(searchTextField);
+        robot.write("Antacid");
+        assertEquals("Antacid", searchTextField.getText());
+
+        boolean found = medDetailsTable.getItems().stream().anyMatch(med -> "Antacid".equals(med.getItemName()));
+        assertTrue(found);
+        assertTrue(robot.lookup("Antacid").tryQuery().isPresent());
     }
 }
