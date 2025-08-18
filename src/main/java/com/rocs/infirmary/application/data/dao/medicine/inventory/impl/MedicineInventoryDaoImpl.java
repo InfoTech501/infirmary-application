@@ -112,21 +112,22 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
 
     @Override
     public boolean addMedicine(Medicine medicine) {
-
+        boolean isAdded = false;
         try (Connection con = ConnectionHelper.getConnection();
              PreparedStatement stmt = con.prepareStatement(ADD_MEDICINE_QUERY)) {
             stmt.setString(1, medicine.getItemName());
-            stmt.setString(2, medicine.getDescription());
-            stmt.setInt(3, 1);
+            stmt.setString(2, medicine.getItemType());
+            stmt.setInt(3, medicine.getQuantity());
+
             int affectedRow = stmt.executeUpdate();
 
-            return affectedRow > 0;
+            isAdded = affectedRow > 0;
 
         } catch (SQLException e) {
             System.out.println("Medicine ID already exist");
         }
         LOGGER.info("Added Date :   " + new Date());
-        return false;
+        return isAdded;
     }
 
     @Override
