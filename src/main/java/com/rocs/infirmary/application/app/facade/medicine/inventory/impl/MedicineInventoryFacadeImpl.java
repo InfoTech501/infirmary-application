@@ -2,6 +2,7 @@ package com.rocs.infirmary.application.app.facade.medicine.inventory.impl;
 import com.rocs.infirmary.application.data.dao.medicine.inventory.MedicineInventoryDao;
 import com.rocs.infirmary.application.app.facade.medicine.inventory.MedicineInventoryFacade;
 import com.rocs.infirmary.application.data.dao.medicine.inventory.impl.MedicineInventoryDaoImpl;
+import com.rocs.infirmary.application.data.model.inventory.Inventory;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 
 import java.util.Date;
@@ -60,10 +61,38 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
     }
 
     @Override
+    public List<Inventory> getAllInventory() {
+        logger.info("Entering getAllInventory");
+        List<Inventory> inventories = medicineInventoryDao.getAllInventory();
+        logger.info("Exiting getAllInventory");
+        return inventories;
+    }
+
+    @Override
+    public List<Medicine> searchInventory(String searchTerm, String filter, Long userId) {
+        String timestamp = new java.util.Date().toString();
+        logger.info("Entering searchMedicine | userId: {} | timestamp: {} | searchTerm: '{}' | filter: '{}'",
+                userId, timestamp, searchTerm, filter);
+        List<Medicine> results = medicineInventoryDao.searchInventory(searchTerm, filter);
+        if (results.isEmpty()) {
+            logger.warn("searchMedicine returned no results | userId: {} | timestamp: {} | searchTerm: '{}' | filter: '{}'",
+                    userId, timestamp, searchTerm, filter);
+        } else {
+            logger.info("Exiting searchMedicine | userId: {} | timestamp: {} | {} results found for searchTerm: '{}' with filter: '{}'",
+                    userId, timestamp, results.size(), searchTerm, filter);
+        }
+
+        return results;
+    }
+
+
+    @Override
     public boolean addMedicine(Medicine medicine) {
         return this.medicineInventoryDao.addMedicine(medicine);
 
     }
+
+
 
     @Override
     public boolean addInventory(Long medicineId, String itemType, int quantity, Date expirationDate) {
