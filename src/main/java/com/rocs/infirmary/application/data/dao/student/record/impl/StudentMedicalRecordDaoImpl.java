@@ -83,7 +83,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
     }
 
     /**
-     * Deactivates a student's medical record based on their LRN (Learner Reference Number).
+     * Deactivates a student's medical record based on Medical Record ID.
      * Instead of completely removing the data, it likely updates the status
      * of the medical record in the database to indicate it's no longer active.
      * <p>
@@ -91,17 +91,15 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
      * while a status of 1 means the record is still active and present in the system.
      */
     @Override
-    public boolean deleteStudentMedicalRecord(String LRN, Long medicalRecordId) {
+    public boolean deleteStudentMedicalRecord(Long medicalRecordId) {
         LOGGER.info("Delete medical records started");
-        Student studentMedicalRecord = getStudent(LRN);
 
         try (Connection con = ConnectionHelper.getConnection()) {
 
             PreparedStatement preparedStatement = con.prepareStatement(DELETE_STUDENT_MEDICAL_RECORD);
             LOGGER.info("Query in use" + DELETE_STUDENT_MEDICAL_RECORD);
             preparedStatement.setLong(1, medicalRecordId);
-            preparedStatement.setLong(2, studentMedicalRecord.getStudentId());
-            LOGGER.info("data inserted: " + "LRN: " + LRN + "Medical record id:" + medicalRecordId);
+            LOGGER.info("data inserted: " + "Medical record id:" + medicalRecordId);
             int affectedRow = preparedStatement.executeUpdate();
             return affectedRow > 0;
         } catch (SQLException e) {
