@@ -282,11 +282,24 @@ public class AddInventoryController implements Initializable {
         } else if (!isValidInputNumber(quantityTextField.getText())) {
             showDialog("Invalid Input","Quantity must only contain number");
         } else {
-           if(addMedicine(Integer.parseInt(quantityTextField.getText()))){
-               if (parentController != null) {
-                   parentController.refresh();
-               }
-           }
+
+            Optional<ButtonType> confirmAction = alertAction(
+                    "Add Confirmation",
+                    "Are you sure you want to add this medicine to inventory?\n\n"
+                            + "Product: " + productNameTextField.getText() + "\n"
+                            + "Quantity: " + quantityTextField.getText() + "\n"
+                            + "Item Type: " + itemTypeComboBox.getSelectionModel().getSelectedItem() + "\n"
+                            + "Expiration Date: " + expirationDatePicker.getValue()
+            );
+            if (confirmAction.isPresent() && confirmAction.get().getButtonData() == ButtonBar.ButtonData.YES) {
+                if (addMedicine(Integer.parseInt(quantityTextField.getText()))) {
+                    if (parentController != null) {
+                        parentController.refresh();
+                    }
+                }
+            } else {
+                LOGGER.info("Canceled the add operation.");
+            }
         }
     }
     private boolean deleteMedicine(){
