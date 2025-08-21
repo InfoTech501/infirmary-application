@@ -1,7 +1,7 @@
 package com.rocs.infirmary.application.app.facade.dashboard;
 
 import com.rocs.infirmary.application.data.model.report.ailment.CommonAilmentsReport;
-import com.rocs.infirmary.application.data.model.report.lowstock.LowStockReport;
+import com.rocs.infirmary.application.data.model.report.lowstock.LowStockItems;
 import com.rocs.infirmary.application.data.model.report.visit.FrequentVisitReport;
 import com.rocs.infirmary.application.data.model.report.medication.MedicationTrendReport;
 
@@ -18,7 +18,7 @@ public interface DashboardFacade {
      *
      * @return a list of LowStockItem objects that are low in stock.
      */
-    List<LowStockReport> getAllLowStockMedicine();
+    List<LowStockItems> getAllLowStockMedicine();
 
     /**
      * Retrieves common ailments report from the database using the start date, end date, grade level, and section of student.
