@@ -26,6 +26,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.rocs.infirmary.application.controller.helper.ControllerHelper.alertAction;
 import static com.rocs.infirmary.application.controller.helper.ControllerHelper.showDialog;
@@ -289,8 +290,29 @@ public class AddInventoryController implements Initializable {
            }
         }
     }
-    private boolean deleteMedicine(){
-        return inventoryManagementApplication.getMedicineInventoryFacade().deleteMedicineByItemName(medicineList);
+    private List<Medicine> findMatchingMedicineFromInventory(List<Medicine> selected, List<Medicine> inventoryMedicine) {
+        List<Long> selectedIds = selected.stream()
+                .map(Medicine::getMedicineId)
+                .toList();
+
+        return inventoryMedicine.stream()
+                .filter(med -> selectedIds.contains(med.getMedicineId()))
+                .collect(Collectors.toList());
+    }
+    private boolean deleteMedicines() {
+        refresh();
+        List<Medicine> medicinesToDelete = findMatchingMedicineFromInventory(medicineList, inventoryItem);
+
+        boolean medicineDeleted = inventoryManagementApplication
+                .getMedicineInventoryFacade()
+                .deleteMedicineByItemName(medicineList);
+
+        boolean inventoryDeleted = inventoryManagementApplication
+                .getMedicineInventoryFacade()
+                .deleteInventory(medicinesToDelete);
+
+        parentController.refresh();
+        return medicineDeleted && inventoryDeleted;
     }
     /**
      * this method handles the action triggered when the remove button is clicked.
@@ -319,7 +341,7 @@ public class AddInventoryController implements Initializable {
             stage.show();
         }
         if(getSelectedMedicines().size() == 1 ) {
-            deleteMedicine();
+            deleteMedicines();
             Dialog dialog = new Dialog();
             dialog.setTitle("Notification");
             ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
@@ -368,5 +390,12 @@ public class AddInventoryController implements Initializable {
      * */
     public void setParentController(InventoryController parentController) {
         this.parentController = parentController;
+    }
+    /**
+     * this method retrieve's the parent controller instance to be associated with other controllers.
+     * @return the parent InventoryController instance
+     */
+    public InventoryController getParentController() {
+        return parentController;
     }
 }
