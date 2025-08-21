@@ -4,7 +4,7 @@ import com.rocs.infirmary.application.app.facade.dashboard.DashboardFacade;
 import com.rocs.infirmary.application.data.dao.report.dashboard.DashboardReports;
 import com.rocs.infirmary.application.data.dao.report.dashboard.impl.DashboardReportsImpl;
 import com.rocs.infirmary.application.data.model.report.ailment.CommonAilmentsReport;
-import com.rocs.infirmary.application.data.model.report.lowstock.LowStockReport;
+import com.rocs.infirmary.application.data.model.report.lowstock.LowStockItems;
 import com.rocs.infirmary.application.data.model.report.visit.FrequentVisitReport;
 import com.rocs.infirmary.application.data.model.report.medication.MedicationTrendReport;
 
@@ -21,13 +21,26 @@ import org.slf4j.LoggerFactory;
 public class DashboardFacadeImpl implements DashboardFacade {
 
     /** The data access object for Dashboard. */
-    private final DashboardReports dashboard = new DashboardReportsImpl();
+    private DashboardReports dashboard = new DashboardReportsImpl();
     private static final Logger logger = LoggerFactory.getLogger(DashboardFacadeImpl.class);
-
+    /**
+     * {@code DashboardFacadeImpl()} is a constructor that requires parameter
+     * @param dashboard DAO implementation of Dashboard
+     * this provides the business logic of the Dashboard
+     * {@code this.dashboard = dashboard} is used to initialize the DashboardReports
+     */
+    public DashboardFacadeImpl(DashboardReports dashboard) {
+        this.dashboard = dashboard;
+    }
+    /**
+     * DashboardFacadeImpl()
+     * is a no argument constructor that provides an option to access the Dashboard Facade without needing to provide parameters
+     */
+    public DashboardFacadeImpl(){}
     @Override
-    public List<LowStockReport> getAllLowStockMedicine() {
+    public List<LowStockItems> getAllLowStockMedicine() {
         logger.info("Entering getAllLowStockMedicine");
-        List<LowStockReport> lowStockItems = dashboard.findAllLowStockMedicine();
+        List<LowStockItems> lowStockItems = dashboard.findAllLowStockMedicine();
         logger.info("Exiting getAllLowStockMedicine with {} items found.", lowStockItems.size());
         return lowStockItems;
     }
