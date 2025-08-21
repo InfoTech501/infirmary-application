@@ -69,8 +69,12 @@ create table ailments (
   primary key (ailment_id));
 
 create table medical_history (
-  med_history_id number(10,0) not null,
-  description varchar2(255 char),
+  med_history_id number(10,0) generated as identity,
+  student_id number(20,0),
+  adviser_id number(20,0),
+  health_problems varchar2(128),
+  current_medications varchar2(64),
+  last_checkup_date date,
   primary key (med_history_id));
 
 create table medical_record (
@@ -78,7 +82,6 @@ create table medical_record (
     constraint MEDICAL_RECORD_NOT_NULL not null,
   student_id number(20,0),
   ailment_id number(20,0),
-  med_history_id number(20,0),
   nurse_in_charge_id number(20,0),
   symptoms varchar2(60),
   temperature_readings varchar2(10),
@@ -164,6 +167,14 @@ alter table student
     add constraint FK_STUDENT_STUD_GUARDIAN_ID
     foreign key (stud_guardian_id) references guardian_details;
 
+alter table medical_history
+    add constraint FK_MEDICAL_HISTORY_STUDENT_ID
+    foreign key (student_id) references student;
+
+alter table medical_history
+    add constraint FK_MEDICAL_HISTORY_ADVISER_ID
+    foreign key (adviser_id) references person;
+
 alter table medical_record
     add constraint FK_MEDICAL_RECORD_STUDENT_ID
     foreign key (student_id) references student;
@@ -171,10 +182,6 @@ alter table medical_record
 alter table medical_record
     add constraint FK_MEDICAL_RECORD_AILMENT_ID
     foreign key (ailment_id) references ailments;
-
-alter table medical_record
-    add constraint FK_MEDICAL_RECORD_MED_HISTORY_ID
-    foreign key (med_history_id) references medical_history;
 
 alter table medical_record
     add constraint FK_MEDICAL_RECORD_NURSE_IN_CHARGE_ID
@@ -224,6 +231,8 @@ insert into person (first_name, middle_name, last_name, birthdate, age, gender, 
 values ('Emily', null, 'Smith', TO_TIMESTAMP('1989-03-15 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), '34', 'FEMALE', 'emily.smith@gmail.com', 'Silang, Cavite', '09326789012');
 insert into person (first_name, middle_name, last_name, birthdate, age, gender, email, address, contact_number)
 values ('Mark', 'David', 'Brown', TO_TIMESTAMP('2002-07-04 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), '23', 'MALE', 'mark.brown@gmail.com', 'Salaban', '09437890123');
+insert into person (first_name, middle_name, last_name, birthdate, age, gender, email, address, contact_number)
+values ('Cale', 'Mavis', 'Brown', TO_TIMESTAMP('2003-05-04 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), '22', 'MALE', 'cale.mavis@gmail.com', 'Salaban', '09537856189');
 
 --INSERT LOGIN DATA
 insert into login (username, password, person_id, join_date, last_login_date, role, authorities, is_active, is_locked)
@@ -289,15 +298,15 @@ values ('7', '03', '004', '106846539215');
 
 -- INSERT EMPLOYEE DATA
 insert into employee (id, employee_id)
-values (1, 'EMP-0001');
+values (8, 'EMP-0001');
 insert into employee (id, employee_id)
-values (2, 'EMP-0002');
+values (9, 'EMP-0002');
 insert into employee (id, employee_id)
-values (3, 'EMP-0003');
+values (10, 'EMP-0003');
 insert into employee (id, employee_id)
-values (4, 'EMP-0004');
+values (11, 'EMP-0004');
 insert into employee (id, employee_id)
-values (5, 'EMP-0005');
+values (12, 'EMP-0005');
 
 -- INSERT AILMENTS DATA
 insert into ailments (description)
@@ -365,50 +374,62 @@ values ('9', 'Medicine', 50, to_timestamp('2026-03-20 00:00:00.00', 'yyyy-mm-dd 
 insert into inventory (medicine_id, item_type, quantity, expiration_date)
 values ('10', 'Medicine', 4, to_timestamp('2027-08-25 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 
+--INSERT MEDICAL HISTORY DATA
+insert into medical_history(student_id, adviser_id, health_problems, current_medications, last_checkup_date)
+values (1, 9, 'Asthma', 'Salbutamol inhaler', 'July 15, 2025');
+insert into medical_history(student_id, adviser_id, health_problems, current_medications, last_checkup_date)
+values (2, 8, 'Hypertension', 'Amlodipine', 'June 10, 2021');
+insert into medical_history(student_id, adviser_id, health_problems, current_medications, last_checkup_date)
+values(3, 8, 'None', 'None', 'August 08, 2020');
+insert into medical_history(student_id, adviser_id, health_problems, current_medications, last_checkup_date)
+values(4, 10, 'Diabetes Type II', 'Metformin', 'May 22, 2019');
+insert into medical_history(student_id, adviser_id, health_problems, current_medications, last_checkup_date)
+values(5, 10, 'Seasonal allergies', 'Cetirizine', 'August 19, 2023');
+
 --INSERT MEDICAL RECORD DATA
-insert into medical_record (student_id, ailment_id, med_history_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
-values (1, 1, null, 1, 'Headache', '37.5°C', '130/85', 88, 18, to_timestamp('2000-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Prescribed pain reliever', 1);
-insert into medical_record (student_id, ailment_id, med_history_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
-values (2, 2, null, 2, 'Stomachache', '37.2°C', '140/90', 92, 20, to_timestamp('2008-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Rest and hydration', 0);
-insert into medical_record (student_id, ailment_id, med_history_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
-values (3, 3, null, 3, 'Fever', '38.5°C', '120/80', 85, 19, to_timestamp('2025-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Prescribed antipyretic', 1);
-insert into medical_record (student_id, ailment_id, med_history_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
-values (4, 4, null, 4, 'Dry cough', '37.0°C', '110/70', 78, 16, to_timestamp('2024-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Prescribed cough syrup', 0);
-insert into medical_record (student_id, ailment_id, med_history_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
-values (5, 1, null, 3, 'Dizziness', '37.0°C', '115/75', 72, 15, to_timestamp('2020-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Recommended hydration', 1);
-insert into medical_record (student_id, ailment_id, med_history_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
-values (3, 1, null, 4, 'Headache', '37.0°C', '125/85', 80, 17, to_timestamp('2023-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Prescribed pain reliver', 0);
-insert into medical_record (student_id, ailment_id, med_history_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
-values (6, 6, null, 2, 'Skin rash', '36.9°C', '118/78', 75, 16, TO_TIMESTAMP('2022-04-20 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Prescribed antihistamine cream', 1);
-insert into medical_record (student_id, ailment_id, med_history_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
-values (1, 9, null, 3, 'Sore throat', '37.4°C', '122/82', 78, 17, TO_TIMESTAMP('2021-03-15 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Recommended salt water gargle', 1);
-insert into medical_record (student_id, ailment_id, med_history_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
-values (1, 8, null, 1, 'Dizziness', '36.8°C', '121/81', 74, 16, TO_TIMESTAMP('2020-08-14 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Recommended hydration', 0);
-insert into medical_record (student_id, ailment_id, med_history_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
-values (4, 10, null, 4, 'Allergic reaction', '36.7°C', '125/85', 80, 17, TO_TIMESTAMP('2023-09-30 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Prescribed antihistamine tablets', 1);
-insert into medical_record (student_id, ailment_id, med_history_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
-values (7, 7, null, 2, 'Shortness of breath', '37.0°C', '135/90', 95, 22, TO_TIMESTAMP('2024-06-05 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Prescribed inhaler', 0);
+insert into medical_record (student_id, ailment_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
+values (1, 1, 11, 'Headache', '37.5°C', '130/85', 88, 18, to_timestamp('2000-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Prescribed pain reliever', 1);
+insert into medical_record (student_id, ailment_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
+values (2, 2, 12, 'Stomachache', '37.2°C', '140/90', 92, 20, to_timestamp('2008-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Rest and hydration', 0);
+insert into medical_record (student_id, ailment_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
+values (3, 3, 12, 'Fever', '38.5°C', '120/80', 85, 19, to_timestamp('2025-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Prescribed antipyretic', 1);
+insert into medical_record (student_id, ailment_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
+values (4, 4, 11, 'Dry cough', '37.0°C', '110/70', 78, 16, to_timestamp('2024-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Prescribed cough syrup', 0);
+insert into medical_record (student_id, ailment_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
+values (5, 1, 11, 'Dizziness', '37.0°C', '115/75', 72, 15, to_timestamp('2020-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Recommended hydration', 1);
+insert into medical_record (student_id, ailment_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
+values (3, 1, 12, 'Headache', '37.0°C', '125/85', 80, 17, to_timestamp('2023-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Prescribed pain reliver', 0);
+insert into medical_record (student_id, ailment_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
+values (6, 6, 11, 'Skin rash', '36.9°C', '118/78', 75, 16, TO_TIMESTAMP('2022-04-20 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Prescribed antihistamine cream', 1);
+insert into medical_record (student_id, ailment_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
+values (1, 9, 11, 'Sore throat', '37.4°C', '122/82', 78, 17, TO_TIMESTAMP('2021-03-15 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Recommended salt water gargle', 1);
+insert into medical_record (student_id, ailment_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
+values (1, 8, 12, 'Dizziness', '36.8°C', '121/81', 74, 16, TO_TIMESTAMP('2020-08-14 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Recommended hydration', 0);
+insert into medical_record (student_id, ailment_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
+values (4, 10, 12, 'Allergic reaction', '36.7°C', '125/85', 80, 17, TO_TIMESTAMP('2023-09-30 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Prescribed antihistamine tablets', 1);
+insert into medical_record (student_id, ailment_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
+values (7, 7, 11, 'Shortness of breath', '37.0°C', '135/90', 95, 22, TO_TIMESTAMP('2024-06-05 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Prescribed inhaler', 0);
 
 --INSERT MEDICINE ADMINISTERED
 insert into medicine_administered (medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
-values ('1', 1, '1', 'Ibuprofen 200mg administered', 1, to_timestamp('2000-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+values ('1', 1, '11', 'Ibuprofen 200mg administered', 1, to_timestamp('2000-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 insert into medicine_administered (medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
-values ('2', 2, '2', 'Cough syrup 10ml administered', 2, to_timestamp('2008-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+values ('2', 2, '12', 'Cough syrup 10ml administered', 2, to_timestamp('2008-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 insert into medicine_administered (medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
-values ('3', 3, '1', 'Paracetamol 500mg administered', 1, to_timestamp('2025-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+values ('3', 3, '12', 'Paracetamol 500mg administered', 1, to_timestamp('2025-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 insert into medicine_administered (medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
-values ('4', 4, '3', 'Antacid 500mg administered', 2, to_timestamp('2024-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+values ('4', 4, '11', 'Antacid 500mg administered', 2, to_timestamp('2024-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 insert into medicine_administered (medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
-values ('5', 5, '1', 'Vitamin C 500mg administered', 1, to_timestamp('2020-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+values ('5', 5, '11', 'Vitamin C 500mg administered', 1, to_timestamp('2020-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 insert into medicine_administered (medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
-values ('6', 6, '2', 'Ibuprofen 200mg administered', 1, TO_TIMESTAMP('2023-02-15 09:30:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+values ('6', 6, '12', 'Ibuprofen 200mg administered', 1, TO_TIMESTAMP('2023-02-15 09:30:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 insert into medicine_administered (medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
-values ('7', 7, '1', 'Antihistamine cream administered', 2, TO_TIMESTAMP('2022-07-10 15:45:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+values ('7', 7, '11', 'Antihistamine cream administered', 2, TO_TIMESTAMP('2022-07-10 15:45:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 insert into medicine_administered (medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
-values ('8', 8, '4', 'Ibuprofen 400mg administered', 1, TO_TIMESTAMP('2021-05-25 12:20:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+values ('8', 8, '11', 'Ibuprofen 400mg administered', 1, TO_TIMESTAMP('2021-05-25 12:20:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 insert into medicine_administered (medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
-values ('9', 9, '3', 'Decongestant 10ml administered', 1, TO_TIMESTAMP('2020-10-01 08:15:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+values ('9', 9, '12', 'Decongestant 10ml administered', 1, TO_TIMESTAMP('2020-10-01 08:15:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 insert into medicine_administered (medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
-values ('10', 10, '2', 'Antibiotics 500mg administered', 1, TO_TIMESTAMP('2023-03-20 11:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+values ('10', 10, '12', 'Antibiotics 500mg administered', 1, TO_TIMESTAMP('2023-03-20 11:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 
 commit;
