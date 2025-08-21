@@ -22,7 +22,7 @@ public interface StudentMedicalRecordDao {
      * @param medicalRecordId is a medical records' unique identifier assigned to each medical record of a student
      * @return true if the medical record is successfully deleted, false when medical record is not successfully deleted
      * */
-    boolean deleteStudentMedicalRecord(String LRN, Long medicalRecordId);
+    boolean deleteStudentMedicalRecord(Long medicalRecordId);
     /**
      * This is used to update the specified medicine record in the inventory.
      * @param symptoms is a student's symptoms

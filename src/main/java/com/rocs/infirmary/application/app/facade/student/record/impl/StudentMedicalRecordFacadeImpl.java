@@ -37,13 +37,14 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
     }
 
     /**
-     * This is used to delete a student's medical record based on their Learner Reference Number (LRN).
+     * This is used to delete a student's medical record based on the medical record unique id.
      * boolean returns true if the deletion was successful, otherwise false.
+     * @param medicalRecordId is the uniue identifier assigned to each medical record of a student.
      */
     @Override
-    public boolean deleteStudentMedicalRecordByLrn(String LRN, Long medicalRecordId) {
-        logger.info("Entering deleteStudentMedicalRecordByLrn with LRN: {}, medical record id: {}", LRN, medicalRecordId);
-        boolean isDeleted = this.studentMedRecord.deleteStudentMedicalRecord(LRN, medicalRecordId);
+    public boolean deleteStudentMedicalRecordByLrn(Long medicalRecordId) {
+        logger.info("Entering deleteStudentMedicalRecordByLrn with LRN: {}, medical record id: {}", medicalRecordId);
+        boolean isDeleted = this.studentMedRecord.deleteStudentMedicalRecord(medicalRecordId);
         logger.info("Exiting deleteStudentMedicalRecordByLrn with result: {}", isDeleted);
         return isDeleted;
     }

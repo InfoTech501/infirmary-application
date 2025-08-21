@@ -31,12 +31,12 @@ public class QueryConstants {
             "LEFT JOIN medicine m ON ma.medicine_id = m.medicine_id\n" +
             "WHERE s.LRN = ?";
     /**
-     * query that delete a student's medical record as inactive by its student id and medical record id.
+     * query that delete a student's medical record as inactive using its unique medical record id.
      */
     public static String DELETE_STUDENT_MEDICAL_RECORD = """ 
             UPDATE MEDICAL_RECORD
             SET IS_ACTIVE = 0
-            WHERE STUDENT_ID = ? AND ID = ?""";
+            WHERE ID = ?""";
     /**
      * query that updates student's symptoms by medical record id.
      */
