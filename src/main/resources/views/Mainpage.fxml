@@ -61,13 +61,22 @@
                      </padding>
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="90.0" prefWidth="344.0" HBox.hgrow="ALWAYS">
-                     <ToggleButton fx:id="notificationBtn" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #f0f0f0;">
-                        <graphic>
-                           <ImageView accessibleRole="TOGGLE_BUTTON" fitHeight="40.0" fitWidth="40.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
-                              <Image url="@../assets/notification-icon.png" />
+                     <StackPane prefHeight="70.0" prefWidth="50.0">
+                        <children>
+                           <ToggleButton fx:id="toggleButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #f0f0f0;">
+                              <graphic>
+                                 <ImageView accessibleRole="TOGGLE_BUTTON" fitHeight="40.0" fitWidth="64.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+                                    <Image url="@../assets/notification-icon.png" />
+                                 </ImageView>
+                              </graphic>
+                           </ToggleButton>
+                           <ImageView fx:id="redCircle" fitHeight="7.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true" translateX="14.0" translateY="-12.0">
+                              <image>
+                                 <Image url="@../assets/round-red-notification.png" />
+                              </image>
                            </ImageView>
-                        </graphic>
-                     </ToggleButton>
+                        </children>
+                     </StackPane>
                      <ToggleButton fx:id="accountBtn" mnemonicParsing="false" prefHeight="50.0" prefWidth="244.0" style="-fx-background-color: #f0f0f0;" text="Mr./ Ms. Username">
                         <graphic>
                            <ImageView fx:id="dropdownAccountBtn" accessibleRole="TOGGLE_BUTTON" fitHeight="33.0" fitWidth="36.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
