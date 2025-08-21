@@ -62,7 +62,7 @@ class DashboardPageControllerTest {
 
     @Disabled
     @Test
-    void testCommonAilmentsRptTable(FxRobot robot){
+    void testCommonAilmentsRptTable(){
 
         assertNotNull(commonAilmentsRptTable.getItems());
         assertFalse(commonAilmentsRptTable.getItems().isEmpty());
@@ -77,7 +77,7 @@ class DashboardPageControllerTest {
 
     @Disabled
     @Test
-    void testMedTrendRptTable(FxRobot robot){
+    void testMedTrendRptTable(){
 
         assertNotNull(medTrendRptTable.getItems());
         assertFalse(medTrendRptTable.getItems().isEmpty());
