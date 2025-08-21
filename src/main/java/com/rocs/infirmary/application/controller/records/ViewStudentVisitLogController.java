@@ -47,7 +47,7 @@ public class ViewStudentVisitLogController implements Initializable {
     @FXML
     private Label viewBloodPressure;
     @FXML
-    private Label viewSymptoms;
+    private Label viewAilment;
     @FXML
     private Label viewNurseIntervention;
     @FXML
@@ -88,7 +88,7 @@ public class ViewStudentVisitLogController implements Initializable {
         viewPulseRate.setText(formatValue(medicalRecord.getPulseRate()));
         viewRespiratoryRate.setText(formatValue(medicalRecord.getRespiratoryRate()));
         viewBloodPressure.setText(formatValue(medicalRecord.getBloodPressure()) + " mmHg");
-        viewSymptoms.setText(formatValue(medicalRecord.getSymptoms()));
+        viewAilment.setText(formatValue(medicalRecord.getSymptoms()));
         viewNurseIntervention.setText(formatValue(medicalRecord.getNurseInCharge()));
         viewTreatment.setText(formatValue(medicalRecord.getTreatment()));
         viewMedicineName.setText(formatValue(medicalRecord.getMedicineName()));
