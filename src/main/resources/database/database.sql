@@ -18,6 +18,7 @@ drop table guardian_details cascade constraints;
 drop table student cascade constraints;
 drop table ailments cascade constraints;
 drop table medical_history cascade constraints;
+drop table medical_history_medication cascade constraints;
 drop table medical_record cascade constraints;
 drop table inventory cascade constraints;
 drop table medicine cascade constraints;
@@ -71,11 +72,20 @@ create table ailments (
 create table medical_history (
   med_history_id number(10,0) generated as identity,
   student_id number(20,0),
-  adviser_id number(20,0),
-  health_problems varchar2(128),
-  current_medications varchar2(64),
+  chronic_condition varchar2(64),
+  allergies varchar2(64),
+  surgical_history varchar2(64),
+  family_medical_history varchar2(64),
+  ongoing_treatment varchar2(128),
   last_checkup_date date,
   primary key (med_history_id));
+
+create table medical_history_medication (
+  medication_id number(10,0) generated as identity,
+  med_history_id number(10,0),
+  name varchar2(64),
+  medication_status varchar2(32),
+  primary key (medication_id));
 
 create table medical_record (
   id number(20,0) generated as identity
@@ -140,16 +150,14 @@ create table login (
   primary key (id));
 
 create table employee (
-  id number(20,0)
-    constraint EMPLOYEE_NOT_NULL not null,
-  employee_id varchar2(50 char)
-    constraint EMPLOYEE_ID_NOT_NULL not null
-    constraint EMPLOYEE_ID_UNIQUE unique,
+  id number(20,0) generated as identity,
+  person_id number(20,0),
+  department varchar2(128),
   primary key (id));
 
 alter table employee
     add constraint FK_EMPLOYEE_PERSON_ID
-    foreign key (id) references person;
+    foreign key (person_id) references person;
 
 alter table section
     add constraint FK_SECTION_ADVISER_ID
@@ -171,9 +179,9 @@ alter table medical_history
     add constraint FK_MEDICAL_HISTORY_STUDENT_ID
     foreign key (student_id) references student;
 
-alter table medical_history
-    add constraint FK_MEDICAL_HISTORY_ADVISER_ID
-    foreign key (adviser_id) references person;
+alter table medical_history_medication
+    add constraint FK_MEDICAL_HISTORY_MEDICATION_MED_HISTORY_ID
+    foreign key (med_history_id) references medical_history;
 
 alter table medical_record
     add constraint FK_MEDICAL_RECORD_STUDENT_ID
@@ -297,16 +305,16 @@ insert into student(person_id, section_section_id, stud_guardian_id, LRN)
 values ('7', '03', '004', '106846539215');
 
 -- INSERT EMPLOYEE DATA
-insert into employee (id, employee_id)
-values (8, 'EMP-0001');
-insert into employee (id, employee_id)
-values (9, 'EMP-0002');
-insert into employee (id, employee_id)
-values (10, 'EMP-0003');
-insert into employee (id, employee_id)
-values (11, 'EMP-0004');
-insert into employee (id, employee_id)
-values (12, 'EMP-0005');
+insert into employee (person_id, department)
+values (8, 'Senior High School Department');
+insert into employee (person_id, department)
+values (9, 'Senior High School Department');
+insert into employee (person_id, department)
+values (10, 'Senior High School Department');
+insert into employee (person_id, department)
+values (11, 'Health Services Department');
+insert into employee (person_id, department)
+values (12, 'Health Services Department');
 
 -- INSERT AILMENTS DATA
 insert into ailments (description)
@@ -375,16 +383,28 @@ insert into inventory (medicine_id, item_type, quantity, expiration_date)
 values ('10', 'Medicine', 4, to_timestamp('2027-08-25 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 
 --INSERT MEDICAL HISTORY DATA
-insert into medical_history(student_id, adviser_id, health_problems, current_medications, last_checkup_date)
-values (1, 9, 'Asthma', 'Salbutamol inhaler', 'July 15, 2025');
-insert into medical_history(student_id, adviser_id, health_problems, current_medications, last_checkup_date)
-values (2, 8, 'Hypertension', 'Amlodipine', 'June 10, 2021');
-insert into medical_history(student_id, adviser_id, health_problems, current_medications, last_checkup_date)
-values(3, 8, 'None', 'None', 'August 08, 2020');
-insert into medical_history(student_id, adviser_id, health_problems, current_medications, last_checkup_date)
-values(4, 10, 'Diabetes Type II', 'Metformin', 'May 22, 2019');
-insert into medical_history(student_id, adviser_id, health_problems, current_medications, last_checkup_date)
-values(5, 10, 'Seasonal allergies', 'Cetirizine', 'August 19, 2023');
+insert into medical_history (student_id, chronic_condition, allergies, surgical_history, family_medical_history, ongoing_treatment, last_checkup_date)
+values (1, 'Asthma', 'Dust mites', 'Appendectomy', 'Asthma (mother)', 'Inhaler therapy', to_date('2025-07-15', 'YYYY-MM-DD'));
+insert into medical_history (student_id, chronic_condition, allergies, surgical_history, family_medical_history, ongoing_treatment, last_checkup_date)
+values (2, 'Hypertension', 'None', 'None', 'Hypertension (father)', 'Lifestyle modification', to_date('2021-06-10', 'YYYY-MM-DD'));
+insert into medical_history (student_id, chronic_condition, allergies, surgical_history, family_medical_history, ongoing_treatment, last_checkup_date)
+values (3, 'None', 'None', 'None', 'None', 'None', to_date('2020-08-08', 'YYYY-MM-DD'));
+insert into medical_history (student_id, chronic_condition, allergies, surgical_history, family_medical_history, ongoing_treatment, last_checkup_date)
+values (4, 'Diabetes Type II', 'None', 'Gallbladder removal', 'Diabetes (grandparent)', 'Diet and exercise', to_date('2019-05-22', 'YYYY-MM-DD'));
+insert into medical_history (student_id, chronic_condition, allergies, surgical_history, family_medical_history, ongoing_treatment, last_checkup_date)
+values (5, 'Seasonal allergies', 'Pollen', 'None', 'Allergies (sibling)', 'Antihistamines', to_date('2023-08-19', 'YYYY-MM-DD'));
+
+--INSERT MEDICAL HISTORY MEDICATION
+insert into medical_history_medication (med_history_id, name, medication_status)
+values (1, 'Salbutamol inhaler', 'Active');
+insert into medical_history_medication (med_history_id, name, medication_status)
+values (2, 'Amlodipine', 'Active');
+insert into medical_history_medication (med_history_id, name, medication_status)
+values (4, 'Metformin', 'Active');
+insert into medical_history_medication (med_history_id, name, medication_status)
+values (5, 'Cetirizine', 'Seasonal');
+insert into medical_history_medication (med_history_id, name, medication_status)
+values (5, 'Loratadine', 'Inactive');
 
 --INSERT MEDICAL RECORD DATA
 insert into medical_record (student_id, ailment_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
@@ -412,24 +432,24 @@ values (7, 7, 11, 'Shortness of breath', '37.0°C', '135/90', 95, 22, TO_TIMESTA
 
 --INSERT MEDICINE ADMINISTERED
 insert into medicine_administered (medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
-values ('1', 1, '11', 'Ibuprofen 200mg administered', 1, to_timestamp('2000-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+values (1, 1, 4, 'Ibuprofen 200mg administered', 1, to_timestamp('2000-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 insert into medicine_administered (medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
-values ('2', 2, '12', 'Cough syrup 10ml administered', 2, to_timestamp('2008-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+values (2, 2, 5, 'Cough syrup 10ml administered', 2, to_timestamp('2008-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 insert into medicine_administered (medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
-values ('3', 3, '12', 'Paracetamol 500mg administered', 1, to_timestamp('2025-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+values (3, 3, 5, 'Paracetamol 500mg administered', 1, to_timestamp('2025-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 insert into medicine_administered (medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
-values ('4', 4, '11', 'Antacid 500mg administered', 2, to_timestamp('2024-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+values (4, 4, 4, 'Antacid 500mg administered', 2, to_timestamp('2024-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 insert into medicine_administered (medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
-values ('5', 5, '11', 'Vitamin C 500mg administered', 1, to_timestamp('2020-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+values (5, 5, 4, 'Vitamin C 500mg administered', 1, to_timestamp('2020-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 insert into medicine_administered (medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
-values ('6', 6, '12', 'Ibuprofen 200mg administered', 1, TO_TIMESTAMP('2023-02-15 09:30:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+values (6, 6, 5, 'Ibuprofen 200mg administered', 1, TO_TIMESTAMP('2023-02-15 09:30:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 insert into medicine_administered (medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
-values ('7', 7, '11', 'Antihistamine cream administered', 2, TO_TIMESTAMP('2022-07-10 15:45:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+values (7, 7, 4, 'Antihistamine cream administered', 2, TO_TIMESTAMP('2022-07-10 15:45:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 insert into medicine_administered (medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
-values ('8', 8, '11', 'Ibuprofen 400mg administered', 1, TO_TIMESTAMP('2021-05-25 12:20:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+values (8, 8, 4, 'Ibuprofen 400mg administered', 1, TO_TIMESTAMP('2021-05-25 12:20:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 insert into medicine_administered (medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
-values ('9', 9, '12', 'Decongestant 10ml administered', 1, TO_TIMESTAMP('2020-10-01 08:15:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+values (9, 9, 5, 'Decongestant 10ml administered', 1, TO_TIMESTAMP('2020-10-01 08:15:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 insert into medicine_administered (medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
-values ('10', 10, '12', 'Antibiotics 500mg administered', 1, TO_TIMESTAMP('2023-03-20 11:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+values (10, 10, 5, 'Antibiotics 500mg administered', 1, TO_TIMESTAMP('2023-03-20 11:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 
 commit;
