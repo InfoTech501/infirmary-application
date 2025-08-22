@@ -185,7 +185,7 @@ public class AddInventoryController implements Initializable {
                         .findFirst()
                         .orElse(null);
                 if (existingInventoryItem != null) {
-                    Optional<ButtonType> confirmUpdate = alertAction("Add Confirmation", "The medicine with the same name and expiration date exists in inventory. Do you still want to add this to inventory?");
+                    Optional<ButtonType> confirmUpdate = alertAction("Update Confirmation", "The medicine with the same name and expiration date exists in inventory. Do you want to update the quantity instead?");
                     if (confirmUpdate.isPresent() && confirmUpdate.get().getButtonData() == ButtonBar.ButtonData.YES) {
                         int updatedQuantity = existingInventoryItem.getQuantity() + quantity;
                         boolean updated = inventoryManagementApplication
