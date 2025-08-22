@@ -4,7 +4,7 @@ import com.rocs.infirmary.application.data.dao.report.dashboard.DashboardReports
 import com.rocs.infirmary.application.data.dao.utils.queryconstants.report.dashboard.QueryConstants;
 import com.rocs.infirmary.application.data.model.person.Person;
 import com.rocs.infirmary.application.data.model.report.ailment.CommonAilmentsReport;
-import com.rocs.infirmary.application.data.model.report.lowstock.LowStockReport;
+import com.rocs.infirmary.application.data.model.report.lowstock.LowStockItems;
 import com.rocs.infirmary.application.data.model.report.visit.FrequentVisitReport;
 import com.rocs.infirmary.application.data.model.report.medication.MedicationTrendReport;
 import org.slf4j.Logger;
@@ -25,9 +25,9 @@ import java.util.List;
 public class DashboardReportsImpl implements DashboardReports {
     private static Logger LOGGER = LoggerFactory.getLogger(DashboardReportsImpl.class);
     @Override
-    public List<LowStockReport> findAllLowStockMedicine() {
+    public List<LowStockItems> findAllLowStockMedicine() {
         LOGGER.info("Check low stock medicine started");
-        List<LowStockReport> lowStockItems = new ArrayList<>();
+        List<LowStockItems> lowStockItems = new ArrayList<>();
 
         QueryConstants queryConstants = new QueryConstants();
         String query = queryConstants.getAllLowStockMedicineQuery();
@@ -37,7 +37,7 @@ public class DashboardReportsImpl implements DashboardReports {
 
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                LowStockReport item = new LowStockReport(resultSet.getString("item_name"), resultSet.getInt("quantity"));
+                LowStockItems item = new LowStockItems(resultSet.getString("item_name"), resultSet.getInt("quantity"));
                 LOGGER.info("retrieved data: "+"\n"
                         +"Item Name: "+resultSet.getString("item_name")+"\n"
                         +"Quantity : "+resultSet.getString("quantity"));

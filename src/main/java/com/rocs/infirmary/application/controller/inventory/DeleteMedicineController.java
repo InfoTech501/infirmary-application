@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * {@code DeleteMedicineController} is used to handle event processes of the Medicine when deleting Items
@@ -101,18 +102,45 @@ public class DeleteMedicineController {
             rowIndex++;
         }
     }
-    private boolean deleteMedicine(){
-        return inventoryManagementApplication.getMedicineInventoryFacade().deleteMedicineByItemName(medicineList);
+    private List<Medicine> findMatchingMedicineFromInventory(List<Medicine> selected, List<Medicine> inventoryMedicine) {
+        List<Long> selectedIds = selected.stream()
+                .map(Medicine::getMedicineId)
+                .toList();
+
+        return inventoryMedicine.stream()
+                .filter(med -> selectedIds.contains(med.getMedicineId()))
+                .collect(Collectors.toList());
+    }
+    private boolean deleteMedicines() {
+
+            List<Medicine> inventoryItem = inventoryManagementApplication
+                    .getMedicineInventoryFacade()
+                    .getAllMedicine();
+
+            List<Medicine> medicinesToDelete = findMatchingMedicineFromInventory(medicineList, inventoryItem);
+
+            boolean medicineDeleted = inventoryManagementApplication
+                    .getMedicineInventoryFacade()
+                    .deleteMedicineByItemName(medicineList);
+
+            boolean inventoryDeleted = inventoryManagementApplication
+                    .getMedicineInventoryFacade()
+                    .deleteInventory(medicinesToDelete);
+
+            return medicineDeleted && inventoryDeleted;
     }
     /**
      * this method handles the action triggered when the confirm button is clicked.
      * @param actionEvent the event triggered by the confirm button click
      */
     public void onConfirmButtonClick(ActionEvent actionEvent) {
-        if(deleteMedicine()){
+        if(deleteMedicines()){
             showDialog("Notification","Medicine successfully Deleted");
             if(parentController != null){
                 parentController.refresh();
+                if(parentController.getParentController() != null) {
+                    parentController.getParentController().refresh();
+                }
             }
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             stage.close();

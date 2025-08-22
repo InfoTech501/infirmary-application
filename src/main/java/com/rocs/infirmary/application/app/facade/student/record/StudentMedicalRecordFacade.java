@@ -16,10 +16,11 @@ public interface StudentMedicalRecordFacade {
      */
     List<MedicalRecord> getMedicalInformationByLRN(String LRN);
     /**
-     * This intended to delete a student's medical record based on their Learner Reference Number (LRN).
-     * The LRN is a unique identifier assigned to each student. This value is used to locate and delete the corresponding medical record.
+     * This intended to delete a student's medical record based on medical records' unique id.
+     * The medical record id is a unique identifier assigned to each medical record. This value is used to locate and delete the corresponding medical record.
+     * @param medicalRecordId is the uniue identifier assigned to each medical record of a student
      */
-    boolean deleteStudentMedicalRecordByLrn(String LRN, Long medicalRecordId);
+    boolean deleteStudentMedicalRecordByLrn(Long medicalRecordId);
     /**
      * This intended to update a student's medical record.
      * @param symptoms is the reported symptoms of the student
