@@ -31,7 +31,7 @@ import java.util.function.Function;
  * this implements Initializable interface
  **/
 public class DashboardPageController implements Initializable {
-    private static final Logger logger = LoggerFactory.getLogger(DashboardPageController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DashboardPageController.class);
 
     @FXML
     private Label dateDisplay;
@@ -79,8 +79,10 @@ public class DashboardPageController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        LOGGER.info("Initializing Dashboard Controller for user: {}", usernameDisplay.getText());
         initializeUI();
         loadDashboardData();
+        LOGGER.info("Dashboard Controller initialized successfully");
     }
 
     private void initializeUI() {
@@ -96,6 +98,7 @@ public class DashboardPageController implements Initializable {
     }
 
     private void loadDashboardData() {
+        LOGGER.info("Dashboard data loading");
         try {
             DateRange dateRange = DateRange.daily();
 
@@ -104,8 +107,9 @@ public class DashboardPageController implements Initializable {
             populateCharts();
             populateTables();
 
+            LOGGER.info("Dashboard data successfully loaded");
         } catch (NullPointerException e) {
-            logger.error("Failed to load dashboard data: {}", e.getMessage());
+            LOGGER.error("Failed to load dashboard data: {}", e.getMessage());
         }
     }
 
@@ -113,30 +117,35 @@ public class DashboardPageController implements Initializable {
         String GRADE_11 = "Grade 11";
         String GRADE_12 = "Grade 12";
         DateRange dateRange = DateRange.weekly();
+        LOGGER.info("Populating Charts");
         try {
             studentVisitBarChart.getData().clear();
             studentVisitBarChart.getYAxis().setLabel("Visits");
 
             initializeBarChartWeeklyVisitByGrade(dateRange, GRADE_11);
             initializeBarChartWeeklyVisitByGrade(dateRange, GRADE_12);
+
+            LOGGER.info("Charts successfully populated");
         } catch (NullPointerException e) {
-            logger.error("Failed to populate charts: {}", e.getMessage());
+            LOGGER.error("Failed to populate charts: {}", e.getMessage());
         }
     }
 
     private void populateTables() {
+        LOGGER.info("Populating Tables");
         DateRange dateRange = DateRange.monthly();
-            populateTableMedicationTrendReport(dateRange);
-            populateTableCommonAilmentsReport(dateRange);
+        populateTableMedicationTrendReport(dateRange);
+        populateTableCommonAilmentsReport(dateRange);
         if (medTrendRptTable == null && totalDistributedMedTrend == null) {
-            logger.error("Medication Trend Report table or column is null");
+            LOGGER.error("Medication Trend Report table or column is null");
         }
         if (commonAilmentsRptTable == null && numOfStudCommonAilment == null) {
-            logger.error("Common Ailments Report table or column is null");
+            LOGGER.error("Common Ailments Report table or column is null");
         }
         if (dashboardInfoApplication.getDashboardFacade() == null) {
-            logger.error("Dashboard Facade is null");
+            LOGGER.error("Dashboard Facade is null");
         }
+
     }
 
     private void populateTableMedicationTrendReport(DateRange dateRange) {
@@ -173,13 +182,22 @@ public class DashboardPageController implements Initializable {
     }
 
     private void setClinicVisitReports(DateRange dateRange) {
+        LOGGER.info("Setting Clinic Visit Reports Started");
         String GRADE_11 = "Grade 11";
         String GRADE_12 = "Grade 12";
+
+        try {
         int grade11Visits = getVisitCount(dateRange, GRADE_11);
         int grade12Visits = getVisitCount(dateRange, GRADE_12);
+        LOGGER.info("Clinic visit reports set: Grade 11 = {}, Grade 12 = {}", grade11Visits, grade12Visits);
 
         grade11ClinicVisitTodayRprt.setText(String.valueOf(grade11Visits));
         grade12ClinicVisitTodayRprt.setText(String.valueOf(grade12Visits));
+        LOGGER.info("Setting Clinic Visit Reports Finished");
+
+    } catch (Exception e) {
+        LOGGER.error("Error Setting Clinic Visit Reports", e);
+    }
     }
 
     private int getTotalMedicationUsage(DateRange dateRange) {
