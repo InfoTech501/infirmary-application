@@ -151,6 +151,12 @@ public class DashboardPageController implements Initializable {
     private void populateTableMedicationTrendReport(DateRange dateRange) {
         List<MedicationTrendReport> medicationTrendReports =
                 dashboardInfoApplication.getDashboardFacade().generateMedicationReport(dateRange.getStartDate(), dateRange.getEndDate());
+
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("MedicationTrendReport from {} - {}: {}",
+                    dateRange.getStartDate(), dateRange.getEndDate(), medicationTrendReports);
+        }
+
         ObservableList<MedicationTrendReport> dataMedTrend =
                 FXCollections.observableArrayList(medicationTrendReports);
         medTrendRptTable.setItems(dataMedTrend);
@@ -166,6 +172,12 @@ public class DashboardPageController implements Initializable {
 
         List<CommonAilmentsReport> reports = dashboardInfoApplication.getDashboardFacade().generateCommonAilmentReport(
                 dateRange.getStartDate(), dateRange.getEndDate(), gradeLevel, section);
+
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Common Ailments Report from {} - {}, gradeLevel='{}', section='{}': {}",
+                    dateRange.getStartDate(), dateRange.getEndDate(), gradeLevel, section, reports);
+        }
+
         ObservableList<CommonAilmentsReport> observableCommonAilmentTable =
                 FXCollections.observableArrayList(reports);
         commonAilmentsRptTable.setItems(observableCommonAilmentTable);
@@ -189,7 +201,7 @@ public class DashboardPageController implements Initializable {
         try {
         int grade11Visits = getVisitCount(dateRange, GRADE_11);
         int grade12Visits = getVisitCount(dateRange, GRADE_12);
-        LOGGER.info("Clinic visit reports set: Grade 11 = {}, Grade 12 = {}", grade11Visits, grade12Visits);
+        LOGGER.debug("Clinic visit reports set: Grade 11 = {}, Grade 12 = {}", grade11Visits, grade12Visits);
 
         grade11ClinicVisitTodayRprt.setText(String.valueOf(grade11Visits));
         grade12ClinicVisitTodayRprt.setText(String.valueOf(grade12Visits));
@@ -208,6 +220,11 @@ public class DashboardPageController implements Initializable {
 
     private void setMedicationDistributionReport(DateRange dateRange) {
         int totalUsage = getTotalMedicationUsage(dateRange);
+
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Medication distribution report from {} to {}: total usage = {}",
+                    dateRange.getStartDate(), dateRange.getEndDate(), totalUsage);
+        }
         medDistributtedTodayRprt.setText(String.valueOf(totalUsage));
     }
 
@@ -236,6 +253,11 @@ public class DashboardPageController implements Initializable {
         for (FrequentVisitReport report : reports) {
             String day = sdf.format(report.getVisitDate());
             visitsPerDay.merge(day, report.getVisitCount(), Integer::sum);
+        }
+
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Weekly visit data for grade {} between {} - {}: {}", gradeLevel, dateRange.getStartDate(),
+                    dateRange.getEndDate(), visitsPerDay);
         }
 
         XYChart.Series<String, Number> series = new XYChart.Series<>();
