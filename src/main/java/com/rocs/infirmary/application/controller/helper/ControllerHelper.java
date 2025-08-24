@@ -47,4 +47,13 @@ public class ControllerHelper {
         return dialog.showAndWait();
     }
 
+    public static void infoAction(String title, String content) {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle(title);
+        ButtonType okButton = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
+        dialog.setContentText(content);
+        dialog.getDialogPane().getButtonTypes().add(okButton);
+        dialog.showAndWait();
+    }
+
 }

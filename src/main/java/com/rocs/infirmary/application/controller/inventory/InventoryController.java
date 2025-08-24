@@ -1,5 +1,6 @@
 package com.rocs.infirmary.application.controller.inventory;
 
+import com.rocs.infirmary.application.controller.helper.ControllerHelper;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
 import javafx.collections.FXCollections;
@@ -273,20 +274,13 @@ public class InventoryController implements Initializable {
             stage.show();
         }
         if (getSelectedMedicines().size() == 1) {
-            Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
-            dialog.setTitle("Confirm Delete");
-            dialog.setHeaderText("Delete Medicine");
-            dialog.setContentText("Are you sure you want to delete this medicine?");
-            dialog.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
-                    if (deleteMedicine()) {
-                        Alert info = new Alert(Alert.AlertType.INFORMATION);
-                        info.setTitle("Notification");
-                        info.setContentText("Deleted Successfully!");
-                        info.showAndWait();
-
-                        refresh();
-                        itemSearch();
+            ControllerHelper.alertAction("Confirm Delete", "Are you sure you want to delete this medicine?")
+                    .ifPresent(response -> {
+                        if (response.getButtonData() == ButtonBar.ButtonData.YES) {
+                            if (deleteMedicine()) {
+                                ControllerHelper.infoAction("Notification", "Deleted Successfully!");
+                                refresh();
+                                itemSearch();
                     }
                 }
             });
