@@ -168,17 +168,34 @@ public class AddInventoryController implements Initializable {
     }
     private boolean addMedicine(int quantity) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date expirationDate = dateFormat.parse(String.valueOf(expirationDatePicker.getValue()));
+        Date expirationDate = null;
+
+        if (!itemTypeComboBox.getSelectionModel().getSelectedItem().equals("Non expiry")
+                && expirationDatePicker.getValue() == null) {
+            showDialog("Warning", "Expiration date is required unless item is Non expiry");
+            return false;
+        }
+
+        if (!itemTypeComboBox.getSelectionModel().getSelectedItem().equals("Non expiry")) {
+            expirationDate = dateFormat.parse(String.valueOf(expirationDatePicker.getValue()));
+        }
+
         String productName = productNameTextField.getText();
+
+        if (productName == null || productName.trim().isEmpty()) {
+            showDialog("Warning", "No medicine selected to add.");
+            return false;
+        }
 
         try {
            Medicine existingMedicine = medicine.stream().filter(med -> med.getItemName().equalsIgnoreCase(productName)).findFirst().orElse(null);
             if (existingMedicine != null) {
+                Date finalExpirationDate = expirationDate;
                 Medicine existingInventoryItem = inventoryItem.stream()
                         .filter(item -> {
                             try {
                                 return item.getItemName().equalsIgnoreCase(productName) &&
-                                        dateFormat.parse(item.getExpirationDate().toString()).equals(expirationDate);
+                                        dateFormat.parse(item.getExpirationDate().toString()).equals(finalExpirationDate);
                             } catch (ParseException e) {
                                 throw new RuntimeException(e);
                             }
@@ -274,8 +291,11 @@ public class AddInventoryController implements Initializable {
             LOGGER.warn("Invalid quantity input: " + parsedQuantity);
         }else if (descriptionTextField.getText() == null || descriptionTextField.getText().isEmpty()||descriptionTextField.getText().isBlank()) {
             showDialog("warning","Description cannot be empty");
-        } else if(expirationDatePicker.getValue()==null){
-            showDialog("warning","Expiration date cannot be empty");
+        }else if (!isValidTextInput(descriptionTextField.getText())) {
+            showDialog("Invalid Input", "Description must only contain letters and spaces.");
+        }else if (!"Non expiry".equals(itemTypeComboBox.getSelectionModel().getSelectedItem().toString())
+            && expirationDatePicker.getValue() == null) {
+        showDialog("warning","Expiration date cannot be empty");
         } else if (itemTypeComboBox.getSelectionModel().getSelectedItem().toString() == null||itemTypeComboBox.getSelectionModel().getSelectedItem().toString().isEmpty()||itemTypeComboBox.getSelectionModel().getSelectedItem().toString().isBlank()) {
             showDialog("warning","Item type cannot be empty");
         } else if (!isValidTextInput(productNameTextField.getText())) {
