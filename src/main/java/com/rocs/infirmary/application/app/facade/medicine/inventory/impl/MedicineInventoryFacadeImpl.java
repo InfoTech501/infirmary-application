@@ -60,23 +60,23 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
     }
 
     @Override
-    public boolean addMedicine(Medicine medicine) {
-        Date timestamp = new Date();
-        boolean userId = false;
-
-        logger.info("Entering addMedicine – UserID: {}, Name: {}, Type: {}, Quantity: {}, Timestamp: {}",
-                userId, medicine.getItemName(), medicine.getItemType(), medicine.getQuantity(), timestamp);
+    public boolean addMedicine(Medicine medicine, String userId) {
+        logger.info("Starting addMedicine process for user {}. Medicine details: name={}, type={}, quantity={}",
+                userId, medicine.getItemName(), medicine.getItemType(), medicine.getQuantity());
 
         try {
-            logger.info("Exiting addMedicine with result – UserID: {}, Name: {}, Quantity: {}, Timestamp: {}",
-                    userId, medicine.getItemName(), medicine.getQuantity(), timestamp);
+            boolean result = this.medicineInventoryDao.addMedicine(medicine, userId);
 
+            if (result) {
+                logger.info("Successfully added medicine: {}. User ID: {}. Exiting addMedicine.", medicine.getItemName(), userId);
+            } else {
+                logger.warn("Failed to add medicine: {}. User ID: {}. Exiting addMedicine.", medicine.getItemName(), userId);
+            }
+            return result;
         } catch (Exception e) {
-            logger.error("SQL error while adding medicine – Name: {}, User: {}, Cause: {}",
-                    medicine.getItemName(), userId, e.getMessage());
+            logger.error("Exception occurred while adding medicine {}: {}. User ID: {}", medicine.getItemName(), e.getMessage(), userId, e);
+            return false;
         }
-
-        return userId;
     }
 
     @Override

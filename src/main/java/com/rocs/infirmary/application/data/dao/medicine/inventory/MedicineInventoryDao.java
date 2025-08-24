@@ -30,7 +30,7 @@ public interface MedicineInventoryDao {
      * @param medicine the model containing all attributes of the medicine to be added
      * @return true if the medicine is successfully added; false if the addition fails
      **/
-    boolean addMedicine(Medicine medicine);
+    boolean addMedicine(Medicine medicine, String userId);
     /**
      * This is used to update the specified medicine record in the inventory.
      * @param inventoryId is a unique identifier that is used to specify the item in inventory to be updated

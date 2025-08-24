@@ -32,7 +32,7 @@ public interface MedicineInventoryFacade {
      * @param newMedicine the medicine object containing all necessary attributes
      * @return true if the medicine was successfully added; false otherwise
      */
-    boolean addMedicine(Medicine newMedicine);
+    boolean addMedicine(Medicine newMedicine, String userId);
     /**
      * Updates the inventory by adding a specific quantity of an existing medicine.
      * @param medicineId the unique identifier of the medicine
