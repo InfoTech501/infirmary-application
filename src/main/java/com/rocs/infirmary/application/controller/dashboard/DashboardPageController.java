@@ -82,7 +82,7 @@ public class DashboardPageController implements Initializable {
         LOGGER.info("Initializing Dashboard Controller for user: {}", usernameDisplay.getText());
         initializeUI();
         loadDashboardData();
-        LOGGER.info("Dashboard Controller initialized successfully");
+
     }
 
     private void initializeUI() {
@@ -108,8 +108,9 @@ public class DashboardPageController implements Initializable {
             populateTables();
 
             LOGGER.info("Dashboard data successfully loaded");
+            LOGGER.info("Dashboard Controller initialized successfully");
         } catch (NullPointerException e) {
-            LOGGER.error("Failed to load dashboard data: {}", e.getMessage());
+            LOGGER.error("Failed to load dashboard data", e.getMessage());
         }
     }
 
@@ -127,7 +128,7 @@ public class DashboardPageController implements Initializable {
 
             LOGGER.info("Charts successfully populated");
         } catch (NullPointerException e) {
-            LOGGER.error("Failed to populate charts: {}", e.getMessage());
+            LOGGER.error("Failed to populate charts", e.getMessage());
         }
     }
 
@@ -151,11 +152,8 @@ public class DashboardPageController implements Initializable {
     private void populateTableMedicationTrendReport(DateRange dateRange) {
         List<MedicationTrendReport> medicationTrendReports =
                 dashboardInfoApplication.getDashboardFacade().generateMedicationReport(dateRange.getStartDate(), dateRange.getEndDate());
-
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("MedicationTrendReport from {} - {}: {}",
+        LOGGER.debug("MedicationTrendReport from {} - {}: {}",
                     dateRange.getStartDate(), dateRange.getEndDate(), medicationTrendReports);
-        }
 
         ObservableList<MedicationTrendReport> dataMedTrend =
                 FXCollections.observableArrayList(medicationTrendReports);
@@ -172,11 +170,9 @@ public class DashboardPageController implements Initializable {
 
         List<CommonAilmentsReport> reports = dashboardInfoApplication.getDashboardFacade().generateCommonAilmentReport(
                 dateRange.getStartDate(), dateRange.getEndDate(), gradeLevel, section);
-
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Common Ailments Report from {} - {}, gradeLevel='{}', section='{}': {}",
+        LOGGER.debug("Common Ailments Report from {} - {}, gradeLevel='{}', section='{}': {}",
                     dateRange.getStartDate(), dateRange.getEndDate(), gradeLevel, section, reports);
-        }
+
 
         ObservableList<CommonAilmentsReport> observableCommonAilmentTable =
                 FXCollections.observableArrayList(reports);
@@ -206,10 +202,9 @@ public class DashboardPageController implements Initializable {
         grade11ClinicVisitTodayRprt.setText(String.valueOf(grade11Visits));
         grade12ClinicVisitTodayRprt.setText(String.valueOf(grade12Visits));
         LOGGER.info("Setting Clinic Visit Reports Finished");
-
-    } catch (Exception e) {
-        LOGGER.error("Error Setting Clinic Visit Reports", e);
-    }
+        } catch (NullPointerException e) {
+            LOGGER.error("Error Setting Clinic Visit Reports", e.getMessage());
+        }
     }
 
     private int getTotalMedicationUsage(DateRange dateRange) {
@@ -220,11 +215,9 @@ public class DashboardPageController implements Initializable {
 
     private void setMedicationDistributionReport(DateRange dateRange) {
         int totalUsage = getTotalMedicationUsage(dateRange);
-
-        if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Medication distribution report from {} to {}: total usage = {}",
                     dateRange.getStartDate(), dateRange.getEndDate(), totalUsage);
-        }
+
         medDistributtedTodayRprt.setText(String.valueOf(totalUsage));
     }
 
@@ -254,11 +247,8 @@ public class DashboardPageController implements Initializable {
             String day = sdf.format(report.getVisitDate());
             visitsPerDay.merge(day, report.getVisitCount(), Integer::sum);
         }
-
-        if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Weekly visit data for grade {} between {} - {}: {}", gradeLevel, dateRange.getStartDate(),
                     dateRange.getEndDate(), visitsPerDay);
-        }
 
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName(gradeLevel);
