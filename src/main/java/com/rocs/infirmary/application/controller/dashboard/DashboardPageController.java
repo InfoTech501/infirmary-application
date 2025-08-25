@@ -110,7 +110,7 @@ public class DashboardPageController implements Initializable {
             LOGGER.info("Dashboard data successfully loaded");
             LOGGER.info("Dashboard Controller initialized successfully");
         } catch (NullPointerException e) {
-            LOGGER.error("Failed to load dashboard data", e.getMessage());
+            LOGGER.error("Failed to load dashboard data", e);
         }
     }
 
@@ -128,7 +128,7 @@ public class DashboardPageController implements Initializable {
 
             LOGGER.info("Charts successfully populated");
         } catch (NullPointerException e) {
-            LOGGER.error("Failed to populate charts", e.getMessage());
+            LOGGER.error("Failed to populate charts", e);
         }
     }
 
@@ -203,7 +203,7 @@ public class DashboardPageController implements Initializable {
         grade12ClinicVisitTodayRprt.setText(String.valueOf(grade12Visits));
         LOGGER.info("Setting Clinic Visit Reports Finished");
         } catch (NullPointerException e) {
-            LOGGER.error("Error Setting Clinic Visit Reports", e.getMessage());
+            LOGGER.error("Error Setting Clinic Visit Reports", e);
         }
     }
 
