@@ -64,14 +64,11 @@ class DashboardPageControllerTest {
     @Test
     void testCommonAilmentsRptTable(){
 
-        assertNotNull(commonAilmentsRptTable.getItems());
-        assertFalse(commonAilmentsRptTable.getItems().isEmpty());
-
         CommonAilmentsReport mockReport = mock(CommonAilmentsReport.class);
         when(mockReport.getAilment()).thenReturn("toothache");
         commonAilmentsRptTable.getItems().add(mockReport);
         assertTrue(commonAilmentsRptTable.getItems().stream().anyMatch(ailment -> "toothache".equals(ailment.getAilment())));
-
+        assertFalse(commonAilmentsRptTable.getItems().isEmpty());
 
     }
 
@@ -79,17 +76,13 @@ class DashboardPageControllerTest {
     @Test
     void testMedTrendRptTable(){
 
-        assertNotNull(medTrendRptTable.getItems());
-        assertFalse(medTrendRptTable.getItems().isEmpty());
-
         MedicationTrendReport mockMedTrend = mock(MedicationTrendReport.class);
         when(mockMedTrend.getMedicineName()).thenReturn("acetaminophen");
         medTrendRptTable.getItems().add(mockMedTrend);
         assertTrue(medTrendRptTable.getItems().stream().anyMatch(med -> "acetaminophen".equals(med.getMedicineName())));
+        assertFalse(medTrendRptTable.getItems().isEmpty());
 
     }
-
-
 
 }
 
