@@ -193,15 +193,23 @@ public class AddInventoryController implements Initializable {
                 Date finalExpirationDate = expirationDate;
                 Medicine existingInventoryItem = inventoryItem.stream()
                         .filter(item -> {
-                            try {
-                                return item.getItemName().equalsIgnoreCase(productName) &&
-                                        dateFormat.parse(item.getExpirationDate().toString()).equals(finalExpirationDate);
-                            } catch (ParseException e) {
-                                throw new RuntimeException(e);
+                            if (!item.getItemName().equalsIgnoreCase(productName)) {
+                                return false;
                             }
+
+                            if (item.getExpirationDate() == null && finalExpirationDate == null) {
+                                return true;
+                            }
+
+                            if (item.getExpirationDate() != null && finalExpirationDate != null) {
+                                return item.getExpirationDate().equals(finalExpirationDate);
+                            }
+
+                            return false;
                         })
                         .findFirst()
                         .orElse(null);
+
                 if (existingInventoryItem != null) {
                     Optional<ButtonType> confirmUpdate = alertAction("Add Confirmation", "The medicine with the same name and expiration date exists in inventory. Do you still want to add this to inventory?");
                     if (confirmUpdate.isPresent() && confirmUpdate.get().getButtonData() == ButtonBar.ButtonData.YES) {
@@ -399,8 +407,9 @@ public class AddInventoryController implements Initializable {
         stage.close();
     }
     private boolean isValidTextInput(String input) {
-        return input.matches("[a-zA-Z\\s]+");
+        return input.matches("[a-zA-Z\\s,\\.]+");
     }
+
     private boolean isValidInputNumber(String input) {
         return input.matches("^[0-9]+");
     }
