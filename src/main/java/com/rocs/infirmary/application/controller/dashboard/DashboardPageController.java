@@ -108,7 +108,6 @@ public class DashboardPageController implements Initializable {
             populateTables();
 
             LOGGER.info("Dashboard data successfully loaded");
-            LOGGER.info("Dashboard Controller initialized successfully");
         } catch (NullPointerException e) {
             LOGGER.error("Failed to load dashboard data", e);
         }
