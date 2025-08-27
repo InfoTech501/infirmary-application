@@ -111,26 +111,24 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
     }
 
     @Override
-    public boolean addMedicine(Medicine medicine, String userId) {
-        LOGGER.debug("Entering addMedicine for User ID: {}. Adding medicine with details: Name={}, Description={}, Quantity={}",
-                userId, medicine.getItemName(), medicine.getDescription(), medicine.getQuantity());
-
+    public boolean addMedicine(Medicine medicine) {
+        LOGGER.info("Entering Adding new medicine with name: {}, description: {}.", medicine.getItemName(), medicine.getDescription());
         try (Connection con = ConnectionHelper.getConnection();
              PreparedStatement stmt = con.prepareStatement(ADD_MEDICINE_QUERY)) {
-
             stmt.setString(1, medicine.getItemName());
             stmt.setString(2, medicine.getDescription());
             stmt.setInt(3, 1);
-
             int affectedRow = stmt.executeUpdate();
-
-            LOGGER.info("Successfully added medicine for User ID: {}. Affected rows: {}. Exiting DAO.", userId, affectedRow);
-
+            LOGGER.info("Medicine successfully added. Name: {}, Description: {}. Affected rows: {}.", medicine.getItemName(), medicine.getDescription(), affectedRow);
+            LOGGER.info("Added Date :   " + new Date());
             return affectedRow > 0;
+
         } catch (SQLException e) {
-            LOGGER.error("SQLException occurred for User ID: {} while adding medicine: {}. Error: {}", userId, medicine.getItemName(), e.getMessage(), e);
-            throw new RuntimeException("Error adding medicine to the database.", e);
+            LOGGER.error("SQL Exception occurred while adding medicine: {}. Error: {}", medicine.getItemName(), e.getMessage());
+            System.out.println("Medicine ID already exist");
         }
+        LOGGER.info("Exiting addMedicine DAO with result: false");
+        return false;
     }
 
     @Override

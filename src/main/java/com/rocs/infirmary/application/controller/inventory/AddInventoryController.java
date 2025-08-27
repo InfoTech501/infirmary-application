@@ -170,7 +170,6 @@ public class AddInventoryController implements Initializable {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date expirationDate = dateFormat.parse(String.valueOf(expirationDatePicker.getValue()));
         String productName = productNameTextField.getText();
-        String userId = "current_user_id";
 
         try {
            Medicine existingMedicine = medicine.stream().filter(med -> med.getItemName().equalsIgnoreCase(productName)).findFirst().orElse(null);
@@ -226,7 +225,7 @@ public class AddInventoryController implements Initializable {
             }
             medicineModel.setItemName(productName);
             medicineModel.setDescription(descriptionTextField.getText());
-            boolean medAdded = inventoryManagementApplication.getMedicineInventoryFacade().addMedicine(medicineModel, userId);
+            boolean medAdded = inventoryManagementApplication.getMedicineInventoryFacade().addMedicine(medicineModel);
             if (medAdded) {
                 refresh();
                 Optional<ButtonType> result = alertAction(
