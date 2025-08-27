@@ -278,7 +278,7 @@ public class InventoryController implements Initializable {
                     .ifPresent(response -> {
                         if (response.getButtonData() == ButtonBar.ButtonData.YES) {
                             if (deleteMedicine()) {
-                                ControllerHelper.infoAction("Notification", "Deleted Successfully!");
+                                ControllerHelper.showDialog("Notification", "Deleted Successfully!");
                                 refresh();
                                 itemSearch();
                     }
