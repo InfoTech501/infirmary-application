@@ -30,7 +30,11 @@ public class MedicalRecordUpdateInputValidation {
         }
 
         if (!isEmpty(temperature) && !isValidTemperature(temperature)) {
+          try {
+            Double.parseDouble(temperature);
+          } catch (NumberFormatException e) {
             errorMessage.append("Temperature must be a valid number between 30.0 and 50.0°C (e.g., 37.5).\n");
+          }
         }
 
         if (!isEmpty(treatment)) {
