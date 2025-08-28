@@ -18,7 +18,7 @@ drop table guardian_details cascade constraints;
 drop table student cascade constraints;
 drop table ailments cascade constraints;
 drop table medical_history cascade constraints;
-drop table medical_history_medication cascade constraints;
+drop table diagnosed_condition cascade constraints;
 drop table medical_record cascade constraints;
 drop table inventory cascade constraints;
 drop table medicine cascade constraints;
@@ -72,20 +72,14 @@ create table ailments (
 create table medical_history (
   med_history_id number(10,0) generated as identity,
   student_id number(20,0),
-  chronic_condition varchar2(64),
-  allergies varchar2(64),
-  surgical_history varchar2(64),
-  family_medical_history varchar2(64),
-  ongoing_treatment varchar2(128),
   last_checkup_date date,
   primary key (med_history_id));
 
-create table medical_history_medication (
-  medication_id number(10,0) generated as identity,
+create table diagnosed_condition (
+  condition_id number(10,0) generated as identity,
   med_history_id number(10,0),
-  name varchar2(64),
-  medication_status varchar2(32),
-  primary key (medication_id));
+  condition_name varchar2(64),
+  primary key (condition_id));
 
 create table medical_record (
   id number(20,0) generated as identity
@@ -152,7 +146,6 @@ create table login (
 create table employee (
   id number(20,0) generated as identity,
   person_id number(20,0),
-  department varchar2(128),
   primary key (id));
 
 alter table employee
@@ -179,8 +172,8 @@ alter table medical_history
     add constraint FK_MEDICAL_HISTORY_STUDENT_ID
     foreign key (student_id) references student;
 
-alter table medical_history_medication
-    add constraint FK_MEDICAL_HISTORY_MEDICATION_MED_HISTORY_ID
+alter table diagnosed_condition
+    add constraint FK_DIAGNOSED_CONDITION_MED_HISTORY_ID
     foreign key (med_history_id) references medical_history;
 
 alter table medical_record
@@ -214,7 +207,6 @@ alter table medicine_administered
 alter table login
     add constraint FK_LOGIN_PERSON_ID
     foreign key (person_id) references person;
-
 
 --INSERT PERSON DATA
 insert into person (first_name, middle_name, last_name, birthdate, age, gender, email, address, contact_number)
@@ -305,16 +297,16 @@ insert into student(person_id, section_section_id, stud_guardian_id, LRN)
 values ('7', '03', '004', '106846539215');
 
 -- INSERT EMPLOYEE DATA
-insert into employee (person_id, department)
-values (8, 'Senior High School Department');
-insert into employee (person_id, department)
-values (9, 'Senior High School Department');
-insert into employee (person_id, department)
-values (10, 'Senior High School Department');
-insert into employee (person_id, department)
-values (11, 'Health Services Department');
-insert into employee (person_id, department)
-values (12, 'Health Services Department');
+insert into employee (person_id)
+values (8);
+insert into employee (person_id)
+values (9);
+insert into employee (person_id)
+values (10);
+insert into employee (person_id)
+values (11);
+insert into employee (person_id)
+values (12);
 
 -- INSERT AILMENTS DATA
 insert into ailments (description)
@@ -383,28 +375,28 @@ insert into inventory (medicine_id, item_type, quantity, expiration_date)
 values ('10', 'Medicine', 4, to_timestamp('2027-08-25 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 
 --INSERT MEDICAL HISTORY DATA
-insert into medical_history (student_id, chronic_condition, allergies, surgical_history, family_medical_history, ongoing_treatment, last_checkup_date)
-values (1, 'Asthma', 'Dust mites', 'Appendectomy', 'Asthma (mother)', 'Inhaler therapy', to_date('2025-07-15', 'YYYY-MM-DD'));
-insert into medical_history (student_id, chronic_condition, allergies, surgical_history, family_medical_history, ongoing_treatment, last_checkup_date)
-values (2, 'Hypertension', 'None', 'None', 'Hypertension (father)', 'Lifestyle modification', to_date('2021-06-10', 'YYYY-MM-DD'));
-insert into medical_history (student_id, chronic_condition, allergies, surgical_history, family_medical_history, ongoing_treatment, last_checkup_date)
-values (3, 'None', 'None', 'None', 'None', 'None', to_date('2020-08-08', 'YYYY-MM-DD'));
-insert into medical_history (student_id, chronic_condition, allergies, surgical_history, family_medical_history, ongoing_treatment, last_checkup_date)
-values (4, 'Diabetes Type II', 'None', 'Gallbladder removal', 'Diabetes (grandparent)', 'Diet and exercise', to_date('2019-05-22', 'YYYY-MM-DD'));
-insert into medical_history (student_id, chronic_condition, allergies, surgical_history, family_medical_history, ongoing_treatment, last_checkup_date)
-values (5, 'Seasonal allergies', 'Pollen', 'None', 'Allergies (sibling)', 'Antihistamines', to_date('2023-08-19', 'YYYY-MM-DD'));
+insert into medical_history (student_id, last_checkup_date)
+values (1, to_date('2025-07-15', 'YYYY-MM-DD'));
+insert into medical_history (student_id, last_checkup_date)
+values (2, to_date('2021-06-10', 'YYYY-MM-DD'));
+insert into medical_history (student_id, last_checkup_date)
+values (3, to_date('2020-08-08', 'YYYY-MM-DD'));
+insert into medical_history (student_id, last_checkup_date)
+values (4, to_date('2019-05-22', 'YYYY-MM-DD'));
+insert into medical_history (student_id, last_checkup_date)
+values (5, to_date('2023-08-19', 'YYYY-MM-DD'));
 
---INSERT MEDICAL HISTORY MEDICATION
-insert into medical_history_medication (med_history_id, name, medication_status)
-values (1, 'Salbutamol inhaler', 'Active');
-insert into medical_history_medication (med_history_id, name, medication_status)
-values (2, 'Amlodipine', 'Active');
-insert into medical_history_medication (med_history_id, name, medication_status)
-values (4, 'Metformin', 'Active');
-insert into medical_history_medication (med_history_id, name, medication_status)
-values (5, 'Cetirizine', 'Seasonal');
-insert into medical_history_medication (med_history_id, name, medication_status)
-values (5, 'Loratadine', 'Inactive');
+--INSERT DIAGNOSED CONDITION
+insert into diagnosed_condition (med_history_id, condition_name)
+values (1, 'Asthma');
+insert into diagnosed_condition (med_history_id, condition_name)
+values (2, 'Depression');
+insert into diagnosed_condition (med_history_id, condition_name)
+values (4, 'Scoliosis');
+insert into diagnosed_condition (med_history_id, condition_name)
+values (5, 'Panic Disorder');
+insert into diagnosed_condition (med_history_id, condition_name)
+values (5, 'Tonsillitis');
 
 --INSERT MEDICAL RECORD DATA
 insert into medical_record (student_id, ailment_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
