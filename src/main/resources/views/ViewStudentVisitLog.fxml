@@ -38,7 +38,7 @@
                                     </columnConstraints>
                                     <rowConstraints>
                                         <RowConstraints />
-                                        <RowConstraints maxHeight="61.333343505859375" minHeight="10.0" prefHeight="54.66667175292969" vgrow="SOMETIMES" />
+                                        <RowConstraints maxHeight="61.333343505859375" minHeight="10.0" prefHeight="54.66667175292969" />
                                         <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
                                         <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
                                         <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
@@ -51,9 +51,9 @@
                                         <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
                                     </rowConstraints>
                                     <children>
-                                        <Label fx:id="viewStudInfoLabel" styleClass="ViewLabelStudInfo" text="Student Info" GridPane.rowIndex="1">
+                                        <Label fx:id="viewStudInfoLabel" prefHeight="72.0" prefWidth="240.0" styleClass="ViewLabelStudInfo" text="Student Info" GridPane.rowIndex="1">
                                             <padding>
-                                                <Insets bottom="20.0" right="10.0" top="20.0" />
+                                                <Insets bottom="20.0" top="20.0" />
                                             </padding>
                                             <GridPane.margin>
                                                 <Insets />
@@ -104,12 +104,12 @@
                                                 <Insets />
                                             </GridPane.margin>
                                         </Label>
-                                        <Label fx:id="viewHomeAdd" layoutX="10.0" layoutY="366.0" style="-fx-font-size: 16;" styleClass="label-view" text="Home Address" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                                        <Label fx:id="viewHomeAdd" layoutX="10.0" layoutY="366.0" style="-fx-font-size: 16;" styleClass="label-view" text="Home Address" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10">
                                             <GridPane.margin>
                                                 <Insets />
                                             </GridPane.margin>
                                         </Label>
-                                        <Label fx:id="viewEmailAdd" layoutX="10.0" layoutY="406.0" prefHeight="19.0" prefWidth="355.0" text="Email Address" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                                        <Label fx:id="viewEmailAdd" layoutX="10.0" layoutY="406.0" prefHeight="19.0" prefWidth="355.0" text="Email Address" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="11" />
                                         <Label text="Middle Name:" GridPane.rowIndex="4" />
                                         <Label fx:id="viewMiddleName" text="Middle Name" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                             <GridPane.margin>

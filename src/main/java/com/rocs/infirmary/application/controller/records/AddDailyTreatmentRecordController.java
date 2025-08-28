@@ -159,6 +159,11 @@ public class AddDailyTreatmentRecordController implements Initializable {
     @FXML
     private void handleConfirmButton(ActionEvent actionEvent) {
         String lrn = lrnField.getText() != null ? lrnField.getText().trim() : "";
+        if (lrn.isEmpty()) {
+            showDialog("Warning", "LRN is required.");
+            return;
+        }
+
         String bodyTemperature = bodyTempField.getText() != null ? bodyTempField.getText().trim() : "";
         String pulseRate = pulseRateField.getText() != null ? pulseRateField.getText().trim() : "";
         String respiratoryRate = respiratoryRateField.getText() != null ? respiratoryRateField.getText().trim() : "";

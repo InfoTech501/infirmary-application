@@ -212,7 +212,7 @@ public class ClinicVisitLogPageController implements Initializable {
         sortedList.comparatorProperty().bind(visitLogTable.comparatorProperty());
         visitLogTable.setItems(sortedList);
 
-        paginationLabel.setText(total == 0 ? "0 - 0 of 0" : (fromIndex + 1) + " - " + toIndex + " of " + total);
+        paginationLabel.setText((fromIndex + 1) + " - " + toIndex + " of " + total);
         rowsPageLabel.setText(String.valueOf(pageData.size()));
     }
 

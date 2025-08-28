@@ -84,7 +84,7 @@ public class ViewStudentVisitLogController implements Initializable {
         viewContactNum.setText(formatValue(medicalRecord.getContactNumber()));
         viewHomeAdd.setText(formatValue(medicalRecord.getAddress()));
         viewEmailAdd.setText(formatValue(medicalRecord.getEmail()));
-        viewBodyTemp.setText(formatValue(medicalRecord.getTemperatureReadings()));
+        viewBodyTemp.setText(formatValue(medicalRecord.getTemperatureReadings()) + " °C");
         viewPulseRate.setText(formatValue(medicalRecord.getPulseRate()));
         viewRespiratoryRate.setText(formatValue(medicalRecord.getRespiratoryRate()));
         viewBloodPressure.setText(formatValue(medicalRecord.getBloodPressure()) + " mmHg");
