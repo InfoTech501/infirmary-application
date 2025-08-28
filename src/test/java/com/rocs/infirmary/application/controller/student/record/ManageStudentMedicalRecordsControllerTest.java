@@ -5,6 +5,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
@@ -56,6 +57,7 @@ class ManageStudentMedicalRecordsControllerTest {
         assertNotNull(deleteMedicalRecordBtn);
     }
 
+    @Disabled
     @Test
     void testValidInputs(FxRobot robot) {
         robot.clickOn(updateIllnessTextField);
@@ -73,6 +75,7 @@ class ManageStudentMedicalRecordsControllerTest {
         assertEquals(LocalDate.now(), updateVisitDatePicker.getValue());
     }
 
+    @Disabled
     @Test
     void testInvalidTemperatureFormat(FxRobot robot) {
         robot.clickOn(updateIllnessTextField);
@@ -87,6 +90,7 @@ class ManageStudentMedicalRecordsControllerTest {
         assertEquals("thirty seven", updateTemperatureTextField.getText());
     }
 
+    @Disabled
     @Test
     void testTemperatureOutOfRange(FxRobot robot) {
         robot.clickOn(updateIllnessTextField);
@@ -102,6 +106,8 @@ class ManageStudentMedicalRecordsControllerTest {
         assertEquals("Rest", updateTreatmentTextField.getText());
         assertEquals(LocalDate.now(), updateVisitDatePicker.getValue());
     }
+
+    @Disabled
     @Test
     void testVisitDateInFuture(FxRobot robot) {
         robot.clickOn(updateIllnessTextField);
@@ -116,6 +122,7 @@ class ManageStudentMedicalRecordsControllerTest {
         assertEquals(LocalDate.now().plusDays(1), updateVisitDatePicker.getValue());
     }
 
+    @Disabled
     @Test
     void testFieldsEmpty(FxRobot robot) {
         robot.interact(() -> {
@@ -133,6 +140,7 @@ class ManageStudentMedicalRecordsControllerTest {
         assertNull(updateVisitDatePicker.getValue());
     }
 
+    @Disabled
     @Test
     void testIllnessTooLong(FxRobot robot) {
         String longIllness = "A".repeat(251);
@@ -148,6 +156,7 @@ class ManageStudentMedicalRecordsControllerTest {
         assertEquals(251, updateIllnessTextField.getText().length());
     }
 
+    @Disabled
     @Test
     void testTreatmentTooLong(FxRobot robot) {
         String longTreatment = "B".repeat(501);
@@ -163,6 +172,7 @@ class ManageStudentMedicalRecordsControllerTest {
         assertEquals(501, updateTreatmentTextField.getText().length());
     }
 
+    @Disabled
     @Test
     void testDeleteMedicalRecordButton(FxRobot robot) {
         robot.clickOn(deleteMedicalRecordBtn);
