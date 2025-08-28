@@ -276,12 +276,10 @@ public class InventoryController implements Initializable {
         if (getSelectedMedicines().size() == 1) {
             ControllerHelper.alertAction("Confirm Delete", "Are you sure you want to delete this medicine?")
                     .ifPresent(response -> {
-                        if (response.getButtonData() == ButtonBar.ButtonData.YES) {
-                            if (deleteMedicine()) {
+                        if (response.getButtonData() == ButtonBar.ButtonData.YES && deleteMedicine()) {
                                 ControllerHelper.showDialog("Notification", "Deleted Successfully!");
                                 refresh();
                                 itemSearch();
-                    }
                 }
             });
         }
