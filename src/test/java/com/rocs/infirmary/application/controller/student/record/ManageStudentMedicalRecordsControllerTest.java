@@ -12,6 +12,7 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.time.LocalDate;
 
@@ -143,9 +144,9 @@ class ManageStudentMedicalRecordsControllerTest {
     @Disabled
     @Test
     void testIllnessTooLong(FxRobot robot) {
-        String longIllness = "A".repeat(251);
+        String invalidIllnessInput = "A".repeat(251);
         robot.clickOn(updateIllnessTextField);
-        robot.write(longIllness);
+        robot.write(invalidIllnessInput);
         robot.clickOn(updateTemperatureTextField);
         robot.write("37.0");
         robot.clickOn(updateTreatmentTextField);
@@ -159,13 +160,13 @@ class ManageStudentMedicalRecordsControllerTest {
     @Disabled
     @Test
     void testTreatmentTooLong(FxRobot robot) {
-        String longTreatment = "B".repeat(501);
+        String InvalidTreatmentInput = "B".repeat(501);
         robot.clickOn(updateIllnessTextField);
         robot.write("Flu");
         robot.clickOn(updateTemperatureTextField);
         robot.write("37.0");
         robot.clickOn(updateTreatmentTextField);
-        robot.write(longTreatment);
+        robot.write(InvalidTreatmentInput);
         robot.interact(() -> updateVisitDatePicker.setValue(LocalDate.now()));
         robot.clickOn(confirmChangesBtn);
 
