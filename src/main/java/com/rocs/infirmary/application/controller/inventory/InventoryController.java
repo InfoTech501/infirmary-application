@@ -126,7 +126,7 @@ public class InventoryController implements Initializable {
         medDetailsTable.setItems(medicine);
     }
 
-    private void showModal(ActionEvent actionEvent, String location) throws IOException {
+    private void showModal(ActionEvent actionEvent,String location) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(location));
         Parent root = loader.load();
         AddInventoryController controller = loader.getController();
@@ -157,7 +157,7 @@ public class InventoryController implements Initializable {
      * @param actionEvent the event triggered by the confirm button click
      */
     public void onShowAddModalBtnClick(ActionEvent actionEvent) throws IOException {
-        showModal(actionEvent, "/views/InventoryAddItemModal.fxml");
+        showModal(actionEvent,"/views/InventoryAddItemModal.fxml");
     }
 
     private void itemSearch() {
