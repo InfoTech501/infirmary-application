@@ -61,9 +61,10 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
 
     @Override
     public boolean addMedicine(Medicine medicine) {
-        logger.info("Adding medicine: {}", medicine.getMedicineId());
-        return this.medicineInventoryDao.addMedicine(medicine);
-
+        logger.info("Entering Adding medicine with Name: {} and Description: {}", medicine.getItemName(), medicine.getDescription());
+        boolean isAdded = this.medicineInventoryDao.addMedicine(medicine);
+        logger.info("Exiting addMedicine Facade with result: {}.", isAdded);
+        return isAdded;
     }
 
     @Override
