@@ -132,20 +132,28 @@ public class DashboardPageController implements Initializable {
     }
 
     private void populateTables() {
-        LOGGER.info("Populating Tables");
-        DateRange dateRange = DateRange.monthly();
-        populateTableMedicationTrendReport(dateRange);
-        populateTableCommonAilmentsReport(dateRange);
-        if (medTrendRptTable == null && totalDistributedMedTrend == null) {
-            LOGGER.error("Medication Trend Report table or column is null");
-        }
-        if (commonAilmentsRptTable == null && numOfStudCommonAilment == null) {
-            LOGGER.error("Common Ailments Report table or column is null");
-        }
-        if (dashboardInfoApplication.getDashboardFacade() == null) {
-            LOGGER.error("Dashboard Facade is null");
-        }
+        try {
+            LOGGER.info("Populating Tables");
+            DateRange dateRange = DateRange.monthly();
+            populateTableMedicationTrendReport(dateRange);
+            populateTableCommonAilmentsReport(dateRange);
 
+            if (medTrendRptTable == null || totalDistributedMedTrend == null) {
+                throw new Exception("Medication Trend Report table is null");
+            }
+
+            if (commonAilmentsRptTable == null || numOfStudCommonAilment == null) {
+                throw new Exception("Common Ailments Report table is null");
+            }
+
+            if (dashboardInfoApplication.getDashboardFacade() == null) {
+                throw new Exception("Dashboard Facade is null");
+            }
+            LOGGER.info("Tables successfully populated");
+
+        } catch (Exception e) {
+            LOGGER.error("Failed to populate tables", e);
+        }
     }
 
     private void populateTableMedicationTrendReport(DateRange dateRange) {
@@ -190,20 +198,30 @@ public class DashboardPageController implements Initializable {
 
     private void setClinicVisitReports(DateRange dateRange) {
         LOGGER.info("Setting Clinic Visit Reports Started");
+
+        if (dateRange == null) {
+            LOGGER.error("Date Range is null");
+            return;
+        }
+
+        if (grade11ClinicVisitTodayRprt == null || grade12ClinicVisitTodayRprt == null) {
+            LOGGER.error("Setting Clinic Visit Reports not initialized");
+            return;
+        }
+
         String GRADE_11 = "Grade 11";
         String GRADE_12 = "Grade 12";
 
-        try {
         int grade11Visits = getVisitCount(dateRange, GRADE_11);
         int grade12Visits = getVisitCount(dateRange, GRADE_12);
-        LOGGER.debug("Clinic visit reports set: Grade 11 = {}, Grade 12 = {}", grade11Visits, grade12Visits);
+
+        LOGGER.debug("Clinic visit reports set: Grade 11 = {}, Grade 12 = {}",
+                grade11Visits, grade12Visits);
 
         grade11ClinicVisitTodayRprt.setText(String.valueOf(grade11Visits));
         grade12ClinicVisitTodayRprt.setText(String.valueOf(grade12Visits));
+
         LOGGER.info("Setting Clinic Visit Reports Finished");
-        } catch (NullPointerException e) {
-            LOGGER.error("Error Setting Clinic Visit Reports", e);
-        }
     }
 
     private int getTotalMedicationUsage(DateRange dateRange) {
@@ -238,28 +256,31 @@ public class DashboardPageController implements Initializable {
 
     private void initializeBarChartWeeklyVisitByGrade(DateRange dateRange, String gradeLevel) {
         SimpleDateFormat sdf = new SimpleDateFormat("EEEEE");
-        List<FrequentVisitReport> reports = dashboardInfoApplication.getDashboardFacade().generateFrequentVisitReport(
-                dateRange.getStartDate(), dateRange.getEndDate(), gradeLevel);
+        List<FrequentVisitReport> reports = dashboardInfoApplication.getDashboardFacade()
+                .generateFrequentVisitReport(dateRange.getStartDate(), dateRange.getEndDate(), gradeLevel);
         Map<String, Integer> visitsPerDay = new HashMap<>();
 
         for (FrequentVisitReport report : reports) {
-            String day = sdf.format(report.getVisitDate());
-            visitsPerDay.merge(day, report.getVisitCount(), Integer::sum);
+            if (report != null && report.getVisitDate() != null) {
+                String day = sdf.format(report.getVisitDate());
+                visitsPerDay.merge(day, report.getVisitCount(), Integer::sum);
+            } else {
+                LOGGER.warn("Skipping report with missing data: {}", report);
+            }
         }
-            LOGGER.debug("Weekly visit data for grade {} between {} - {}: {}", gradeLevel, dateRange.getStartDate(),
-                    dateRange.getEndDate(), visitsPerDay);
+        LOGGER.debug("Weekly visit data for grade {} between {} - {}: {}",
+                gradeLevel, dateRange.getStartDate(), dateRange.getEndDate(), visitsPerDay);
 
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName(gradeLevel);
-        List<String> orderedDays = List.of("Monday", "Tuesday", "Wednesday", "Thursday", "Friday");
 
-        NumberAxis yAxis = new NumberAxis();
-        yAxis.setForceZeroInRange(false);
+        List<String> orderedDays = List.of("Monday", "Tuesday", "Wednesday", "Thursday", "Friday");
 
         for (String day : orderedDays) {
             int visits = visitsPerDay.getOrDefault(day, 0);
             series.getData().add(new XYChart.Data<>(day, visits));
         }
+
         studentVisitBarChart.getData().add(series);
     }
 
