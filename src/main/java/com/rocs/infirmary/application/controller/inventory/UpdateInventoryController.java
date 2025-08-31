@@ -1,6 +1,7 @@
 package com.rocs.infirmary.application.controller.inventory;
 
 import com.rocs.infirmary.application.controller.helper.ControllerHelper;
+import com.rocs.infirmary.application.controller.lowstock.helper.LowStockAlertHelper;
 import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import javafx.collections.FXCollections;
@@ -146,6 +147,7 @@ public class UpdateInventoryController {
                 Optional<ButtonType> result = ControllerHelper.alertAction("Update Confirmation", "This action cannot be undone. Are you sure about this update?");
                 if (result.isPresent()&& result.get().getButtonData() == ButtonBar.ButtonData.YES) {
                     if (updateMedicine(Integer.parseInt(quantityTextField.getText()))) {
+                        LowStockAlertHelper.checkLowStockAndShowAlert();
                         ControllerHelper.showDialog("Notification", "Updated Successfully!");
                         if (parentController != null) {
                             parentController.refresh();
