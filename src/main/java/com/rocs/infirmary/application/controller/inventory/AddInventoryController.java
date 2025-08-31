@@ -193,19 +193,18 @@ public class AddInventoryController implements Initializable {
                 Date finalExpirationDate = expirationDate;
                 Medicine existingInventoryItem = inventoryItem.stream()
                         .filter(item -> {
-                            if (!item.getItemName().equalsIgnoreCase(productName)) {
+                            try{
+                                if (item.getExpirationDate() != null && finalExpirationDate != null) {
+                                    return item.getItemName().equalsIgnoreCase(productName) &&
+                                            dateFormat.parse(item.getExpirationDate().toString()).equals(finalExpirationDate);
+                                }
+                                if (item.getExpirationDate() == null && finalExpirationDate == null) {
+                                    return item.getItemName().equalsIgnoreCase(productName);
+                                }
                                 return false;
+                            } catch (ParseException e) {
+                                throw new RuntimeException(e);
                             }
-
-                            if (item.getExpirationDate() == null && finalExpirationDate == null) {
-                                return true;
-                            }
-
-                            if (item.getExpirationDate() != null && finalExpirationDate != null) {
-                                return item.getExpirationDate().equals(finalExpirationDate);
-                            }
-
-                            return false;
                         })
                         .findFirst()
                         .orElse(null);
