@@ -1,5 +1,6 @@
 package com.rocs.infirmary.application.controller.inventory;
 
+import com.rocs.infirmary.application.controller.records.AddDailyTreatmentRecordController;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
 import javafx.collections.FXCollections;
@@ -16,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -34,7 +36,8 @@ import java.util.ResourceBundle;
  * this implements Initializable interface
  **/
 public class InventoryController implements Initializable {
-
+    @FXML
+    private StackPane inventoryPage;
     @FXML
     private TableView<Medicine> medDetailsTable;
     @FXML
@@ -123,26 +126,22 @@ public class InventoryController implements Initializable {
     }
     private void showModal(ActionEvent actionEvent,String location) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(location));
+        loader.setControllerFactory(param -> new AddInventoryController());
         Parent root = loader.load();
+
         AddInventoryController controller = loader.getController();
         controller.setParentController(this);
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initStyle(StageStyle.UTILITY);
-        stage.showAndWait();
+        inventoryPage.getChildren().add(root);
     }
     private void showEditInventory(Medicine medicine) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/InventoryEditItemModal.fxml"));
+        loader.setControllerFactory(param -> new UpdateInventoryController());
         Parent root = loader.load();
-        UpdateInventoryController updateInventoryController = loader.getController();
-        updateInventoryController.showItemToEdit(medicine);
-        updateInventoryController.setParentController(this);
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initStyle(StageStyle.UTILITY);
-        stage.show();
+
+        UpdateInventoryController controller = loader.getController();
+        controller.setParentController(this);
+        controller.showItemToEdit(medicine);
+        inventoryPage.getChildren().add(root);
     }
     /**
      * this method handles the action triggered when the add new medicine button is clicked.

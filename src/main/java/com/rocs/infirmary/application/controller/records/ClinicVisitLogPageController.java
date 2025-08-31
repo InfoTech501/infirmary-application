@@ -1,5 +1,6 @@
 package com.rocs.infirmary.application.controller.records;
 
+import com.rocs.infirmary.application.controller.student.profile.StudentHealthProfileModalController;
 import com.rocs.infirmary.application.data.model.medicalrecord.MedicalRecord;
 import com.rocs.infirmary.application.module.medical.record.management.application.MedicalRecordInfoMgtApplication;
 import com.rocs.infirmary.application.data.model.person.student.Student;
@@ -16,6 +17,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -37,6 +40,8 @@ import java.util.stream.Stream;
 public class ClinicVisitLogPageController implements Initializable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClinicVisitLogPageController.class);
+    @FXML
+    private StackPane clinicVisitLogPage;
     @FXML
     private TableView<MedicalRecord> visitLogTable;
     @FXML
@@ -261,31 +266,49 @@ public class ClinicVisitLogPageController implements Initializable {
 
     private void showModalAddEntry(ActionEvent actionEvent, String location) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(location));
+        loader.setControllerFactory(param -> new AddDailyTreatmentRecordController());
         Parent root = loader.load();
 
         AddDailyTreatmentRecordController controller = loader.getController();
         controller.setClinicVisitLogPageController(this);
 
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initStyle(StageStyle.UTILITY);
-        stage.setScene(new Scene(root));
-        stage.showAndWait();
+        clinicVisitLogPage.getChildren().add(root);
+//        LOGGER.info("Showing more info modal");
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource(location));
+//        Parent root = loader.load();
+//
+//        AddDailyTreatmentRecordController controller = loader.getController();
+//        controller.setClinicVisitLogPageController(this);
+//
+//        Stage stage = new Stage();
+//        stage.initModality(Modality.APPLICATION_MODAL);
+//        stage.initStyle(StageStyle.UTILITY);
+//        stage.setScene(new Scene(root));
+//        stage.showAndWait();
     }
 
     private void openViewStudentVisitLogModal(MedicalRecord medicalRecord) {
         try {
+            LOGGER.info("Showing more info modal");
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ViewStudentVisitLog.fxml"));
+            loader.setControllerFactory(param -> new ViewStudentVisitLogController());
             Parent root = loader.load();
 
             ViewStudentVisitLogController controller = loader.getController();
             controller.setStudentData(medicalRecord);
 
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initStyle(StageStyle.UTILITY);
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
+            clinicVisitLogPage.getChildren().add(root);
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ViewStudentVisitLog.fxml"));
+//            Parent root = loader.load();
+//
+//            ViewStudentVisitLogController controller = loader.getController();
+//            controller.setStudentData(medicalRecord);
+//
+//            Stage stage = new Stage();
+//            stage.initModality(Modality.APPLICATION_MODAL);
+//            stage.initStyle(StageStyle.UTILITY);
+//            stage.setScene(new Scene(root));
+//            stage.showAndWait();
 
         } catch (IOException e) {
             LOGGER.error("Error opening visit log modal for LRN '{}'",

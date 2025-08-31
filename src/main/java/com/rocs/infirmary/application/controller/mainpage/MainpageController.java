@@ -28,6 +28,9 @@ public class MainpageController implements Initializable {
     private Button dashboardBtn;
 
     @FXML
+    private Button clinicVisitLogBtn;
+
+    @FXML
     private StackPane homepageScene;
 
     @FXML
@@ -68,6 +71,7 @@ public class MainpageController implements Initializable {
     void setClinicVisitLogBtn() throws IOException {
         switchScene("/views/ClinicVisitLogPage.fxml");
         pageLabel.setText("Clinic Visit Log");
+        clinicVisitLogBtn.setDefaultButton(true);
     }
 
     /**
