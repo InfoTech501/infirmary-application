@@ -1,15 +1,15 @@
 package com.rocs.infirmary.application.data.model.report.lowstock;
 
-public class LowStockReport {
+public class LowStockItems {
     private String description;
     private int quantityAvailable;
 
-    public LowStockReport(String description, int quantityAvailable) {
+    public LowStockItems(String description, int quantityAvailable) {
         this.description = description;
         this.quantityAvailable = quantityAvailable;
     }
 
-    public LowStockReport() {
+    public LowStockItems() {
 
     }
 

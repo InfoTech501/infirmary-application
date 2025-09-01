@@ -114,10 +114,26 @@ public class ManageStudentMedicalRecordsController implements Initializable {
 
     private void confirmChangesBtnClicked() {
         if (selectedStudent != null) {
+          String illness = updateIllnessTextField.getText().trim();
+          String temperature = updateTemperatureTextField.getText().trim();
+          String treatment = updateTreatmentTextField.getText().trim();
+          LocalDate visitLocalDate = updateVisitDatePicker.getValue();
+          Date visitDate = (visitLocalDate != null) ? Date.valueOf(visitLocalDate) : null;
+
+          String validationErrors = MedicalRecordUpdateInputValidation.validateMedicalRecordInputs(
+                illness, temperature, treatment, visitLocalDate
+          );
+
+          if (!validationErrors.isEmpty()) {
+              ControllerHelper.showDialog("Input error", validationErrors);
+              LOGGER.warn("Input validation failed: {}", validationErrors.replace("\n", "; "));
+              return;
+          }
+
             Optional<ButtonType> result = ControllerHelper.alertAction("Confirm Update", "Are you sure you want to update this medical record?");
             if (result.isPresent() && result.get().getButtonData() == ButtonBar.ButtonData.YES){
                 try {
-                    handleRecordUpdate(selectedStudent);
+                    handleRecordUpdate(selectedStudent, illness, temperature, visitDate, treatment);
                 } catch (Exception e) {
                     ControllerHelper.showDialog("Update failed", "Error updating record\", \"An error occurred while updating the medical record. No records updated");
                     LOGGER.error("failed to update medical record for student: {}", selectedStudent.getFirstName(), e);
@@ -129,23 +145,7 @@ public class ManageStudentMedicalRecordsController implements Initializable {
         }
     }
 
-    private void handleRecordUpdate(Student student) {
-        String illness = updateIllnessTextField.getText().trim();
-        String temperature = updateTemperatureTextField.getText().trim();
-        String treatment = updateTreatmentTextField.getText().trim();
-        LocalDate visitLocalDate = updateVisitDatePicker.getValue();
-        Date visitDate = (visitLocalDate != null) ? Date.valueOf(visitLocalDate) : null;
-
-        String validationErrors = MedicalRecordUpdateInputValidation.validateMedicalRecordInputs(
-                illness, temperature, treatment, visitLocalDate
-        );
-
-        if (!validationErrors.isEmpty()) {
-            ControllerHelper.showDialog("Input error", validationErrors);
-            LOGGER.warn("Input validation failed: {}", validationErrors.replace("\n", "; "));
-            return;
-        }
-
+    private void handleRecordUpdate(Student student, String illness, String temperature, Date visitDate, String treatment) {
         boolean isUpdated = studentMedicalRecordApplication.getStudentMedicalRecordFacade().updateStudentMedicalRecord(
                 illness.isEmpty() ? null : illness,
                 temperature.isEmpty() ? null : temperature,
@@ -237,7 +237,7 @@ public class ManageStudentMedicalRecordsController implements Initializable {
 
     private void handleRecordDeletion(Student student) {
         if (student != null) {
-            boolean isDeleted = studentMedicalRecordApplication.getStudentMedicalRecordFacade().deleteStudentMedicalRecordByLrn(student.getLrn(), selectedMedicalRecord.getMedicalRecordId());
+            boolean isDeleted = studentMedicalRecordApplication.getStudentMedicalRecordFacade().deleteStudentMedicalRecordByLrn(selectedMedicalRecord.getMedicalRecordId());
             if (isDeleted) {
                  refreshDataAfterUpdate(student);
                 modalController.closeModal();

@@ -98,7 +98,7 @@ public class StudentHealthProfileModalController implements Initializable {
                 selectedMedicalRecord = newSelection;
                 editHealthInfoBtn.setDisable(false);
                 editHealthInfoBtn.setOpacity(1.0);
-                LOGGER.info("Row selected: {}", selectedMedicalRecord.getMedicalRecordId());
+                LOGGER.info("Selected Medical Record ID: {}", selectedMedicalRecord.getMedicalRecordId());
             } else {
                 selectedMedicalRecord = null;
                 editHealthInfoBtn.setDisable(true);
