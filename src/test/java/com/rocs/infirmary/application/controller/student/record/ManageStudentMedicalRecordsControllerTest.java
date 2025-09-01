@@ -1,4 +1,8 @@
 package com.rocs.infirmary.application.controller.student.record;
+import com.rocs.infirmary.application.controller.student.profile.StudentHealthProfileController;
+import com.rocs.infirmary.application.controller.student.profile.StudentHealthProfileModalController;
+import com.rocs.infirmary.application.data.model.medicalrecord.MedicalRecord;
+import com.rocs.infirmary.application.data.model.person.student.Student;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -8,32 +12,54 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+import static org.mockito.Mockito.*;
 
 @ExtendWith(ApplicationExtension.class)
 class ManageStudentMedicalRecordsControllerTest {
 
+    @Mock
+    private StudentHealthProfileController mockParentController;
+
+    @Mock
+    private StudentHealthProfileModalController mockModalController;
+    private ManageStudentMedicalRecordsController controller;
     private TextField updateIllnessTextField;
     private TextField updateTemperatureTextField;
     private TextField updateTreatmentTextField;
     private DatePicker updateVisitDatePicker;
     private Button confirmChangesBtn;
     private Button deleteMedicalRecordBtn;
+    private Label illnessLabel;
+    private Label temperatureLabel;
+    private Label bloodPressureLabel;
+    private Label pulseRateLabel;
+    private Label respiratoryRate;
+    private Label treatmentLabel;
+
+    @BeforeEach
+    void setupMocks() {
+        MockitoAnnotations.openMocks(this);
+    }
 
     @Start
     public void start(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/views/ManageStudentMedicalRecords.fxml"));
-        loader.setControllerFactory(param -> new ManageStudentMedicalRecordsController(null, null));
+        loader.setControllerFactory(param -> {
+            controller = new ManageStudentMedicalRecordsController(mockParentController, mockModalController);
+            return controller;
+        });
+
         BorderPane mainLayout = loader.load();
         Scene scene = new Scene(mainLayout);
         stage.setMaximized(true);
@@ -50,12 +76,49 @@ class ManageStudentMedicalRecordsControllerTest {
         confirmChangesBtn = robot.lookup("#confirmChangesBtn").queryAs(Button.class);
         deleteMedicalRecordBtn = robot.lookup("#deleteMedicalRecordBtn").queryAs(Button.class);
 
+        illnessLabel = robot.lookup("#illnessLabel").queryAs(Label.class);
+        temperatureLabel = robot.lookup("#temperatureLabel").queryAs(Label.class);
+        bloodPressureLabel = robot.lookup("#bloodPressureLabel").queryAs(Label.class);
+        pulseRateLabel = robot.lookup("#pulseRateLabel").queryAs(Label.class);
+        respiratoryRate = robot.lookup("#respiratoryRate").queryAs(Label.class);
+        treatmentLabel = robot.lookup("#treatmentLabel").queryAs(Label.class);
+
         assertNotNull(updateIllnessTextField);
         assertNotNull(updateTemperatureTextField);
         assertNotNull(updateTreatmentTextField);
         assertNotNull(updateVisitDatePicker);
         assertNotNull(confirmChangesBtn);
         assertNotNull(deleteMedicalRecordBtn);
+
+        robot.interact(() -> setupTestData());
+    }
+
+    private void setupTestData() {
+        Student mockStudent = mock(Student.class);
+        when(mockStudent.getLrn()).thenReturn("12345678910");
+        when(mockStudent.getFirstName()).thenReturn("John");
+
+        MedicalRecord mockRecord = mock(MedicalRecord.class);
+        when(mockRecord.getMedicalRecordId()).thenReturn(1L);
+        when(mockRecord.getSymptoms()).thenReturn("Fever");
+        when(mockRecord.getTemperatureReadings()).thenReturn("37.5");
+        when(mockRecord.getTreatment()).thenReturn("Rest");
+        when(mockRecord.getBloodPressure()).thenReturn("120/80");
+        when(mockRecord.getPulseRate()).thenReturn(Integer.valueOf("72"));
+        when(mockRecord.getRespiratoryRate()).thenReturn(Integer.valueOf("16"));
+
+        controller.setSelectedStudentRecord(mockStudent, mockRecord);
+    }
+
+    @Disabled
+    @Test
+    void checkLabels(FxRobot robot) {
+        assertEquals("Fever", illnessLabel.getText());
+        assertEquals("37.5", temperatureLabel.getText());
+        assertEquals("Rest", treatmentLabel.getText());
+        assertEquals("120/80", bloodPressureLabel.getText());
+        assertEquals("72", pulseRateLabel.getText());
+        assertEquals("25", respiratoryRate.getText());
     }
 
     @Disabled
