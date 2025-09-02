@@ -199,7 +199,8 @@ public class AddInventoryController implements Initializable {
                                             dateFormat.parse(item.getExpirationDate().toString()).equals(finalExpirationDate);
                                 }
                                 if (item.getExpirationDate() == null && finalExpirationDate == null) {
-                                    return item.getItemName().equalsIgnoreCase(productName);
+                                    return item.getItemName().equalsIgnoreCase(productName) &&
+                                            item.getItemType().equalsIgnoreCase(existingMedicine.getItemType());
                                 }
                                 return false;
                             } catch (ParseException e) {
