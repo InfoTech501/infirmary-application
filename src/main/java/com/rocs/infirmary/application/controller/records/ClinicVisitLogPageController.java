@@ -273,18 +273,7 @@ public class ClinicVisitLogPageController implements Initializable {
         controller.setClinicVisitLogPageController(this);
 
         clinicVisitLogPage.getChildren().add(root);
-//        LOGGER.info("Showing more info modal");
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource(location));
-//        Parent root = loader.load();
-//
-//        AddDailyTreatmentRecordController controller = loader.getController();
-//        controller.setClinicVisitLogPageController(this);
-//
-//        Stage stage = new Stage();
-//        stage.initModality(Modality.APPLICATION_MODAL);
-//        stage.initStyle(StageStyle.UTILITY);
-//        stage.setScene(new Scene(root));
-//        stage.showAndWait();
+        LOGGER.info("Showing more info modal");
     }
 
     private void openViewStudentVisitLogModal(MedicalRecord medicalRecord) {
@@ -298,18 +287,6 @@ public class ClinicVisitLogPageController implements Initializable {
             controller.setStudentData(medicalRecord);
 
             clinicVisitLogPage.getChildren().add(root);
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ViewStudentVisitLog.fxml"));
-//            Parent root = loader.load();
-//
-//            ViewStudentVisitLogController controller = loader.getController();
-//            controller.setStudentData(medicalRecord);
-//
-//            Stage stage = new Stage();
-//            stage.initModality(Modality.APPLICATION_MODAL);
-//            stage.initStyle(StageStyle.UTILITY);
-//            stage.setScene(new Scene(root));
-//            stage.showAndWait();
-
         } catch (IOException e) {
             LOGGER.error("Error opening visit log modal for LRN '{}'",
                     medicalRecord != null ? medicalRecord.getLrn() : "unknown", e);

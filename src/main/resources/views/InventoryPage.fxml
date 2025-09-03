@@ -19,7 +19,6 @@
 
 <StackPane fx:id="inventoryPage" prefHeight="677.0" prefWidth="1266.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.inventory.InventoryController">
    <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-<!--<BorderPane prefHeight="900.0" prefWidth="1125.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.inventory.InventoryController">-->
    <stylesheets>
       <URL value="@../styles/buttons.css" />
       <URL value="@../styles/label.css" />

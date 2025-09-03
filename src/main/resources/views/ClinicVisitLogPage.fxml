@@ -8,7 +8,6 @@
 
 <StackPane fx:id="clinicVisitLogPage" prefHeight="677.0" prefWidth="1266.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.records.ClinicVisitLogPageController">
     <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-<!--<BorderPane fx:id="clinicVisitLogPage" prefHeight="1043.0" prefWidth="1327.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.records.ClinicVisitLogPageController">-->
     <stylesheets>
         <URL value="@../styles/buttons.css" />
         <URL value="@../styles/label.css" />

@@ -32,6 +32,10 @@ import java.util.function.Function;
  * this implements Initializable interface
  **/
 public class DashboardPageController implements Initializable {
+    private static final List<String> WEEKLY_CATEGORIES = List.of("Monday", "Tuesday", "Wednesday", "Thursday", "Friday");
+    private static final List<String> MONTHLY_CATEGORIES = List.of("Week 1", "Week 2", "Week 3", "Week 4", "Week 5");
+    private static final List<String> YEARLY_CATEGORIES = List.of("June", "July", "August", "September", "October", "November",
+            "December", "January", "February", "March");
     private static final Logger logger = LoggerFactory.getLogger(DashboardPageController.class);
     @FXML
     private Label dateDisplay;
@@ -113,7 +117,7 @@ public class DashboardPageController implements Initializable {
             case "monthly": dateRange = DateRange.monthly(); break;
             case "yearly": dateRange = DateRange.yearly(); break;
             default:
-                throw new IllegalArgumentException("Invalid mode: " + view);
+                throw new IllegalArgumentException("Invalid view: " + view);
         }
 
         try {
@@ -219,16 +223,14 @@ public class DashboardPageController implements Initializable {
 
         if (view.equals("weekly")) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE");
-            orderedCategories = List.of("Monday", "Tuesday", "Wednesday", "Thursday", "Friday");
-
+            orderedCategories = WEEKLY_CATEGORIES;
             for (FrequentVisitReport report : reports) {
                 LocalDate date = ((java.sql.Date) report.getVisitDate()).toLocalDate();
                 String key = date.format(formatter);
                 visitsPerCategory.merge(key, report.getVisitCount(), Integer::sum);
             }
         } else if (view.equals("monthly")) {
-            orderedCategories = List.of("Week 1", "Week 2", "Week 3", "Week 4", "Week 5");
-
+            orderedCategories = MONTHLY_CATEGORIES;
             for (FrequentVisitReport report : reports) {
                 LocalDate date = ((java.sql.Date) report.getVisitDate()).toLocalDate();
                 int weekOfMonth = date.get(ChronoField.ALIGNED_WEEK_OF_MONTH);
@@ -237,20 +239,17 @@ public class DashboardPageController implements Initializable {
             }
         } else if (view.equals("yearly")) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM");
-            orderedCategories = List.of("June", "July", "August", "September", "October", "November",
-                    "December","January", "February", "March");
+            orderedCategories = YEARLY_CATEGORIES;
             for (FrequentVisitReport report : reports) {
                 LocalDate date = ((java.sql.Date) report.getVisitDate()).toLocalDate();
                 String key = date.format(formatter);
                 visitsPerCategory.merge(key, report.getVisitCount(), Integer::sum);
             }
         } else {
-            throw new IllegalArgumentException("Invalid mode: " + view);
+            throw new IllegalArgumentException("Invalid view categories: " + view);
         }
-
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName(gradeLevel);
-
         NumberAxis yAxis = (NumberAxis) studentVisitBarChart.getYAxis();
         yAxis.setAutoRanging(false);
         yAxis.setForceZeroInRange(false);
