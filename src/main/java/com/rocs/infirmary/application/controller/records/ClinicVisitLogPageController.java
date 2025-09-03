@@ -236,11 +236,12 @@ public class ClinicVisitLogPageController implements Initializable {
                         String symptoms = student.getSymptoms() != null ? student.getSymptoms().toLowerCase() : "";
                         String visitDate = student.getVisitDate() != null ? new SimpleDateFormat("MMMM dd, yyyy").format(student.getVisitDate()).toLowerCase() : "";
 
-                return fullName.contains(keyword)
-                        || gradeSection.contains(keyword)
-                        || symptoms.contains(keyword)
-                        || visitDate.contains(keyword);
-            }).collect(Collectors.toList());
+                        return fullName.contains(keyword)
+                                || gradeSection.contains(keyword)
+                                || symptoms.contains(keyword)
+                                || visitDate.contains(keyword);
+                    })
+                    .collect(Collectors.toList());
 
             currentPage = 1;
             updatePage();

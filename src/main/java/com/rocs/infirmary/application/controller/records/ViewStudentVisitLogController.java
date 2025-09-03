@@ -59,6 +59,8 @@ public class ViewStudentVisitLogController implements Initializable {
     @FXML
     private Label viewVisitDate;
 
+    private static final String TEMPERATURE_UNIT = "°C";
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -84,7 +86,7 @@ public class ViewStudentVisitLogController implements Initializable {
         viewContactNum.setText(formatValue(medicalRecord.getContactNumber()));
         viewHomeAdd.setText(formatValue(medicalRecord.getAddress()));
         viewEmailAdd.setText(formatValue(medicalRecord.getEmail()));
-        viewBodyTemp.setText(formatValue(medicalRecord.getTemperatureReadings()) + " °C");
+        viewBodyTemp.setText(formatValue(medicalRecord.getTemperatureReadings()) + " " + TEMPERATURE_UNIT);
         viewPulseRate.setText(formatValue(medicalRecord.getPulseRate()));
         viewRespiratoryRate.setText(formatValue(medicalRecord.getRespiratoryRate()));
         viewBloodPressure.setText(formatValue(medicalRecord.getBloodPressure()) + " mmHg");
