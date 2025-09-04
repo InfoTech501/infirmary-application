@@ -16,6 +16,15 @@ public interface StudentMedicalRecordFacade {
      */
     List<MedicalRecord> getMedicalInformationByLRN(String LRN);
     /**
+     * Adds a new student health profile.
+     *
+     * @param studentId the student's ID
+     * @param userId the ID of the user creating the record
+     * @param newRecord the student's medical record details
+     * @return true if the record was added successfully, false otherwise
+     */
+    boolean addStudentHealthProfile(String studentId, String userId, MedicalRecord newRecord);
+    /**
      * This intended to delete a student's medical record based on medical records' unique id.
      * The medical record id is a unique identifier assigned to each medical record. This value is used to locate and delete the corresponding medical record.
      * @param medicalRecordId is the uniue identifier assigned to each medical record of a student
