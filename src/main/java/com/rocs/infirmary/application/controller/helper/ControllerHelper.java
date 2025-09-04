@@ -16,7 +16,7 @@ public class ControllerHelper {
      * @param content used to set the content of the dialog
      * */
     public static void showDialog(String title,String content){
-        Dialog dialog = new Dialog();
+        Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle(title);
         ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
         dialog.setContentText(content);
