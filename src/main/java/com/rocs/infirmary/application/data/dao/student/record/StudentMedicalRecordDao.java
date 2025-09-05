@@ -17,15 +17,6 @@ public interface StudentMedicalRecordDao {
      */
     List<MedicalRecord> findMedicalInformation(String LRN);
     /**
-     * Saves a new student health profile to the database.
-     *
-     * @param studentId the student's ID
-     * @param userId the ID of the user creating the record
-     * @param newRecord the student's medical record details
-     * @return true if the record was saved successfully, false otherwise
-     */
-    boolean addStudentHealthProfile(String studentId, String userId, MedicalRecord newRecord);
-    /**
      * This is intended to delete medical record based on LRN.
      * @param LRN is a student's unique identifier assigned to each student
      * @param medicalRecordId is a medical records' unique identifier assigned to each medical record of a student
@@ -43,4 +34,5 @@ public interface StudentMedicalRecordDao {
      * @return true when the medical record are successfully updated, false when the medical record are not updated successfully due to error
      * */
     boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate , String treatment, String LRN, Long medicalRecordId );
+
 }

@@ -195,30 +195,62 @@ public class AddDailyTreatmentRecordController implements Initializable {
     }
 
     private void addDailyRecord() {
+        LOGGER.info("Entering addDailyRecord at {} with LRN: {}",
+                new Date(), lrnField.getText());
+
         try {
             MedicalRecord medicalRecord = createStudentMedicalRecordFromForm();
-            if (medicalRecord == null) return;
+            if (medicalRecord == null) {
+                LOGGER.warn("MedicalRecord creation failed at {} – invalid or missing data", new Date());
+                return;
+            }
+
+            LOGGER.debug("MedicalRecord created for studentId: {}, values: {}",
+                    medicalRecord.getStudentId(), medicalRecord);
 
             Medicine matchedMedicine = SelectedMedicine(medicineNameComboBox.getEditor().getText());
-            if (matchedMedicine == null) return;
-            if (!updateInventoryDispensed(medicalRecord, matchedMedicine)) return;
-            if (!populateExistingStudentInfo(medicalRecord)) return;
+            if (matchedMedicine == null) {
+                LOGGER.warn("No matching medicine found for input: {}", medicineNameComboBox.getEditor().getText());
+                return;
+            }
+
+            if (!updateInventoryDispensed(medicalRecord, matchedMedicine)) {
+                LOGGER.warn("Inventory update failed for studentId: {} at {}",
+                        medicalRecord.getStudentId(), new Date());
+                return;
+            }
+
+            if (!populateExistingStudentInfo(medicalRecord)) {
+                LOGGER.warn("Student info not found for LRN: {} at {}",
+                        medicalRecord.getLrn(), new Date());
+                return;
+            }
+
             medicalRecord.setMedicineId(matchedMedicine.getMedicineId());
             Employee selectedNurse = nurseInChargeComboBox.getSelectionModel().getSelectedItem();
             if (selectedNurse == null || selectedNurse.getNurseInChargeId() == null) {
+                LOGGER.warn("No nurse in charge selected for studentId: {}", medicalRecord.getStudentId());
                 showDialog("Error", "Please select a nurse in charge.");
                 return;
             }
-            if (!saveMedicalRecordAndTreatment(medicalRecord, selectedNurse)) return;
+
+            if (!saveMedicalRecordAndTreatment(medicalRecord, selectedNurse)) {
+                LOGGER.error("Saving medical record and treatment failed for studentId: {}", medicalRecord.getStudentId());
+                return;
+            }
+
             if (clinicVisitLogPageController != null) {
                 clinicVisitLogPageController.addStudentMedicalRecord(medicalRecord);
             }
 
+            LOGGER.info("Exiting addDailyRecord at {} – Success, studentId: {}, recordId: {}",
+                    new Date(), medicalRecord.getStudentId(), medicalRecord.getMedicalRecordId());
             showDialog("Notification", "Success, Record Added Successfully.");
             ((Stage) lrnField.getScene().getWindow()).close();
 
         } catch (Exception e) {
-            LOGGER.error("Unhandled exception in addDailyRecord", e);
+            LOGGER.error("Unhandled exception in addDailyRecord at {} for LRN: {}. Error: {}",
+                    new Date(), lrnField.getText(), e.getMessage(), e);
             showDialog("Error", "Unexpected error. Record not saved.");
         }
     }

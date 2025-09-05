@@ -1,6 +1,8 @@
 package com.rocs.infirmary.application.data.dao.student.record.impl;
 
 import com.rocs.infirmary.application.data.connection.ConnectionHelper;
+
+import static com.rocs.infirmary.application.data.dao.utils.queryconstants.record.QueryConstants.ADD_STUDENT_MEDICAL_RECORD;
 import static com.rocs.infirmary.application.data.dao.utils.queryconstants.student.QueryConstants.*;
 
 import com.rocs.infirmary.application.data.model.person.student.Student;
@@ -82,27 +84,6 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
         return medicalRecords;
     }
 
-    @Override
-    public boolean addStudentHealthProfile(String studentId, String userId, MedicalRecord newRecord) {
-        String timestamp = java.time.LocalDateTime.now().toString();
-        LOGGER.debug("Entering addStudentHealthProfile | StudentID: {} | UserID: {} | Timestamp: {} | Values: {}",
-                studentId, userId, timestamp, newRecord);
-
-        try {
-            if (newRecord == null) {
-                LOGGER.error("Validation failed | StudentID: {} | UserID: {} | Timestamp: {} | Reason: newRecord is null",
-                        studentId, userId, timestamp);
-                throw new IllegalArgumentException("Medical record cannot be null");
-            }
-        } catch (Exception e) {
-            LOGGER.error("Error in addStudentHealthProfile | StudentID: {} | UserID: {} | Timestamp: {} | Error: {}",
-                    studentId, userId, timestamp, e.getMessage(), e);
-            throw new RuntimeException(e);
-        }
-        return false;
-    }
-
-
     /**
      * Deactivates a student's medical record based on Medical Record ID.
      * Instead of completely removing the data, it likely updates the status
@@ -127,6 +108,7 @@ public class StudentMedicalRecordDaoImpl implements StudentMedicalRecordDao {
             LOGGER.error("SQLException Occurred: " + e.getMessage());
             throw new RuntimeException(e);
         }
+
     }
 
     @Override

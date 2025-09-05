@@ -37,23 +37,6 @@ public class StudentMedicalRecordFacadeImpl implements StudentMedicalRecordFacad
     }
 
     /**
-     * Adds a new student health profile.
-     *
-     * @param studentId the student's ID
-     * @param userId the ID of the user creating the record
-     * @param newRecord the student's medical record
-     * @return true if the record was added successfully, false otherwise
-     */
-    @Override
-    public boolean addStudentHealthProfile(String studentId, String userId, MedicalRecord newRecord) {
-        logger.info("Entering addStudentHealthProfile with StudentID: {}, UserID: {}, Values: {}",
-                studentId, userId, newRecord);
-        boolean isAdded = this.studentMedRecord.addStudentHealthProfile(studentId, userId, newRecord);
-        logger.info("Exiting addStudentHealthProfile with result: {}", isAdded);
-        return isAdded;
-    }
-
-    /**
      * This is used to delete a student's medical record based on the medical record unique id.
      * boolean returns true if the deletion was successful, otherwise false.
      * @param medicalRecordId is the uniue identifier assigned to each medical record of a student.

@@ -101,6 +101,21 @@ public class PatientMedicalRecordDaoImpl implements PatientMedicalRecordDao {
     }
 
     public boolean addMedicalRecord(MedicalRecord medicalRecord, Employee employee) {
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        LOGGER.info("Entering addMedicalRecord at {} with studentId: {}, values: {}",
+                now, medicalRecord.getStudentId(), medicalRecord);
+
+        if (medicalRecord.getStudentId() == null) {
+            LOGGER.warn("Validation failed at {} – Student ID is missing for medical record: {}",
+                    now, medicalRecord);
+            return false;
+        }
+        if (medicalRecord.getSymptoms() == null || medicalRecord.getSymptoms().trim().isEmpty()) {
+            LOGGER.warn("Validation failed at {} – Symptoms are missing for studentId: {}",
+                    now, medicalRecord.getStudentId());
+            return false;
+        }
+
         try (Connection con = ConnectionHelper.getConnection()) {
             con.setAutoCommit(false);
 
@@ -109,7 +124,8 @@ public class PatientMedicalRecordDaoImpl implements PatientMedicalRecordDao {
                 ailmentId = addNewAilment(con, medicalRecord.getSymptoms());
             }
             if (ailmentId == null) {
-                LOGGER.warn("No ailment_id found or inserted for symptoms: {}", medicalRecord.getSymptoms());
+                LOGGER.warn("No ailment_id found or inserted for studentId: {}, symptoms: {}",
+                        medicalRecord.getStudentId(), medicalRecord.getSymptoms());
                 return false;
             }
 
@@ -134,29 +150,36 @@ public class PatientMedicalRecordDaoImpl implements PatientMedicalRecordDao {
                             if (rs.next()) {
                                 Long medRecordId = rs.getLong("id");
                                 medicalRecord.setMedicalRecordId(medRecordId);
-                                LOGGER.debug("Assigned medicalRecordId to patient: {}", medRecordId);
                                 con.commit();
+                                LOGGER.info("Exiting addMedicalRecord at {} – Success, studentId: {}, medicalRecordId: {}",
+                                        new Timestamp(System.currentTimeMillis()),
+                                        medicalRecord.getStudentId(), medRecordId);
                                 return true;
                             } else {
-                                LOGGER.warn("Insert succeeded but no medical record ID returned.");
+                                LOGGER.warn("Insert succeeded but no medical record ID returned for studentId: {}",
+                                        medicalRecord.getStudentId());
                                 con.rollback();
                             }
                         }
                     }
                 } else {
-                    LOGGER.warn("Insert affected 0 rows for student ID {}", medicalRecord.getStudentId());
+                    LOGGER.warn("Insert affected 0 rows for studentId {}", medicalRecord.getStudentId());
                     con.rollback();
                 }
 
             } catch (SQLException e) {
-                LOGGER.error("Error inserting medical record: {}", e.getMessage(), e);
+                LOGGER.error("Error inserting medical record for studentId {}: {}",
+                        medicalRecord.getStudentId(), e.getMessage(), e);
                 con.rollback();
             }
 
         } catch (SQLException e) {
-            LOGGER.error("Connection or rollback failed: {}", e.getMessage(), e);
+            LOGGER.error("Connection or rollback failed while adding medical record for studentId {}: {}",
+                    medicalRecord.getStudentId(), e.getMessage(), e);
         }
 
+        LOGGER.info("Exiting addMedicalRecord at {} – Failed for studentId: {}",
+                new Timestamp(System.currentTimeMillis()), medicalRecord.getStudentId());
         return false;
     }
 
