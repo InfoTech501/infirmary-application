@@ -25,6 +25,7 @@ drop table medicine cascade constraints;
 drop table medicine_administered cascade constraints;
 drop table login cascade constraints;
 drop table employee cascade constraints;
+drop table department cascade constraints;
 
 create table person (
   id number(10,0) generated as identity
@@ -37,11 +38,11 @@ create table person (
   gender varchar(10 char),
   email varchar(64 char),
   address varchar2(255 char),
-  contact_number varchar2(11),
+  contact_number varchar2(15),
   primary key (id));
 
 create table section (
-  section_id number(20,0) generated as identity,
+  section_id number(10,0) generated as identity,
   adviser_id number(20,0) unique,
   strand varchar2(30 char),
   grade_level varchar(30 char),
@@ -82,7 +83,7 @@ create table diagnosed_condition (
   primary key (condition_id));
 
 create table medical_record (
-  id number(20,0) generated as identity
+  id number(10,0) generated as identity
     constraint MEDICAL_RECORD_NOT_NULL not null,
   student_id number(20,0),
   ailment_id number(20,0),
@@ -100,7 +101,7 @@ create table medical_record (
   primary key (id));
 
 create table inventory (
-  inventory_id number(20,0) generated as identity
+  inventory_id number(10,0) generated as identity
     constraint INVENTORY_NOT_NULL not null,
   medicine_id number(20,0),
   item_type varchar2(60),
@@ -109,7 +110,7 @@ create table inventory (
   primary key (inventory_id));
 
 create table medicine (
-  medicine_id number(20,0) generated as identity,
+  medicine_id number(10,0) generated as identity,
   item_name varchar2(50),
   description varchar2(255),
   is_available NUMBER(1,0)
@@ -118,7 +119,7 @@ create table medicine (
   primary key (medicine_id));
 
 create table medicine_administered (
-  med_administered_id number(20,0) generated as identity,
+  med_administered_id number(10,0) generated as identity,
   medicine_id number(20,0),
   med_record_id number(20,0),
   nurse_in_charge_id number(20,0),
@@ -128,7 +129,7 @@ create table medicine_administered (
   primary key (med_administered_id));
 
 create table login (
-  id number(20,0) generated as identity
+  id number(10,0) generated as identity
     constraint LOGIN_NOT_NULL not null,
   person_id number(20,0) unique,
   username varchar2(25 char)
@@ -144,13 +145,26 @@ create table login (
   primary key (id));
 
 create table employee (
-  id number(20,0) generated as identity,
+  id number(10,0) generated as identity,
   person_id number(20,0),
+  department_id number(10,0),
+  employee_number number(10,0),
+  date_employed date,
+  employment_status varchar(32),
+  primary key (id));
+
+create table department (
+  id number(10,0) generated as identity,
+  department_name varchar2(64),
   primary key (id));
 
 alter table employee
     add constraint FK_EMPLOYEE_PERSON_ID
     foreign key (person_id) references person;
+
+alter table employee
+    add constraint FK_EMPLOYEE_DEPARTMENT_ID
+    foreign key (department_id) references department;
 
 alter table section
     add constraint FK_SECTION_ADVISER_ID
@@ -186,7 +200,7 @@ alter table medical_record
 
 alter table medical_record
     add constraint FK_MEDICAL_RECORD_NURSE_IN_CHARGE_ID
-    foreign key (nurse_in_charge_id) references person;
+    foreign key (nurse_in_charge_id) references employee;
 
 alter table inventory
     add constraint FK_INVENTORY_MEDICINE_ID
@@ -207,6 +221,7 @@ alter table medicine_administered
 alter table login
     add constraint FK_LOGIN_PERSON_ID
     foreign key (person_id) references person;
+
 
 --INSERT PERSON DATA
 insert into person (first_name, middle_name, last_name, birthdate, age, gender, email, address, contact_number)
@@ -296,17 +311,23 @@ values ('6', '01', '005', '105461532145');
 insert into student(person_id, section_section_id, stud_guardian_id, LRN)
 values ('7', '03', '004', '106846539215');
 
+-- INSERT DEPARTMENT DATA
+insert into department (department_name)
+values ('Senior High School Department');
+insert into department (department_name)
+values ('Clinic Department');
+
 -- INSERT EMPLOYEE DATA
-insert into employee (person_id)
-values (8);
-insert into employee (person_id)
-values (9);
-insert into employee (person_id)
-values (10);
-insert into employee (person_id)
-values (11);
-insert into employee (person_id)
-values (12);
+insert into employee (person_id, department_id, employee_number, date_employed, employment_status)
+values (8, 1, '2020001245', to_date('2020-07-15', 'YYYY-MM-DD'), 'Active');
+insert into employee (person_id, department_id, employee_number, date_employed, employment_status)
+values (9, 1, '2021000456', to_date('2021-08-15', 'YYYY-MM-DD'), 'Inactive');
+insert into employee (person_id, department_id, employee_number, date_employed, employment_status)
+values (10, 1, '2024000789', to_date('2024-01-15', 'YYYY-MM-DD'), 'Active');
+insert into employee (person_id, department_id, employee_number, date_employed, employment_status)
+values (11, 2, '20250001', to_date('2025-01-11', 'YYYY-MM-DD'), 'Active');
+insert into employee (person_id, department_id, employee_number, date_employed, employment_status)
+values (12, 2, '20220088', to_date('2022-09-15', 'YYYY-MM-DD'), 'Inactive');
 
 -- INSERT AILMENTS DATA
 insert into ailments (description)
@@ -400,27 +421,27 @@ values (5, 'Tonsillitis');
 
 --INSERT MEDICAL RECORD DATA
 insert into medical_record (student_id, ailment_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
-values (1, 1, 11, 'Headache', '37.5°C', '130/85', 88, 18, to_timestamp('2000-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Prescribed pain reliever', 1);
+values (1, 1, 4, 'Headache', '37.5°C', '130/85', 88, 18, to_timestamp('2000-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Prescribed pain reliever', 1);
 insert into medical_record (student_id, ailment_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
-values (2, 2, 12, 'Stomachache', '37.2°C', '140/90', 92, 20, to_timestamp('2008-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Rest and hydration', 0);
+values (2, 2, 5, 'Stomachache', '37.2°C', '140/90', 92, 20, to_timestamp('2008-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Rest and hydration', 0);
 insert into medical_record (student_id, ailment_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
-values (3, 3, 12, 'Fever', '38.5°C', '120/80', 85, 19, to_timestamp('2025-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Prescribed antipyretic', 1);
+values (3, 3, 5, 'Fever', '38.5°C', '120/80', 85, 19, to_timestamp('2025-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Prescribed antipyretic', 1);
 insert into medical_record (student_id, ailment_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
-values (4, 4, 11, 'Dry cough', '37.0°C', '110/70', 78, 16, to_timestamp('2024-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Prescribed cough syrup', 0);
+values (4, 4, 4, 'Dry cough', '37.0°C', '110/70', 78, 16, to_timestamp('2024-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Prescribed cough syrup', 0);
 insert into medical_record (student_id, ailment_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
-values (5, 1, 11, 'Dizziness', '37.0°C', '115/75', 72, 15, to_timestamp('2020-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Recommended hydration', 1);
+values (5, 1, 4, 'Dizziness', '37.0°C', '115/75', 72, 15, to_timestamp('2020-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Recommended hydration', 1);
 insert into medical_record (student_id, ailment_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
-values (3, 1, 12, 'Headache', '37.0°C', '125/85', 80, 17, to_timestamp('2023-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Prescribed pain reliver', 0);
+values (3, 1, 5, 'Headache', '37.0°C', '125/85', 80, 17, to_timestamp('2023-01-02 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Prescribed pain reliver', 0);
 insert into medical_record (student_id, ailment_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
-values (6, 6, 11, 'Skin rash', '36.9°C', '118/78', 75, 16, TO_TIMESTAMP('2022-04-20 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Prescribed antihistamine cream', 1);
+values (6, 6, 4, 'Skin rash', '36.9°C', '118/78', 75, 16, TO_TIMESTAMP('2022-04-20 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Prescribed antihistamine cream', 1);
 insert into medical_record (student_id, ailment_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
-values (1, 9, 11, 'Sore throat', '37.4°C', '122/82', 78, 17, TO_TIMESTAMP('2021-03-15 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Recommended salt water gargle', 1);
+values (1, 9, 4, 'Sore throat', '37.4°C', '122/82', 78, 17, TO_TIMESTAMP('2021-03-15 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Recommended salt water gargle', 1);
 insert into medical_record (student_id, ailment_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
-values (1, 8, 12, 'Dizziness', '36.8°C', '121/81', 74, 16, TO_TIMESTAMP('2020-08-14 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Recommended hydration', 0);
+values (1, 8, 5, 'Dizziness', '36.8°C', '121/81', 74, 16, TO_TIMESTAMP('2020-08-14 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Recommended hydration', 0);
 insert into medical_record (student_id, ailment_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
-values (4, 10, 12, 'Allergic reaction', '36.7°C', '125/85', 80, 17, TO_TIMESTAMP('2023-09-30 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Prescribed antihistamine tablets', 1);
+values (4, 10, 5, 'Allergic reaction', '36.7°C', '125/85', 80, 17, TO_TIMESTAMP('2023-09-30 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Prescribed antihistamine tablets', 1);
 insert into medical_record (student_id, ailment_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
-values (7, 7, 11, 'Shortness of breath', '37.0°C', '135/90', 95, 22, TO_TIMESTAMP('2024-06-05 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Prescribed inhaler', 0);
+values (7, 7, 4, 'Shortness of breath', '37.0°C', '135/90', 95, 22, TO_TIMESTAMP('2024-06-05 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'Prescribed inhaler', 0);
 
 --INSERT MEDICINE ADMINISTERED
 insert into medicine_administered (medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
