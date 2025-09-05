@@ -61,7 +61,7 @@ public class LowStockNotificationController {
      * @param ownerStage       the main window where the alert should appear beside
      * @param lowStockMedicine a list of Inventory Medicine that are low in stock
      */
-    public static void showLowStockModal(Stage ownerStage, List<LowStockItems> lowStockMedicine) {
+    public static Stage showLowStockModal(Stage ownerStage, List<LowStockItems> lowStockMedicine) {
 
         try {
             FXMLLoader loader = new FXMLLoader();
@@ -100,9 +100,11 @@ public class LowStockNotificationController {
             ownerStage.heightProperty().addListener((obs, oldVal, newVal) -> updateModalPosition(modalStage, ownerStage));
 
             modalStage.show();
+            return modalStage;
 
         } catch (IOException e) {
             LOGGER.error("IO Exception Occurred" + e.getMessage());
+            return null;
         }
     }
 
