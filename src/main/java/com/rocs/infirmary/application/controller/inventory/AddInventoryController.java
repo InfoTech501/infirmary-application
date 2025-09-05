@@ -186,7 +186,7 @@ public class AddInventoryController implements Initializable {
                         .findFirst()
                         .orElse(null);
                 if (existingInventoryItem != null) {
-                    Optional<ButtonType> confirmUpdate = alertAction("Add Confirmation", "The medicine with the same name and expiration date exists in inventory. Do you still want to add this to inventory?");
+                    Optional<ButtonType> confirmUpdate = alertAction("Update Confirmation", "The medicine with the same name and expiration date exists in inventory. Do you want to update the quantity instead?");
                     if (confirmUpdate.isPresent() && confirmUpdate.get().getButtonData() == ButtonBar.ButtonData.YES) {
                         int updatedQuantity = existingInventoryItem.getQuantity() + quantity;
                         boolean updated = inventoryManagementApplication
@@ -283,11 +283,24 @@ public class AddInventoryController implements Initializable {
         } else if (!isValidInputNumber(quantityTextField.getText())) {
             showDialog("Invalid Input","Quantity must only contain number");
         } else {
-           if(addMedicine(Integer.parseInt(quantityTextField.getText()))){
-               if (parentController != null) {
-                   parentController.refresh();
-               }
-           }
+
+            Optional<ButtonType> confirmAction = alertAction(
+                    "Add Confirmation",
+                    "Are you sure you want to add this medicine to inventory?\n\n"
+                            + "Product: " + productNameTextField.getText() + "\n"
+                            + "Quantity: " + quantityTextField.getText() + "\n"
+                            + "Item Type: " + itemTypeComboBox.getSelectionModel().getSelectedItem() + "\n"
+                            + "Expiration Date: " + expirationDatePicker.getValue()
+            );
+            if (confirmAction.isPresent() && confirmAction.get().getButtonData() == ButtonBar.ButtonData.YES) {
+                if (addMedicine(Integer.parseInt(quantityTextField.getText()))) {
+                    if (parentController != null) {
+                        parentController.refresh();
+                    }
+                }
+            } else {
+                LOGGER.info("Canceled the add operation.");
+            }
         }
     }
     private List<Medicine> findMatchingMedicineFromInventory(List<Medicine> selected, List<Medicine> inventoryMedicine) {
