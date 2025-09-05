@@ -2,7 +2,6 @@ package com.rocs.infirmary.application.data.dao.student.record.impl;
 
 import com.rocs.infirmary.application.data.connection.ConnectionHelper;
 
-import static com.rocs.infirmary.application.data.dao.utils.queryconstants.record.QueryConstants.ADD_STUDENT_MEDICAL_RECORD;
 import static com.rocs.infirmary.application.data.dao.utils.queryconstants.student.QueryConstants.*;
 
 import com.rocs.infirmary.application.data.model.person.student.Student;

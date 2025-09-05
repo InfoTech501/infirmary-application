@@ -34,5 +34,4 @@ public interface StudentMedicalRecordDao {
      * @return true when the medical record are successfully updated, false when the medical record are not updated successfully due to error
      * */
     boolean updateStudentMedicalRecord(String symptoms, String temperatureReadings, Date visitDate , String treatment, String LRN, Long medicalRecordId );
-
 }
