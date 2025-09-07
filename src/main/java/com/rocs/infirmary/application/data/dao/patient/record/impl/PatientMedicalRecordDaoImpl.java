@@ -105,17 +105,6 @@ public class PatientMedicalRecordDaoImpl implements PatientMedicalRecordDao {
         LOGGER.info("Entering addMedicalRecord at {} with studentId: {}, values: {}",
                 now, medicalRecord.getStudentId(), medicalRecord);
 
-        if (medicalRecord.getStudentId() == null) {
-            LOGGER.warn("Validation failed at {} – Student ID is missing for medical record: {}",
-                    now, medicalRecord);
-            return false;
-        }
-        if (medicalRecord.getSymptoms() == null || medicalRecord.getSymptoms().trim().isEmpty()) {
-            LOGGER.warn("Validation failed at {} – Symptoms are missing for studentId: {}",
-                    now, medicalRecord.getStudentId());
-            return false;
-        }
-
         try (Connection con = ConnectionHelper.getConnection()) {
             con.setAutoCommit(false);
 
