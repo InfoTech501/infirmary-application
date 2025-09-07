@@ -73,12 +73,12 @@ create table ailments (
 create table medical_history (
   med_history_id number(10,0) generated as identity,
   student_id number(10,0),
+  condition_id number(10,0),
   last_checkup_date date,
   primary key (med_history_id));
 
 create table diagnosed_condition (
   condition_id number(10,0) generated as identity,
-  med_history_id number(10,0),
   condition_name varchar2(64),
   primary key (condition_id));
 
@@ -186,9 +186,9 @@ alter table medical_history
     add constraint FK_MEDICAL_HISTORY_STUDENT_ID
     foreign key (student_id) references student;
 
-alter table diagnosed_condition
-    add constraint FK_DIAGNOSED_CONDITION_MED_HISTORY_ID
-    foreign key (med_history_id) references medical_history;
+alter table medical_history
+    add constraint FK_MEDICAL_HISTORY_CONDITION_ID
+    foreign key (condition_id) references diagnosed_condition;
 
 alter table medical_record
     add constraint FK_MEDICAL_RECORD_STUDENT_ID
@@ -395,29 +395,29 @@ values ('9', 'Medicine', 50, to_timestamp('2026-03-20 00:00:00.00', 'yyyy-mm-dd 
 insert into inventory (medicine_id, item_type, quantity, expiration_date)
 values ('10', 'Medicine', 4, to_timestamp('2027-08-25 00:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 
---INSERT MEDICAL HISTORY DATA
-insert into medical_history (student_id, last_checkup_date)
-values (1, to_date('2025-07-15', 'YYYY-MM-DD'));
-insert into medical_history (student_id, last_checkup_date)
-values (2, to_date('2021-06-10', 'YYYY-MM-DD'));
-insert into medical_history (student_id, last_checkup_date)
-values (3, to_date('2020-08-08', 'YYYY-MM-DD'));
-insert into medical_history (student_id, last_checkup_date)
-values (4, to_date('2019-05-22', 'YYYY-MM-DD'));
-insert into medical_history (student_id, last_checkup_date)
-values (5, to_date('2023-08-19', 'YYYY-MM-DD'));
-
 --INSERT DIAGNOSED CONDITION
-insert into diagnosed_condition (med_history_id, condition_name)
-values (1, 'Asthma');
-insert into diagnosed_condition (med_history_id, condition_name)
-values (2, 'Depression');
-insert into diagnosed_condition (med_history_id, condition_name)
-values (4, 'Scoliosis');
-insert into diagnosed_condition (med_history_id, condition_name)
-values (5, 'Panic Disorder');
-insert into diagnosed_condition (med_history_id, condition_name)
-values (5, 'Tonsillitis');
+insert into diagnosed_condition (condition_name)
+values ('Asthma');
+insert into diagnosed_condition (condition_name)
+values ('Depression');
+insert into diagnosed_condition (condition_name)
+values ('Scoliosis');
+insert into diagnosed_condition (condition_name)
+values ('Panic Disorder');
+insert into diagnosed_condition (condition_name)
+values ('Diabetes');
+
+--INSERT MEDICAL HISTORY DATA
+insert into medical_history (student_id, condition_id, last_checkup_date)
+values (1, 1, to_date('2025-07-15', 'YYYY-MM-DD'));
+insert into medical_history (student_id, condition_id, last_checkup_date)
+values (2, 1, to_date('2021-06-10', 'YYYY-MM-DD'));
+insert into medical_history (student_id, condition_id, last_checkup_date)
+values (3, 3, to_date('2020-08-08', 'YYYY-MM-DD'));
+insert into medical_history (student_id, condition_id, last_checkup_date)
+values (4, 4, to_date('2019-05-22', 'YYYY-MM-DD'));
+insert into medical_history (student_id, condition_id, last_checkup_date)
+values (5, 2, to_date('2023-08-19', 'YYYY-MM-DD'));
 
 --INSERT MEDICAL RECORD DATA
 insert into medical_record (student_id, ailment_id, nurse_in_charge_id, symptoms, temperature_readings, blood_pressure, pulse_rate, respiratory_rate, visit_date, treatment, is_active)
