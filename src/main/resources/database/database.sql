@@ -43,7 +43,7 @@ create table person (
 
 create table section (
   section_id number(10,0) generated as identity,
-  adviser_id number(20,0) unique,
+  adviser_id number(10,0) unique,
   strand varchar2(30 char),
   grade_level varchar(30 char),
   section varchar(30 char),
@@ -59,20 +59,20 @@ create table guardian_details (
 
 create table student (
   id number(10,0) generated as identity,
-  person_id number(20,0) unique,
-  section_section_id number(20,0),
-  stud_guardian_id number(20,0),
+  person_id number(10,0) unique,
+  section_section_id number(10,0),
+  stud_guardian_id number(10,0),
   LRN number(12,0),
   primary key (id));
 
 create table ailments (
-  ailment_id number(30) generated as identity,
+  ailment_id number(10,0) generated as identity,
   description varchar2(255 char),
   primary key (ailment_id));
 
 create table medical_history (
   med_history_id number(10,0) generated as identity,
-  student_id number(20,0),
+  student_id number(10,0),
   last_checkup_date date,
   primary key (med_history_id));
 
@@ -85,9 +85,9 @@ create table diagnosed_condition (
 create table medical_record (
   id number(10,0) generated as identity
     constraint MEDICAL_RECORD_NOT_NULL not null,
-  student_id number(20,0),
-  ailment_id number(20,0),
-  nurse_in_charge_id number(20,0),
+  student_id number(10,0),
+  ailment_id number(10,0),
+  nurse_in_charge_id number(10,0),
   symptoms varchar2(60),
   temperature_readings varchar2(10),
   blood_pressure varchar2(7),
@@ -103,7 +103,7 @@ create table medical_record (
 create table inventory (
   inventory_id number(10,0) generated as identity
     constraint INVENTORY_NOT_NULL not null,
-  medicine_id number(20,0),
+  medicine_id number(10,0),
   item_type varchar2(60),
   quantity number(10,0),
   expiration_date timestamp(6),
@@ -120,16 +120,16 @@ create table medicine (
 
 create table medicine_administered (
   med_administered_id number(10,0) generated as identity,
-  medicine_id number(20,0),
-  med_record_id number(20,0),
-  nurse_in_charge_id number(20,0),
+  medicine_id number(10,0),
+  med_record_id number(10,0),
+  nurse_in_charge_id number(10,0),
   description varchar2(255),
   quantity number(10,0),
   date_administered timestamp(6),
   primary key (med_administered_id));
 
 create table login (
-  id number(10,0) generated as identity
+  id number(20,0) generated as identity
     constraint LOGIN_NOT_NULL not null,
   person_id number(20,0) unique,
   username varchar2(25 char)
@@ -146,7 +146,7 @@ create table login (
 
 create table employee (
   id number(10,0) generated as identity,
-  person_id number(20,0),
+  person_id number(10,0),
   department_id number(10,0),
   employee_number number(10,0),
   date_employed date,
