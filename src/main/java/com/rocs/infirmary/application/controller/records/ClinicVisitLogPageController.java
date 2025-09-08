@@ -262,7 +262,7 @@ public class ClinicVisitLogPageController implements Initializable {
         controller.setClinicVisitLogPageController(this);
 
         clinicVisitLogPage.getChildren().add(root);
-        LOGGER.info("Showing more info modal");
+        LOGGER.info("Showing add entry modal");
     }
 
     private void openViewStudentVisitLogModal(MedicalRecord medicalRecord) {
