@@ -23,10 +23,7 @@ import org.slf4j.LoggerFactory;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -55,7 +52,7 @@ public class AddDailyTreatmentRecordController implements Initializable {
     @FXML
     private TextField bloodPressureField;
     @FXML
-    private TextField symptomsField;
+    private TextField ailmentField;
     @FXML
     private ComboBox<Employee> nurseInChargeComboBox;
     @FXML
@@ -87,6 +84,21 @@ public class AddDailyTreatmentRecordController implements Initializable {
     private void addLrnAutoFillListener() {
         lrnField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue == null || newValue.isBlank() || newValue.trim().length() < 12) {
+                nameField.clear();
+                ageField.clear();
+                gradeSectionField.clear();
+                bodyTempField.clear();
+                pulseRateField.clear();
+                respiratoryRateField.clear();
+                bloodPressureField.clear();
+                ailmentField.clear();
+                treatmentField.clear();
+                invDispensingOutField.clear();
+                datePickerTextField.setValue(null);
+                nurseInChargeComboBox.getSelectionModel().clearSelection();
+                medicineNameComboBox.getSelectionModel().clearSelection();
+                medicineNameComboBox.getEditor().clear();
+
                 return;
             }
 
@@ -94,18 +106,20 @@ public class AddDailyTreatmentRecordController implements Initializable {
             LOGGER.info("Attempting to autofill for LRN: {}", lrn);
             try {
                 List<MedicalRecord> existingStudentRecord = medicalRecordInfoMgtApplication.getStudentMedicalRecordFacade().getMedicalInformationByLRN(lrn);
-
                 if (existingStudentRecord != null && !existingStudentRecord.isEmpty()) {
                     MedicalRecord matchedStudent = existingStudentRecord.get(0);
-                    String fullName = Stream.of(matchedStudent.getFirstName(), matchedStudent.getMiddleName(), matchedStudent.getLastName())
-                            .filter(part -> part != null && !part.isBlank())
-                            .map(String::trim)
-                            .collect(Collectors.joining(" "));
+                    String fullName = Stream.of(matchedStudent.getFirstName(), matchedStudent.getMiddleName(), matchedStudent.getLastName()).filter(part -> part != null && !part.isBlank()).map(String::trim).collect(Collectors.joining(" "));
                     nameField.setText(fullName);
+
                     String grade = matchedStudent.getGradeLevel() != null ? matchedStudent.getGradeLevel().trim() : "";
                     String section = matchedStudent.getSection() != null ? matchedStudent.getSection().trim() : "";
                     gradeSectionField.setText(grade + " - " + section);
+
                     ageField.setText(String.valueOf(matchedStudent.getAge()));
+                } else {
+                    nameField.clear();
+                    ageField.clear();
+                    gradeSectionField.clear();
                 }
             } catch (Exception e) {
                 showDialog("Warning", "Error retrieving student data. Please check LRN input.");
@@ -144,41 +158,40 @@ public class AddDailyTreatmentRecordController implements Initializable {
 
     @FXML
     private void handleConfirmButton(ActionEvent actionEvent) {
-        String lrn = lrnField.getText().trim();
-        String temp = bodyTempField.getText().trim();
-        String pulse = pulseRateField.getText().trim();
-        String resp = respiratoryRateField.getText().trim();
-        String bp = bloodPressureField.getText().trim();
-        String dispense = invDispensingOutField.getText().trim();
+        String lrn = lrnField.getText() != null ? lrnField.getText().trim() : "";
+        if (lrn.isEmpty()) {
+            showDialog("Warning", "LRN is required.");
+            return;
+        }
 
-        if (lrn.isEmpty() || !lrn.matches("^\\d+$")) {
-            showDialog("Warning", "LRN cannot be empty.");
-            return;
-        } else if (nameField.getText().isBlank()) {
-            showDialog("Warning", "Name cannot be empty.");
-            return;
-        } else if (gradeSectionField.getText().isBlank()) {
-            showDialog("Warning", "Grade & Section cannot be empty.");
-            return;
-        } else if (temp.isEmpty() || !temp.matches("^\\d+(\\.\\d+)?$")) {
+        String bodyTemperature = bodyTempField.getText() != null ? bodyTempField.getText().trim() : "";
+        String pulseRate = pulseRateField.getText() != null ? pulseRateField.getText().trim() : "";
+        String respiratoryRate = respiratoryRateField.getText() != null ? respiratoryRateField.getText().trim() : "";
+        String bloodPressure = bloodPressureField.getText() != null ? bloodPressureField.getText().trim() : "";
+        String dispenseOut = invDispensingOutField.getText() != null ? invDispensingOutField.getText().trim() : "";
+
+        MedicalRecord student = validateIdentity(lrn);
+        if (student == null) return;
+
+        if (bodyTemperature.isEmpty() || !bodyTemperature.matches("^\\d+(\\.\\d+)?$")) {
             showDialog("Warning", "Temperature must be a number.");
             return;
-        } else if (pulse.isEmpty() || !pulse.matches("^\\d+$")) {
+        } else if (pulseRate.isEmpty() || !pulseRate.matches("^\\d+$")) {
             showDialog("Warning", "Pulse rate must be a number.");
             return;
-        } else if (resp.isEmpty() || !resp.matches("^\\d+$")) {
-            showDialog("Warning", "Respiratory rate must be numeric.");
+        } else if (respiratoryRate.isEmpty() || !respiratoryRate.matches("^\\d+$")) {
+            showDialog("Warning", "Respiratory rate must be a number.");
             return;
-        } else if (bp.isEmpty() || !bp.matches("\\d{2,3}/\\d{2,3}")) {
+        } else if (bloodPressure.isEmpty() || !bloodPressure.matches("\\d{2,3}/\\d{2,3}")) {
             showDialog("Warning", "Blood pressure must be like '120/80'.");
             return;
-        } else if (symptomsField.getText().isBlank()) {
+        } else if (ailmentField.getText().isBlank()) {
             showDialog("Warning", "Symptoms cannot be empty.");
             return;
         } else if (treatmentField.getText().isBlank()) {
             showDialog("Warning", "Treatment cannot be empty.");
             return;
-        } else if (dispense.isEmpty() || !dispense.matches("^\\d+$")) {
+        } else if (dispenseOut.isEmpty() || !dispenseOut.matches("^\\d+$")) {
             showDialog("Warning", "Dispensing quantity must be a number.");
             return;
         } else if (datePickerTextField.getValue() == null) {
@@ -187,6 +200,51 @@ public class AddDailyTreatmentRecordController implements Initializable {
         }
 
         addDailyRecord();
+    }
+
+    private MedicalRecord validateIdentity(String lrn) {
+        List<MedicalRecord> records = medicalRecordInfoMgtApplication
+                .getStudentMedicalRecordFacade()
+                .getMedicalInformationByLRN(lrn);
+
+        if (records == null || records.isEmpty() || records.get(0) == null) {
+            showDialog("Warning", "No student found with this LRN.");
+            return null;
+        }
+
+        MedicalRecord student = records.get(0);
+
+        String expectedFullName = Stream.of(student.getFirstName(), student.getMiddleName(), student.getLastName()).filter(part -> part != null && !part.isBlank()).map(String::trim).collect(Collectors.joining(" "));
+        String enteredFullName = nameField.getText() != null ? nameField.getText().trim() : "";
+        if (enteredFullName.isBlank()) {
+            showDialog("Warning", "Name cannot be empty.");
+            return null;
+        } else if (!enteredFullName.equalsIgnoreCase(expectedFullName)) {
+            showDialog("Warning", "Entered name does not match the student registered with this LRN.");
+            return null;
+        }
+
+        String enteredAge = ageField.getText() != null ? ageField.getText().trim() : "";
+        Integer expectedAge = student.getAge();
+        if (enteredAge.isBlank()) {
+            showDialog("Warning", "Age cannot be empty.");
+            return null;
+        } else if (expectedAge == null || !enteredAge.equals(String.valueOf(expectedAge))) {
+            showDialog("Warning", "Entered age does not match the student registered with this LRN.");
+            return null;
+        }
+
+        String expectedGradeSection = (student.getGradeLevel() != null ? student.getGradeLevel().trim() : "") + " - " + (student.getSection() != null ? student.getSection().trim() : "");
+        String enteredGradeSection = gradeSectionField.getText() != null ? gradeSectionField.getText().trim() : "";
+        if (enteredGradeSection.isBlank()) {
+            showDialog("Warning", "Grade & Section cannot be empty.");
+            return null;
+        } else if (!enteredGradeSection.equalsIgnoreCase(expectedGradeSection)) {
+            showDialog("Warning", "Entered grade and section do not match the student registered with this LRN.");
+            return null;
+        }
+
+        return student;
     }
 
     @FXML
@@ -246,7 +304,7 @@ public class AddDailyTreatmentRecordController implements Initializable {
         patient.setRespiratoryRate(respiration);
         patient.setBloodPressure(bloodPressureField.getText().trim());
         patient.setDispensingOut(dispensingOut);
-        patient.setSymptoms(symptomsField.getText().trim());
+        patient.setSymptoms(ailmentField.getText().trim());
         patient.setTreatment(treatmentField.getText().trim());
         Medicine selectedMedicine = medicineNameComboBox.getValue();
         if (selectedMedicine != null) {
