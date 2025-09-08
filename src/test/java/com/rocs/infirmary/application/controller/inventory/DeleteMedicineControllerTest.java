@@ -22,22 +22,19 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(ApplicationExtension.class)
 class DeleteMedicineControllerTest {
 
+    private Button confirmButton;
+    private Button cancelButton;
     private TableView<Medicine> medDetailsTable;
-    private Button removeButton;
-    private Button confirmDeleteButton;
-    private Button cancelDeleteButton;
 
     @BeforeEach
     void setup(FxRobot robot){
         medDetailsTable = robot.lookup("#medDetailsTable").queryAs(TableView.class);
-        removeButton = robot.lookup("#InventoryRemoveItemsButton").queryAs(Button.class);
-        confirmDeleteButton = robot.lookup("#ButtonConfirm").queryAs(Button.class);
-        cancelDeleteButton = robot.lookup("#ButtonCancel").queryAs(Button.class);
+        confirmButton = robot.lookup("#ButtonConfirm").queryAs(Button.class);
+        cancelButton = robot.lookup("#ButtonCancel").queryAs(Button.class);
 
         assertNotNull(medDetailsTable);
-        assertNotNull(removeButton);
-        assertNotNull(confirmDeleteButton);
-        assertNotNull(cancelDeleteButton);
+        assertNotNull(confirmButton);
+        assertNotNull(cancelButton);
     }
 
     @Start
@@ -47,7 +44,6 @@ class DeleteMedicineControllerTest {
         BorderPane mainLayout;
         mainLayout = loader.load();
         Scene scene = new Scene(mainLayout);
-        stage.setMaximized(true);
         stage.setScene(scene);
         stage.show();
     }
@@ -55,65 +51,58 @@ class DeleteMedicineControllerTest {
 
     @Disabled
     @Test
-    void deleteMedicineConfirmed(FxRobot robot){
+    void testMedicineDeletedAfterConfirmation(FxRobot robot) {
+        robot.interact(() -> {
+            Medicine med = new Medicine();
+            med.setItemName("Paracetamol");
+            med.setIsSelected(true);
+            medDetailsTable.getItems().add(med);
+        });
 
-        robot.clickOn("#productNameTextField").write("Amoxicillin");
-        robot.clickOn("#quantityTextField").write("20");
-        robot.clickOn("#expirationDateTextField").write("2026-12-31");
-        robot.clickOn("#ButtonConfirm");
-
-        boolean added = medDetailsTable.getItems().stream()
-                .anyMatch(m -> "Amoxicillin".equals(m.getItemName()));
-        assertTrue(added);
-
-
-        robot.interact(() -> medDetailsTable.getSelectionModel().select(0));
-        robot.clickOn(removeButton);
-        robot.clickOn(confirmDeleteButton);
-
-
-        boolean exists = medDetailsTable.getItems().stream()
-                .anyMatch(m -> "Amoxicillin".equals(m.getItemName()));
-        assertFalse(exists);
+        robot.clickOn(confirmButton);
 
         assertTrue(robot.lookup("Medicine successfully Deleted").tryQuery().isPresent());
+        assertTrue(medDetailsTable.getItems().isEmpty());
     }
 
 
     @Disabled
     @Test
-    void cancelDeleteKeepsMedicine(FxRobot robot){
-        // Arrange: add a medicine
-        robot.clickOn("#productNameTextField").write("Paracetamol");
-        robot.clickOn("#quantityTextField").write("10");
-        robot.clickOn("#expirationDateTextField").write("2027-05-05");
-        robot.clickOn("#ButtonConfirm");
+    void testDeletionRequiresConfirmation(FxRobot robot) {
+        robot.interact(() -> {
+            Medicine med = new Medicine();
+            med.setItemName("Ibuprofen");
+            med.setIsSelected(true);
+            medDetailsTable.getItems().add(med);
+        });
 
-        boolean added = medDetailsTable.getItems().stream()
-                .anyMatch(m -> "Paracetamol".equals(m.getItemName()));
-        assertTrue(added);
+        robot.clickOn(confirmButton);
 
-
-        robot.interact(() -> medDetailsTable.getSelectionModel().select(0));
-        robot.clickOn(removeButton);
-        robot.clickOn(cancelDeleteButton);
-
-
-        boolean exists = medDetailsTable.getItems().stream()
-                .anyMatch(m -> "Paracetamol".equals(m.getItemName()));
-        assertTrue(exists);
+        assertTrue(robot.lookup("Are you sure you want to delete?").tryQuery().isPresent());
     }
 
 
     @Disabled
     @Test
-    void deleteNonExistentMedicineShowsError(FxRobot robot){
+    void testMedicineRemainsIfCanceled(FxRobot robot) {
+        robot.interact(() -> {
+            Medicine med = new Medicine();
+            med.setItemName("Amoxicillin");
+            med.setIsSelected(true);
+            medDetailsTable.getItems().add(med);
+        });
 
-        medDetailsTable.getItems().clear();
+        robot.clickOn(cancelButton);
 
-        robot.clickOn(removeButton);
-
-        assertTrue(robot.lookup("No Items selected").tryQuery().isPresent());
-        robot.clickOn("Ok");
+        assertFalse(medDetailsTable.getItems().isEmpty());
     }
+
+    @Disabled
+    @Test
+    void testDeleteNonExistentMedicine(FxRobot robot) {
+        robot.clickOn(confirmButton);
+
+        assertTrue(robot.lookup("Medicine doesn’t exist").tryQuery().isPresent());
+    }
+
 }
