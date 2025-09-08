@@ -37,6 +37,7 @@ public class DashboardPageController implements Initializable {
     private static final List<String> YEARLY_CATEGORIES = List.of("June", "July", "August", "September", "October", "November",
             "December", "January", "February", "March");
     private static final Logger logger = LoggerFactory.getLogger(DashboardPageController.class);
+    private final DashboardInfoApplication dashboardInfoApplication = new DashboardInfoApplication();
     @FXML
     private Label dateDisplay;
     @FXML
@@ -69,8 +70,6 @@ public class DashboardPageController implements Initializable {
     private Button yearlyStudentVisitReport;
     @FXML
     private BarChart<String, Number> studentVisitBarChart;
-    @FXML
-    private final DashboardInfoApplication dashboardInfoApplication = new DashboardInfoApplication();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
