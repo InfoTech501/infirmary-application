@@ -60,7 +60,7 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
     }
 
     @Override
-    public boolean addMedicine(Medicine medicine) {
+    public boolean aaddMedicine(Medicine medicine) {
         logger.debug("Request to add medicine: {}", medicine.getItemName());
         return this.medicineInventoryDao.addMedicine(medicine);
     }
