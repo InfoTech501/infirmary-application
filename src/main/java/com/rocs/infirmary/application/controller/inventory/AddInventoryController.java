@@ -168,23 +168,48 @@ public class AddInventoryController implements Initializable {
     }
     private boolean addMedicine(int quantity) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date expirationDate = dateFormat.parse(String.valueOf(expirationDatePicker.getValue()));
+        Date expirationDate = null;
+
+        if (!itemTypeComboBox.getSelectionModel().getSelectedItem().equals("Non expiry")
+                && expirationDatePicker.getValue() == null) {
+            showDialog("Warning", "Expiration date is required unless item is Non expiry");
+            return false;
+        }
+
+        if (!itemTypeComboBox.getSelectionModel().getSelectedItem().equals("Non expiry")) {
+            expirationDate = dateFormat.parse(String.valueOf(expirationDatePicker.getValue()));
+        }
+
         String productName = productNameTextField.getText();
+
+        if (productName == null || productName.trim().isEmpty()) {
+            showDialog("Warning", "No medicine selected to add.");
+            return false;
+        }
 
         try {
            Medicine existingMedicine = medicine.stream().filter(med -> med.getItemName().equalsIgnoreCase(productName)).findFirst().orElse(null);
             if (existingMedicine != null) {
+                Date finalExpirationDate = expirationDate;
                 Medicine existingInventoryItem = inventoryItem.stream()
                         .filter(item -> {
-                            try {
-                                return item.getItemName().equalsIgnoreCase(productName) &&
-                                        dateFormat.parse(item.getExpirationDate().toString()).equals(expirationDate);
+                            try{
+                                if (item.getExpirationDate() != null && finalExpirationDate != null) {
+                                    return item.getItemName().equalsIgnoreCase(productName) &&
+                                            dateFormat.parse(item.getExpirationDate().toString()).equals(finalExpirationDate);
+                                }
+                                if (item.getExpirationDate() == null && finalExpirationDate == null) {
+                                    return item.getItemName().equalsIgnoreCase(productName) &&
+                                            item.getItemType().equalsIgnoreCase(existingMedicine.getItemType());
+                                }
+                                return false;
                             } catch (ParseException e) {
                                 throw new RuntimeException(e);
                             }
                         })
                         .findFirst()
                         .orElse(null);
+
                 if (existingInventoryItem != null) {
                     Optional<ButtonType> confirmUpdate = alertAction("Update Confirmation", "The medicine with the same name and expiration date exists in inventory. Do you want to update the quantity instead?");
                     if (confirmUpdate.isPresent() && confirmUpdate.get().getButtonData() == ButtonBar.ButtonData.YES) {
@@ -274,8 +299,11 @@ public class AddInventoryController implements Initializable {
             LOGGER.warn("Invalid quantity input: " + parsedQuantity);
         }else if (descriptionTextField.getText() == null || descriptionTextField.getText().isEmpty()||descriptionTextField.getText().isBlank()) {
             showDialog("warning","Description cannot be empty");
-        } else if(expirationDatePicker.getValue()==null){
-            showDialog("warning","Expiration date cannot be empty");
+        }else if (!isValidTextInput(descriptionTextField.getText())) {
+            showDialog("Invalid Input", "Description must only contain letters and spaces.");
+        }else if (!"Non expiry".equals(itemTypeComboBox.getSelectionModel().getSelectedItem().toString())
+            && expirationDatePicker.getValue() == null) {
+        showDialog("warning","Expiration date cannot be empty");
         } else if (itemTypeComboBox.getSelectionModel().getSelectedItem().toString() == null||itemTypeComboBox.getSelectionModel().getSelectedItem().toString().isEmpty()||itemTypeComboBox.getSelectionModel().getSelectedItem().toString().isBlank()) {
             showDialog("warning","Item type cannot be empty");
         } else if (!isValidTextInput(productNameTextField.getText())) {
@@ -392,8 +420,9 @@ public class AddInventoryController implements Initializable {
         stage.close();
     }
     private boolean isValidTextInput(String input) {
-        return input.matches("[a-zA-Z\\s]+");
+        return input.matches("[a-zA-Z\\s,\\.]+");
     }
+
     private boolean isValidInputNumber(String input) {
         return input.matches("^[0-9]+");
     }
