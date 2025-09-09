@@ -22,8 +22,8 @@ public class PatientMedicalRecordFacadeImpl implements PatientMedicalRecordFacad
      * {@code PatientMedicalRecordFacadeImpl()} is a constructor that requires parameter
      *
      * @param patientMedicalRecordDao DAO implementation of Patient Medical Record
-     *                                this provides the business logic of the Patient Medical Record
-     *                                {@code this.patientMedicalRecordDao = patientMedicalRecordDao} is used to initialize the PatientMedicalRecordDao
+     * this provides the business logic of the Patient Medical Record
+     * {@code this.patientMedicalRecordDao = patientMedicalRecordDao} is used to initialize the PatientMedicalRecordDao
      */
     public PatientMedicalRecordFacadeImpl(PatientMedicalRecordDao patientMedicalRecordDao) {
         this.patientMedicalRecordDao = patientMedicalRecordDao;
@@ -37,14 +37,11 @@ public class PatientMedicalRecordFacadeImpl implements PatientMedicalRecordFacad
         return medicalRecords;
     }
 
-
     @Override
     public boolean addMedicalRecord(MedicalRecord newPatient, Employee employee) {
-        logger.info("Entering addMedicalRecord with studentId: {}, values: {}",
-                newPatient.getStudentId(), newPatient);
+        logger.info("Entering addMedicalRecord with studentId: {}", newPatient.getStudentId());
         boolean isInserted = this.patientMedicalRecordDao.addMedicalRecord(newPatient, employee);
-        logger.info("Exiting addMedicalRecord with result: {}, studentId: {}",
-                isInserted, newPatient.getStudentId());
+        logger.info("Exiting addMedicalRecord for studentId: {}", newPatient.getStudentId());
         return isInserted;
     }
 
@@ -53,8 +50,8 @@ public class PatientMedicalRecordFacadeImpl implements PatientMedicalRecordFacad
         logger.info("Entering addMedicineAdministered with studentId: {}, medicineId: {}",
                 medicalRecord.getStudentId(), medicalRecord.getMedicineId());
         boolean isInserted = patientMedicalRecordDao.addMedicineAdministered(medicalRecord, employee);
-        logger.info("Exiting addMedicineAdministered with result: {} for studentId: {}",
-                isInserted, medicalRecord.getStudentId());
+        logger.info("Exiting addMedicineAdministered for studentId: {}, medicineId: {}",
+                medicalRecord.getStudentId(), medicalRecord.getMedicineId());
         return isInserted;
     }
 }

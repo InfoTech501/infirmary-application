@@ -103,7 +103,7 @@ public class PatientMedicalRecordDaoImpl implements PatientMedicalRecordDao {
     public boolean addMedicalRecord(MedicalRecord medicalRecord, Employee employee) {
         Timestamp now = new Timestamp(System.currentTimeMillis());
         LOGGER.info("Entering addMedicalRecord at {} with studentId: {}, values: {}",
-                now, medicalRecord.getStudentId(), medicalRecord);
+                 medicalRecord.getStudentId(), medicalRecord);
 
         try (Connection con = ConnectionHelper.getConnection()) {
             con.setAutoCommit(false);
