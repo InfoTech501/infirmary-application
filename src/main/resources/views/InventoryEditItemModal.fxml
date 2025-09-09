@@ -1,11 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="524.0" prefWidth="1091.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.inventory.UpdateInventoryController">
-
+<StackPane fx:id="inventoryEditItemModal" maxHeight="-Infinity" prefHeight="515.0" prefWidth="1084.0" style="-fx-background-color: white;  -fx-background-radius: 8;" StackPane.alignment="BOTTOM_CENTER" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.inventory.UpdateInventoryController">
+    <effect>
+        <DropShadow color="#00000055" offsetY="-300" radius="0" />
+    </effect>
+    <BorderPane prefHeight="700.0" prefWidth="1400.0">
     <stylesheets>
         <URL value="@../styles/buttons.css" />
         <URL value="@../styles/label.css" />
@@ -14,9 +28,9 @@
     </stylesheets>
 
     <center>
-        <HBox prefHeight="100.0" prefWidth="1400.0" BorderPane.alignment="CENTER">
+        <HBox prefHeight="295.0" prefWidth="1084.0" BorderPane.alignment="CENTER">
             <children>
-                <VBox prefHeight="308.0" prefWidth="506.0">
+                <VBox alignment="CENTER" prefHeight="308.0" prefWidth="506.0">
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
@@ -31,8 +45,8 @@
                               <RowConstraints maxHeight="25.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <TextField fx:id="productNameTextField" prefHeight="53.0" prefWidth="479.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <Label fx:id="ProductNameLabel" text="Product Name" GridPane.columnIndex="1" />
+                              <TextField fx:id="productNameTextField" prefHeight="40.0" prefWidth="380.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label fx:id="ProductNameLabel" style="-fx-font-size: 14;" text="Product Name" GridPane.columnIndex="1" />
                            </children>
                         </GridPane>
                      </children>
@@ -50,16 +64,15 @@
                               <RowConstraints maxHeight="25.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <Label fx:id="ExpirationDateLabel" text="Lot/Expiration Date" GridPane.columnIndex="1" />
-                              <DatePicker fx:id="expirationDatePicker" prefHeight="54.0" prefWidth="381.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label fx:id="ExpirationDateLabel" style="-fx-font-size: 14;" text="Lot/Expiration Date" GridPane.columnIndex="1" />
+                              <DatePicker fx:id="expirationDatePicker" prefHeight="40.0" prefWidth="381.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
                      </children>
                   </HBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0" />
                </children>
                 </VBox>
-            <VBox layoutX="10.0" layoutY="10.0" prefHeight="308.0" prefWidth="383.0">
+            <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="224.0" prefWidth="515.0" HBox.hgrow="ALWAYS">
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
@@ -74,8 +87,8 @@
                             <RowConstraints maxHeight="25.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <TextField fx:id="quantityTextField" prefHeight="53.0" prefWidth="332.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <Label fx:id="QuantityLabel" text="Quantity" GridPane.columnIndex="1" />
+                              <TextField fx:id="quantityTextField" prefHeight="40.0" prefWidth="332.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Label fx:id="QuantityLabel" style="-fx-font-size: 14;" text="Quantity" GridPane.columnIndex="1" />
                            </children>
                         </GridPane>
                      </children>
@@ -93,8 +106,8 @@
                               <RowConstraints maxHeight="25.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                               <ComboBox fx:id="itemTypeComboBox" prefHeight="66.0" prefWidth="385.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
-                              <Label fx:id="itemTypeLabel" prefHeight="163.0" prefWidth="385.0" text="Item type" GridPane.columnIndex="1" />
+                               <ComboBox fx:id="itemTypeComboBox" prefHeight="40.0" prefWidth="385.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+                              <Label fx:id="itemTypeLabel" prefHeight="163.0" prefWidth="385.0" style="-fx-font-size: 14;" text="Item type" GridPane.columnIndex="1" />
                            </children>
                         </GridPane>
                      </children>
@@ -105,7 +118,7 @@
 
     </center>
     <top>
-        <HBox prefHeight="116.0" prefWidth="1400.0" BorderPane.alignment="CENTER">
+        <HBox prefHeight="81.0" prefWidth="1091.0" BorderPane.alignment="CENTER">
             <children>
                 <HBox prefHeight="116.0" prefWidth="251.0">
                <children>
@@ -120,7 +133,7 @@
                       <RowConstraints maxHeight="45.33332824707031" minHeight="0.0" prefHeight="9.333333333333343" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label fx:id="InventoryEditItemLabel" prefHeight="51.0" prefWidth="215.0" text="EDIT ITEM: " GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label fx:id="InventoryEditItemLabel" prefHeight="51.0" prefWidth="197.0" style="-fx-font-size: 28;" text="EDIT ITEM: " GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                </children>
@@ -138,7 +151,7 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label fx:id="itemToEditLabel" prefHeight="45.0" prefWidth="237.0" text="Paracetamol" GridPane.rowIndex="1" />
+                        <Label fx:id="itemToEditLabel" prefHeight="45.0" prefWidth="237.0" style="-fx-font-size: 16;" text="Paracetamol" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                </children>
@@ -149,31 +162,22 @@
     <bottom>
         <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
-                <GridPane prefHeight="100.0" prefWidth="923.0">
+            <VBox prefHeight="100.0" prefWidth="781.0" HBox.hgrow="ALWAYS" />
+                <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="82.0" prefWidth="293.0">
                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                </GridPane>
-                <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="82.0" prefWidth="391.0">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="227.2000732421875" minWidth="10.0" prefWidth="195.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.8" minWidth="10.0" prefWidth="195.8" />
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Button fx:id="ButtonConfirm" mnemonicParsing="false" onAction="#onConfirmButtonClick" prefHeight="46.0" prefWidth="182.0" text="Confirm" />
-                        <Button fx:id="ButtonCancel" mnemonicParsing="false" onAction="#onCancelButtonClick" prefHeight="51.0" prefWidth="165.0" text="Cancel" GridPane.columnIndex="1" />
+                        <Button fx:id="ButtonConfirm" mnemonicParsing="false" onAction="#onConfirmButtonClick" prefHeight="35.0" prefWidth="118.0" style="-fx-font-size: 14;" text="Confirm" />
+                        <Button fx:id="ButtonCancel" mnemonicParsing="false" onAction="#onCancelButtonClick" prefHeight="35.0" prefWidth="118.0" style="-fx-font-size: 14;" text="Cancel" GridPane.columnIndex="1" />
                     </children>
                 </GridPane>
             </children>
         </HBox>
     </bottom>
 </BorderPane>
+</StackPane>

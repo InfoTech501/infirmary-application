@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -17,7 +18,8 @@ import java.util.ResourceBundle;
  * information of a student medical record, this implements Initializable interface
  */
 public class ViewStudentVisitLogController implements Initializable {
-
+    @FXML
+    private StackPane addDailyTreatmentRecord;
     @FXML
     private Label viewLrn;
     @FXML
@@ -109,6 +111,8 @@ public class ViewStudentVisitLogController implements Initializable {
 
     @FXML
     private void handleCloseButton(ActionEvent actionEvent) {
-        ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
+        addDailyTreatmentRecord.setVisible(false);
+        addDailyTreatmentRecord.setDisable(true);
+        addDailyTreatmentRecord.getChildren().clear();
     }
 }
