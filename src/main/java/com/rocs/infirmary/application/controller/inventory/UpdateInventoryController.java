@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,8 @@ import static com.rocs.infirmary.application.controller.helper.ControllerHelper.
  * {@code UpdateInventoryController} is used to handle event processes of the Inventory when updating Item attributes
  **/
 public class UpdateInventoryController {
+    @FXML
+    private StackPane inventoryEditItemModal;
     @FXML
     private Label itemToEditLabel;
     @FXML
@@ -117,9 +120,10 @@ public class UpdateInventoryController {
         if (parentController != null) {
             parentController.refresh();
         }
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         LOGGER.info("Exiting Update Inventory Modal");
-        stage.close();
+        inventoryEditItemModal.setVisible(false);
+        inventoryEditItemModal.setDisable(true);
+        inventoryEditItemModal.getChildren().clear();
     }
     /**
      * this method handles the action triggered when the confirm button is clicked.

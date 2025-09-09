@@ -235,7 +235,13 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
             stmt.setLong(1, medicineId);
             stmt.setString(2, itemType);
             stmt.setInt(3, quantity);
-            stmt.setTimestamp(4, new Timestamp(expirationDate.getTime()));
+
+            if (expirationDate != null) {
+                stmt.setTimestamp(4, new Timestamp(expirationDate.getTime()));
+            } else {
+                stmt.setNull(4, Types.TIMESTAMP);
+            }
+
             int affectedRows = stmt.executeUpdate();
             LOGGER.info("Retrieved Data : " + " \n"
                     + "Medicine ID : " + medicineId + "\n"
