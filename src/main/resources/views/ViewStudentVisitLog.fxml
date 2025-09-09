@@ -1,298 +1,239 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="764.0" prefWidth="1129.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.records.ViewStudentVisitLogController">
-    <stylesheets>
-        <URL value="@../styles/buttons.css" />
-        <URL value="@../styles/fonts.css" />
-    </stylesheets>
-    <top>
-        <VBox prefHeight="107.0" prefWidth="1129.0" BorderPane.alignment="CENTER">
-            <children>
-                <Label fx:id="studentClinicVisitLog" styleClass="LabelClinicVisitLog" text="Student Clinic Visit Log">
-                    <padding>
-                        <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
-                    </padding>
-                    <VBox.margin>
-                        <Insets left="10.0" top="25.0" />
-                    </VBox.margin>
-                </Label>
-            </children>
-        </VBox>
-    </top>
-    <center>
-        <VBox prefHeight="764.0" prefWidth="1129.0" BorderPane.alignment="CENTER">
-            <children>
-                <HBox prefHeight="524.0" prefWidth="1089.0">
-                    <children>
-                        <HBox prefHeight="100.0" prefWidth="363.0">
-                            <children>
-                                <GridPane alignment="CENTER" prefHeight="528.0" prefWidth="350.0">
-                                    <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="557.3333129882812" minWidth="0.0" prefWidth="139.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="557.3333129882812" minWidth="10.0" prefWidth="211.0" />
-                                    </columnConstraints>
-                                    <rowConstraints>
-                                        <RowConstraints />
-                                        <RowConstraints maxHeight="61.333343505859375" minHeight="10.0" prefHeight="54.66667175292969" />
-                                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
-                                    </rowConstraints>
-                                    <children>
-                                        <Label fx:id="viewStudInfoLabel" prefHeight="72.0" prefWidth="240.0" styleClass="ViewLabelStudInfo" text="Student Info" GridPane.rowIndex="1">
-                                            <padding>
-                                                <Insets bottom="20.0" top="20.0" />
-                                            </padding>
-                                            <GridPane.margin>
-                                                <Insets />
-                                            </GridPane.margin>
-                                        </Label>
-                                        <Label style="-fx-font-size: 16;" styleClass="label-view" text="LRN:" GridPane.rowIndex="2" />
-                                        <Label style="-fx-font-size: 16;" styleClass="label-view" text="First Name: " GridPane.rowIndex="3" />
-                                        <Label style="-fx-font-size: 16;" styleClass="label-view" text="Last Name:" GridPane.rowIndex="5" />
-                                        <Label style="-fx-font-size: 16;" styleClass="label-view" text="Sex:" GridPane.rowIndex="6" />
-                                        <Label style="-fx-font-size: 16;" styleClass="label-view" text="Age:" GridPane.rowIndex="7" />
-                                        <Label layoutX="10.0" layoutY="252.0" style="-fx-font-size: 16;" styleClass="label-view" text="Grade &amp; Section: " GridPane.rowIndex="8" />
-                                        <Label layoutX="10.0" layoutY="303.0" style="-fx-font-size: 16;" styleClass="label-view" text="Contact Number:" GridPane.rowIndex="9" />
-                                        <Label layoutX="10.0" layoutY="354.0" style="-fx-font-size: 16;" styleClass="label-view" text="Home Address: " GridPane.rowIndex="10" />
-                                        <Label layoutX="10.0" layoutY="406.0" prefHeight="19.0" prefWidth="116.0" text="Email Address:" GridPane.rowIndex="11" />
-                                        <Label fx:id="viewLrn" layoutX="10.0" layoutY="43.0" style="-fx-font-size: 16;" styleClass="label-view" text="LRN" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                            <GridPane.margin>
-                                                <Insets />
-                                            </GridPane.margin>
-                                        </Label>
-                                        <Label fx:id="viewFirstname" layoutX="10.0" layoutY="89.0" style="-fx-font-size: 16;" styleClass="label-view" text="First Name" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                                            <GridPane.margin>
-                                                <Insets />
-                                            </GridPane.margin>
-                                        </Label>
-                                        <Label fx:id="viewLastname" layoutX="10.0" layoutY="135.0" style="-fx-font-size: 16;" styleClass="label-view" text="Last Name" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                                            <GridPane.margin>
-                                                <Insets />
-                                            </GridPane.margin>
-                                        </Label>
-                                        <Label fx:id="viewSex" layoutX="10.0" layoutY="181.0" style="-fx-font-size: 16;" styleClass="label-view" text="Sex" GridPane.columnIndex="1" GridPane.rowIndex="6">
-                                            <GridPane.margin>
-                                                <Insets />
-                                            </GridPane.margin>
-                                        </Label>
-                                        <Label layoutX="10.0" layoutY="227.0" style="-fx-font-size: 16;" styleClass="label-view" text="Age:" GridPane.rowIndex="7" />
-                                        <Label fx:id="viewAge" layoutX="10.0" layoutY="227.0" style="-fx-font-size: 16;" styleClass="label-view" text="Age" GridPane.columnIndex="1" GridPane.rowIndex="7">
-                                            <GridPane.margin>
-                                                <Insets />
-                                            </GridPane.margin>
-                                        </Label>
-                                        <Label fx:id="viewGradeSection" layoutX="10.0" layoutY="273.0" style="-fx-font-size: 16;" styleClass="label-view" text="Grade &amp; Section" GridPane.columnIndex="1" GridPane.rowIndex="8">
-                                            <GridPane.margin>
-                                                <Insets />
-                                            </GridPane.margin>
-                                        </Label>
-                                        <Label fx:id="viewContactNum" layoutX="10.0" layoutY="319.0" prefHeight="21.0" prefWidth="162.0" style="-fx-font-size: 16;" styleClass="label-view" text="Contact Number" GridPane.columnIndex="1" GridPane.rowIndex="9">
-                                            <GridPane.margin>
-                                                <Insets />
-                                            </GridPane.margin>
-                                        </Label>
-                                        <Label fx:id="viewHomeAdd" layoutX="10.0" layoutY="366.0" style="-fx-font-size: 16;" styleClass="label-view" text="Home Address" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="10">
-                                            <GridPane.margin>
-                                                <Insets />
-                                            </GridPane.margin>
-                                        </Label>
-                                        <Label fx:id="viewEmailAdd" layoutX="10.0" layoutY="406.0" prefHeight="19.0" prefWidth="355.0" text="Email Address" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="11" />
-                                        <Label text="Middle Name:" GridPane.rowIndex="4" />
-                                        <Label fx:id="viewMiddleName" text="Middle Name" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                                            <GridPane.margin>
-                                                <Insets />
-                                            </GridPane.margin>
-                                        </Label>
-                                    </children>
-                                </GridPane>
-                            </children>
-                        </HBox>
-                        <HBox prefHeight="397.0" prefWidth="330.0">
-                            <children>
-                                <GridPane alignment="CENTER" prefHeight="300.0" prefWidth="363.0">
-                                    <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="557.3333129882812" minWidth="0.0" prefWidth="156.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="557.3333129882812" minWidth="10.0" prefWidth="172.0" />
-                                    </columnConstraints>
-                                    <rowConstraints>
-                                        <RowConstraints maxHeight="61.333343505859375" minHeight="10.0" prefHeight="54.66667175292969" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
-                                    </rowConstraints>
-                                    <children>
-                                        <Label fx:id="viewVitalSigns" styleClass="ViewLabelVitalSignsInfo" text="Vital Signs">
-                                            <padding>
-                                                <Insets bottom="20.0" right="10.0" top="20.0" />
-                                            </padding>
-                                            <GridPane.margin>
-                                                <Insets />
-                                            </GridPane.margin>
-                                        </Label>
-                                        <Label style="-fx-font-size: 16;" styleClass="label-view" text="Body Temperature: " GridPane.rowIndex="1" />
-                                        <Label style="-fx-font-size: 16;" styleClass="label-view" text="Pulse Rate: " GridPane.rowIndex="2" />
-                                        <Label style="-fx-font-size: 16;" styleClass="label-view" text="Respiratory Rate: " GridPane.rowIndex="3" />
-                                        <Label style="-fx-font-size: 16;" styleClass="label-view" text="Blood Pressure: " GridPane.rowIndex="4" />
-                                        <Label fx:id="viewBodyTemp" text="Body Temperature" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                            <GridPane.margin>
-                                                <Insets />
-                                            </GridPane.margin>
-                                        </Label>
-                                        <Label fx:id="viewPulseRate" text="Pulse Rate" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                            <GridPane.margin>
-                                                <Insets />
-                                            </GridPane.margin>
-                                        </Label>
-                                        <Label fx:id="viewRespiratoryRate" text="Respiratory Rate" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                                            <GridPane.margin>
-                                                <Insets />
-                                            </GridPane.margin>
-                                        </Label>
-                                        <Label fx:id="viewBloodPressure" text="Blood Pressure" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                                            <GridPane.margin>
-                                                <Insets />
-                                            </GridPane.margin>
-                                        </Label>
-                                    </children>
-                                </GridPane>
-                            </children>
-                        </HBox>
-                        <HBox prefHeight="100.0" prefWidth="363.0">
-                            <children>
-                                <GridPane alignment="CENTER" prefHeight="500.0" prefWidth="363.0">
-                                    <columnConstraints>
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="557.3333129882812" minWidth="0.0" prefWidth="141.0" />
-                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="557.3333129882812" minWidth="10.0" prefWidth="220.0" />
-                                    </columnConstraints>
-                                    <rowConstraints>
-                                        <RowConstraints maxHeight="61.333343505859375" minHeight="10.0" prefHeight="54.66667175292969" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="90.0" minHeight="10.0" prefHeight="90.0" valignment="CENTER" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="80.33332824707031" minHeight="0.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="80.33332824707031" minHeight="0.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
-                                        <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
-                                    </rowConstraints>
-                                    <children>
-                                        <Label fx:id="viewOther" styleClass="ViewLabelOtherInfo" text="Other">
-                                            <padding>
-                                                <Insets bottom="20.0" right="10.0" top="20.0" />
-                                            </padding>
-                                            <GridPane.margin>
-                                                <Insets />
-                                            </GridPane.margin>
-                                        </Label>
-                                        <Label style="-fx-font-size: 16;" styleClass="label-view" text="Ailment:" GridPane.rowIndex="1" />
-                                        <Label style="-fx-font-size: 16;" styleClass="label-view" text="Nurse In-Charge:" GridPane.rowIndex="2" />
-                                        <Label style="-fx-font-size: 16;" styleClass="label-view" text="Treatment: " GridPane.rowIndex="3" />
-                                        <Label style="-fx-font-size: 16;" styleClass="label-view" text="Medicine Name:" GridPane.rowIndex="4" />
-                                        <Label layoutX="10.0" layoutY="252.0" style="-fx-font-size: 16;" styleClass="label-view" text="Dispensing Out: " GridPane.rowIndex="5" />
-                                        <Label layoutX="10.0" layoutY="303.0" style="-fx-font-size: 16;" styleClass="label-view" text="Visit Date: " GridPane.rowIndex="6" />
-                                        <Label fx:id="viewAilment" text="Ailment" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                            <GridPane.margin>
-                                                <Insets />
-                                            </GridPane.margin>
-                                        </Label>
-                                        <Label fx:id="viewNurseIntervention" text="Nurse In-Charge" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                            <GridPane.margin>
-                                                <Insets />
-                                            </GridPane.margin>
-                                        </Label>
-                                        <Label fx:id="viewTreatment" maxWidth="1.7976931348623157E308" text="Treatment" wrapText="true" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
-                                            <GridPane.margin>
-                                                <Insets />
-                                            </GridPane.margin>
-                                        </Label>
-                                        <Label fx:id="viewMedicineName" text="Medicine Name" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                                            <GridPane.margin>
-                                                <Insets />
-                                            </GridPane.margin>
-                                        </Label>
-                                        <Label fx:id="viewDispensingOut" text="Dispensing Out" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                                            <GridPane.margin>
-                                                <Insets />
-                                            </GridPane.margin>
-                                        </Label>
-                                        <Label fx:id="viewVisitDate" text="Visit Date" GridPane.columnIndex="1" GridPane.rowIndex="6">
-                                            <GridPane.margin>
-                                                <Insets />
-                                            </GridPane.margin>
-                                        </Label>
-                                    </children>
-                                </GridPane>
-                            </children>
-                        </HBox>
-                    </children>
-                    <padding>
-                        <Insets left="10.0" right="10.0" />
-                    </padding>
-                </HBox>
-            </children>
-            <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-            </padding>
-            <BorderPane.margin>
-                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-            </BorderPane.margin>
-        </VBox>
-    </center>
-    <bottom>
-        <VBox prefHeight="108.0" prefWidth="1600.0">
-            <children>
-                <HBox prefHeight="65.0" prefWidth="1129.0">
-                    <children>
-                        <GridPane prefHeight="26.0" prefWidth="1000.0">
-                            <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="725.0" minWidth="0.0" prefWidth="17.333333015441895" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="725.0" minWidth="0.0" prefWidth="357.66668701171875" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="725.0" minWidth="0.0" prefWidth="55.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="795.6666870117188" minWidth="10.0" prefWidth="433.0" />
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="694.0000610351562" minWidth="10.0" prefWidth="248.0" />
-                            </columnConstraints>
-                            <rowConstraints>
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            </rowConstraints>
-                            <children>
-                                <ToggleButton fx:id="toggleCloseButton" layoutX="20.0" layoutY="44.0" mnemonicParsing="false" onAction="#handleCloseButton" prefHeight="29.0" prefWidth="200.0" style="-fx-background-color: white; -fx-border-color: black; -fx-border-radius: 10;" styleClass="view-close-button" text="Close" GridPane.columnIndex="4">
-                                    <padding>
-                                        <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
-                                    </padding>
-                                    <GridPane.margin>
-                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                    </GridPane.margin>
-                                </ToggleButton>
-                            </children>
-                            <HBox.margin>
-                                <Insets left="75.0" />
-                            </HBox.margin>
-                        </GridPane>
-                    </children>
-                </HBox>
-            </children>
-        </VBox>
-    </bottom>
-</BorderPane>
+<StackPane fx:id="addDailyTreatmentRecord" maxHeight="-Infinity" prefHeight="587.0" prefWidth="1084.0" style="-fx-background-color: white;  -fx-background-radius: 8;" StackPane.alignment="BOTTOM_CENTER" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.records.ViewStudentVisitLogController">
+    <effect>
+        <DropShadow color="#00000055" offsetY="-300" radius="0" />
+    </effect>
+    <BorderPane prefHeight="700.0" prefWidth="1400.0">
+        <!--<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="706.0" prefWidth="1133.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.records.ViewStudentVisitLogController">-->
+        <stylesheets>
+            <URL value="@../styles/buttons.css" />
+            <URL value="@../styles/fonts.css" />
+        </stylesheets>
+        <center>
+            <VBox prefHeight="764.0" prefWidth="1129.0" BorderPane.alignment="CENTER">
+                <children>
+                    <HBox prefHeight="524.0" prefWidth="1089.0" VBox.vgrow="ALWAYS">
+                        <children>
+                            <GridPane alignment="CENTER" hgap="10.0" prefHeight="426.0" prefWidth="1046.0" vgap="5.0" HBox.hgrow="ALWAYS">
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="557.3333129882812" minWidth="0.0" prefWidth="344.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="557.3333129882812" minWidth="10.0" prefWidth="344.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="557.3333129882812" minWidth="10.0" prefWidth="344.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints />
+                                    <RowConstraints maxHeight="61.333343505859375" minHeight="10.0" prefHeight="54.66667175292969" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="80.33332824707031" minHeight="10.0" prefHeight="80.33332824707031" valignment="CENTER" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                <children>
+                                    <Label fx:id="viewStudInfoLabel" styleClass="ViewLabelStudInfo" text="Student Info" GridPane.rowIndex="1">
+                                        <padding>
+                                            <Insets bottom="20.0" right="10.0" top="20.0" />
+                                        </padding>
+                                        <GridPane.margin>
+                                            <Insets />
+                                        </GridPane.margin>
+                                    </Label>
+                                    <Label style="-fx-font-size: 14;" styleClass="label-view" text="LRN:" GridPane.rowIndex="2" />
+                                    <Label style="-fx-font-size: 14;" styleClass="label-view" text="First Name: " GridPane.rowIndex="3" />
+                                    <Label style="-fx-font-size: 14;" styleClass="label-view" text="Last Name:" GridPane.rowIndex="5" />
+                                    <Label style="-fx-font-size: 14;" styleClass="label-view" text="Sex:" GridPane.rowIndex="6" />
+                                    <Label style="-fx-font-size: 14;" styleClass="label-view" text="Age:" GridPane.rowIndex="7" />
+                                    <Label layoutX="10.0" layoutY="252.0" style="-fx-font-size: 14;" styleClass="label-view" text="Grade &amp; Section: " GridPane.rowIndex="8" />
+                                    <Label layoutX="10.0" layoutY="303.0" style="-fx-font-size: 14;" styleClass="label-view" text="Contact Number:" GridPane.rowIndex="9" />
+                                    <Label layoutX="10.0" layoutY="354.0" style="-fx-font-size: 14;" styleClass="label-view" text="Home Address: " GridPane.rowIndex="10" />
+                                    <Label layoutX="10.0" layoutY="406.0" prefHeight="19.0" prefWidth="116.0" text="Email Address:" GridPane.rowIndex="11" />
+                                    <Label fx:id="viewLrn" layoutX="10.0" layoutY="43.0" style="-fx-font-size: 14;" styleClass="label-view" text="LRN" GridPane.rowIndex="2">
+                                        <GridPane.margin>
+                                            <Insets left="50.0" />
+                                        </GridPane.margin>
+                                    </Label>
+                                    <Label fx:id="viewFirstname" layoutX="10.0" layoutY="89.0" style="-fx-font-size: 14;" styleClass="label-view" text="First Name" GridPane.rowIndex="3">
+                                        <GridPane.margin>
+                                            <Insets left="100.0" />
+                                        </GridPane.margin>
+                                    </Label>
+                                    <Label fx:id="viewLastname" layoutX="10.0" layoutY="135.0" style="-fx-font-size: 14;" styleClass="label-view" text="Last Name" GridPane.rowIndex="5">
+                                        <GridPane.margin>
+                                            <Insets left="100.0" />
+                                        </GridPane.margin>
+                                    </Label>
+                                    <Label fx:id="viewSex" layoutX="10.0" layoutY="181.0" style="-fx-font-size: 14;" styleClass="label-view" text="Sex" GridPane.rowIndex="6">
+                                        <GridPane.margin>
+                                            <Insets left="40.0" />
+                                        </GridPane.margin>
+                                    </Label>
+                                    <Label fx:id="viewAge" layoutX="10.0" layoutY="227.0" style="-fx-font-size: 14;" styleClass="label-view" text="Age" GridPane.rowIndex="7">
+                                        <GridPane.margin>
+                                            <Insets left="45.0" />
+                                        </GridPane.margin>
+                                    </Label>
+                                    <Label fx:id="viewGradeSection" layoutX="10.0" layoutY="273.0" style="-fx-font-size: 14;" styleClass="label-view" text="Grade &amp; Section" GridPane.rowIndex="8">
+                                        <GridPane.margin>
+                                            <Insets left="140.0" />
+                                        </GridPane.margin>
+                                    </Label>
+                                    <Label fx:id="viewContactNum" layoutX="10.0" layoutY="319.0" prefHeight="21.0" prefWidth="162.0" style="-fx-font-size: 14;" styleClass="label-view" text="Contact Number" GridPane.rowIndex="9">
+                                        <GridPane.margin>
+                                            <Insets left="140.0" />
+                                        </GridPane.margin>
+                                    </Label>
+                                    <Label fx:id="viewHomeAdd" layoutX="10.0" layoutY="366.0" style="-fx-font-size: 14;" styleClass="label-view" text="Home Address" GridPane.rowIndex="10">
+                                        <GridPane.margin>
+                                            <Insets left="130.0" />
+                                        </GridPane.margin>
+                                    </Label>
+                                    <Label fx:id="viewEmailAdd" layoutX="10.0" layoutY="406.0" prefHeight="19.0" prefWidth="355.0" style="-fx-font-size: 14;" text="Email Address" GridPane.rowIndex="11">
+                                        <padding>
+                                            <Insets left="120.0" />
+                                        </padding>
+                                    </Label>
+                                    <Label style="-fx-font-size: 14;" text="Middle Name:" GridPane.rowIndex="4" />
+                                    <Label fx:id="viewMiddleName" style="-fx-font-size: 14;" text="Middle Name" GridPane.rowIndex="4">
+                                        <GridPane.margin>
+                                            <Insets left="110.0" />
+                                        </GridPane.margin>
+                                    </Label>
+                                    <Label fx:id="viewVitalSigns" styleClass="ViewLabelVitalSignsInfo" text="Vital Signs" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                        <padding>
+                                            <Insets bottom="20.0" right="10.0" top="20.0" />
+                                        </padding>
+                                        <GridPane.margin>
+                                            <Insets />
+                                        </GridPane.margin>
+                                    </Label>
+                                    <Label style="-fx-font-size: 14;" styleClass="label-view" text="Body Temperature: " GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Label fx:id="viewBodyTemp" style="-fx-font-size: 14;" text="Body Temperature" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                        <GridPane.margin>
+                                            <Insets left="160.0" />
+                                        </GridPane.margin>
+                                    </Label>
+                                    <Label style="-fx-font-size: 14;" styleClass="label-view" text="Pulse Rate: " GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <Label fx:id="viewPulseRate" style="-fx-font-size: 14;" text="Pulse Rate" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                        <GridPane.margin>
+                                            <Insets left="95.0" />
+                                        </GridPane.margin>
+                                    </Label>
+                                    <Label style="-fx-font-size: 14;" styleClass="label-view" text="Respiratory Rate: " GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <Label fx:id="viewRespiratoryRate" style="-fx-font-size: 14;" text="Respiratory Rate" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                        <GridPane.margin>
+                                            <Insets left="150.0" />
+                                        </GridPane.margin>
+                                    </Label>
+                                    <Label style="-fx-font-size: 14;" styleClass="label-view" text="Blood Pressure: " GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                    <Label fx:id="viewBloodPressure" style="-fx-font-size: 14;" text="Blood Pressure" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                        <GridPane.margin>
+                                            <Insets left="130.0" />
+                                        </GridPane.margin>
+                                    </Label>
+                                    <Label fx:id="viewOther" styleClass="ViewLabelOtherInfo" text="Other" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                        <padding>
+                                            <Insets bottom="20.0" right="10.0" top="20.0" />
+                                        </padding>
+                                        <GridPane.margin>
+                                            <Insets />
+                                        </GridPane.margin>
+                                    </Label>
+                                    <Label style="-fx-font-size: 14;" styleClass="label-view" text="Ailment:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                    <Label fx:id="viewAilment" style="-fx-font-size: 14;" text="Ailment" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                        <GridPane.margin>
+                                            <Insets left="100.0" />
+                                        </GridPane.margin>
+                                    </Label>
+                                    <Label style="-fx-font-size: 14;" styleClass="label-view" text="Symptoms:" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                    <Label fx:id="viewSymptoms" style="-fx-font-size: 14;" text="Symptoms" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                        <GridPane.margin>
+                                            <Insets left="100.0" />
+                                        </GridPane.margin>
+                                    </Label>
+                                    <Label style="-fx-font-size: 14;" styleClass="label-view" text="Nurse In-Charge:" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                    <Label fx:id="viewNurseIntervention" style="-fx-font-size: 14;" text="Nurse In-Charge" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                        <GridPane.margin>
+                                            <Insets left="145.0" />
+                                        </GridPane.margin>
+                                    </Label>
+                                    <Label style="-fx-font-size: 14;" styleClass="label-view" text="Treatment: " GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                    <Label fx:id="viewTreatment" style="-fx-font-size: 14;" text="Treatment" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                                        <GridPane.margin>
+                                            <Insets left="100.0" />
+                                        </GridPane.margin>
+                                    </Label>
+                                    <Label style="-fx-font-size: 14;" styleClass="label-view" text="Medicine Name:" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                                    <Label fx:id="viewMedicineName" style="-fx-font-size: 14;" text="Medicine Name" GridPane.columnIndex="2" GridPane.rowIndex="6">
+                                        <GridPane.margin>
+                                            <Insets left="140.0" />
+                                        </GridPane.margin>
+                                    </Label>
+                                    <Label style="-fx-font-size: 14;" styleClass="label-view" text="Dispensing Out: " GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                                    <Label fx:id="viewDispensingOut" style="-fx-font-size: 14;" text="Dispensing Out" GridPane.columnIndex="2" GridPane.rowIndex="7">
+                                        <GridPane.margin>
+                                            <Insets left="130.0" />
+                                        </GridPane.margin>
+                                    </Label>
+                                    <Label style="-fx-font-size: 14;" styleClass="label-view" text="Visit Date: " GridPane.columnIndex="2" GridPane.rowIndex="8" />
+                                    <Label fx:id="viewVisitDate" style="-fx-font-size: 14;" text="Visit Date" GridPane.columnIndex="2" GridPane.rowIndex="8">
+                                        <GridPane.margin>
+                                            <Insets left="90.0" />
+                                        </GridPane.margin>
+                                    </Label>
+                                </children>
+                            </GridPane>
+                        </children>
+                        <padding>
+                            <Insets left="10.0" right="10.0" />
+                        </padding>
+                    </HBox>
+                </children>
+                <padding>
+                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                </padding>
+                <BorderPane.margin>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                </BorderPane.margin>
+            </VBox>
+        </center>
+        <top>
+            <HBox alignment="CENTER_LEFT" prefHeight="65.0" prefWidth="1129.0" BorderPane.alignment="CENTER">
+                <children>
+                    <Label fx:id="studentClinicVisitLog" prefHeight="80.0" prefWidth="380.0" style="-fx-font-size: 28;" styleClass="LabelClinicVisitLog" text="Student Clinic Visit Log" HBox.hgrow="ALWAYS">
+                        <padding>
+                            <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
+                        </padding>
+                    </Label>
+                    <VBox prefHeight="80.0" prefWidth="562.0" HBox.hgrow="ALWAYS" />
+                    <VBox alignment="CENTER" prefHeight="80.0" prefWidth="144.0" HBox.hgrow="ALWAYS">
+                        <children>
+                            <ToggleButton fx:id="toggleCloseButton" mnemonicParsing="false" onAction="#handleCloseButton" prefHeight="32.0" prefWidth="98.0" style="-fx-font-size: 14; -fx-background-color: white; -fx-text-fill: black; -fx-border-color: black;" styleClass="treatment-record-confirm-btn" stylesheets="@../styles/fonts.css" text="Close" textFill="WHITE" />
+                        </children>
+                    </VBox>
+                </children>
+                <padding>
+                    <Insets left="20.0" />
+                </padding>
+            </HBox>
+        </top>
+    </BorderPane>
+</StackPane>

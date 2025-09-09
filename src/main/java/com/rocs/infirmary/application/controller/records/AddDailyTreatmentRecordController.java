@@ -14,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.util.StringConverter;
@@ -35,6 +36,8 @@ public class AddDailyTreatmentRecordController implements Initializable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AddDailyTreatmentRecordController.class);
 
+    @FXML
+    private StackPane addDailyTreatmentRecord;
     @FXML
     private TextField lrnField;
     @FXML
@@ -248,8 +251,10 @@ public class AddDailyTreatmentRecordController implements Initializable {
     }
 
     @FXML
-    private void handleCancelButton(ActionEvent actionEvent) {
-        ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
+    private void handleCancelButton() {
+        addDailyTreatmentRecord.setVisible(false);
+        addDailyTreatmentRecord.setDisable(true);
+        addDailyTreatmentRecord.getChildren().clear();
     }
 
     private void addDailyRecord() {

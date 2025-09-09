@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,8 @@ import static com.rocs.infirmary.application.controller.helper.ControllerHelper.
  * {@code UpdateMedicineController} is used to handle event processes of the Medicine table when updating Medicine attributes
  **/
 public class UpdateMedicineController {
+    @FXML
+    private StackPane medicineEditModal;
     @FXML
     private Label itemToEditLabel;
     @FXML
@@ -58,9 +61,10 @@ public class UpdateMedicineController {
         if(parentController != null){
             parentController.refresh();
         }
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        medicineEditModal.setVisible(false);
+        medicineEditModal.setDisable(true);
+        medicineEditModal.getChildren().clear();
         LOGGER.info("Exiting Update Medicine Modal");
-        stage.close();
     }
     /**
      * this method handles the action triggered when the confirm button is clicked.

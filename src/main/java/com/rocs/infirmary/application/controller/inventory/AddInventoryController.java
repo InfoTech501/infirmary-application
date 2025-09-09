@@ -15,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -37,6 +38,8 @@ import static com.rocs.infirmary.application.controller.helper.ControllerHelper.
  **/
 public class AddInventoryController implements Initializable {
     private static final Logger LOGGER = LoggerFactory.getLogger(AddInventoryController.class);
+    @FXML
+    private StackPane inventoryAddItemModal;
     @FXML
     private TableView<Medicine> medDetailsTable;
     @FXML
@@ -274,15 +277,13 @@ public class AddInventoryController implements Initializable {
     }
     private void showMedicineToEdit(Medicine medicine) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/MedicineEditModal.fxml"));
+        loader.setControllerFactory(param -> new UpdateMedicineController());
         Parent root = loader.load();
-        UpdateMedicineController updateMedicineController = loader.getController();
-        updateMedicineController.showMedicineToEdit(medicine);
-        updateMedicineController.setParentController(this);
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initStyle(StageStyle.UTILITY);
-        stage.show();
+
+        UpdateMedicineController controller = loader.getController();
+        controller.showMedicineToEdit(medicine);
+        controller.setParentController(this);
+        inventoryAddItemModal.getChildren().add(root);
     }
     /**
      * this method handles the action triggered when the confirm button is clicked.
@@ -416,8 +417,9 @@ public class AddInventoryController implements Initializable {
         if (parentController != null) {
             parentController.refresh();
         }
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        stage.close();
+        inventoryAddItemModal.setVisible(false);
+        inventoryAddItemModal.setDisable(true);
+        inventoryAddItemModal.getChildren().clear();
     }
     private boolean isValidTextInput(String input) {
         return input.matches("[a-zA-Z\\s,\\.]+");
