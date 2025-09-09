@@ -201,27 +201,24 @@ public class AddDailyTreatmentRecordController implements Initializable {
         try {
             MedicalRecord medicalRecord = createStudentMedicalRecordFromForm();
             if (medicalRecord == null) {
-                LOGGER.warn("MedicalRecord creation failed at {} – invalid or missing data", new Date());
+                LOGGER.error("MedicalRecord creation failed at {} – invalid or missing data", new Date());
                 return;
             }
 
-            LOGGER.debug("MedicalRecord created for studentId: {}, values: {}",
-                    medicalRecord.getStudentId(), medicalRecord);
-
             Medicine matchedMedicine = SelectedMedicine(medicineNameComboBox.getEditor().getText());
             if (matchedMedicine == null) {
-                LOGGER.warn("No matching medicine found for input: {}", medicineNameComboBox.getEditor().getText());
+                LOGGER.error("No matching medicine found for input: {}", medicineNameComboBox.getEditor().getText());
                 return;
             }
 
             if (!updateInventoryDispensed(medicalRecord, matchedMedicine)) {
-                LOGGER.warn("Inventory update failed for studentId: {} at {}",
+                LOGGER.error("Inventory update failed for studentId: {} at {}",
                         medicalRecord.getStudentId(), new Date());
                 return;
             }
 
             if (!populateExistingStudentInfo(medicalRecord)) {
-                LOGGER.warn("Student info not found for LRN: {} at {}",
+                LOGGER.error("Student info not found for LRN: {} at {}",
                         medicalRecord.getLrn(), new Date());
                 return;
             }
@@ -229,7 +226,7 @@ public class AddDailyTreatmentRecordController implements Initializable {
             medicalRecord.setMedicineId(matchedMedicine.getMedicineId());
             Employee selectedNurse = nurseInChargeComboBox.getSelectionModel().getSelectedItem();
             if (selectedNurse == null || selectedNurse.getNurseInChargeId() == null) {
-                LOGGER.warn("No nurse in charge selected for studentId: {}", medicalRecord.getStudentId());
+                LOGGER.error("No nurse in charge selected for studentId: {}", medicalRecord.getStudentId());
                 showDialog("Error", "Please select a nurse in charge.");
                 return;
             }
