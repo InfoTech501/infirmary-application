@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
 
     private MedicineInventoryDao medicineInventoryDao = new MedicineInventoryDaoImpl();
-    private static final Logger logger = LoggerFactory.getLogger(MedicineInventoryFacadeImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MedicineInventoryFacadeImpl.class);
 
     /**
      * MedicineInventoryFacadeImpl()
@@ -38,30 +38,30 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
 
     @Override
     public List<Medicine> getAllMedicine() {
-        logger.info("Entering findAllMedicine");
+        LOGGER.info("Entering findAllMedicine");
         List<Medicine> medicines = this.medicineInventoryDao.findAllMedicine();
-        logger.info("Exiting findAllMedicine with {} medicines found.", medicines.size());
+        LOGGER.info("Exiting findAllMedicine with {} medicines found.", medicines.size());
         return medicines;
     }
     @Override
     public boolean deleteMedicineByItemName(List<Medicine> medicines) {
-        logger.info("Entering deleteMedicineByItemName with itemName: {}", medicines);
+        LOGGER.info("Entering deleteMedicineByItemName with itemName: {}", medicines);
         boolean isDeleted = medicineInventoryDao.deleteMedicine(medicines);
-        logger.info("Exiting deleteMedicineByItemName with result: {}", isDeleted);
+        LOGGER.info("Exiting deleteMedicineByItemName with result: {}", isDeleted);
         return isDeleted;
     }
 
     @Override
     public boolean IsAvailable(String itemName) {
-        logger.debug("Entering IsAvailable with itemName: {}", itemName);
+        LOGGER.debug("Entering IsAvailable with itemName: {}", itemName);
         boolean available = medicineInventoryDao.isAvailable(itemName);
-        logger.debug("Exiting IsAvailable with result: {}", available);
+        LOGGER.debug("Exiting IsAvailable with result: {}", available);
         return available;
     }
 
     @Override
     public boolean addMedicine(Medicine medicine) {
-        logger.debug("Request to add medicine: {}", medicine.getItemName());
+        LOGGER.debug("Request to add medicine: {}", medicine.getItemName());
         return this.medicineInventoryDao.addMedicine(medicine);
     }
 
@@ -72,25 +72,25 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
     }
     @Override
     public List<Medicine> getAllMedicineFromMedicineTable() {
-        logger.info("Fetching all medicine from medicine table");
+        LOGGER.info("Fetching all medicine from medicine table");
         return this.medicineInventoryDao.findAll();
     }
 
     @Override
     public boolean deleteInventory(List<Medicine> medicines) {
-        logger.debug("Deleting inventory for medicines: {}", medicines);
+        LOGGER.debug("Deleting inventory for medicines: {}", medicines);
         return this.medicineInventoryDao.deleteInventory(medicines);
     }
 
     @Override
     public boolean updateMedicineInventory(Long inventoryId, Long medicineId, int quantity, String itemType, Date expirationDate) {
-        logger.debug("Updating inventory — Inventory ID: {}, Medicine ID: {}, Quantity: {}, Type: {}, Expiration: {}", inventoryId, medicineId, quantity, itemType, expirationDate);
+        LOGGER.debug("Updating inventory — Inventory ID: {}, Medicine ID: {}, Quantity: {}, Type: {}, Expiration: {}", inventoryId, medicineId, quantity, itemType, expirationDate);
         return this.medicineInventoryDao.updateInventory(inventoryId,medicineId,quantity, itemType,expirationDate);
     }
 
     @Override
     public boolean updateMedicine(Long medicineId, String medicineName, String description) {
-        logger.info("Updating medicine — ID: {}, Name: {}", medicineId, medicineName);
+        LOGGER.info("Updating medicine — ID: {}, Name: {}", medicineId, medicineName);
         return this.medicineInventoryDao.updateMedicine(medicineId,medicineName,description);
     }
 }
