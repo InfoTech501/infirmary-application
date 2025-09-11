@@ -1,23 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.chart.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="1043.0" prefWidth="1327.0" styleClass="..\styles\buttons.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.dashboard.DashboardPageController">
+<BorderPane prefHeight="800.0" prefWidth="1125.0" styleClass="..\styles\buttons.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.dashboard.DashboardPageController">
     <center>
         <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="ALWAYS" BorderPane.alignment="CENTER">
             <VBox spacing="50.0" BorderPane.alignment="CENTER">
                 <padding>
                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                 </padding>
-                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="926.0" VBox.vgrow="ALWAYS">
-                    <VBox prefHeight="100.0" prefWidth="523.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                <HBox alignment="CENTER_LEFT" prefHeight="74.0" prefWidth="1070.0" VBox.vgrow="ALWAYS">
+                    <VBox prefHeight="69.0" prefWidth="649.0" spacing="10.0" HBox.hgrow="ALWAYS">
                         <Label style="-fx-font-size: 20;" styleClass="label" stylesheets="@../styles/fonts.css" text="Welcome to TCSNHS Infirmary System" />
-                        <Label fx:id="usernameDisplay" prefHeight="30.0" prefWidth="396.0" style="-fx-font-size: 20;" styleClass="label" stylesheets="@../styles/fonts.css" text="Mr/ Mrs. @Username" />
-                        <Label style="-fx-font-size: 15;" styleClass="label" stylesheets="@../styles/fonts.css" text="Nurse" />
+                        <Label fx:id="usernameDisplay" prefHeight="30.0" prefWidth="396.0" style="-fx-font-size: 20;" styleClass="label" stylesheets="@../styles/fonts.css" text="Nurse" />
                     </VBox>
                     <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="296.0" HBox.hgrow="ALWAYS">
                         <Label fx:id="dateDisplay" prefHeight="22.0" prefWidth="198.0" style="-fx-font-size: 15;" styleClass="label" stylesheets="@../styles/fonts.css" text="MONTH / DD / YYYY" HBox.hgrow="ALWAYS" />
@@ -74,7 +86,26 @@
                     <VBox.margin>
                         <Insets />
                     </VBox.margin>
-                    <Label prefHeight="22.0" prefWidth="224.0" style="-fx-font-size: 15;" styleClass="label-dashboard-reports" stylesheets="@../styles/fonts.css" text="Weekly Report Student Visits" />
+                    <Label prefHeight="22.0" prefWidth="224.0" style="-fx-font-size: 15;" styleClass="label-dashboard-reports" stylesheets="@../styles/fonts.css" text="Student Visit Report" />
+               <HBox prefHeight="33.0" prefWidth="1070.0">
+                  <children>
+                     <GridPane hgap="10.0" prefHeight="34.0" prefWidth="298.0" stylesheets="@../styles/buttons.css" vgap="10.0">
+                       <columnConstraints>
+                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                       </columnConstraints>
+                       <rowConstraints>
+                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                       </rowConstraints>
+                        <children>
+                           <Button fx:id="weeklyStudentVisitReport" mnemonicParsing="false" prefHeight="29.0" prefWidth="94.0" text="Weekly" />
+                           <Button fx:id="monthlyStudentVisitReport" mnemonicParsing="false" prefHeight="29.0" prefWidth="97.0" text="Monthly" GridPane.columnIndex="1" />
+                           <Button fx:id="yearlyStudentVisitReport" mnemonicParsing="false" prefHeight="29.0" prefWidth="95.0" text="Yearly" GridPane.columnIndex="2" />
+                        </children>
+                     </GridPane>
+                  </children>
+               </HBox>
                     <VBox>
                         <BarChart fx:id="studentVisitBarChart" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="318.0" stylesheets="@../styles/barchart.css">
                             <xAxis>
@@ -87,11 +118,11 @@
                     </VBox>
                 </VBox>
                 <HBox spacing="10.0">
-                    <VBox prefHeight="190.0" prefWidth="509.0" spacing="20.0" HBox.hgrow="ALWAYS">
+                    <VBox prefHeight="270.0" prefWidth="509.0" spacing="20.0" HBox.hgrow="ALWAYS">
                         <Label style="-fx-font-size: 15;" styleClass="label-dashboard-reports" stylesheets="@../styles/fonts.css" text="Common Ailments (Monthly)" />
-                        <TableView fx:id="commonAilmentsRptTable" prefHeight="144.0" prefWidth="509.0" VBox.vgrow="ALWAYS">
+                        <TableView fx:id="commonAilmentsRptTable" prefHeight="170.0" prefWidth="509.0" VBox.vgrow="ALWAYS">
                             <columns>
-                                <TableColumn fx:id="numberedColumnCommonAilment" prefWidth="175.0" text="#" />
+                                <TableColumn fx:id="numberedColumnCommonAilment" prefWidth="175.0" text="No." />
                                 <TableColumn fx:id="illnessColumnCommonAilment" prefWidth="175.0" text="Illness" />
                                 <TableColumn fx:id="numOfStudCommonAilment" prefWidth="175.0" text="No. of Students" />
                             </columns>
@@ -101,7 +132,7 @@
                         <Label style="-fx-font-size: 15;" styleClass="label-dashboard-reports" stylesheets="@../styles/fonts.css" text="Medication Trend (Monthly)" />
                         <TableView fx:id="medTrendRptTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
                             <columns>
-                                <TableColumn fx:id="numberedColumnMedTrend" prefWidth="175.0" text="#" />
+                                <TableColumn fx:id="numberedColumnMedTrend" prefWidth="175.0" text="No." />
                                 <TableColumn fx:id="medicineColumnMedTrend" prefWidth="175.0" text="Medicine" />
                                 <TableColumn fx:id="totalDistributedMedTrend" prefWidth="175.0" text="Distributed" />
                             </columns>

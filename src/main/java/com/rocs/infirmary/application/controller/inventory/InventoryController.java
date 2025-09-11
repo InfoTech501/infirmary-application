@@ -1,5 +1,6 @@
 package com.rocs.infirmary.application.controller.inventory;
 
+import com.rocs.infirmary.application.controller.records.AddDailyTreatmentRecordController;
 import com.rocs.infirmary.application.controller.helper.ControllerHelper;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
@@ -17,6 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -34,7 +36,8 @@ import java.util.ResourceBundle;
  * this implements Initializable interface
  **/
 public class InventoryController implements Initializable {
-
+    @FXML
+    private StackPane inventoryPage;
     @FXML
     private TableView<Medicine> medDetailsTable;
     @FXML
@@ -46,7 +49,7 @@ public class InventoryController implements Initializable {
     @FXML
     private TableColumn<Medicine, Timestamp> expiryDateColumn;
     @FXML
-    private TableColumn<Medicine, String> itemTypeColumn;
+    private TableColumn<Medicine,String> itemTypeColumn;
     @FXML
     private TextField searchTextField;
     private ObservableList<Medicine> medicine;
@@ -125,42 +128,33 @@ public class InventoryController implements Initializable {
         medicine = FXCollections.observableArrayList(medicineList);
         medDetailsTable.setItems(medicine);
     }
-
     private void showModal(ActionEvent actionEvent,String location) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(location));
+        loader.setControllerFactory(param -> new AddInventoryController());
         Parent root = loader.load();
+
         AddInventoryController controller = loader.getController();
         controller.setParentController(this);
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initStyle(StageStyle.UTILITY);
-        stage.showAndWait();
+        inventoryPage.getChildren().add(root);
     }
-
     private void showEditInventory(Medicine medicine) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/InventoryEditItemModal.fxml"));
+        loader.setControllerFactory(param -> new UpdateInventoryController());
         Parent root = loader.load();
-        UpdateInventoryController updateInventoryController = loader.getController();
-        updateInventoryController.showItemToEdit(medicine);
-        updateInventoryController.setParentController(this);
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initStyle(StageStyle.UTILITY);
-        stage.show();
-    }
 
+        UpdateInventoryController controller = loader.getController();
+        controller.setParentController(this);
+        controller.showItemToEdit(medicine);
+        inventoryPage.getChildren().add(root);
+    }
     /**
      * this method handles the action triggered when the add new medicine button is clicked.
-     *
      * @param actionEvent the event triggered by the confirm button click
      */
     public void onShowAddModalBtnClick(ActionEvent actionEvent) throws IOException {
         showModal(actionEvent,"/views/InventoryAddItemModal.fxml");
     }
-
-    private void itemSearch() {
+    private void itemSearch(){
         FilteredList<Medicine> filteredList = new FilteredList<>(medicine, b -> true);
 
         searchTextField.textProperty().addListener((observable, oldValue, newValue) ->
@@ -179,10 +173,8 @@ public class InventoryController implements Initializable {
         sortedList.comparatorProperty().bind(medDetailsTable.comparatorProperty());
         medDetailsTable.setItems(sortedList);
     }
-
     /**
      * this method handles the action triggered when the increment filter button is clicked.
-     *
      * @param actionEvent the event triggered by the confirm button click
      */
     public void onFilterButtonAClick(ActionEvent actionEvent) {
@@ -192,10 +184,8 @@ public class InventoryController implements Initializable {
         medDetailsTable.sort();
 
     }
-
     /**
      * this method handles the action triggered when the decrement filter button is clicked.
-     *
      * @param actionEvent the event triggered by the confirm button click
      */
     public void onFilterButtonZClick(ActionEvent actionEvent) {
@@ -204,20 +194,17 @@ public class InventoryController implements Initializable {
         medDetailsTable.getSortOrder().setAll(productNameColumn);
         medDetailsTable.sort();
     }
-
     private List<Medicine> getSelectedMedicines() {
         List<Medicine> selectedMedicine = medicine.stream()
                 .filter(Medicine::isSelected)
                 .toList();
-        for (Medicine med : selectedMedicine) {
+        for(Medicine med: selectedMedicine){
             medicineList.add(med);
         }
         return selectedMedicine;
     }
-
     /**
      * this method handles the action triggered when the clear filter button is clicked.
-     *
      * @param actionEvent the event triggered by the confirm button click
      */
     public void onClearFilterClick(ActionEvent actionEvent) {
@@ -229,10 +216,8 @@ public class InventoryController implements Initializable {
         refresh();
         itemSearch();
     }
-
     /**
      * this method handles the action triggered when the filter by quantity button is clicked.
-     *
      * @param actionEvent the event triggered by the confirm button click
      */
     public void onQuantityFilterClick(ActionEvent actionEvent) {
@@ -241,18 +226,15 @@ public class InventoryController implements Initializable {
         medDetailsTable.getSortOrder().setAll(quantityColumn);
         medDetailsTable.sort();
     }
-
-    private boolean deleteMedicine() {
+    private boolean deleteMedicine(){
         return inventoryManagementApplication.getMedicineInventoryFacade().deleteInventory(medicineList);
     }
-
     /**
      * this method handles the action triggered when the remove button is clicked.
-     *
      * @param actionEvent the event triggered by the confirm button click
      */
     public void onRemoveBtnClick(ActionEvent actionEvent) throws IOException {
-        if (getSelectedMedicines().isEmpty()) {
+        if(getSelectedMedicines().isEmpty()){
             Dialog dialog = new Dialog();
             dialog.setTitle("Warning");
             ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
@@ -260,7 +242,7 @@ public class InventoryController implements Initializable {
             dialog.getDialogPane().getButtonTypes().add(type);
             dialog.showAndWait();
         }
-        if (getSelectedMedicines().size() >= 2) {
+        if(getSelectedMedicines().size() >= 2){
             List<Medicine> selectedMedicine = getSelectedMedicines();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/InventoryDeleteItemModal.fxml"));
             Parent root = loader.load();
