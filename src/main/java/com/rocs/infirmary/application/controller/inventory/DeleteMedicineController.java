@@ -5,6 +5,7 @@ import com.rocs.infirmary.application.module.inventory.management.application.In
 import static com.rocs.infirmary.application.controller.helper.ControllerHelper.showDialog;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
@@ -38,7 +39,7 @@ public class DeleteMedicineController {
         medicineListContainer.getColumnConstraints().clear();
 
         ColumnConstraints column = new ColumnConstraints();
-        column.setHgrow(Priority.SOMETIMES);
+        column.setHgrow(Priority.ALWAYS);
         column.setMinWidth(10.0);
         column.setPrefWidth(100.0);
         medicineListContainer.getColumnConstraints().add(column);
@@ -52,13 +53,13 @@ public class DeleteMedicineController {
             innerGrid.setVgap(5);
 
             ColumnConstraints col1 = new ColumnConstraints();
-            col1.setHgrow(Priority.SOMETIMES);
+            col1.setHgrow(Priority.ALWAYS);
             col1.setMaxWidth(219.67);
             col1.setMinWidth(10.0);
             col1.setPrefWidth(33.67);
 
             ColumnConstraints col2 = new ColumnConstraints();
-            col2.setHgrow(Priority.SOMETIMES);
+            col2.setHgrow(Priority.ALWAYS);
             col2.setMaxWidth(446.3333377838135);
             col2.setMinWidth(10.0);
             col2.setPrefWidth(428.33);
@@ -66,17 +67,17 @@ public class DeleteMedicineController {
             innerGrid.getColumnConstraints().addAll(col1, col2);
 
             RowConstraints row1 = new RowConstraints();
-            row1.setVgrow(Priority.SOMETIMES);
+            row1.setVgrow(Priority.ALWAYS);
             row1.setMaxHeight(27.33);
             row1.setPrefHeight(20.0);
 
             RowConstraints row2 = new RowConstraints();
-            row2.setVgrow(Priority.SOMETIMES);
+            row2.setVgrow(Priority.ALWAYS);
             row2.setMaxHeight(68.0);
             row2.setPrefHeight(68.0);
 
             RowConstraints row3 = new RowConstraints();
-            row3.setVgrow(Priority.SOMETIMES);
+            row3.setVgrow(Priority.ALWAYS);
             row3.setMaxHeight(29.67);
             row3.setPrefHeight(14.33);
 
@@ -85,7 +86,8 @@ public class DeleteMedicineController {
             Label medLabel = new Label(med.getItemName());
             medLabel.setPrefWidth(220.0);
             medLabel.setPrefHeight(73.0);
-            medLabel.setStyle("-fx-font-weight: 700; -fx-font-size: 30px;");
+            medLabel.setAlignment(Pos.CENTER_LEFT);
+            medLabel.setStyle("-fx-font-weight: 700; -fx-font-size: 14px;");
 
             GridPane.setColumnIndex(medLabel, 1);
             GridPane.setRowIndex(medLabel, 1);
@@ -96,7 +98,7 @@ public class DeleteMedicineController {
 
             RowConstraints outerRow = new RowConstraints();
             outerRow.setPrefHeight(103);
-            outerRow.setVgrow(Priority.SOMETIMES);
+            outerRow.setVgrow(Priority.ALWAYS);
             medicineListContainer.getRowConstraints().add(outerRow);
             medicineList.add(med);
             rowIndex++;
