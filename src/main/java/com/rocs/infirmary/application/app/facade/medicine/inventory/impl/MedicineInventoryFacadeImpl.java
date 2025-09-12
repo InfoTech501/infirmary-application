@@ -53,15 +53,15 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
 
     @Override
     public boolean IsAvailable(String itemName) {
-        LOGGER.debug("Entering IsAvailable with itemName: {}", itemName);
+        LOGGER.info("Entering IsAvailable with itemName: {}", itemName);
         boolean available = medicineInventoryDao.isAvailable(itemName);
-        LOGGER.debug("Exiting IsAvailable with result: {}", available);
+        LOGGER.info("Exiting IsAvailable with result: {}", available);
         return available;
     }
 
     @Override
     public boolean addMedicine(Medicine medicine) {
-        LOGGER.debug("Request to add medicine: {}", medicine.getItemName());
+        LOGGER.info("Request to add medicine: {}", medicine.getItemName());
         return this.medicineInventoryDao.addMedicine(medicine);
     }
 
@@ -78,13 +78,13 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
 
     @Override
     public boolean deleteInventory(List<Medicine> medicines) {
-        LOGGER.debug("Deleting inventory for medicines: {}", medicines);
+        LOGGER.info("Deleting inventory for medicines: {}", medicines);
         return this.medicineInventoryDao.deleteInventory(medicines);
     }
 
     @Override
     public boolean updateMedicineInventory(Long inventoryId, Long medicineId, int quantity, String itemType, Date expirationDate) {
-        LOGGER.debug("Updating inventory — Inventory ID: {}, Medicine ID: {}, Quantity: {}, Type: {}, Expiration: {}", inventoryId, medicineId, quantity, itemType, expirationDate);
+        LOGGER.info("Updating inventory — Inventory ID: {}, Medicine ID: {}, Quantity: {}, Type: {}, Expiration: {}", inventoryId, medicineId, quantity, itemType, expirationDate);
         return this.medicineInventoryDao.updateInventory(inventoryId,medicineId,quantity, itemType,expirationDate);
     }
 
