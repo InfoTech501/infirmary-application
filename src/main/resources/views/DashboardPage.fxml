@@ -29,7 +29,6 @@
                 <HBox alignment="CENTER_LEFT" prefHeight="74.0" prefWidth="1070.0" VBox.vgrow="ALWAYS">
                     <VBox prefHeight="69.0" prefWidth="649.0" spacing="10.0" HBox.hgrow="ALWAYS">
                         <Label style="-fx-font-size: 20;" styleClass="label" stylesheets="@../styles/fonts.css" text="Welcome to TCSNHS Infirmary System" />
-                        <Label fx:id="usernameDisplay" prefHeight="30.0" prefWidth="396.0" style="-fx-font-size: 20;" styleClass="label" stylesheets="@../styles/fonts.css" text="Nurse" />
                     </VBox>
                     <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="296.0" HBox.hgrow="ALWAYS">
                         <Label fx:id="dateDisplay" prefHeight="22.0" prefWidth="198.0" style="-fx-font-size: 15;" styleClass="label" stylesheets="@../styles/fonts.css" text="MONTH / DD / YYYY" HBox.hgrow="ALWAYS" />

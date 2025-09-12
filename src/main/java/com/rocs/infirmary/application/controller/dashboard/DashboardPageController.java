@@ -73,7 +73,7 @@ public class DashboardPageController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        LOGGER.info("Initializing Dashboard Controller for user: {}", usernameDisplay.getText());
+        LOGGER.info("Initializing Dashboard Controller");
         initializeUI();
         loadDashboardData();
         weeklyStudentVisitReport.setOnAction(event -> populateCharts("weekly"));
