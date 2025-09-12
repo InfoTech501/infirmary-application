@@ -202,25 +202,25 @@ public class AddDailyTreatmentRecordController implements Initializable {
             MedicalRecord medicalRecord = createStudentMedicalRecordFromForm();
             if (medicalRecord == null) {
                 LOGGER.error("MedicalRecord creation failed at {} – invalid or missing data", new Date());
-                return;
             }
 
             Medicine matchedMedicine = SelectedMedicine(medicineNameComboBox.getEditor().getText());
             if (matchedMedicine == null) {
                 LOGGER.error("No matching medicine found for input: {}", medicineNameComboBox.getEditor().getText());
-                return;
             }
 
-            if (!updateInventoryDispensed(medicalRecord, matchedMedicine)) {
-                LOGGER.error("Inventory update failed for studentId: {} at {}",
-                        medicalRecord.getStudentId(), new Date());
-                return;
+            if (medicalRecord != null && matchedMedicine != null) {
+                if (!updateInventoryDispensed(medicalRecord, matchedMedicine)) {
+                    LOGGER.error("Inventory update failed for studentId: {} at {}",
+                            medicalRecord.getStudentId(), new Date());
+                }
             }
 
-            if (!populateExistingStudentInfo(medicalRecord)) {
-                LOGGER.error("Student info not found for LRN: {} at {}",
-                        medicalRecord.getLrn(), new Date());
-                return;
+            if (medicalRecord != null) {
+                if (!populateExistingStudentInfo(medicalRecord)) {
+                    LOGGER.error("Student info not found for LRN: {} at {}",
+                            medicalRecord.getLrn(), new Date());
+                }
             }
 
             medicalRecord.setMedicineId(matchedMedicine.getMedicineId());
