@@ -8,39 +8,41 @@ public class QueryConstants {
     /**
      * query that retrieves all student medical record.
      */
-    public static String GET_ALL_STUDENTS_MEDICAL_RECORDS = "SELECT\n" +
-            "    student.id,\n" +
-            "    student.person_id,\n" +
-            "    student.lrn,\n" +
-            "    person.first_name,\n" +
-            "    person.middle_name,\n" +
-            "    person.last_name,\n" +
-            "    section.grade_level,\n" +
-            "    section.section,\n" +
-            "    person.age,\n" +
-            "    person.gender,\n" +
-            "    person.email,\n" +
-            "    person.address,\n" +
-            "    person.contact_number,\n" +
-            "    medical_record.symptoms,\n" +
-            "    medical_record.temperature_readings,\n" +
-            "    medical_record.blood_pressure,\n" +
-            "    medical_record.pulse_rate,\n" +
-            "    medical_record.respiratory_rate,\n" +
-            "    medical_record.visit_date,\n" +
-            "    medical_record.treatment,\n" +
-            "    medicine.item_name AS medicine_name,\n" +
-            "    medicine_administered.quantity AS medicine_quantity,\n" +
-            "    nurse_person.first_name AS nurse_first_name,\n" +
-            "    nurse_person.last_name AS nurse_last_name\n" +
-            "FROM medical_record\n" +
-            "JOIN student ON medical_record.student_id = student.id\n" +
-            "JOIN person ON student.person_id = person.id\n" +
-            "LEFT JOIN section ON student.section_section_id = section.section_id\n" +
-            "LEFT JOIN medicine_administered ON medical_record.id = medicine_administered.med_record_id\n" +
-            "LEFT JOIN medicine ON medicine_administered.medicine_id = medicine.medicine_id\n" +
-            "LEFT JOIN employee ON medical_record.nurse_in_charge_id = employee.id\n" +
-            "LEFT JOIN person nurse_person ON employee.id = nurse_person.id ";
+    public static String GET_ALL_STUDENTS_MEDICAL_RECORDS = "SELECT " +
+            "    student.id, " +
+            "    student.person_id, " +
+            "    student.lrn, " +
+            "    person.first_name, " +
+            "    person.middle_name, " +
+            "    person.last_name, " +
+            "    section.grade_level, " +
+            "    section.section, " +
+            "    person.age, " +
+            "    person.gender, " +
+            "    person.email, " +
+            "    person.address, " +
+            "    person.contact_number, " +
+            "    medical_record.symptoms, " +
+            "    medical_record.temperature_readings, " +
+            "    medical_record.blood_pressure, " +
+            "    medical_record.pulse_rate, " +
+            "    medical_record.respiratory_rate, " +
+            "    medical_record.visit_date, " +
+            "    medical_record.treatment, " +
+            "    medicine.item_name AS medicine_name, " +
+            "    medicine_administered.quantity AS medicine_quantity, " +
+            "    nurse_person.first_name AS nurse_first_name, " +
+            "    nurse_person.last_name AS nurse_last_name " +
+            "FROM medical_record " +
+            "JOIN student ON medical_record.student_id = student.id " +
+            "JOIN person ON student.person_id = person.id " +
+            "LEFT JOIN section ON student.section_section_id = section.section_id " +
+            "LEFT JOIN medicine_administered ON medical_record.id = medicine_administered.med_record_id " +
+            "LEFT JOIN medicine ON medicine_administered.medicine_id = medicine.medicine_id " +
+            "LEFT JOIN employee ON medical_record.nurse_in_charge_id = employee.id " +
+            "LEFT JOIN person nurse_person ON employee.id = nurse_person.id " +
+            "WHERE MEDICAL_RECORD.IS_ACTIVE = 1";
+
     public static  String GET_LAST_INSERTED_MEDICAL_RECORD_ID = "SELECT id FROM medical_record WHERE student_id = ? ORDER BY id DESC FETCH FIRST 1 ROWS ONLY";
     /**
      * query that add student medical record.
