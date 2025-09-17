@@ -8,7 +8,7 @@ import javafx.scene.control.Button;
 import java.util.List;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -42,7 +42,7 @@ public class ViewInventoryControllerTest {
     public void start(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/views/InventoryPage.fxml"));
-        BorderPane mainLayout = loader.load();
+        StackPane mainLayout = loader.load();
         Scene scene = new Scene(mainLayout);
         stage.setMaximized(true);
         stage.setScene(scene);
@@ -51,11 +51,11 @@ public class ViewInventoryControllerTest {
 
     @BeforeEach
     void setup (FxRobot robot){
-        quantityButton = robot.lookup("#QuantityButton").queryAs(Button.class);
+        quantityButton = robot.lookup("#QuantityButton1").queryAs(Button.class);
         medDetailsTable = robot.lookup("#medDetailsTable").queryAs(TableView.class);
-        inventory_Filter_Button_A = robot.lookup("#Inventory_Filter_Button_A").queryAs(Button.class);
-        inventory_Filter_Button_Z = robot.lookup("#Inventory_Filter_Button_Z").queryAs(Button.class);
-        inventoryClearFilterButton = robot.lookup("#InventoryClearFilterButton").queryAs(Button.class);
+        inventory_Filter_Button_A = robot.lookup("#Inventory_Filter_Button_A1").queryAs(Button.class);
+        inventory_Filter_Button_Z = robot.lookup("#Inventory_Filter_Button_Z1").queryAs(Button.class);
+        inventoryClearFilterButton = robot.lookup("#InventoryClearFilterButton1").queryAs(Button.class);
         searchTextField = robot.lookup("#searchTextField").queryAs(TextField.class);
 
         assertNotNull(searchTextField);
