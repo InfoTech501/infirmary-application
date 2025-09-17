@@ -97,8 +97,8 @@ public class AddInventoryController implements Initializable {
 
                     if (!empty) {
                         Medicine med = getTableView().getItems().get(getIndex());
-                        med.isSelectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
-                            if (isNowSelected) {
+                        med.isSelectedProperty().addListener((obs, wasSelected, isSelected) -> {
+                            if (isSelected) {
                                 productNameTextField.setText(med.getItemName());
                                 descriptionTextField.setText(med.getDescription());
                                 expirationDatePicker.setValue(null);
