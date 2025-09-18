@@ -2,7 +2,6 @@ package com.rocs.infirmary.application.controller.records;
 
 import static com.rocs.infirmary.application.controller.helper.ControllerHelper.showDialog;
 
-import com.rocs.infirmary.application.controller.lowstock.helper.LowStockAlertHelper;
 import com.rocs.infirmary.application.data.model.person.employee.Employee;
 import com.rocs.infirmary.application.data.model.medicalrecord.MedicalRecord;
 import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
@@ -277,9 +276,11 @@ public class AddDailyTreatmentRecordController implements Initializable {
             if (clinicVisitLogPageController != null) {
                 clinicVisitLogPageController.addStudentMedicalRecord(medicalRecord);
             }
-            LowStockAlertHelper.checkLowStockAndShowAlert();
+
             showDialog("Notification", "Success, Record Added Successfully.");
-            ((Stage) lrnField.getScene().getWindow()).close();
+            addDailyTreatmentRecord.setVisible(false);
+            addDailyTreatmentRecord.setDisable(true);
+            addDailyTreatmentRecord.getChildren().clear();
 
         } catch (Exception e) {
             LOGGER.error("Unhandled exception in addDailyRecord", e);
