@@ -92,8 +92,8 @@ public class AddInventoryController implements Initializable {
         selectColumn.setCellFactory(tc -> {
             CheckBoxTableCell<Medicine, Boolean> cell = new CheckBoxTableCell<Medicine, Boolean>() {
                 @Override
-                public void updateItem(Boolean item, boolean empty) {
-                    parentUpdate(item, empty);
+                public void updateItem(Boolean selected, boolean empty) {
+                    parentUpdate(selected, empty);
 
                     if (!empty) {
                         Medicine med = getTableView().getItems().get(getIndex());
@@ -115,8 +115,8 @@ public class AddInventoryController implements Initializable {
                     }
                 }
 
-                private void parentUpdate(Boolean item, boolean empty) {
-                    super.updateItem(item, empty);
+                private void parentUpdate(Boolean selected, boolean empty) {
+                    super.updateItem(selected, empty);
                 }
             };
             return cell;
