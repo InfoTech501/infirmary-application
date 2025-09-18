@@ -112,6 +112,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
 
     @Override
     public boolean addMedicine(Medicine medicine) {
+        LOGGER.info("Entering Adding new medicine with name: {}, description: {}.", medicine.getItemName(), medicine.getDescription());
 
         try (Connection con = ConnectionHelper.getConnection();
              PreparedStatement stmt = con.prepareStatement(ADD_MEDICINE_QUERY)) {
@@ -119,13 +120,14 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
             stmt.setString(2, medicine.getDescription());
             stmt.setInt(3, 1);
             int affectedRow = stmt.executeUpdate();
+            LOGGER.info("Medicine successfully added. Name: {}, Description: {}. Affected rows: {}.", medicine.getItemName(), medicine.getDescription(), affectedRow);
+            LOGGER.info("Added Date :   " + new Date());
 
             return affectedRow > 0;
 
         } catch (SQLException e) {
-            System.out.println("Medicine ID already exist");
+            LOGGER.error("SQL Exception occurred while adding medicine: {}. Error: {}", medicine.getItemName(), e.getMessage());
         }
-        LOGGER.info("Added Date :   " + new Date());
         return false;
     }
 
