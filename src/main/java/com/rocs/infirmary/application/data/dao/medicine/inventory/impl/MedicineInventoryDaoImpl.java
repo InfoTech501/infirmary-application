@@ -124,7 +124,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
             } else {
                 LOGGER.warn("Medicine FAILED to add. Name: {}, Description: {}. Affected rows: {}.", medicine.getItemName(), medicine.getDescription(), affectedRow);
             }
-            LOGGER.info("Added Date: {}", new Date());
+            LOGGER.info("Added Date :   " + new Date());
             return affectedRow > 0;
         } catch (SQLException e) {
             LOGGER.error("SQL Exception occurred while adding medicine: {}. Error: {}", medicine.getItemName(), e.getMessage());

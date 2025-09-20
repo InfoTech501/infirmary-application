@@ -67,7 +67,6 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
         return isAdded;
     }
 
-
     @Override
     public boolean addInventory(Long medicineId, String itemType, int quantity, Date expirationDate) {
         return this.medicineInventoryDao.addInventory(medicineId, itemType, quantity,expirationDate);
