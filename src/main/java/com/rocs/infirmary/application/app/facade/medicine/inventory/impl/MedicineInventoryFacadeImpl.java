@@ -61,9 +61,10 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
 
     @Override
     public boolean addMedicine(Medicine medicine) {
-        LOGGER.info("Request to add medicine: {}", medicine.getItemName());
-        return this.medicineInventoryDao.addMedicine(medicine);
-
+        LOGGER.debug("Entering addMedicine with Name: {} and Description: {}", medicine.getItemName(), medicine.getDescription());
+        boolean isAdded = medicineInventoryDao.addMedicine(medicine);
+        LOGGER.debug("Exiting addMedicine for '{}'", medicine.getItemName());
+        return isAdded;
     }
 
 
@@ -80,9 +81,7 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
     @Override
     public boolean deleteInventory(List<Medicine> medicines) {
         LOGGER.info("Deleting inventory for medicines: {}", medicines);
-        boolean isDeleted = this.medicineInventoryDao.deleteInventory(medicines);
-        logger.debug("Exiting deleteInventory with result: {}", isDeleted);
-        return isDeleted;
+        return this.medicineInventoryDao.deleteInventory(medicines);
     }
 
     @Override

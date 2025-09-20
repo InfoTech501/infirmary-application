@@ -119,21 +119,19 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
             stmt.setString(2, medicine.getDescription());
             stmt.setInt(3, 1);
             int affectedRow = stmt.executeUpdate();
-            LOGGER.info("Medicine successfully added. Name: {}, Description: {}. Affected rows: {}.", medicine.getItemName(), medicine.getDescription(), affectedRow);
-            LOGGER.info("Added Date :   " + new Date());
+            if (affectedRow > 0) {
+                LOGGER.info("Medicine successfully ADDED. Name: {}, Description: {}. Affected rows: {}.", medicine.getItemName(), medicine.getDescription(), affectedRow);
+            } else {
+                LOGGER.warn("Medicine FAILED to add. Name: {}, Description: {}. Affected rows: {}.", medicine.getItemName(), medicine.getDescription(), affectedRow);
+            }
+            LOGGER.info("Added Date: {}", new Date());
             return affectedRow > 0;
-
         } catch (SQLException e) {
             LOGGER.error("SQL Exception occurred while adding medicine: {}. Error: {}", medicine.getItemName(), e.getMessage());
-
-            System.out.println("Medicine ID already exist");
         }
-        LOGGER.info("Exiting addMedicine DAO with result: false");
-
-        }
-
         return false;
     }
+
 
     @Override
     public boolean updateInventory(Long inventoryId, Long medicineId, int quantity, String itemType, Date expirationDate) {
@@ -241,13 +239,7 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
             stmt.setLong(1, medicineId);
             stmt.setString(2, itemType);
             stmt.setInt(3, quantity);
-
-            if (expirationDate != null) {
-                stmt.setTimestamp(4, new Timestamp(expirationDate.getTime()));
-            } else {
-                stmt.setNull(4, Types.TIMESTAMP);
-            }
-
+            stmt.setTimestamp(4, new Timestamp(expirationDate.getTime()));
             int affectedRows = stmt.executeUpdate();
             LOGGER.info("Retrieved Data : " + " \n"
                     + "Medicine ID : " + medicineId + "\n"
