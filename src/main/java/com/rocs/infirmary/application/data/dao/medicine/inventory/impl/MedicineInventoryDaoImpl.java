@@ -125,9 +125,13 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
 
         } catch (SQLException e) {
             LOGGER.error("SQL Exception occurred while adding medicine: {}. Error: {}", medicine.getItemName(), e.getMessage());
+
             System.out.println("Medicine ID already exist");
         }
         LOGGER.info("Exiting addMedicine DAO with result: false");
+
+        }
+
         return false;
     }
 
