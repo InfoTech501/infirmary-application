@@ -2,6 +2,7 @@ package com.rocs.infirmary.application.controller.inventory;
 
 import com.rocs.infirmary.application.controller.records.AddDailyTreatmentRecordController;
 import com.rocs.infirmary.application.controller.helper.ControllerHelper;
+import com.rocs.infirmary.application.controller.lowstock.helper.LowStockAlertHelper;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
 import javafx.collections.FXCollections;
@@ -119,6 +120,7 @@ public class InventoryController implements Initializable {
      * this method handles the refresh functionality for inventory table
      ***/
     public void refresh() {
+        LowStockAlertHelper.checkLowStockAndShowAlert();
         List<Medicine> medicineList = inventoryManagementApplication.getMedicineInventoryFacade().getAllMedicine();
         for (Medicine med : medicineList) {
             if (med.isSelectedProperty() == null) {
