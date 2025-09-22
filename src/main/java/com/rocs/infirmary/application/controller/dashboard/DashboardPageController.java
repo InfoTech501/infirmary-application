@@ -104,10 +104,11 @@ public class DashboardPageController implements Initializable {
             populateTables();
 
             LOGGER.info("Dashboard data successfully loaded");
-        } catch (NullPointerException e) {
+        } catch (IllegalStateException e) {
             LOGGER.error("Failed to load dashboard data", e);
         }
     }
+
 
     private void populateCharts(String view) {
         String GRADE_11 = "Grade 11";
@@ -135,36 +136,33 @@ public class DashboardPageController implements Initializable {
         }
     }
 
-    private void populateTables() {
-        try {
-            LOGGER.info("Populating Tables");
-            DateRange dateRange = DateRange.monthly();
-            populateTableMedicationTrendReport(dateRange);
-            populateTableCommonAilmentsReport(dateRange);
+    private void populateTables() throws IllegalStateException {
+        LOGGER.info("Populating Tables");
+        DateRange dateRange = DateRange.monthly();
+        populateTableMedicationTrendReport(dateRange);
+        populateTableCommonAilmentsReport(dateRange);
 
-            if (medTrendRptTable == null || totalDistributedMedTrend == null) {
-                throw new Exception("Medication Trend Report table is null");
-            }
-
-            if (commonAilmentsRptTable == null || numOfStudCommonAilment == null) {
-                throw new Exception("Common Ailments Report table is null");
-            }
-
-            if (dashboardInfoApplication.getDashboardFacade() == null) {
-                throw new Exception("Dashboard Facade is null");
-            }
-            LOGGER.info("Tables successfully populated");
-
-        } catch (Exception e) {
-            LOGGER.error("Failed to populate tables", e);
+        if (medTrendRptTable == null || totalDistributedMedTrend == null) {
+            throw new IllegalStateException("Medication Trend Report table is null");
         }
+
+        if (commonAilmentsRptTable == null || numOfStudCommonAilment == null) {
+            throw new IllegalStateException("Common Ailments Report table is null");
+        }
+
+        if (dashboardInfoApplication.getDashboardFacade() == null) {
+            throw new IllegalStateException("Dashboard Facade is null");
+        }
+
+        LOGGER.info("Tables successfully populated");
     }
+
 
     private void populateTableMedicationTrendReport(DateRange dateRange) {
         List<MedicationTrendReport> medicationTrendReports =
                 dashboardInfoApplication.getDashboardFacade().generateMedicationReport(dateRange.getStartDate(), dateRange.getEndDate());
         LOGGER.debug("MedicationTrendReport from {} - {}: {}",
-                    dateRange.getStartDate(), dateRange.getEndDate(), medicationTrendReports);
+                dateRange.getStartDate(), dateRange.getEndDate(), medicationTrendReports);
 
         ObservableList<MedicationTrendReport> dataMedTrend =
                 FXCollections.observableArrayList(medicationTrendReports);
@@ -182,7 +180,7 @@ public class DashboardPageController implements Initializable {
         List<CommonAilmentsReport> reports = dashboardInfoApplication.getDashboardFacade().generateCommonAilmentReport(
                 dateRange.getStartDate(), dateRange.getEndDate(), gradeLevel, section);
         LOGGER.debug("Common Ailments Report from {} - {}, gradeLevel='{}', section='{}': {}",
-                    dateRange.getStartDate(), dateRange.getEndDate(), gradeLevel, section, reports);
+                dateRange.getStartDate(), dateRange.getEndDate(), gradeLevel, section, reports);
 
 
         ObservableList<CommonAilmentsReport> observableCommonAilmentTable =
@@ -236,8 +234,8 @@ public class DashboardPageController implements Initializable {
 
     private void setMedicationDistributionReport(DateRange dateRange) {
         int totalUsage = getTotalMedicationUsage(dateRange);
-            LOGGER.debug("Medication distribution report from {} to {}: total usage = {}",
-                    dateRange.getStartDate(), dateRange.getEndDate(), totalUsage);
+        LOGGER.debug("Medication distribution report from {} to {}: total usage = {}",
+                dateRange.getStartDate(), dateRange.getEndDate(), totalUsage);
 
         medDistributtedTodayRprt.setText(String.valueOf(totalUsage));
     }
