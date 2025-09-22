@@ -55,7 +55,10 @@ class DashboardPageControllerTest {
 
     @Disabled
     @Test
-    void testStudentVisitBarChart(){
+    void testStudentVisitBarChart(FxRobot robot){
+        robot.clickOn("#weeklyStudentVisitReport");
+        robot.clickOn("#monthlyStudentVisitReport");
+        robot.clickOn("#yearlyStudentVisitReport");
         assertNotNull(studentVisitBarChart.getData());
         assertFalse(studentVisitBarChart.getData().isEmpty());
     }
