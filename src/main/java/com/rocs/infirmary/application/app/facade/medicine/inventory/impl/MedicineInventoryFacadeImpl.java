@@ -61,10 +61,11 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
 
     @Override
     public boolean addMedicine(Medicine medicine) {
-        LOGGER.info("Request to add medicine: {}", medicine.getItemName());
-        return this.medicineInventoryDao.addMedicine(medicine);
+        LOGGER.debug("Entering addMedicine with Name: {} and Description: {}", medicine.getItemName(), medicine.getDescription());
+        boolean isAdded = medicineInventoryDao.addMedicine(medicine);
+        LOGGER.debug("Exiting addMedicine for '{}'", medicine.getItemName());
+        return isAdded;
     }
-
 
     @Override
     public boolean addInventory(Long medicineId, String itemType, int quantity, Date expirationDate) {
@@ -94,3 +95,4 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
         return this.medicineInventoryDao.updateMedicine(medicineId,medicineName,description);
     }
 }
+
