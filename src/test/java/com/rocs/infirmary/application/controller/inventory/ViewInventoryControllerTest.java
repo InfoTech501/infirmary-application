@@ -1,6 +1,8 @@
 package com.rocs.infirmary.application.controller.inventory;
 
+import com.rocs.infirmary.application.controller.lowstock.helper.LowStockAlertHelper;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
+import com.rocs.infirmary.application.module.lowstock.notification.service.application.LowStockNotificationServiceApplication;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -25,6 +27,7 @@ import java.util.Comparator;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 
 
 @ExtendWith(ApplicationExtension.class)
@@ -51,6 +54,9 @@ public class ViewInventoryControllerTest {
 
     @BeforeEach
     void setup (FxRobot robot){
+
+        LowStockAlertHelper.checkLowStockAndShowAlert() = mock(LowStockNotificationServiceApplication.class);
+
         quantityButton = robot.lookup("#QuantityButton1").queryAs(Button.class);
         medDetailsTable = robot.lookup("#medDetailsTable").queryAs(TableView.class);
         inventory_Filter_Button_A = robot.lookup("#Inventory_Filter_Button_A1").queryAs(Button.class);
