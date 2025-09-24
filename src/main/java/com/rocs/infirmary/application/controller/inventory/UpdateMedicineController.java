@@ -89,9 +89,10 @@ public class UpdateMedicineController {
                         if(parentController != null){
                             parentController.refresh();
                         }
-                       Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
                        LOGGER.info("Exiting Update Medicine Modal");
-                       stage.close();
+                       medicineEditModal.setVisible(false);
+                       medicineEditModal.setDisable(true);
+                       medicineEditModal.getChildren().clear();
                    }
                }
            }
