@@ -68,10 +68,14 @@ public class UpdateInventoryController {
         productNameTextField.setEditable(false);
         quantityTextField.setText(String.valueOf(medicine.getQuantity()));
 
-        LocalDate localDate = medicine.getExpirationDate().toLocalDateTime().toLocalDate();
-        expirationDatePicker.setPromptText(localDate.format(outputFormat));
-        expirationDate = java.sql.Date.valueOf(localDate);
-
+        if (medicine.getExpirationDate() != null && !medicine.getItemType().equals("Non expiry")) {
+            LocalDate localDate = medicine.getExpirationDate().toLocalDateTime().toLocalDate();
+            expirationDatePicker.setPromptText(localDate.format(outputFormat));
+            expirationDate = java.sql.Date.valueOf(localDate);
+        } else {
+            expirationDatePicker.setPromptText("No Expiration Date Available");
+            expirationDatePicker.setDisable(true);
+        }
         itemType = FXCollections.observableArrayList(itemTypeList);
         itemTypeComboBox.setItems(itemType);
         itemTypeComboBox.setPromptText(defaultItemType);
@@ -155,9 +159,10 @@ public class UpdateInventoryController {
                         if (parentController != null) {
                             parentController.refresh();
                         }
-                        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
                         LOGGER.info("Exiting Update Inventory Modal");
-                        stage.close();
+                        inventoryEditItemModal.setVisible(false);
+                        inventoryEditItemModal.setDisable(true);
+                        inventoryEditItemModal.getChildren().clear();
                     }
                 }
             }

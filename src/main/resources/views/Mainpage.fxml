@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="790.0" prefWidth="1420.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.mainpage.MainpageController">
+<BorderPane prefHeight="620.0" prefWidth="1420.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.mainpage.MainpageController">
    <Label fx:id="welcomeText" />
    <left>
       <VBox alignment="TOP_CENTER" prefHeight="697.0" prefWidth="232.0" spacing="10.0" BorderPane.alignment="CENTER">

@@ -49,7 +49,7 @@
 
                   <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="1126.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                      <children>
-                        <GridPane alignment="CENTER" hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="841.0" vgap="10.0" HBox.hgrow="ALWAYS">
+                        <GridPane alignment="CENTER" hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="703.0" vgap="10.0" HBox.hgrow="ALWAYS">
                            <columnConstraints>
                               <ColumnConstraints maxWidth="34.66667683919271" minWidth="19.99998982747396" prefWidth="19.99998982747396" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="192.66667683919272" minWidth="10.0" prefWidth="94.19999999999999" />

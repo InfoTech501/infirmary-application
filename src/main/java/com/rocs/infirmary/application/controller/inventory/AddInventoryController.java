@@ -1,7 +1,7 @@
 package com.rocs.infirmary.application.controller.inventory;
 
-import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
+import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -18,7 +18,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,7 +84,45 @@ public class AddInventoryController implements Initializable {
         productNameColumn.setCellValueFactory(new PropertyValueFactory<>("itemName"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         itemTypeComboBox.setItems(itemType);
+
+        setupSelectColumn();
     }
+
+    private void setupSelectColumn() {
+        selectColumn.setCellFactory(tc -> {
+            CheckBoxTableCell<Medicine, Boolean> cell = new CheckBoxTableCell<Medicine, Boolean>() {
+                @Override
+                public void updateItem(Boolean selected, boolean empty) {
+                    parentUpdate(selected, empty);
+
+                    if (!empty) {
+                        Medicine med = getTableView().getItems().get(getIndex());
+                        med.isSelectedProperty().addListener((obs, wasSelected, isSelected) -> {
+                            if (isSelected) {
+                                productNameTextField.setText(med.getItemName());
+                                descriptionTextField.setText(med.getDescription());
+                                expirationDatePicker.setValue(null);
+                                quantityTextField.clear();
+
+                            } else {
+
+                                productNameTextField.clear();
+                                descriptionTextField.clear();
+                                expirationDatePicker.setValue(null);
+                                quantityTextField.clear();
+                            }
+                        });
+                    }
+                }
+
+                private void parentUpdate(Boolean selected, boolean empty) {
+                    super.updateItem(selected, empty);
+                }
+            };
+            return cell;
+        });
+    }
+
     /**
      * this method handles the refresh functionality for medicine table
      ***/
