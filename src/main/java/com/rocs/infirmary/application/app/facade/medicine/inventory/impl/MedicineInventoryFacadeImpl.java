@@ -65,7 +65,7 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
     public List<Medicine> findAllMedicine() {
         LOGGER.info("Entering findAllMedicine()");
         List<Medicine> medicineInventoryList = medicineInventoryDao.findAllMedicine();
-        LOGGER.info("Exiting findAllMedicine");
+        LOGGER.info("Exiting findAllMedicine()");
         return medicineInventoryList;
     }
 
