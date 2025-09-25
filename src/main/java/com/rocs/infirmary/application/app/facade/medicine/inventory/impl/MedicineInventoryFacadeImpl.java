@@ -63,9 +63,9 @@ public class MedicineInventoryFacadeImpl implements MedicineInventoryFacade {
 
     @Override
     public List<Medicine> findAllMedicine() {
-        logger.info("Entering Inventory");
+        LOGGER.info("Entering findAllMedicine()");
         List<Medicine> medicineInventoryList = medicineInventoryDao.findAllMedicine();
-        logger.info("Exiting findAllMedicine: {} with results", medicineInventoryList);
+        LOGGER.info("Exiting findAllMedicine");
         return medicineInventoryList;
     }
 
