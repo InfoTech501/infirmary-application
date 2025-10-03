@@ -1,15 +1,17 @@
 package com.rocs.infirmary.application.controller.inventory;
 
+import com.rocs.infirmary.application.app.facade.dashboard.DashboardFacade;
 import com.rocs.infirmary.application.controller.lowstock.helper.LowStockAlertHelper;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import com.rocs.infirmary.application.module.lowstock.notification.service.application.LowStockNotificationServiceApplication;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-
-import java.util.List;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,29 +22,41 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
-
-
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-
+import static org.mockito.Mockito.*;
 
 @ExtendWith(ApplicationExtension.class)
 public class ViewInventoryControllerTest {
 
     private Button quantityButton;
-    private  Button inventory_Filter_Button_A;
-    private  Button inventory_Filter_Button_Z;
+    private Button inventory_Filter_Button_A;
+    private Button inventory_Filter_Button_Z;
     private TextField searchTextField;
     private Button inventoryClearFilterButton;
     private TableView<Medicine> medDetailsTable;
 
-
     @Start
     public void start(Stage stage) throws IOException {
+
+        LowStockNotificationServiceApplication lowStockNotificationServiceApplicationMock = mock(LowStockNotificationServiceApplication.class);
+        DashboardFacade dashboardFacadeMock = mock(DashboardFacade.class);
+
+        when(lowStockNotificationServiceApplicationMock.getDashboardFacade()).thenReturn(dashboardFacadeMock);
+        when(dashboardFacadeMock.getAllLowStockMedicine()).thenReturn(Collections.emptyList());
+
+        LowStockAlertHelper lowStockAlertHelper = new LowStockAlertHelper();
+        lowStockAlertHelper.bindService(lowStockNotificationServiceApplicationMock);
+        lowStockAlertHelper.bindUI(new ImageView(), new ToggleButton());
+        lowStockAlertHelper.setMainNode(new Pane());
+
+
+        LowStockAlertHelper.checkLowStockAndShowAlert();
+
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/views/InventoryPage.fxml"));
         StackPane mainLayout = loader.load();
@@ -53,15 +67,13 @@ public class ViewInventoryControllerTest {
     }
 
     @BeforeEach
-    void setup (FxRobot robot){
+    void setup(FxRobot robot) {
 
-        LowStockAlertHelper.checkLowStockAndShowAlert() = mock(LowStockNotificationServiceApplication.class);
-
-        quantityButton = robot.lookup("#QuantityButton1").queryAs(Button.class);
+        quantityButton = robot.lookup("#quantityButton1").queryAs(Button.class);
         medDetailsTable = robot.lookup("#medDetailsTable").queryAs(TableView.class);
-        inventory_Filter_Button_A = robot.lookup("#Inventory_Filter_Button_A1").queryAs(Button.class);
-        inventory_Filter_Button_Z = robot.lookup("#Inventory_Filter_Button_Z1").queryAs(Button.class);
-        inventoryClearFilterButton = robot.lookup("#InventoryClearFilterButton1").queryAs(Button.class);
+        inventory_Filter_Button_A = robot.lookup("#inventory_Filter_Button_A1").queryAs(Button.class);
+        inventory_Filter_Button_Z = robot.lookup("#inventory_Filter_Button_Z1").queryAs(Button.class);
+        inventoryClearFilterButton = robot.lookup("#inventoryClearFilterButton1").queryAs(Button.class);
         searchTextField = robot.lookup("#searchTextField").queryAs(TextField.class);
 
         assertNotNull(searchTextField);
@@ -70,7 +82,6 @@ public class ViewInventoryControllerTest {
         assertNotNull(inventory_Filter_Button_A);
         assertNotNull(inventory_Filter_Button_Z);
         assertNotNull(inventoryClearFilterButton);
-
     }
 
     @Disabled
