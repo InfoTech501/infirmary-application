@@ -34,8 +34,8 @@ import static org.mockito.Mockito.*;
 public class ViewInventoryControllerTest {
 
     private Button quantityButton;
-    private Button inventory_Filter_Button_A;
-    private Button inventory_Filter_Button_Z;
+    private Button inventoryFilterButtonA;
+    private Button inventoryFilterButtonZ;
     private TextField searchTextField;
     private Button inventoryClearFilterButton;
     private TableView<Medicine> medDetailsTable;
@@ -71,16 +71,16 @@ public class ViewInventoryControllerTest {
 
         quantityButton = robot.lookup("#quantityButton1").queryAs(Button.class);
         medDetailsTable = robot.lookup("#medDetailsTable").queryAs(TableView.class);
-        inventory_Filter_Button_A = robot.lookup("#inventory_Filter_Button_A1").queryAs(Button.class);
-        inventory_Filter_Button_Z = robot.lookup("#inventory_Filter_Button_Z1").queryAs(Button.class);
+        inventoryFilterButtonA = robot.lookup("#inventoryFilterButtonA1").queryAs(Button.class);
+        inventoryFilterButtonZ = robot.lookup("#inventoryFilterButtonZ1").queryAs(Button.class);
         inventoryClearFilterButton = robot.lookup("#inventoryClearFilterButton1").queryAs(Button.class);
         searchTextField = robot.lookup("#searchTextField").queryAs(TextField.class);
 
         assertNotNull(searchTextField);
         assertNotNull(quantityButton);
         assertNotNull(medDetailsTable);
-        assertNotNull(inventory_Filter_Button_A);
-        assertNotNull(inventory_Filter_Button_Z);
+        assertNotNull(inventoryFilterButtonA);
+        assertNotNull(inventoryFilterButtonZ);
         assertNotNull(inventoryClearFilterButton);
     }
 
@@ -94,16 +94,16 @@ public class ViewInventoryControllerTest {
 
     @Disabled
     @Test
-    public void testInventory_Filter_Button_A(FxRobot robot){
-        robot.clickOn(inventory_Filter_Button_A);
+    public void testInventoryFilterButtonA(FxRobot robot){
+        robot.clickOn(inventoryFilterButtonA);
         assertEquals(medDetailsTable.getItems().stream().map(Medicine::getItemName).toList(),
                 medDetailsTable.getItems().stream().map(Medicine::getItemName).sorted().toList());
     }
 
     @Disabled
     @Test
-    public void testInventory_Filter_Button_Z(FxRobot robot){
-        robot.clickOn(inventory_Filter_Button_Z);
+    public void testInventoryFilterButtonZ(FxRobot robot){
+        robot.clickOn(inventoryFilterButtonZ);
         assertEquals(medDetailsTable.getItems().stream().map(Medicine::getItemName).toList(),
                 medDetailsTable.getItems().stream().map(Medicine::getItemName).sorted(Comparator.reverseOrder()).toList());
     }
@@ -113,7 +113,7 @@ public class ViewInventoryControllerTest {
     @Test
     public void testInventoryClearFilterButton(FxRobot robot){
         List<String> originalArrangement = medDetailsTable.getItems().stream().map(Medicine::getItemName).toList();
-        robot.clickOn(inventory_Filter_Button_A);
+        robot.clickOn(inventoryFilterButtonA);
         robot.clickOn(inventoryClearFilterButton);
         List <String> afterFilterArrangment = medDetailsTable.getItems().stream().map(Medicine::getItemName).toList();
         assertEquals(afterFilterArrangment,originalArrangement);

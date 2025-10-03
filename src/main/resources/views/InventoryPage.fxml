@@ -63,8 +63,8 @@
                            <children>
                               <HBox prefHeight="54.0" prefWidth="39.0" />
                               <Button fx:id="quantityButton1" mnemonicParsing="false" onAction="#onQuantityFilterClick" prefHeight="31.0" prefWidth="120.0" text="Quantity" GridPane.columnIndex="1" />
-                              <Button fx:id="inventory_Filter_Button_A1" mnemonicParsing="false" onAction="#onFilterButtonAClick" prefHeight="30.0" prefWidth="93.0" text="A-Z" GridPane.columnIndex="2" />
-                              <Button fx:id="inventory_Filter_Button_Z1" mnemonicParsing="false" onAction="#onFilterButtonZClick" prefHeight="30.0" prefWidth="93.0" text="Z-A" GridPane.columnIndex="3" />
+                              <Button fx:id="inventoryFilterButtonA1" mnemonicParsing="false" onAction="#onFilterButtonAClick" prefHeight="30.0" prefWidth="93.0" text="A-Z" GridPane.columnIndex="2" />
+                              <Button fx:id="inventoryFilterButtonZ1" mnemonicParsing="false" onAction="#onFilterButtonZClick" prefHeight="30.0" prefWidth="93.0" text="Z-A" GridPane.columnIndex="3" />
                               <Button fx:id="inventoryClearFilterButton1" mnemonicParsing="false" onAction="#onClearFilterClick" prefHeight="30.0" prefWidth="118.0" text="Clear Filter" GridPane.columnIndex="4" />
                            </children>
                         </GridPane>
