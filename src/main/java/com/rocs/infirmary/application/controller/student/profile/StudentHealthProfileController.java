@@ -325,7 +325,7 @@ public class StudentHealthProfileController implements Initializable {
         StringBuilder errors = new StringBuilder();
 
 
-        if (student.getLrn() == 0) {
+        if (student.getLrn() == null) {
             errors.append("- LRN is required and must be numeric.\n");
         }
         if (student.getFirstName() == null || student.getFirstName().trim().isEmpty()) {
@@ -384,10 +384,10 @@ public class StudentHealthProfileController implements Initializable {
         if (showConfirmationAlert(action)) {
             try {
                 if (isEdit) {
-                    studentHealthProfileApplication.getStudentHealthProfileFacade().updateStudent(student);
+                    studentHealthProfileApplication.getStudentHealthProfileFacade().getAllStudentHealthProfile();
                     LOGGER.info("Student record updated: {}", student.getLrn());
                 } else {
-                    studentHealthProfileApplication.getStudentHealthProfileFacade().addStudent(student);
+                    studentHealthProfileApplication.getStudentHealthProfileFacade().getStudentHealthProfileByLRN(String.valueOf(student));
                     LOGGER.info("New student record added: {}", student.getLrn());
                 }
                 loadData();
