@@ -110,24 +110,32 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
         return false;
     }
 
+
+
+
+
     @Override
     public boolean addMedicine(Medicine medicine) {
-
+        LOGGER.info("Entering Adding new medicine with name: {}, description: {}.", medicine.getItemName(), medicine.getDescription());
         try (Connection con = ConnectionHelper.getConnection();
              PreparedStatement stmt = con.prepareStatement(ADD_MEDICINE_QUERY)) {
             stmt.setString(1, medicine.getItemName());
             stmt.setString(2, medicine.getDescription());
             stmt.setInt(3, 1);
             int affectedRow = stmt.executeUpdate();
-
+            if (affectedRow > 0) {
+                LOGGER.info("Medicine successfully ADDED. Name: {}, Description: {}. Affected rows: {}.", medicine.getItemName(), medicine.getDescription(), affectedRow);
+            } else {
+                LOGGER.warn("Medicine FAILED to add. Name: {}, Description: {}. Affected rows: {}.", medicine.getItemName(), medicine.getDescription(), affectedRow);
+            }
+            LOGGER.info("Added Date :   " + new Date());
             return affectedRow > 0;
-
         } catch (SQLException e) {
-            System.out.println("Medicine ID already exist");
+            LOGGER.error("SQL Exception occurred while adding medicine: {}. Error: {}", medicine.getItemName(), e.getMessage());
         }
-        LOGGER.info("Added Date :   " + new Date());
         return false;
     }
+
 
     @Override
     public boolean updateInventory(Long inventoryId, Long medicineId, int quantity, String itemType, Date expirationDate) {
@@ -235,7 +243,11 @@ public class MedicineInventoryDaoImpl implements MedicineInventoryDao {
             stmt.setLong(1, medicineId);
             stmt.setString(2, itemType);
             stmt.setInt(3, quantity);
-            stmt.setTimestamp(4, new Timestamp(expirationDate.getTime()));
+            if (expirationDate != null) {
+                stmt.setTimestamp(4, new Timestamp(expirationDate.getTime()));
+            } else {
+                stmt.setNull(4, java.sql.Types.TIMESTAMP);
+            }
             int affectedRows = stmt.executeUpdate();
             LOGGER.info("Retrieved Data : " + " \n"
                     + "Medicine ID : " + medicineId + "\n"

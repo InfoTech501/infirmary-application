@@ -66,8 +66,12 @@ public class LowStockAlertHelper {
         }
         redCircle.setVisible(true);
         toggleButton.setOnMouseClicked(event -> {
+            toggleButton.setDisable(true);
             Stage currentPage = (Stage) node.getScene().getWindow();
-            LowStockNotificationController.showLowStockModal(currentPage, lowStockItems);
+            Stage modal =  LowStockNotificationController.showLowStockModal(currentPage, lowStockItems);
+            if(modal != null) {
+                modal.setOnHidden(e -> toggleButton.setDisable(false));
+            }
         });
     }
 }
