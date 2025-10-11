@@ -17,6 +17,8 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Pagination?>
 <StackPane fx:id="inventoryPage" prefHeight="677.0" prefWidth="1266.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.inventory.InventoryController">
    <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
    <stylesheets>
@@ -96,6 +98,9 @@
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <VBox prefHeight="786.0" prefWidth="1130.0" HBox.hgrow="ALWAYS">
+               <HBox alignment="CENTER_LEFT" spacing="5">
+               <CheckBox fx:id="selectAllCheckbox" text="Select All Items" />
+               </HBox>
                <children>
                         <TableView fx:id="medDetailsTable" prefHeight="462.0" prefWidth="1126.0">
                            <columns>
@@ -110,6 +115,10 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
+                  <Pagination fx:id="pagination"
+                              pageCount="1"
+                              maxPageIndicatorCount="5"
+                              style="-fx-alignment: center;" />
                </children>
             </VBox>
          </children>

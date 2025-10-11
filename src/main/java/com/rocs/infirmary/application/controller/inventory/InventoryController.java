@@ -53,6 +53,12 @@ public class InventoryController implements Initializable {
     private TableColumn<Medicine,String> itemTypeColumn;
     @FXML
     private TextField searchTextField;
+    @FXML
+    private CheckBox selectAllCheckbox;
+    @FXML
+    private Pagination pagination;
+    private static final int ROWS_PER_PAGE = 11;
+
     private ObservableList<Medicine> medicine;
     private DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
@@ -64,6 +70,8 @@ public class InventoryController implements Initializable {
         refresh();
         itemSearch();
         initalizeEditClick();
+        setupPagination();
+        setupSelectAll();
     }
 
     private void setup() {
@@ -129,6 +137,10 @@ public class InventoryController implements Initializable {
         }
         medicine = FXCollections.observableArrayList(medicineList);
         medDetailsTable.setItems(medicine);
+
+        pagination.setPageCount((int) Math.ceil((double) medicine.size() / ROWS_PER_PAGE));
+        pagination.setCurrentPageIndex(0);
+        createPage(0);
     }
     private void showModal(ActionEvent actionEvent,String location) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(location));
@@ -267,5 +279,30 @@ public class InventoryController implements Initializable {
                 }
             });
         }
+    }
+
+    private void setupSelectAll() {
+        selectAllCheckbox.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
+            if (medicine != null) {
+                for (Medicine med : medicine) {
+                    med.setIsSelected(isNowSelected);
+                }
+                medDetailsTable.refresh();
+            }
+        });
+    }
+
+    private void setupPagination() {
+        pagination.setPageFactory(this::createPage);
+    }
+
+    private Node createPage(int pageIndex) {
+        if (medicine == null || medicine.isEmpty()) {
+            return medDetailsTable;
+        }
+        int fromIndex = pageIndex * ROWS_PER_PAGE;
+        int toIndex = Math.min(fromIndex + ROWS_PER_PAGE, medicine.size());
+        medDetailsTable.setItems(FXCollections.observableArrayList(medicine.subList(fromIndex, toIndex)));
+        return medDetailsTable;
     }
 }
