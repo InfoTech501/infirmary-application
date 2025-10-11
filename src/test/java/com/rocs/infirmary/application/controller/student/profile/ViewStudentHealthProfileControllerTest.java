@@ -35,7 +35,7 @@ class ViewStudentHealthProfileControllerTest {
         sexComboBox = robot.lookup("#sexComboBox").queryAs(ComboBox.class);
         clearFilterBtn = robot.lookup("#clearFilterBtn").queryAs(Button.class);
 
-        
+
         assertNotNull(studentTableView);
         assertNotNull(searchTextField);
         assertNotNull(sectionComboBox);
@@ -56,8 +56,11 @@ class ViewStudentHealthProfileControllerTest {
     @Disabled
     @Test
     void testProfilesDisplayed(FxRobot robot) {
-        assertTrue(studentTableView.isVisible());
-        assertNotNull(studentTableView.getColumns());
+
+        assertNotNull(studentTableView, "Student table should be initialized");
+        assertNotNull(studentTableView.getItems(), "Table items should not be null");
+        assertFalse(studentTableView.getItems().isEmpty(), "Student table should contain a list of students");
+        assertFalse(studentTableView.getColumns().isEmpty(), "Student table should have defined columns");
     }
 
     @Disabled
