@@ -56,12 +56,16 @@ class ViewStudentHealthProfileControllerTest {
     @Disabled
     @Test
     void testProfilesDisplayed(FxRobot robot) {
-
         assertNotNull(studentTableView, "Student table should be initialized");
         assertNotNull(studentTableView.getItems(), "Table items should not be null");
-        assertFalse(studentTableView.getItems().isEmpty(), "Student table should contain a list of students");
-        assertFalse(studentTableView.getColumns().isEmpty(), "Student table should have defined columns");
+
+        assertTrue(!studentTableView.getItems().isEmpty(), "Student table should display a list of students");
+        assertFalse(studentTableView.getItems().isEmpty(), "Student table should not be empty");
+
+        assertTrue(!studentTableView.getColumns().isEmpty(), "Student table should have defined columns");
+        assertFalse(studentTableView.getColumns().isEmpty(), "Student table columns should not be empty");
     }
+
 
     @Disabled
     @Test
