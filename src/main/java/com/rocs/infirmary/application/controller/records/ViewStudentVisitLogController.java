@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -17,7 +18,8 @@ import java.util.ResourceBundle;
  * information of a student medical record, this implements Initializable interface
  */
 public class ViewStudentVisitLogController implements Initializable {
-
+    @FXML
+    private StackPane addDailyTreatmentRecord;
     @FXML
     private Label viewLrn;
     @FXML
@@ -47,7 +49,7 @@ public class ViewStudentVisitLogController implements Initializable {
     @FXML
     private Label viewBloodPressure;
     @FXML
-    private Label viewSymptoms;
+    private Label viewAilment;
     @FXML
     private Label viewNurseIntervention;
     @FXML
@@ -58,6 +60,8 @@ public class ViewStudentVisitLogController implements Initializable {
     private Label viewDispensingOut;
     @FXML
     private Label viewVisitDate;
+
+    private static final String TEMPERATURE_UNIT = "°C";
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -84,11 +88,11 @@ public class ViewStudentVisitLogController implements Initializable {
         viewContactNum.setText(formatValue(medicalRecord.getContactNumber()));
         viewHomeAdd.setText(formatValue(medicalRecord.getAddress()));
         viewEmailAdd.setText(formatValue(medicalRecord.getEmail()));
-        viewBodyTemp.setText(formatValue(medicalRecord.getTemperatureReadings()));
+        viewBodyTemp.setText(formatValue(medicalRecord.getTemperatureReadings()) + " " + TEMPERATURE_UNIT);
         viewPulseRate.setText(formatValue(medicalRecord.getPulseRate()));
         viewRespiratoryRate.setText(formatValue(medicalRecord.getRespiratoryRate()));
         viewBloodPressure.setText(formatValue(medicalRecord.getBloodPressure()) + " mmHg");
-        viewSymptoms.setText(formatValue(medicalRecord.getSymptoms()));
+        viewAilment.setText(formatValue(medicalRecord.getSymptoms()));
         viewNurseIntervention.setText(formatValue(medicalRecord.getNurseInCharge()));
         viewTreatment.setText(formatValue(medicalRecord.getTreatment()));
         viewMedicineName.setText(formatValue(medicalRecord.getMedicineName()));
@@ -107,6 +111,8 @@ public class ViewStudentVisitLogController implements Initializable {
 
     @FXML
     private void handleCloseButton(ActionEvent actionEvent) {
-        ((Stage) ((Node) actionEvent.getSource()).getScene().getWindow()).close();
+        addDailyTreatmentRecord.setVisible(false);
+        addDailyTreatmentRecord.setDisable(true);
+        addDailyTreatmentRecord.getChildren().clear();
     }
 }

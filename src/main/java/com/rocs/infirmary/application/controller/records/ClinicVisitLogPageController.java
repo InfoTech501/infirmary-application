@@ -1,12 +1,11 @@
 package com.rocs.infirmary.application.controller.records;
 
+import com.rocs.infirmary.application.controller.student.profile.StudentHealthProfileModalController;
 import com.rocs.infirmary.application.data.model.medicalrecord.MedicalRecord;
 import com.rocs.infirmary.application.module.medical.record.management.application.MedicalRecordInfoMgtApplication;
 import com.rocs.infirmary.application.data.model.person.student.Student;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +15,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -38,6 +39,8 @@ public class ClinicVisitLogPageController implements Initializable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ClinicVisitLogPageController.class);
     @FXML
+    private StackPane clinicVisitLogPage;
+    @FXML
     private TableView<MedicalRecord> visitLogTable;
     @FXML
     private TableColumn<Student, String> nameColumn;
@@ -59,6 +62,7 @@ public class ClinicVisitLogPageController implements Initializable {
     private int currentPage = 1;
 
     private List<MedicalRecord> fullStudentList = new ArrayList<>();
+    private List<MedicalRecord> filteredStudentList = new ArrayList<>();
     private final MedicalRecordInfoMgtApplication medicalRecordInfoMgtApplication = new MedicalRecordInfoMgtApplication();
 
     @Override
@@ -202,91 +206,76 @@ public class ClinicVisitLogPageController implements Initializable {
     }
 
     private void updatePage() {
-        List<MedicalRecord> studentList = fullStudentList != null ? fullStudentList : new ArrayList<>();
-        int total = studentList.size();
-        int fromIndex = (currentPage - 1) * rowsPerPage;
+        List<MedicalRecord> sourceList = (filteredStudentList != null && !filteredStudentList.isEmpty()) ? filteredStudentList : fullStudentList;
+
+        int total = sourceList.size();
+        int fromIndex = Math.min((currentPage - 1) * rowsPerPage, total);
         int toIndex = Math.min(fromIndex + rowsPerPage, total);
 
-        List<MedicalRecord> pageData = studentList.subList(fromIndex, toIndex);
-        ObservableList<MedicalRecord> pageItems = FXCollections.observableArrayList(pageData);
-        visitLogTable.setItems(pageItems);
+        List<MedicalRecord> pageData = sourceList.subList(fromIndex, toIndex);
+        SortedList<MedicalRecord> sortedList = new SortedList<>(FXCollections.observableArrayList(pageData));
+        sortedList.comparatorProperty().bind(visitLogTable.comparatorProperty());
+        visitLogTable.setItems(sortedList);
 
-        searchTextField.setText("");
-        studentSearch();
-
-        int displayedCount = pageItems.size();
         paginationLabel.setText((fromIndex + 1) + " - " + toIndex + " of " + total);
-        rowsPageLabel.setText(String.valueOf(displayedCount));
+        rowsPageLabel.setText(String.valueOf(pageData.size()));
     }
 
     private void studentSearch() {
         searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == null || newValue.isBlank()) {
+            String keyword = newValue == null ? "" : newValue.toLowerCase().trim();
+
+            if (keyword.isEmpty()) {
+                filteredStudentList = null;
+                currentPage = 1;
                 updatePage();
                 return;
             }
 
-            ObservableList<MedicalRecord> tableItems = visitLogTable.getItems();
-            if (tableItems == null || tableItems.isEmpty()) return;
+            filteredStudentList = fullStudentList.stream().filter(Objects::nonNull).filter(student -> {
+                        String firstName = student.getFirstName() != null ? student.getFirstName() : "";
+                        String middleName = student.getMiddleName() != null ? student.getMiddleName() : "";
+                        String lastName = student.getLastName() != null ? student.getLastName() : "";
+                        String fullName = (firstName + " " + middleName + " " + lastName).toLowerCase();
+                        String gradeSection = (student.getGradeLevel() + " - " + student.getSection()).toLowerCase();
+                        String symptoms = student.getSymptoms() != null ? student.getSymptoms().toLowerCase() : "";
+                        String visitDate = student.getVisitDate() != null ? new SimpleDateFormat("MMMM dd, yyyy").format(student.getVisitDate()).toLowerCase() : "";
 
-            FilteredList<MedicalRecord> filteredList = new FilteredList<>(tableItems, s -> true);
-            filteredList.setPredicate(student -> {
-                String keyword = newValue.toLowerCase();
+                        return fullName.contains(keyword)
+                                || gradeSection.contains(keyword)
+                                || symptoms.contains(keyword)
+                                || visitDate.contains(keyword);
+                    })
+                    .collect(Collectors.toList());
 
-                String fullName = (student.getFirstName() + " " +
-                        student.getMiddleName() + " " +
-                        student.getLastName()).toLowerCase();
-
-                String gradeSection = (student.getGradeLevel() + " - " +
-                        student.getSection()).toLowerCase();
-
-                String symptoms = student.getSymptoms() != null ? student.getSymptoms().toLowerCase() : "";
-
-                String visitDate = student.getVisitDate() != null
-                        ? new SimpleDateFormat("MMMM dd, yyyy").format(student.getVisitDate()).toLowerCase()
-                        : "";
-
-                return fullName.contains(keyword)
-                        || gradeSection.contains(keyword)
-                        || symptoms.contains(keyword)
-                        || visitDate.contains(keyword);
-            });
-
-            SortedList<MedicalRecord> sortedList = new SortedList<>(filteredList);
-            sortedList.comparatorProperty().bind(visitLogTable.comparatorProperty());
-            visitLogTable.setItems(sortedList);
+            currentPage = 1;
+            updatePage();
         });
     }
 
-
     private void showModalAddEntry(ActionEvent actionEvent, String location) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(location));
+        loader.setControllerFactory(param -> new AddDailyTreatmentRecordController());
         Parent root = loader.load();
 
         AddDailyTreatmentRecordController controller = loader.getController();
         controller.setClinicVisitLogPageController(this);
 
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initStyle(StageStyle.UTILITY);
-        stage.setScene(new Scene(root));
-        stage.showAndWait();
+        clinicVisitLogPage.getChildren().add(root);
+        LOGGER.info("Showing add entry modal");
     }
 
     private void openViewStudentVisitLogModal(MedicalRecord medicalRecord) {
         try {
+            LOGGER.info("Showing more info modal");
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ViewStudentVisitLog.fxml"));
+            loader.setControllerFactory(param -> new ViewStudentVisitLogController());
             Parent root = loader.load();
 
             ViewStudentVisitLogController controller = loader.getController();
             controller.setStudentData(medicalRecord);
 
-            Stage stage = new Stage();
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.initStyle(StageStyle.UTILITY);
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
-
+            clinicVisitLogPage.getChildren().add(root);
         } catch (IOException e) {
             LOGGER.error("Error opening visit log modal for LRN '{}'",
                     medicalRecord != null ? medicalRecord.getLrn() : "unknown", e);

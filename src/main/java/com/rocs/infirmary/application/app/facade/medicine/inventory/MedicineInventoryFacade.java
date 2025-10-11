@@ -20,6 +20,12 @@ public interface MedicineInventoryFacade {
      * @param medicines the list of selected medicine of the medicine to be removed
      * @return true if the medicine was successfully deleted false otherwise
      */
+    List<Medicine> findAllMedicine();
+    /**
+     * This is used for the delete functionality of medicine.
+     * @param medicines the list of selected medicine to be removed
+     * @return true if the medicine was successfully deleted; false otherwise
+     */
     boolean deleteMedicineByItemName(List<Medicine> medicines);
     /**
      * Checks whether a specific medicine is available in the inventory.

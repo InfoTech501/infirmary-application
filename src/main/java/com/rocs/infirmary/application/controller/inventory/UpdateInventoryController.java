@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,8 @@ import static com.rocs.infirmary.application.controller.helper.ControllerHelper.
  * {@code UpdateInventoryController} is used to handle event processes of the Inventory when updating Item attributes
  **/
 public class UpdateInventoryController {
+    @FXML
+    private StackPane inventoryEditItemModal;
     @FXML
     private Label itemToEditLabel;
     @FXML
@@ -65,10 +68,14 @@ public class UpdateInventoryController {
         productNameTextField.setEditable(false);
         quantityTextField.setText(String.valueOf(medicine.getQuantity()));
 
-        LocalDate localDate = medicine.getExpirationDate().toLocalDateTime().toLocalDate();
-        expirationDatePicker.setPromptText(localDate.format(outputFormat));
-        expirationDate = java.sql.Date.valueOf(localDate);
-
+        if (medicine.getExpirationDate() != null && !medicine.getItemType().equals("Non expiry")) {
+            LocalDate localDate = medicine.getExpirationDate().toLocalDateTime().toLocalDate();
+            expirationDatePicker.setPromptText(localDate.format(outputFormat));
+            expirationDate = java.sql.Date.valueOf(localDate);
+        } else {
+            expirationDatePicker.setPromptText("No Expiration Date Available");
+            expirationDatePicker.setDisable(true);
+        }
         itemType = FXCollections.observableArrayList(itemTypeList);
         itemTypeComboBox.setItems(itemType);
         itemTypeComboBox.setPromptText(defaultItemType);
@@ -117,9 +124,10 @@ public class UpdateInventoryController {
         if (parentController != null) {
             parentController.refresh();
         }
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         LOGGER.info("Exiting Update Inventory Modal");
-        stage.close();
+        inventoryEditItemModal.setVisible(false);
+        inventoryEditItemModal.setDisable(true);
+        inventoryEditItemModal.getChildren().clear();
     }
     /**
      * this method handles the action triggered when the confirm button is clicked.
@@ -147,14 +155,14 @@ public class UpdateInventoryController {
                 Optional<ButtonType> result = ControllerHelper.alertAction("Update Confirmation", "This action cannot be undone. Are you sure about this update?");
                 if (result.isPresent()&& result.get().getButtonData() == ButtonBar.ButtonData.YES) {
                     if (updateMedicine(Integer.parseInt(quantityTextField.getText()))) {
-                        LowStockAlertHelper.checkLowStockAndShowAlert();
                         ControllerHelper.showDialog("Notification", "Updated Successfully!");
                         if (parentController != null) {
                             parentController.refresh();
                         }
-                        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
                         LOGGER.info("Exiting Update Inventory Modal");
-                        stage.close();
+                        inventoryEditItemModal.setVisible(false);
+                        inventoryEditItemModal.setDisable(true);
+                        inventoryEditItemModal.getChildren().clear();
                     }
                 }
             }
