@@ -99,7 +99,8 @@
          <children>
             <VBox prefHeight="786.0" prefWidth="1130.0" HBox.hgrow="ALWAYS">
                <HBox alignment="CENTER_LEFT" spacing="5">
-               <CheckBox fx:id="selectAllCheckbox" text="Select All Items" />
+                  <Label text="Select" />
+               <CheckBox fx:id="selectAllCheckbox" text="Select All" />
                </HBox>
                <children>
                         <TableView fx:id="medDetailsTable" prefHeight="462.0" prefWidth="1126.0">

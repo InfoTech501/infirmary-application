@@ -59,16 +59,18 @@ public class InventoryController implements Initializable {
     private Pagination pagination;
     private static final int ROWS_PER_PAGE = 11;
 
-    private ObservableList<Medicine> medicine;
     private DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
+    private ObservableList<Medicine> masterData = FXCollections.observableArrayList();
+    private FilteredList<Medicine> filteredList;
+    private SortedList<Medicine> sortedData;
     private List<Medicine> medicineList = new ArrayList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setup();
+        setupFilteringAndSorting();
         refresh();
-        itemSearch();
         initalizeEditClick();
         setupPagination();
         setupSelectAll();
@@ -97,6 +99,7 @@ public class InventoryController implements Initializable {
         expiryDateColumn.setCellFactory(expiryDateColumn -> new TableCell<Medicine, Timestamp>() {
             @Override
             protected void updateItem(Timestamp expirationDate, boolean empty) {
+                super.updateItem(expirationDate, empty);
                 if (empty || expirationDate == null) {
                     setText(null);
                 } else {
@@ -129,18 +132,15 @@ public class InventoryController implements Initializable {
      ***/
     public void refresh() {
         LowStockAlertHelper.checkLowStockAndShowAlert();
-        List<Medicine> medicineList = inventoryManagementApplication.getMedicineInventoryFacade().getAllMedicine();
-        for (Medicine med : medicineList) {
+        List<Medicine> newList = inventoryManagementApplication.getMedicineInventoryFacade().getAllMedicine();
+        for (Medicine med : newList) {
             if (med.isSelectedProperty() == null) {
                 med.setIsSelected(false);
             }
         }
-        medicine = FXCollections.observableArrayList(medicineList);
-        medDetailsTable.setItems(medicine);
-
-        pagination.setPageCount((int) Math.ceil((double) medicine.size() / ROWS_PER_PAGE));
-        pagination.setCurrentPageIndex(0);
-        createPage(0);
+        masterData.setAll(newList);
+        updatePagination();
+        medDetailsTable.refresh();
     }
     private void showModal(ActionEvent actionEvent,String location) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(location));
@@ -168,8 +168,26 @@ public class InventoryController implements Initializable {
     public void onShowAddModalBtnClick(ActionEvent actionEvent) throws IOException {
         showModal(actionEvent,"/views/InventoryAddItemModal.fxml");
     }
+
+    private void setupFilteringAndSorting() {
+        filteredList = new FilteredList<>(masterData, p -> true);
+
+        searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredList.setPredicate(med -> {
+                if (newValue == null || newValue.isBlank()) return true;
+                String keyword = newValue.toLowerCase();
+                return med.getItemName().toLowerCase().contains(keyword)
+                        || med.getItemType().toLowerCase().contains(keyword);
+            });
+            updatePagination();
+        });
+
+        sortedData = new SortedList<>(filteredList);
+        sortedData.comparatorProperty().bind(medDetailsTable.comparatorProperty());
+        medDetailsTable.setItems(sortedData);
+    }
     private void itemSearch(){
-        FilteredList<Medicine> filteredList = new FilteredList<>(medicine, b -> true);
+        FilteredList<Medicine> filteredList = new FilteredList<>(masterData, b -> true);
 
         searchTextField.textProperty().addListener((observable, oldValue, newValue) ->
                 filteredList.setPredicate(medicine -> {
@@ -209,7 +227,7 @@ public class InventoryController implements Initializable {
         medDetailsTable.sort();
     }
     private List<Medicine> getSelectedMedicines() {
-        List<Medicine> selectedMedicine = medicine.stream()
+        List<Medicine> selectedMedicine = masterData.stream()
                 .filter(Medicine::isSelected)
                 .toList();
         for(Medicine med: selectedMedicine){
@@ -283,8 +301,8 @@ public class InventoryController implements Initializable {
 
     private void setupSelectAll() {
         selectAllCheckbox.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
-            if (medicine != null) {
-                for (Medicine med : medicine) {
+            if (masterData != null) {
+                for (Medicine med : masterData) {
                     med.setIsSelected(isNowSelected);
                 }
                 medDetailsTable.refresh();
@@ -296,13 +314,21 @@ public class InventoryController implements Initializable {
         pagination.setPageFactory(this::createPage);
     }
 
+    private void updatePagination() {
+        if (filteredList == null) return;
+        int pageCount = (int) Math.ceil((double) filteredList.size() / ROWS_PER_PAGE);
+        pagination.setPageCount(Math.max(pageCount, 1));
+        pagination.setPageFactory(this::createPage);
+    }
+
     private Node createPage(int pageIndex) {
-        if (medicine == null || medicine.isEmpty()) {
+        if (filteredList == null || filteredList.isEmpty()) {
             return medDetailsTable;
         }
         int fromIndex = pageIndex * ROWS_PER_PAGE;
-        int toIndex = Math.min(fromIndex + ROWS_PER_PAGE, medicine.size());
-        medDetailsTable.setItems(FXCollections.observableArrayList(medicine.subList(fromIndex, toIndex)));
+        int toIndex = Math.min(fromIndex + ROWS_PER_PAGE, filteredList.size());
+        medDetailsTable.setItems(FXCollections.observableArrayList(filteredList
+                .subList(fromIndex, toIndex)));
         return medDetailsTable;
     }
 }
