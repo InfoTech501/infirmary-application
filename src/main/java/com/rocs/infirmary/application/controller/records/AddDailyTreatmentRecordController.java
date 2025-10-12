@@ -309,7 +309,7 @@ public class AddDailyTreatmentRecordController implements Initializable {
             addDailyTreatmentRecord.getChildren().clear();
 
         } catch (Exception e) {
-            LOGGER.error("Unhandled exception in addDailyRecord at {} for LRN: {}. Error: {}",
+            LOGGER.error("Error occured in addDailyRecord at {} for LRN: {}. Error: {}",
                     new Date(), lrnField.getText(), e.getMessage(), e);
             showDialog("Error", "Unexpected error. Record not saved.");
         }
