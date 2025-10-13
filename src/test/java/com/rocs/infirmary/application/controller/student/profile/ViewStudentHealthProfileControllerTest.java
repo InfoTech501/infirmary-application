@@ -58,12 +58,22 @@ class ViewStudentHealthProfileControllerTest {
     @Disabled
     @Test
     void testProfilesDisplayed(FxRobot robot) {
+        assertNotNull(studentTableView);
+        assertNotNull(studentTableView.getItems());
 
-        assertNotNull(studentTableView, "Student table should be initialized");
-        assertNotNull(studentTableView.getItems(), "Table items should not be null");
 
+        loadMockStudents(robot);
 
+        assertEquals(2, studentTableView.getItems().size());
+        assertTrue(!studentTableView.getItems().isEmpty());
+        assertFalse(studentTableView.getItems().isEmpty());
+        assertTrue(!studentTableView.getColumns().isEmpty());
+        assertFalse(studentTableView.getColumns().isEmpty());
+    }
+
+    private void loadMockStudents(FxRobot robot) {
         ObservableList<Student> mockStudents = FXCollections.observableArrayList();
+
         robot.interact(() -> {
             Student s1 = new Student();
             s1.setLrn("2024001");
@@ -72,7 +82,7 @@ class ViewStudentHealthProfileControllerTest {
             s1.setGradeLevel("10");
             s1.setSection("A");
             s1.setGender("Male");
-            s1.setAge(Integer.parseInt("15"));
+            s1.setAge(15);
 
             Student s2 = new Student();
             s2.setLrn("2024002");
@@ -81,18 +91,13 @@ class ViewStudentHealthProfileControllerTest {
             s2.setGradeLevel("9");
             s2.setSection("B");
             s2.setGender("Female");
-            s2.setAge(Integer.parseInt("14"));
+            s2.setAge(14);
 
             mockStudents.addAll(s1, s2);
             studentTableView.setItems(mockStudents);
         });
-
-
-        assertTrue(studentTableView.getItems().size() == mockStudents.size(), "Student table should display the mocked list of students");
-        assertFalse(studentTableView.getItems().isEmpty(), "Student table should not be empty after loading mock data");
-        assertTrue(!studentTableView.getColumns().isEmpty(), "Student table should have defined columns");
-        assertFalse(studentTableView.getColumns().isEmpty(), "Student table columns should not be empty");
     }
+
 
 
     @Disabled
