@@ -69,6 +69,7 @@ public class InventoryController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setup();
         refresh();
+        itemSearch();
         initalizeEditClick();
         setupPagination();
         setupSelectAll();
@@ -137,6 +138,7 @@ public class InventoryController implements Initializable {
             }
         }
         masterData.setAll(newList);
+        itemSearch();
         updatePagination();
         medDetailsTable.refresh();
     }
@@ -185,6 +187,7 @@ public class InventoryController implements Initializable {
         SortedList<Medicine> sortedList = new SortedList<>(filteredList);
         sortedList.comparatorProperty().bind(medDetailsTable.comparatorProperty());
         medDetailsTable.setItems(sortedList);
+        updatePagination();
     }
     /**
      * this method handles the action triggered when the increment filter button is clicked.
