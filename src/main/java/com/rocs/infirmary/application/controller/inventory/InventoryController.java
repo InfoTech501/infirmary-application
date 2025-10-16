@@ -63,13 +63,11 @@ public class InventoryController implements Initializable {
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     private ObservableList<Medicine> masterData = FXCollections.observableArrayList();
     private FilteredList<Medicine> filteredList;
-    private SortedList<Medicine> sortedData;
     private List<Medicine> medicineList = new ArrayList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setup();
-        setupFilteringAndSorting();
         refresh();
         initalizeEditClick();
         setupPagination();
@@ -169,25 +167,8 @@ public class InventoryController implements Initializable {
         showModal(actionEvent,"/views/InventoryAddItemModal.fxml");
     }
 
-    private void setupFilteringAndSorting() {
-        filteredList = new FilteredList<>(masterData, p -> true);
-
-        searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredList.setPredicate(med -> {
-                if (newValue == null || newValue.isBlank()) return true;
-                String keyword = newValue.toLowerCase();
-                return med.getItemName().toLowerCase().contains(keyword)
-                        || med.getItemType().toLowerCase().contains(keyword);
-            });
-            updatePagination();
-        });
-
-        sortedData = new SortedList<>(filteredList);
-        sortedData.comparatorProperty().bind(medDetailsTable.comparatorProperty());
-        medDetailsTable.setItems(sortedData);
-    }
     private void itemSearch(){
-        FilteredList<Medicine> filteredList = new FilteredList<>(masterData, b -> true);
+        filteredList = new FilteredList<>(masterData, b -> true);
 
         searchTextField.textProperty().addListener((observable, oldValue, newValue) ->
                 filteredList.setPredicate(medicine -> {
