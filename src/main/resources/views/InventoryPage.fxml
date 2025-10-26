@@ -95,17 +95,14 @@
       </HBox>
    </top>
    <center>
-      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <VBox prefHeight="786.0" prefWidth="1130.0" HBox.hgrow="ALWAYS">
-               <HBox alignment="CENTER_LEFT" spacing="5">
-                  <Label text="Select" />
-               <CheckBox fx:id="selectAllCheckbox" text="Select All" />
-               </HBox>
-               <children>
-                        <TableView fx:id="medDetailsTable" prefHeight="462.0" prefWidth="1126.0">
-                           <columns>
-                              <TableColumn fx:id="selectColumn" prefWidth="75.33334350585938" text="Select" />
+      <VBox spacing="10" alignment="CENTER" BorderPane.alignment="CENTER">
+            <TableView fx:id="medDetailsTable" prefHeight="462.0" prefWidth="1126.0">
+               <columns>
+               <TableColumn fx:id="selectColumn" prefWidth="75.333" text="">
+               <graphic>
+                  <CheckBox fx:id="selectAllCheckbox" text="Select All" />
+               </graphic>
+               </TableColumn>
                               <TableColumn fx:id="productNameColumn" prefWidth="286.0" text="Product Name" />
                               <TableColumn fx:id="quantityColumn" prefWidth="193.33331298828125" text="Quantity" />
                               <TableColumn fx:id="itemTypeColumn" prefWidth="256.666748046875" text="Item Type" />
@@ -120,10 +117,7 @@
                               pageCount="1"
                               maxPageIndicatorCount="5"
                               style="-fx-alignment: center;" />
-               </children>
             </VBox>
-         </children>
-      </HBox>
    </center>
 </BorderPane>
 </StackPane>

@@ -57,7 +57,7 @@ public class InventoryController implements Initializable {
     private CheckBox selectAllCheckbox;
     @FXML
     private Pagination pagination;
-    private static final int ROWS_PER_PAGE = 11;
+    private static final int ROWS_PER_PAGE = 10;
 
     private DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
@@ -71,8 +71,8 @@ public class InventoryController implements Initializable {
         refresh();
         itemSearch();
         initalizeEditClick();
-        setupPagination();
         setupSelectAll();
+        setupPagination();
     }
 
     private void setup() {
@@ -131,13 +131,13 @@ public class InventoryController implements Initializable {
      ***/
     public void refresh() {
         LowStockAlertHelper.checkLowStockAndShowAlert();
-        List<Medicine> newList = inventoryManagementApplication.getMedicineInventoryFacade().getAllMedicine();
-        for (Medicine med : newList) {
+        List<Medicine> allMedicines = inventoryManagementApplication.getMedicineInventoryFacade().getAllMedicine();
+        for (Medicine med : allMedicines) {
             if (med.isSelectedProperty() == null) {
                 med.setIsSelected(false);
             }
         }
-        masterData.setAll(newList);
+        masterData = FXCollections.observableArrayList(allMedicines);
         itemSearch();
         updatePagination();
         medDetailsTable.refresh();
@@ -172,21 +172,17 @@ public class InventoryController implements Initializable {
     private void itemSearch(){
         filteredList = new FilteredList<>(masterData, b -> true);
 
-        searchTextField.textProperty().addListener((observable, oldValue, newValue) ->
-                filteredList.setPredicate(medicine -> {
-                    if (newValue.isEmpty() || newValue.isBlank() || newValue == null) {
-                        return true;
-                    }
-                    String searchKeyword = newValue.toLowerCase();
-                    if (medicine.getItemName().toLowerCase().contains(searchKeyword)) {
-                        return true;
-                    }
-                    return false;
-                })
-        );
-        SortedList<Medicine> sortedList = new SortedList<>(filteredList);
-        sortedList.comparatorProperty().bind(medDetailsTable.comparatorProperty());
-        medDetailsTable.setItems(sortedList);
+        searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredList.setPredicate(medicine -> {
+                if (newValue == null || newValue.isEmpty()) return true;
+                String searchKeyword = newValue.toLowerCase();
+                return medicine.getItemName().toLowerCase().contains(searchKeyword);
+            });
+
+            updatePagination();
+            pagination.setCurrentPageIndex(0);
+        });
+
         updatePagination();
     }
     /**
@@ -285,7 +281,7 @@ public class InventoryController implements Initializable {
 
     private void setupSelectAll() {
         selectAllCheckbox.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
-            if (masterData != null) {
+            if (masterData != null && !masterData.isEmpty()) {
                 for (Medicine med : masterData) {
                     med.setIsSelected(isNowSelected);
                 }
@@ -295,24 +291,35 @@ public class InventoryController implements Initializable {
     }
 
     private void setupPagination() {
-        pagination.setPageFactory(this::createPage);
+        pagination.currentPageIndexProperty().addListener((obs,oldIndex,newIndex) -> {
+            changeTableViewData(newIndex.intValue());
+        });
     }
 
     private void updatePagination() {
         if (filteredList == null) return;
-        int pageCount = (int) Math.ceil((double) filteredList.size() / ROWS_PER_PAGE);
+
+        int totalItems = filteredList.size();
+        int pageCount = (int) Math.ceil((double) totalItems / ROWS_PER_PAGE);
         pagination.setPageCount(Math.max(pageCount, 1));
-        pagination.setPageFactory(this::createPage);
+        changeTableViewData(0);
     }
 
-    private Node createPage(int pageIndex) {
+    private void changeTableViewData(int pageIndex) {
         if (filteredList == null || filteredList.isEmpty()) {
-            return medDetailsTable;
+            medDetailsTable.setItems(FXCollections.observableArrayList());
+            return;
         }
+
+        SortedList<Medicine> sortedList = new SortedList<>(filteredList);
+        sortedList.comparatorProperty().bind(medDetailsTable.comparatorProperty());
         int fromIndex = pageIndex * ROWS_PER_PAGE;
-        int toIndex = Math.min(fromIndex + ROWS_PER_PAGE, filteredList.size());
-        medDetailsTable.setItems(FXCollections.observableArrayList(filteredList
-                .subList(fromIndex, toIndex)));
-        return medDetailsTable;
+        int toIndex = Math.min(fromIndex + ROWS_PER_PAGE, sortedList.size());
+
+        ObservableList<Medicine> currentPageData = FXCollections.observableArrayList(
+                sortedList.subList(fromIndex, toIndex)
+        );
+
+        medDetailsTable.setItems(currentPageData);
     }
 }
