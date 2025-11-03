@@ -45,6 +45,8 @@ public class UpdateInventoryController {
     private Long inventoryId;
     private Date expirationDate;
 
+    private int currentQuantity;
+
     private InventoryController parentController;
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
     private final Logger LOGGER = LoggerFactory.getLogger(UpdateInventoryController.class);
@@ -67,6 +69,9 @@ public class UpdateInventoryController {
         productNameTextField.setText(medicine.getItemName()+ PROMPT);
         productNameTextField.setEditable(false);
         quantityTextField.setText(String.valueOf(medicine.getQuantity()));
+        currentQuantity = medicine.getQuantity();
+
+
 
         if (medicine.getExpirationDate() != null && !medicine.getItemType().equals("Non expiry")) {
             LocalDate localDate = medicine.getExpirationDate().toLocalDateTime().toLocalDate();
@@ -94,6 +99,10 @@ public class UpdateInventoryController {
             if (productNameTextField != null && quantityTextField != null && expirationDatePicker != null && itemTypeComboBox != null && productNameTextField.getText() != null && !productNameTextField.getText().isBlank()&& !quantityTextField.getText().isBlank()) {
 
                 Date newSelectedExpirationDate = expirationDate;
+                if (quantity < currentQuantity) {
+                    showDialog("Warning","You cannot decrease the quantity of this medicine.");
+                    return false;
+                }
                 if (expirationDatePicker.getValue() != null) {
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     simpleDateFormat.setLenient(false);
