@@ -32,6 +32,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 /**
  * {@code InventoryController} is used to handle event processes of the Inventory,
  * this implements Initializable interface
@@ -50,20 +52,21 @@ public class InventoryController implements Initializable {
     @FXML
     private TableColumn<Medicine, Timestamp> expiryDateColumn;
     @FXML
-    private TableColumn<Medicine,String> itemTypeColumn;
+    private TableColumn<Medicine, String> itemTypeColumn;
     @FXML
     private TextField searchTextField;
     @FXML
     private CheckBox selectAllCheckbox;
     @FXML
     private Pagination pagination;
-    private static final int ROWS_PER_PAGE = 10;
+    private static final int ROWS_PER_PAGE = 11;
 
     private DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
-    private ObservableList<Medicine> masterData = FXCollections.observableArrayList();
+    private ObservableList<Medicine> medicineInventoryList = FXCollections.observableArrayList();
     private FilteredList<Medicine> filteredList;
     private List<Medicine> medicineList = new ArrayList<>();
+    private static final Logger LOGGER = LoggerFactory.getLogger(InventoryController.class);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -98,7 +101,6 @@ public class InventoryController implements Initializable {
         expiryDateColumn.setCellFactory(expiryDateColumn -> new TableCell<Medicine, Timestamp>() {
             @Override
             protected void updateItem(Timestamp expirationDate, boolean empty) {
-                super.updateItem(expirationDate, empty);
                 if (empty || expirationDate == null) {
                     setText(null);
                 } else {
@@ -131,18 +133,19 @@ public class InventoryController implements Initializable {
      ***/
     public void refresh() {
         LowStockAlertHelper.checkLowStockAndShowAlert();
-        List<Medicine> allMedicines = inventoryManagementApplication.getMedicineInventoryFacade().getAllMedicine();
-        for (Medicine med : allMedicines) {
+        List<Medicine> medicineList = inventoryManagementApplication.getMedicineInventoryFacade().getAllMedicine();
+        for (Medicine med : medicineList) {
             if (med.isSelectedProperty() == null) {
                 med.setIsSelected(false);
             }
         }
-        masterData = FXCollections.observableArrayList(allMedicines);
+        medicineInventoryList = FXCollections.observableArrayList(medicineList);
         itemSearch();
         updatePagination();
         medDetailsTable.refresh();
     }
-    private void showModal(ActionEvent actionEvent,String location) throws IOException {
+
+    private void showModal(ActionEvent actionEvent, String location) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(location));
         loader.setControllerFactory(param -> new AddInventoryController());
         Parent root = loader.load();
@@ -151,6 +154,7 @@ public class InventoryController implements Initializable {
         controller.setParentController(this);
         inventoryPage.getChildren().add(root);
     }
+
     private void showEditInventory(Medicine medicine) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/InventoryEditItemModal.fxml"));
         loader.setControllerFactory(param -> new UpdateInventoryController());
@@ -161,16 +165,18 @@ public class InventoryController implements Initializable {
         controller.showItemToEdit(medicine);
         inventoryPage.getChildren().add(root);
     }
+
     /**
      * this method handles the action triggered when the add new medicine button is clicked.
+     *
      * @param actionEvent the event triggered by the confirm button click
      */
     public void onShowAddModalBtnClick(ActionEvent actionEvent) throws IOException {
-        showModal(actionEvent,"/views/InventoryAddItemModal.fxml");
+        showModal(actionEvent, "/views/InventoryAddItemModal.fxml");
     }
 
-    private void itemSearch(){
-        filteredList = new FilteredList<>(masterData, b -> true);
+    private void itemSearch() {
+        filteredList = new FilteredList<>(medicineInventoryList, b -> true);
 
         searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             filteredList.setPredicate(medicine -> {
@@ -185,8 +191,10 @@ public class InventoryController implements Initializable {
 
         updatePagination();
     }
+
     /**
      * this method handles the action triggered when the increment filter button is clicked.
+     *
      * @param actionEvent the event triggered by the confirm button click
      */
     public void onFilterButtonAClick(ActionEvent actionEvent) {
@@ -196,8 +204,10 @@ public class InventoryController implements Initializable {
         medDetailsTable.sort();
 
     }
+
     /**
      * this method handles the action triggered when the decrement filter button is clicked.
+     *
      * @param actionEvent the event triggered by the confirm button click
      */
     public void onFilterButtonZClick(ActionEvent actionEvent) {
@@ -206,17 +216,20 @@ public class InventoryController implements Initializable {
         medDetailsTable.getSortOrder().setAll(productNameColumn);
         medDetailsTable.sort();
     }
+
     private List<Medicine> getSelectedMedicines() {
-        List<Medicine> selectedMedicine = masterData.stream()
+        List<Medicine> selectedMedicine = medicineInventoryList.stream()
                 .filter(Medicine::isSelected)
                 .toList();
-        for(Medicine med: selectedMedicine){
+        for (Medicine med : selectedMedicine) {
             medicineList.add(med);
         }
         return selectedMedicine;
     }
+
     /**
      * this method handles the action triggered when the clear filter button is clicked.
+     *
      * @param actionEvent the event triggered by the confirm button click
      */
     public void onClearFilterClick(ActionEvent actionEvent) {
@@ -228,8 +241,10 @@ public class InventoryController implements Initializable {
         refresh();
         itemSearch();
     }
+
     /**
      * this method handles the action triggered when the filter by quantity button is clicked.
+     *
      * @param actionEvent the event triggered by the confirm button click
      */
     public void onQuantityFilterClick(ActionEvent actionEvent) {
@@ -238,15 +253,18 @@ public class InventoryController implements Initializable {
         medDetailsTable.getSortOrder().setAll(quantityColumn);
         medDetailsTable.sort();
     }
-    private boolean deleteMedicine(){
+
+    private boolean deleteMedicine() {
         return inventoryManagementApplication.getMedicineInventoryFacade().deleteInventory(medicineList);
     }
+
     /**
      * this method handles the action triggered when the remove button is clicked.
+     *
      * @param actionEvent the event triggered by the confirm button click
      */
     public void onRemoveBtnClick(ActionEvent actionEvent) throws IOException {
-        if(getSelectedMedicines().isEmpty()){
+        if (getSelectedMedicines().isEmpty()) {
             Dialog dialog = new Dialog();
             dialog.setTitle("Warning");
             ButtonType type = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
@@ -254,7 +272,7 @@ public class InventoryController implements Initializable {
             dialog.getDialogPane().getButtonTypes().add(type);
             dialog.showAndWait();
         }
-        if(getSelectedMedicines().size() >= 2){
+        if (getSelectedMedicines().size() >= 2) {
             List<Medicine> selectedMedicine = getSelectedMedicines();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/InventoryDeleteItemModal.fxml"));
             Parent root = loader.load();
@@ -271,18 +289,18 @@ public class InventoryController implements Initializable {
             ControllerHelper.alertAction("Confirm Delete", "Are you sure you want to delete this medicine?")
                     .ifPresent(response -> {
                         if (response.getButtonData() == ButtonBar.ButtonData.YES && deleteMedicine()) {
-                                ControllerHelper.showDialog("Notification", "Deleted Successfully!");
-                                refresh();
-                                itemSearch();
-                }
-            });
+                            ControllerHelper.showDialog("Notification", "Deleted Successfully!");
+                            refresh();
+                            itemSearch();
+                        }
+                    });
         }
     }
 
     private void setupSelectAll() {
         selectAllCheckbox.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
-            if (masterData != null && !masterData.isEmpty()) {
-                for (Medicine med : masterData) {
+            if (medicineInventoryList != null && !medicineInventoryList.isEmpty()) {
+                for (Medicine med : medicineInventoryList) {
                     med.setIsSelected(isNowSelected);
                 }
                 medDetailsTable.refresh();
@@ -291,35 +309,51 @@ public class InventoryController implements Initializable {
     }
 
     private void setupPagination() {
-        pagination.currentPageIndexProperty().addListener((obs,oldIndex,newIndex) -> {
+        pagination.currentPageIndexProperty().addListener((obs, oldIndex, newIndex) -> {
             changeTableViewData(newIndex.intValue());
         });
     }
 
     private void updatePagination() {
-        if (filteredList == null) return;
-
-        int totalItems = filteredList.size();
-        int pageCount = (int) Math.ceil((double) totalItems / ROWS_PER_PAGE);
-        pagination.setPageCount(Math.max(pageCount, 1));
-        changeTableViewData(0);
-    }
-
-    private void changeTableViewData(int pageIndex) {
-        if (filteredList == null || filteredList.isEmpty()) {
-            medDetailsTable.setItems(FXCollections.observableArrayList());
+        if (filteredList == null) {
+            LOGGER.error("Warning: filteredList is null. Pagination cannot be updated yet.");
             return;
         }
 
-        SortedList<Medicine> sortedList = new SortedList<>(filteredList);
-        sortedList.comparatorProperty().bind(medDetailsTable.comparatorProperty());
-        int fromIndex = pageIndex * ROWS_PER_PAGE;
-        int toIndex = Math.min(fromIndex + ROWS_PER_PAGE, sortedList.size());
+        try {
+            int totalItems = filteredList.size();
+            int pageCount = (int) Math.ceil((double) totalItems / ROWS_PER_PAGE);
+            pagination.setPageCount(Math.max(pageCount, 1));
+            changeTableViewData(0);
 
-        ObservableList<Medicine> currentPageData = FXCollections.observableArrayList(
-                sortedList.subList(fromIndex, toIndex)
-        );
+        } catch (Exception e) {
+            LOGGER.error("Error updating pagination: " + e.getMessage());
+        }
+    }
 
-        medDetailsTable.setItems(currentPageData);
+    private void changeTableViewData(int pageIndex) {
+        if (filteredList == null) {
+            LOGGER.error("Warning: filteredList is null. Cannot change table view data.");
+            return;
+        }
+
+        try {
+            SortedList<Medicine> sortedList = new SortedList<>(filteredList);
+            sortedList.comparatorProperty().bind(medDetailsTable.comparatorProperty());
+            int fromIndex = pageIndex * ROWS_PER_PAGE;
+            int toIndex = Math.min(fromIndex + ROWS_PER_PAGE, sortedList.size());
+
+            ObservableList<Medicine> currentPageData = FXCollections.observableArrayList(
+                    sortedList.subList(fromIndex, toIndex)
+            );
+
+            medDetailsTable.setItems(currentPageData);
+        } catch (NullPointerException e) {
+            LOGGER.error(" Error: Table update failed because some data is missing.", e);
+        } catch (IndexOutOfBoundsException e) {
+            LOGGER.error(" Error: Table update failed because the data index is out of range.", e);
+        } catch (IllegalArgumentException e) {
+            LOGGER.error(" Error: Table update failed due to invalid data or argument.", e);
+        }
     }
 }

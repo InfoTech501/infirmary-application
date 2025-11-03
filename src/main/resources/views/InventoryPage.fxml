@@ -95,12 +95,15 @@
       </HBox>
    </top>
    <center>
-      <VBox spacing="10" alignment="CENTER" BorderPane.alignment="CENTER">
-            <TableView fx:id="medDetailsTable" prefHeight="462.0" prefWidth="1126.0">
+      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <TableView fx:id="medDetailsTable" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
                <columns>
                <TableColumn fx:id="selectColumn" prefWidth="75.333" text="">
                <graphic>
-                  <CheckBox fx:id="selectAllCheckbox" text="Select All" />
+                  <HBox alignment="CENTER">
+                  <CheckBox fx:id="selectAllCheckbox" style="-fx-scale-x:0.6; -fx-scale-y:0.6;" />
+                  <Label text ="Select All" />
+                  </HBox>
                </graphic>
                </TableColumn>
                               <TableColumn fx:id="productNameColumn" prefWidth="286.0" text="Product Name" />
@@ -117,7 +120,7 @@
                               pageCount="1"
                               maxPageIndicatorCount="5"
                               style="-fx-alignment: center;" />
-            </VBox>
+            </HBox>
    </center>
 </BorderPane>
 </StackPane>
