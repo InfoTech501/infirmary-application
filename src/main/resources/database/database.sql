@@ -26,6 +26,10 @@ drop table medicine_administered cascade constraints;
 drop table login cascade constraints;
 drop table employee cascade constraints;
 drop table department cascade constraints;
+drop table message_sender cascade constraints;
+drop table message_receiver cascade constraints;
+drop table message cascade constraints;
+drop table conversation cascade constraints;
 
 create table person (
   id number(10,0) generated as identity
@@ -53,6 +57,7 @@ create table guardian_details (
   guardian_id number(10,0) generated as identity
     constraint GUARDIAN_NOT_NULL not null,
   guardian_name varchar2(255 char),
+  guardian_email varchar2(128 char),
   guardian_address varchar2(255 char),
   guardian_contact_number varchar2(11 char),
   primary key (guardian_id));
@@ -158,6 +163,39 @@ create table department (
   department_name varchar2(64),
   primary key (id));
 
+create table message (
+  message_id number(10,0) generated as identity
+    constraint MESSAGE_ID_NOT_NULL not null,
+  conversation_id number(10,0) not null,
+  subject varchar2(255 char),
+  content varchar2(4000 char) not null,
+  sent_date timestamp(6),
+  primary key (message_id));
+
+create table message_sender (
+  sender_id number(10,0) generated as identity
+    constraint SENDER_ID_NOT_NULL not null,
+  message_id number(10,0) not null,
+  user_id number(20,0) not null,
+  primary key (sender_id));
+
+create table message_receiver (
+  receiver_id number(10,0) generated as identity
+    constraint RECEIVER_ID_NOT_NULL not null,
+  message_id number(10,0) not null,
+  user_id number(20,0) not null,
+  received_date timestamp(6),
+  primary key (receiver_id));
+
+create table conversation (
+  conversation_id number(10,0) generated as identity
+    constraint CONVERSATION_ID_NOT_NULL not null,
+  name varchar2(255 char),
+  created_date timestamp(6) not null,
+  is_group number(1,0) not null
+    constraint CONVERSATION_IS_GROUP_CHECK CHECK (is_group IN (0,1)),
+  primary key (conversation_id));
+
 alter table employee
     add constraint FK_EMPLOYEE_PERSON_ID
     foreign key (person_id) references person;
@@ -222,6 +260,25 @@ alter table login
     add constraint FK_LOGIN_PERSON_ID
     foreign key (person_id) references person;
 
+alter table message
+  add constraint FK_MESSAGE_CONVERSATION_ID
+  foreign key (conversation_id) references conversation;
+
+alter table message_sender
+  add constraint FK_SENDER_MESSAGE_ID
+  foreign key (message_id) references message;
+
+alter table message_sender
+  add constraint FK_SENDER_USER_ID
+  foreign key (user_id) references login;
+
+alter table message_receiver
+  add constraint FK_RECEIVER_MESSAGE_ID
+  foreign key (message_id) references message;
+
+alter table message_receiver
+  add constraint FK_RECEIVER_USER_ID
+  foreign key (user_id) references login;
 
 --INSERT PERSON DATA
 insert into person (first_name, middle_name, last_name, birthdate, age, gender, email, address, contact_number)
