@@ -17,6 +17,8 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Pagination?>
 <StackPane fx:id="inventoryPage" prefHeight="677.0" prefWidth="1266.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.inventory.InventoryController">
    <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
    <stylesheets>
@@ -94,12 +96,16 @@
    </top>
    <center>
       <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <VBox prefHeight="786.0" prefWidth="1130.0" HBox.hgrow="ALWAYS">
-               <children>
-                        <TableView fx:id="medDetailsTable" prefHeight="462.0" prefWidth="1126.0">
-                           <columns>
-                              <TableColumn fx:id="selectColumn" prefWidth="75.33334350585938" text="Select" />
+            <TableView fx:id="medDetailsTable" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
+               <columns>
+               <TableColumn fx:id="selectColumn" prefWidth="75.333" text="">
+               <graphic>
+                  <HBox alignment="CENTER">
+                  <CheckBox fx:id="selectAllCheckbox" style="-fx-scale-x:0.6; -fx-scale-y:0.6;" />
+                  <Label text ="Select All" />
+                  </HBox>
+               </graphic>
+               </TableColumn>
                               <TableColumn fx:id="productNameColumn" prefWidth="286.0" text="Product Name" />
                               <TableColumn fx:id="quantityColumn" prefWidth="193.33331298828125" text="Quantity" />
                               <TableColumn fx:id="itemTypeColumn" prefWidth="256.666748046875" text="Item Type" />
@@ -110,10 +116,11 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-               </children>
-            </VBox>
-         </children>
-      </HBox>
+                  <Pagination fx:id="pagination"
+                              pageCount="1"
+                              maxPageIndicatorCount="5"
+                              style="-fx-alignment: center;" />
+            </HBox>
    </center>
 </BorderPane>
 </StackPane>
