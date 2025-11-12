@@ -19,38 +19,50 @@ public class MedicalRecordUpdateInputValidation {
      * @param visitDate the parameter visit date of MedicalRecords object
      */
     public static String validateMedicalRecordInputs(String illness, String temperature, String treatment, LocalDate visitDate) {
+        LOGGER.info("Validating medical record inputs");
         StringBuilder errorMessage = new StringBuilder();
 
         if (!isEmpty(illness)) {
+            LOGGER.info("Illness field is being edited");
             if (illness.length() > 250) {
                 errorMessage.append("Illness must be less than 250 characters.\n");
+                LOGGER.warn(" Illness exceeds 250 characters (length: {})", illness.length());
             } else if (hasInvalidCharacters(illness)) {
                 errorMessage.append("Illness contains invalid characters.\n");
+                LOGGER.warn("Illness contains invalid characters");
             }
         }
 
         if (!isEmpty(temperature) && !isValidTemperature(temperature)) {
+            LOGGER.info("Temperature field is being edited");
           try {
             Double.parseDouble(temperature);
+            LOGGER.warn("Temperature value is out of range");
           } catch (NumberFormatException e) {
             errorMessage.append("Temperature must be a valid number between 30.0 and 50.0°C (e.g., 37.5).\n");
+            LOGGER.warn("Temperature is not a valid number");
           }
         }
 
         if (!isEmpty(treatment)) {
+            LOGGER.info("Treatment field is being edited");
             if (treatment.length() > 500) {
                 errorMessage.append("Treatment must be less than 500 characters.\n");
+                LOGGER.warn("Treatment exceeds 500 characters (length : {})", treatment.length());
             } else if (hasInvalidCharacters(treatment)) {
                 errorMessage.append("Treatment contains invalid characters.\n");
             }
         }
 
         if (visitDate != null && isVisitDateInFuture(Date.valueOf(visitDate))) {
+            LOGGER.info("Visit date field is being edited");
             errorMessage.append("Visit date cannot be in the future.\n");
+            LOGGER.warn("Visit date is in the future");
         }
 
         if (isEmpty(illness) && isEmpty(temperature) && isEmpty(treatment) && visitDate == null) {
             errorMessage.append("Please provide at least one field to update.\n");
+            LOGGER.warn("No fields were provided for update");
         }
 
         return errorMessage.toString();
