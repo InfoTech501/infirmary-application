@@ -209,10 +209,8 @@ public class StudentHealthProfileModalController implements Initializable {
 
            ManageStudentMedicalRecordsController controller = loader.getController();
            controller.setSelectedStudentRecord(this.student, selectedMedicalRecord);
-           LOGGER.info("Switch scene successful");
            LOGGER.info("Edit view loaded successfully for record ID: {}", selectedMedicalRecord.getMedicalRecordId());
        } catch (IOException e) {
-           LOGGER.warn("Switching scene failure");
            LOGGER.error("Failed to load edit view for medical record ID: {} ",selectedMedicalRecord.getMedicalRecordId());
            throw new RuntimeException(e);
        }
@@ -222,7 +220,6 @@ public class StudentHealthProfileModalController implements Initializable {
      * Closes the modal dialog by hiding, disabling it, and clearing it.
      */
     public void closeModal() {
-        LOGGER.info("Closed modal for student: {}",student.getLrn());
         rootModal.setVisible(false);
         rootModal.setDisable(true);
         rootModal.getChildren().clear();
