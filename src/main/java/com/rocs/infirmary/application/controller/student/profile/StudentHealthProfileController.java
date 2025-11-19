@@ -109,9 +109,13 @@ public class StudentHealthProfileController implements Initializable {
             TableRow<Student> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (!row.isEmpty() && event.getClickCount() == 2) {
-                    try
-                    {
-                        onClickShowMoreInformation(row.getItem());
+                    Student selectedStudent = row.getItem();
+                    if (selectedStudent == null) {
+                        LOGGER.warn("Attempted to open details for a null student record.");
+                        return;
+                    }
+                    try {
+                        onClickShowMoreInformation(selectedStudent);
 
                     } catch (IOException e) {
                         LOGGER.error("Row selection failure", e);
@@ -125,7 +129,7 @@ public class StudentHealthProfileController implements Initializable {
     }
 
     private void setupRowsPerPageSelector() {
-        rowsPerPageComboBox.setItems(FXCollections.observableArrayList(5,10,15,20));
+        rowsPerPageComboBox.setItems(FXCollections.observableArrayList(5, 10, 15, 20));
         rowsPerPageComboBox.setValue(rowsPerPage);
         rowsPerPageComboBox.setOnAction(event -> {
             Integer selected = rowsPerPageComboBox.getValue();
@@ -189,9 +193,18 @@ public class StudentHealthProfileController implements Initializable {
     }
 
     private void setupFiltering() {
-        searchTextField.textProperty().addListener((obs, oldVal, newVal) -> {currentPage = 1; updatePage();});
-        sectionComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {currentPage = 1; updatePage();});
-        sexComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {currentPage = 1; updatePage();});
+        searchTextField.textProperty().addListener((obs, oldVal, newVal) -> {
+            currentPage = 1;
+            updatePage();
+        });
+        sectionComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
+            currentPage = 1;
+            updatePage();
+        });
+        sexComboBox.valueProperty().addListener((obs, oldVal, newVal) -> {
+            currentPage = 1;
+            updatePage();
+        });
         LOGGER.info("Filtering system configured");
     }
 
@@ -212,8 +225,7 @@ public class StudentHealthProfileController implements Initializable {
         }
 
         String selectedGender = sexComboBox.getValue();
-        if (selectedGender != null && !selectedGender.equals("All Genders"))
-        {
+        if (selectedGender != null && !selectedGender.equals("All Genders")) {
             return selectedGender.equalsIgnoreCase(student.getGender());
         }
         return true;
@@ -223,11 +235,9 @@ public class StudentHealthProfileController implements Initializable {
         return column -> new TableCell<>() {
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty || item == null)
-                {
+                if (empty || item == null) {
                     setText(null);
-                }
-                else {
+                } else {
                     setText(firstLetterAutoCapitalization(item));
                 }
             }
@@ -238,11 +248,10 @@ public class StudentHealthProfileController implements Initializable {
      * A utility that capitalizes first letter of any word.
      */
     public String firstLetterAutoCapitalization(String input) {
-        if (input == null || input.isEmpty())
-        {
+        if (input == null || input.isEmpty()) {
             return input;
         }
-        return input.substring(0,1).toUpperCase() + input.substring(1).toLowerCase();
+        return input.substring(0, 1).toUpperCase() + input.substring(1).toLowerCase();
     }
 
     private void onClickShowMoreInformation(Student selectedStudent) throws IOException {
@@ -285,7 +294,7 @@ public class StudentHealthProfileController implements Initializable {
         sectionComboBox.setItems(sectionItems);
         sectionComboBox.getSelectionModel().selectFirst();
 
-        ObservableList<String> genderItems = FXCollections.observableArrayList("All Genders","Male","Female");
+        ObservableList<String> genderItems = FXCollections.observableArrayList("All Genders", "Male", "Female");
         sexComboBox.setItems(genderItems);
         sexComboBox.getSelectionModel().selectFirst();
     }
@@ -319,87 +328,7 @@ public class StudentHealthProfileController implements Initializable {
         currentPage = 1;
         updatePage();
         LOGGER.info("Sorting cleared");
+
+
     }
-
-    private boolean validateStudentInput(Student student) {
-        StringBuilder errors = new StringBuilder();
-
-
-        if (student.getLrn() == null) {
-            errors.append("- LRN is required and must be numeric.\n");
-        }
-        if (student.getFirstName() == null || student.getFirstName().trim().isEmpty()) {
-            errors.append("- First Name is required.\n");
-        }
-        if (student.getLastName() == null || student.getLastName().trim().isEmpty()) {
-            errors.append("- Last Name is required.\n");
-        }
-        if (student.getGradeLevel() == null || student.getGradeLevel().trim().isEmpty()) {
-            errors.append("- Grade Level is required.\n");
-        }
-        if (student.getSection() == null || student.getSection().trim().isEmpty()) {
-            errors.append("- Section is required.\n");
-        }
-        if (student.getGender() == null || (!student.getGender().equalsIgnoreCase("Male")
-                && !student.getGender().equalsIgnoreCase("Female"))) {
-            errors.append("- Gender must be Male or Female.\n");
-        }
-        if (student.getAge() <= 0) {
-            errors.append("- Age must be a positive number.\n");
-        }
-
-
-        if (errors.length() > 0) {
-            showErrorAlert("Validation Errors", errors.toString());
-            return false;
-        }
-        return true;
-    }
-
-    private void showErrorAlert(String title, String content) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText("Please fix the following issues:");
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
-
-    private boolean showConfirmationAlert(String action) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirm " + action);
-        alert.setHeaderText("Are you sure you want to " + action + " this student record?");
-        alert.setContentText("Click OK to proceed or Cancel to abort.");
-
-        return alert.showAndWait().filter(response -> response == ButtonType.OK).isPresent();
-    }
-    @FXML
-    private void handleSaveStudent(Student student, boolean isEdit) {
-        String action = isEdit ? "edit" : "add";
-
-        if (!validateStudentInput(student)) {
-            return;
-        }
-
-
-        if (showConfirmationAlert(action)) {
-            try {
-                if (isEdit) {
-                    studentHealthProfileApplication.getStudentHealthProfileFacade().getAllStudentHealthProfile();
-                    LOGGER.info("Student record updated: {}", student.getLrn());
-                } else {
-                    studentHealthProfileApplication.getStudentHealthProfileFacade().getStudentHealthProfileByLRN(String.valueOf(student));
-                    LOGGER.info("New student record added: {}", student.getLrn());
-                }
-                loadData();
-            } catch (Exception e) {
-                LOGGER.error("Failed to " + action + " student record", e);
-                showErrorAlert("Database Error", "Unable to " + action + " student record. Please try again.");
-            }
-        } else {
-            LOGGER.info("User canceled the " + action + " action.");
-        }
-    }
-
-
-
 }

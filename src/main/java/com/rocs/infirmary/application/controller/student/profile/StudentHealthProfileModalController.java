@@ -159,6 +159,17 @@ public class StudentHealthProfileModalController implements Initializable {
     }
 
     private void setStudentLabelData(Student student) {
+        if (student == null) {
+            LOGGER.error("Cannot set student label data: Student object is null.");
+            studentFullNameLabel.setText("");
+            ageLabel.setText("");
+            addressLabel.setText("");
+            sexLabel.setText("");
+            contactNumberLabel.setText("");
+            birthdateLabel.setText("");
+            lrnLabel.setText("");
+            return;
+        }
         if (masterMedicalList != null) {
             final StringBuilder fullName = fullNameStringBuilder(student);
 
@@ -197,6 +208,15 @@ public class StudentHealthProfileModalController implements Initializable {
     }
 
     private void switchSceneToEditHealthInfo() {
+
+        if (this.student == null) {
+            LOGGER.warn("Cannot switch to edit scene: No Student record loaded (this.student is null).");
+            return;
+        }
+        if (this.selectedMedicalRecord == null) {
+            LOGGER.warn("Cannot switch to edit scene: No Medical Record selected for editing.");
+            return;
+        }
        try {
            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ManageStudentMedicalRecords.fxml"));
            loader.setControllerFactory(param -> new ManageStudentMedicalRecordsController(this.parentController, this));
