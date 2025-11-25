@@ -494,7 +494,7 @@ values (9, 9, 5, 'Decongestant 10ml administered', 1, TO_TIMESTAMP('2020-10-01 0
 insert into medicine_administered (medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
 values (10, 10, 5, 'Antibiotics 500mg administered', 1, TO_TIMESTAMP('2023-03-20 11:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 
---INSERT HEALTH CONCERN DATA
+--INSERT HEALTH CONCERN
 insert into health_concern (student_id, adviser_id, nurse_id, section_id, concern_name, concern_description, submitted_date, status)
 values (1, 1, 4, 1, 'Persistent Cough', 'Student has been coughing for more than a week.', to_timestamp('2025-11-01 08:30:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'PENDING');
 insert into health_concern (student_id, adviser_id, nurse_id, section_id, concern_name, concern_description, submitted_date, status)
