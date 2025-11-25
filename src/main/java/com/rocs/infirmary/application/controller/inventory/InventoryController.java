@@ -32,6 +32,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 /**
@@ -59,6 +62,10 @@ public class InventoryController implements Initializable {
     private CheckBox selectAllCheckbox;
     @FXML
     private Pagination pagination;
+    @FXML
+    private ComboBox<String> itemTypeComboBox;
+    @FXML
+    private ComboBox<String> expiryDateComboBox;
     private static final int ROWS_PER_PAGE = 11;
 
     private DateTimeFormatter outputFormat = DateTimeFormatter.ofPattern("MMM dd yyyy");
@@ -76,7 +83,78 @@ public class InventoryController implements Initializable {
         initalizeEditClick();
         setupSelectAll();
         setupPagination();
+        itemExpiryDropdowns();
+        setupDropdownFilters();
     }
+
+    private void itemExpiryDropdowns() {
+
+        Set<String> itemTypes = medicineInventoryList.stream()
+                .map(Medicine::getItemType)
+                .filter(type -> type != null && !type.trim().isEmpty())
+                .collect(Collectors.toSet());
+
+        ObservableList<String> itemTypeItems = FXCollections.observableArrayList();
+        itemTypeItems.add("Item Type");
+        itemTypeItems.addAll(itemTypes.stream().sorted().toList());
+        itemTypeComboBox.setItems(itemTypeItems);
+        itemTypeComboBox.getSelectionModel().selectFirst();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
+
+        Set<String> expiryDates = medicineInventoryList.stream()
+                .map(Medicine::getExpirationDate)
+                .filter(date -> date != null)
+                .map(ts -> ts.toLocalDateTime().toLocalDate().format(formatter))
+                .collect(Collectors.toSet());
+
+        ObservableList<String> expiryDateItems = FXCollections.observableArrayList();
+        expiryDateItems.add("Expiry Date");
+        expiryDateItems.addAll(expiryDates.stream().sorted().toList());
+        expiryDateComboBox.setItems(expiryDateItems);
+        expiryDateComboBox.getSelectionModel().selectFirst();
+    }
+
+    private void setupDropdownFilters() {
+
+        itemTypeComboBox.setOnAction(e -> {
+            String selected = itemTypeComboBox.getValue();
+
+            filteredList.setPredicate(med -> {
+
+                if (selected.equals("Item Type"))
+                    return true;
+
+                return med.getItemType() != null &&
+                        med.getItemType().equalsIgnoreCase(selected);
+            });
+
+            updatePagination();
+            pagination.setCurrentPageIndex(0);
+        });
+
+
+        expiryDateComboBox.setOnAction(e -> {
+            String selected = expiryDateComboBox.getValue();
+
+            filteredList.setPredicate(med -> {
+
+                if (selected.equals("Expiry Date"))
+                    return true;
+
+                if (med.getExpirationDate() == null) return false;
+
+                LocalDate ld = med.getExpirationDate().toLocalDateTime().toLocalDate();
+                String formatted = ld.format(outputFormat);
+
+                return formatted.equalsIgnoreCase(selected);
+            });
+
+            updatePagination();
+            pagination.setCurrentPageIndex(0);
+        });
+    }
+
 
     private void setup() {
         medDetailsTable.setEditable(true);
@@ -182,7 +260,20 @@ public class InventoryController implements Initializable {
             filteredList.setPredicate(medicine -> {
                 if (newValue == null || newValue.isEmpty()) return true;
                 String searchKeyword = newValue.toLowerCase();
-                return medicine.getItemName().toLowerCase().contains(searchKeyword);
+
+                boolean matchName = medicine.getItemName().toLowerCase().contains(searchKeyword);
+
+                boolean matchType = medicine.getItemType() != null &&
+                        medicine.getItemType().toLowerCase().contains(searchKeyword);
+
+                boolean matchDate = false;
+                if (medicine.getExpirationDate() != null) {
+                    LocalDate ld = medicine.getExpirationDate().toLocalDateTime().toLocalDate();
+                    String formatted = ld.format(outputFormat).toLowerCase();
+                    matchDate = formatted.contains(searchKeyword);
+                }
+
+                return matchName || matchType || matchDate;
             });
 
             updatePagination();
@@ -197,10 +288,20 @@ public class InventoryController implements Initializable {
      *
      * @param actionEvent the event triggered by the confirm button click
      */
-    public void onFilterButtonAClick(ActionEvent actionEvent) {
-        productNameColumn.setSortable(true);
-        productNameColumn.setSortType(TableColumn.SortType.ASCENDING);
-        medDetailsTable.getSortOrder().setAll(productNameColumn);
+    public void onItemTypeFilterClick(ActionEvent actionEvent) {
+
+        FilteredList<Medicine> filteredList = new FilteredList<>(medicineInventoryList, med -> {
+            if (med.getItemType() == null) return false;
+            return !med.getItemType().isEmpty();
+        });
+
+        SortedList<Medicine> sortedList = new SortedList<>(filteredList);
+        sortedList.comparatorProperty().bind(medDetailsTable.comparatorProperty());
+        medDetailsTable.setItems(sortedList);
+
+        itemTypeColumn.setSortable(true);
+        itemTypeColumn.setSortType(TableColumn.SortType.ASCENDING);
+        medDetailsTable.getSortOrder().setAll(itemTypeColumn);
         medDetailsTable.sort();
 
     }
@@ -210,10 +311,10 @@ public class InventoryController implements Initializable {
      *
      * @param actionEvent the event triggered by the confirm button click
      */
-    public void onFilterButtonZClick(ActionEvent actionEvent) {
-        productNameColumn.setSortable(true);
-        productNameColumn.setSortType(TableColumn.SortType.DESCENDING);
-        medDetailsTable.getSortOrder().setAll(productNameColumn);
+    public void onExpiryDateFilterClick(ActionEvent actionEvent) {
+        expiryDateColumn.setSortable(true);
+        expiryDateColumn.setSortType(TableColumn.SortType.DESCENDING);
+        medDetailsTable.getSortOrder().setAll(expiryDateColumn);
         medDetailsTable.sort();
     }
 
@@ -247,10 +348,10 @@ public class InventoryController implements Initializable {
      *
      * @param actionEvent the event triggered by the confirm button click
      */
-    public void onQuantityFilterClick(ActionEvent actionEvent) {
-        quantityColumn.setSortable(true);
-        quantityColumn.setSortType(TableColumn.SortType.ASCENDING);
-        medDetailsTable.getSortOrder().setAll(quantityColumn);
+    public void onProductNameFilterClick(ActionEvent actionEvent) {
+        productNameColumn.setSortable(true);
+        productNameColumn.setSortType(TableColumn.SortType.ASCENDING);
+        medDetailsTable.getSortOrder().setAll(productNameColumn);
         medDetailsTable.sort();
     }
 
