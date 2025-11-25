@@ -26,10 +26,7 @@ drop table medicine_administered cascade constraints;
 drop table login cascade constraints;
 drop table employee cascade constraints;
 drop table department cascade constraints;
-drop table message_sender cascade constraints;
-drop table message_receiver cascade constraints;
-drop table message cascade constraints;
-drop table conversation cascade constraints;
+drop table health_concern cascade constraints;
 
 create table person (
   id number(10,0) generated as identity
@@ -163,38 +160,17 @@ create table department (
   department_name varchar2(64),
   primary key (id));
 
-create table message (
-  message_id number(10,0) generated as identity
-    constraint MESSAGE_ID_NOT_NULL not null,
-  conversation_id number(10,0) not null,
-  subject varchar2(255 char),
-  content varchar2(4000 char) not null,
-  sent_date timestamp(6),
-  primary key (message_id));
-
-create table message_sender (
-  sender_id number(10,0) generated as identity
-    constraint SENDER_ID_NOT_NULL not null,
-  message_id number(10,0) not null,
-  user_id number(20,0) not null,
-  primary key (sender_id));
-
-create table message_receiver (
-  receiver_id number(10,0) generated as identity
-    constraint RECEIVER_ID_NOT_NULL not null,
-  message_id number(10,0) not null,
-  user_id number(20,0) not null,
-  received_date timestamp(6),
-  primary key (receiver_id));
-
-create table conversation (
-  conversation_id number(10,0) generated as identity
-    constraint CONVERSATION_ID_NOT_NULL not null,
-  name varchar2(255 char),
-  created_date timestamp(6) not null,
-  is_group number(1,0) not null
-    constraint CONVERSATION_IS_GROUP_CHECK CHECK (is_group IN (0,1)),
-  primary key (conversation_id));
+create table health_concern (
+  concern_id number(10,0) generated as identity,
+  student_id number(10,0),
+  adviser_id number(10,0),
+  nurse_id number(10,0),
+  section_id number (10,0),
+  concern_name varchar2(128 char),
+  concern_description varchar2(500 char),
+  submitted_date timestamp(6),
+  status varchar2(20 char),
+  primary key (concern_id));
 
 alter table employee
     add constraint FK_EMPLOYEE_PERSON_ID
@@ -260,25 +236,21 @@ alter table login
     add constraint FK_LOGIN_PERSON_ID
     foreign key (person_id) references person;
 
-alter table message
-  add constraint FK_MESSAGE_CONVERSATION_ID
-  foreign key (conversation_id) references conversation;
+alter table health_concern
+  add constraint HEALTH_CONCERN_STUDENT_ID
+  foreign key (student_id) references student;
 
-alter table message_sender
-  add constraint FK_SENDER_MESSAGE_ID
-  foreign key (message_id) references message;
+alter table health_concern
+  add constraint HEALTH_CONCERN_ADVISER_ID
+  foreign key (adviser_id) references employee;
 
-alter table message_sender
-  add constraint FK_SENDER_USER_ID
-  foreign key (user_id) references login;
+alter table health_concern
+  add constraint HEALTH_CONCERN_NURSE_ID
+  foreign key (nurse_id) references employee;
 
-alter table message_receiver
-  add constraint FK_RECEIVER_MESSAGE_ID
-  foreign key (message_id) references message;
-
-alter table message_receiver
-  add constraint FK_RECEIVER_USER_ID
-  foreign key (user_id) references login;
+alter table health_concern
+  add constraint HEALTH_CONCERN_SECTION_ID
+  foreign key (section_id) references section;
 
 --INSERT PERSON DATA
 insert into person (first_name, middle_name, last_name, birthdate, age, gender, email, address, contact_number)
@@ -521,5 +493,21 @@ insert into medicine_administered (medicine_id, med_record_id, nurse_in_charge_i
 values (9, 9, 5, 'Decongestant 10ml administered', 1, TO_TIMESTAMP('2020-10-01 08:15:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
 insert into medicine_administered (medicine_id, med_record_id, nurse_in_charge_id, description, quantity, date_administered)
 values (10, 10, 5, 'Antibiotics 500mg administered', 1, TO_TIMESTAMP('2023-03-20 11:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'));
+
+--INSERT HEALTH CONCERN DATA
+insert into health_concern (student_id, adviser_id, nurse_id, section_id, concern_name, concern_description, submitted_date, status)
+values (1, 1, 4, 1, 'Persistent Cough', 'Student has been coughing for more than a week.', to_timestamp('2025-11-01 08:30:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'PENDING');
+insert into health_concern (student_id, adviser_id, nurse_id, section_id, concern_name, concern_description, submitted_date, status)
+values (2, 3, 5, 2, 'High Fever', 'Student reported fever of 39°C during class.', to_timestamp('2025-11-02 09:15:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'REVIEWED');
+insert into health_concern (student_id, adviser_id, nurse_id, section_id, concern_name, concern_description, submitted_date, status)
+values (3, 2, 4, 3, 'Headache Episodes', 'Frequent headaches affecting concentration.', to_timestamp('2025-11-03 10:45:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'ACTION_TAKEN');
+insert into health_concern (student_id, adviser_id, nurse_id, section_id, concern_name, concern_description, submitted_date, status)
+values (4, 2, 5, 4, 'Asthma Attack', 'Student experienced shortness of breath in PE.', to_timestamp('2025-11-04 14:20:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'CLOSED');
+insert into health_concern (student_id, adviser_id, nurse_id, section_id, concern_name, concern_description, submitted_date, status)
+values (5, 1, 4, 5, 'Stomach Pain', 'Complains of abdominal pain after lunch.', to_timestamp('2025-11-05 11:00:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'PENDING');
+insert into health_concern (student_id, adviser_id, nurse_id, section_id, concern_name, concern_description, submitted_date, status)
+values (6, 4, 5, 1, 'Dizziness', 'Student felt dizzy during morning assembly.', to_timestamp('2025-11-06 08:50:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'REVIEWED');
+insert into health_concern (student_id, adviser_id, nurse_id, section_id, concern_name, concern_description, submitted_date, status)
+values (7, 3, 4, 3, 'Skin Rash', 'Red rash observed on arms, spreading quickly.', to_timestamp('2025-11-07 13:40:00.00', 'yyyy-mm-dd hh24:mi:ss:ff'), 'ACTION_TAKEN');
 
 commit;
