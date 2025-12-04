@@ -84,10 +84,17 @@ public class InventoryController implements Initializable {
         setupSelectAll();
         setupPagination();
         itemExpiryDropdowns();
-        setupDropdownFilters();
+        setupFiltersItemType();
+        setupFiltersExpiryDate();
     }
 
     private void itemExpiryDropdowns() {
+
+        setupItemTypeDropdown();
+        setupExpiryDateDropdown();
+    }
+
+    private void setupItemTypeDropdown() {
 
         Set<String> itemTypes = medicineInventoryList.stream()
                 .map(Medicine::getItemType)
@@ -98,8 +105,11 @@ public class InventoryController implements Initializable {
         itemTypeItems.add("Item Type");
         itemTypeItems.addAll(itemTypes.stream().sorted().toList());
         itemTypeComboBox.setItems(itemTypeItems);
-        itemTypeComboBox.getSelectionModel().selectFirst();
+        itemTypeComboBox.getSelectionModel().select("Item Type");
 
+    }
+
+    private void setupExpiryDateDropdown() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
 
         Set<String> expiryDates = medicineInventoryList.stream()
@@ -112,10 +122,10 @@ public class InventoryController implements Initializable {
         expiryDateItems.add("Expiry Date");
         expiryDateItems.addAll(expiryDates.stream().sorted().toList());
         expiryDateComboBox.setItems(expiryDateItems);
-        expiryDateComboBox.getSelectionModel().selectFirst();
+        expiryDateComboBox.getSelectionModel().select("Expiry Date");
     }
 
-    private void setupDropdownFilters() {
+    private void setupFiltersItemType() {
 
         itemTypeComboBox.setOnAction(e -> {
             String selected = itemTypeComboBox.getValue();
@@ -129,31 +139,34 @@ public class InventoryController implements Initializable {
                         med.getItemType().equalsIgnoreCase(selected);
             });
 
-            updatePagination();
-            pagination.setCurrentPageIndex(0);
-        });
-
-
-        expiryDateComboBox.setOnAction(e -> {
-            String selected = expiryDateComboBox.getValue();
-
-            filteredList.setPredicate(med -> {
-
-                if (selected.equals("Expiry Date"))
-                    return true;
-
-                if (med.getExpirationDate() == null) return false;
-
-                LocalDate ld = med.getExpirationDate().toLocalDateTime().toLocalDate();
-                String formatted = ld.format(outputFormat);
-
-                return formatted.equalsIgnoreCase(selected);
-            });
-
+            medDetailsTable.refresh();
             updatePagination();
             pagination.setCurrentPageIndex(0);
         });
     }
+
+        private void setupFiltersExpiryDate() {
+            expiryDateComboBox.setOnAction(e -> {
+                String selected = expiryDateComboBox.getValue();
+
+                filteredList.setPredicate(med -> {
+
+                    if (selected.equals("Expiry Date"))
+                        return true;
+
+                    if (med.getExpirationDate() == null) return false;
+
+                    LocalDate ld = med.getExpirationDate().toLocalDateTime().toLocalDate();
+                    String formatted = ld.format(outputFormat);
+
+                    return formatted.equalsIgnoreCase(selected);
+                });
+
+                medDetailsTable.refresh();
+                updatePagination();
+                pagination.setCurrentPageIndex(0);
+            });
+        }
 
 
     private void setup() {
