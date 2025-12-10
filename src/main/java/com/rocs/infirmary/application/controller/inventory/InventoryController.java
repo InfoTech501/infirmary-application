@@ -110,7 +110,7 @@ public class InventoryController implements Initializable {
     }
 
     private void setupExpiryDateDropdown() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy");
 
         Set<String> expiryDates = medicineInventoryList.stream()
                 .map(Medicine::getExpirationDate)
@@ -157,7 +157,7 @@ public class InventoryController implements Initializable {
                     if (med.getExpirationDate() == null) return false;
 
                     LocalDate ld = med.getExpirationDate().toLocalDateTime().toLocalDate();
-                    String formatted = ld.format(outputFormat);
+                    String formatted = ld.format(DateTimeFormatter.ofPattern("yyyy"));
 
                     return formatted.equalsIgnoreCase(selected);
                 });

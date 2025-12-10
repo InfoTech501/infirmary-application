@@ -50,9 +50,9 @@
                      <TextField fx:id="searchTextField" prefHeight="42.0" prefWidth="487.0" promptText="Find Medicine Name" />
                   </HBox>
 
-                  <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="1126.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                  <HBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="1126.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                      <children>
-                        <GridPane alignment="CENTER" hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="703.0" vgap="10.0" HBox.hgrow="ALWAYS">
+                        <GridPane alignment="CENTER_LEFT" hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="703.0" vgap="10.0" HBox.hgrow="ALWAYS">
                            <columnConstraints>
                               <ColumnConstraints maxWidth="34.66667683919271" minWidth="19.99998982747396" prefWidth="19.99998982747396" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="192.66667683919272" minWidth="10.0" prefWidth="180" />
@@ -65,9 +65,9 @@
                            </rowConstraints>
                            <children>
                               <HBox prefHeight="45.0" prefWidth="39.0" />
-                              <ComboBox fx:id="itemTypeComboBox" prefHeight="30.0" prefWidth="200.0" promptText="Item Type" GridPane.columnIndex="2" />
-                              <ComboBox fx:id="expiryDateComboBox" prefHeight="30.0" prefWidth="200.0" promptText="Expiry Date" GridPane.columnIndex="3" />
-                              <Button fx:id="inventoryClearFilterButton1" mnemonicParsing="false" onAction="#onClearFilterClick" prefHeight="30.0" prefWidth="118.0" text="Clear Filter" GridPane.columnIndex="4" />
+                              <ComboBox fx:id="itemTypeComboBox" prefHeight="50.0" prefWidth="150.0" promptText="Item Type" GridPane.columnIndex="1" />
+                              <ComboBox fx:id="expiryDateComboBox" prefHeight="50.0" prefWidth="150.0" promptText="Expiry Date" GridPane.columnIndex="2" />
+                              <Button fx:id="inventoryClearFilterButton1" mnemonicParsing="false" onAction="#onClearFilterClick" prefHeight="30.0" prefWidth="118.0" text="Clear Filter" GridPane.columnIndex="3" />
                            </children>
                         </GridPane>
                         <GridPane hgap="10.0" prefHeight="52.0" prefWidth="451.0" vgap="10.0" HBox.hgrow="ALWAYS">
