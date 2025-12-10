@@ -330,7 +330,7 @@ public class AddInventoryController implements Initializable {
         String parsedQuantity  = quantityTextField.getText().trim();
         if(productNameTextField.getText()==null||productNameTextField.getText().isEmpty()|| productNameTextField.getText().isBlank()){
             showDialog("warning","Product Name cannot be empty");
-        }else if (itemTypeComboBox.getSelectionModel().getSelectedItem() == null){
+        }else if (itemTypeComboBox.getSelectionModel().getSelectedItem() == null || itemTypeComboBox.getSelectionModel().getSelectedItem().equals("No selection")){
             showDialog("warning","Item type cannot be empty, Please select an item type");
         }else if(quantityTextField.getText()==null||quantityTextField.getText().isEmpty()|| quantityTextField.getText().isBlank()){
             showDialog("warning","Quantity cannot be empty");
