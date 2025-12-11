@@ -94,6 +94,11 @@ public class InventoryController implements Initializable {
         setupExpiryDateDropdown();
     }
 
+    private void reloadDropdownFilters() {
+        setupItemTypeDropdown();
+        setupExpiryDateDropdown();
+    }
+
     private void setupItemTypeDropdown() {
 
         Set<String> itemTypes = medicineInventoryList.stream()
@@ -231,6 +236,7 @@ public class InventoryController implements Initializable {
             }
         }
         medicineInventoryList = FXCollections.observableArrayList(medicineList);
+        reloadDropdownFilters();
         itemSearch();
         updatePagination();
         medDetailsTable.refresh();

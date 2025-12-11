@@ -55,9 +55,9 @@
                         <GridPane alignment="CENTER_LEFT" hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="703.0" vgap="10.0" HBox.hgrow="ALWAYS">
                            <columnConstraints>
                               <ColumnConstraints maxWidth="34.66667683919271" minWidth="19.99998982747396" prefWidth="19.99998982747396" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="192.66667683919272" minWidth="10.0" prefWidth="180" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="270.000010172526" minWidth="10.0" prefWidth="160" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="289.3333333333333" minWidth="10.0" prefWidth="160" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="192.66667683919272" minWidth="10.0" prefWidth="150" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="270.000010172526" minWidth="10.0" prefWidth="150" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="289.3333333333333" minWidth="10.0" prefWidth="150" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="351.8" minWidth="10.0" prefWidth="351.8" />
                            </columnConstraints>
                            <rowConstraints>
