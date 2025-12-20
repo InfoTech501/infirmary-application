@@ -74,6 +74,7 @@ public class InventoryController implements Initializable {
     private FilteredList<Medicine> filteredList;
     private List<Medicine> medicineList = new ArrayList<>();
     private static final Logger LOGGER = LoggerFactory.getLogger(InventoryController.class);
+    private boolean isRowAction = false;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -173,6 +174,31 @@ public class InventoryController implements Initializable {
             });
         }
 
+    private void setupRowSelectListener() {
+        for (Medicine med : medicineInventoryList) {
+            med.isSelectedProperty().removeListener((obs, o, n) -> {});
+            med.isSelectedProperty().addListener((obs, oldVal, newVal) -> {
+
+                isRowAction = true;
+
+                if (!newVal) {
+                    selectAllCheckbox.setSelected(false);
+
+                } else {
+
+                boolean allSelected = medicineInventoryList.stream()
+                        .allMatch(Medicine::isSelected);
+
+                if (allSelected) {
+                    selectAllCheckbox.setSelected(true);
+                }
+                }
+
+                isRowAction = false;
+            });
+        }
+    }
+
 
     private void setup() {
         medDetailsTable.setEditable(true);
@@ -229,6 +255,7 @@ public class InventoryController implements Initializable {
      ***/
     public void refresh() {
         LowStockAlertHelper.checkLowStockAndShowAlert();
+        selectAllCheckbox.setSelected(false);
         List<Medicine> medicineList = inventoryManagementApplication.getMedicineInventoryFacade().getAllMedicine();
         for (Medicine med : medicineList) {
             if (med.isSelectedProperty() == null) {
@@ -236,6 +263,7 @@ public class InventoryController implements Initializable {
             }
         }
         medicineInventoryList = FXCollections.observableArrayList(medicineList);
+        setupRowSelectListener();
         reloadDropdownFilters();
         itemSearch();
         updatePagination();
@@ -338,6 +366,7 @@ public class InventoryController implements Initializable {
     }
 
     private List<Medicine> getSelectedMedicines() {
+        medicineList.clear();
         List<Medicine> selectedMedicine = medicineInventoryList.stream()
                 .filter(Medicine::isSelected)
                 .toList();
@@ -419,12 +448,18 @@ public class InventoryController implements Initializable {
 
     private void setupSelectAll() {
         selectAllCheckbox.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
-            if (medicineInventoryList != null && !medicineInventoryList.isEmpty()) {
+            if (medicineInventoryList == null || medicineInventoryList.isEmpty()) return;
+
+            if (isRowAction) return;
+
+            if (medicineInventoryList == null || medicineInventoryList.isEmpty()) return;
+
                 for (Medicine med : medicineInventoryList) {
                     med.setIsSelected(isNowSelected);
                 }
+
+                
                 medDetailsTable.refresh();
-            }
         });
     }
 
