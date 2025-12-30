@@ -184,14 +184,10 @@ public class InventoryController implements Initializable {
                 if (!newVal) {
                     selectAllCheckbox.setSelected(false);
 
-                } else {
-
-                boolean allSelected = medicineInventoryList.stream()
-                        .allMatch(Medicine::isSelected);
-
-                if (allSelected) {
-                    selectAllCheckbox.setSelected(true);
                 }
+
+                else if (medicineInventoryList.stream().allMatch(Medicine::isSelected))  {
+                    selectAllCheckbox.setSelected(true);
                 }
 
                 isRowAction = false;
