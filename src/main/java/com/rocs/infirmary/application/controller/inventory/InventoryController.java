@@ -175,24 +175,37 @@ public class InventoryController implements Initializable {
         }
 
     private void setupRowSelectListener() {
-        for (Medicine med : medicineInventoryList) {
-            med.isSelectedProperty().removeListener((obs, o, n) -> {});
-            med.isSelectedProperty().addListener((obs, oldVal, newVal) -> {
+        if (medicineInventoryList == null || medicineInventoryList.isEmpty()) {
+            return;
 
-                isRowAction = true;
-
-                if (!newVal) {
-                    selectAllCheckbox.setSelected(false);
-
-                }
-
-                else if (medicineInventoryList.stream().allMatch(Medicine::isSelected))  {
-                    selectAllCheckbox.setSelected(true);
-                }
-
-                isRowAction = false;
-            });
         }
+
+            for (Medicine med : medicineInventoryList) {
+
+                if (med.isSelectedProperty() == null) {
+                    med.setIsSelected(false);
+                }
+
+                med.isSelectedProperty().removeListener(this::onRowSelectionChanged);
+                med.isSelectedProperty().addListener(this::onRowSelectionChanged);
+        }
+    }
+
+    private void onRowSelectionChanged(
+            javafx.beans.value.ObservableValue<? extends Boolean> observable,
+            Boolean oldValue,
+            Boolean newValue
+    ) {
+        isRowAction = true;
+
+        if (!newValue) {
+            selectAllCheckbox.setSelected(false);
+
+        } else if (medicineInventoryList.stream().allMatch(Medicine::isSelected)) {
+            selectAllCheckbox.setSelected(true);
+        }
+
+        isRowAction = false;
     }
 
 
