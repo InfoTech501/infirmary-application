@@ -175,34 +175,25 @@ public class InventoryController implements Initializable {
         }
 
     private void setupRowSelectListener() {
-        if (medicineInventoryList == null || medicineInventoryList.isEmpty()) {
-            return;
-
-        }
-
             for (Medicine med : medicineInventoryList) {
 
-                if (med.isSelectedProperty() == null) {
-                    med.setIsSelected(false);
-                }
-
-                med.isSelectedProperty().removeListener(this::onRowSelectionChanged);
-                med.isSelectedProperty().addListener(this::onRowSelectionChanged);
+                med.isSelectedProperty().addListener((obs, oldVal, newVal) -> {
+                    handleRowSelectionChanged(newVal);
+                });
         }
     }
 
-    private void onRowSelectionChanged(
-            javafx.beans.value.ObservableValue<? extends Boolean> observable,
-            Boolean oldValue,
-            Boolean newValue
-    ) {
+    private void handleRowSelectionChanged(Boolean isSelected) {
+        if (isRowAction) return;
+
         isRowAction = true;
 
-        if (!newValue) {
+        if (!isSelected) {
             selectAllCheckbox.setSelected(false);
 
-        } else if (medicineInventoryList.stream().allMatch(Medicine::isSelected)) {
-            selectAllCheckbox.setSelected(true);
+        } else {
+            selectAllCheckbox.setSelected(medicineInventoryList.stream().allMatch(Medicine::isSelected)
+            );
         }
 
         isRowAction = false;
@@ -457,18 +448,17 @@ public class InventoryController implements Initializable {
 
     private void setupSelectAll() {
         selectAllCheckbox.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
-            if (medicineInventoryList == null || medicineInventoryList.isEmpty()) return;
 
             if (isRowAction) return;
 
-            if (medicineInventoryList == null || medicineInventoryList.isEmpty()) return;
+            isRowAction = true;
 
                 for (Medicine med : medicineInventoryList) {
                     med.setIsSelected(isNowSelected);
                 }
 
-                
                 medDetailsTable.refresh();
+                isRowAction = false;
         });
     }
 
