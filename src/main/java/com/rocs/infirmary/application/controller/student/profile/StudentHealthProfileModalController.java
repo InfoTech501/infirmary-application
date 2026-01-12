@@ -114,11 +114,13 @@ public class StudentHealthProfileModalController implements Initializable {
      * @param student the Student object containing student information and medical records
      */
     public void setSelectedStudent(Student student) {
+        LOGGER.info("Selected Student with LRN : {}", student.getLrn());
         this.student = student;
         getMedicalRecords(student);
         setStudentLabelData(student);
         editHealthInfoBtn.setDisable(true);
         editHealthInfoBtn.setOpacity(0);
+        LOGGER.info("Student data loaded successfully for: {} {}", student.getFirstName(), student.getLastName());
     }
 
     /**
@@ -218,17 +220,18 @@ public class StudentHealthProfileModalController implements Initializable {
             return;
         }
        try {
+           LOGGER.info("User initiated edit for medical record ID: {}", selectedMedicalRecord.getMedicalRecordId());
            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/ManageStudentMedicalRecords.fxml"));
            loader.setControllerFactory(param -> new ManageStudentMedicalRecordsController(this.parentController, this));
            Parent root = loader.load();
-
+           LOGGER.info("Loading edit view for student: {}", student.getLrn());
            tableViewWrapper.getChildren().setAll(root);
 
            ManageStudentMedicalRecordsController controller = loader.getController();
            controller.setSelectedStudentRecord(this.student, selectedMedicalRecord);
-           LOGGER.info("Switch scene successful");
+           LOGGER.info("Edit view loaded successfully for record ID: {}", selectedMedicalRecord.getMedicalRecordId());
        } catch (IOException e) {
-           LOGGER.warn("Switching scene failure");
+           LOGGER.error("Failed to load edit view for medical record ID: {} ",selectedMedicalRecord.getMedicalRecordId());
            throw new RuntimeException(e);
        }
     }

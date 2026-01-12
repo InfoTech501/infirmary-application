@@ -17,6 +17,9 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.ComboBox?>
 <StackPane fx:id="inventoryPage" prefHeight="677.0" prefWidth="1266.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.inventory.InventoryController">
    <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
    <stylesheets>
@@ -47,25 +50,24 @@
                      <TextField fx:id="searchTextField" prefHeight="42.0" prefWidth="487.0" promptText="Find Medicine Name" />
                   </HBox>
 
-                  <HBox alignment="CENTER_RIGHT" prefHeight="34.0" prefWidth="1126.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                  <HBox alignment="CENTER_LEFT" prefHeight="34.0" prefWidth="1126.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                      <children>
-                        <GridPane alignment="CENTER" hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="703.0" vgap="10.0" HBox.hgrow="ALWAYS">
+                        <GridPane alignment="CENTER_LEFT" hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="703.0" vgap="10.0" HBox.hgrow="ALWAYS">
                            <columnConstraints>
                               <ColumnConstraints maxWidth="34.66667683919271" minWidth="19.99998982747396" prefWidth="19.99998982747396" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="192.66667683919272" minWidth="10.0" prefWidth="94.19999999999999" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="270.000010172526" minWidth="10.0" prefWidth="97.400048828125" />
-                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="289.3333333333333" minWidth="10.0" prefWidth="94.19999999999996" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="192.66667683919272" minWidth="10.0" prefWidth="150" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="270.000010172526" minWidth="10.0" prefWidth="150" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="289.3333333333333" minWidth="10.0" prefWidth="150" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="351.8" minWidth="10.0" prefWidth="351.8" />
                            </columnConstraints>
                            <rowConstraints>
                               <RowConstraints maxHeight="53.600010299682616" minHeight="10.0" prefHeight="30.4" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <HBox prefHeight="54.0" prefWidth="39.0" />
-                              <Button fx:id="QuantityButton1" mnemonicParsing="false" onAction="#onQuantityFilterClick" prefHeight="31.0" prefWidth="120.0" text="Quantity" GridPane.columnIndex="1" />
-                              <Button fx:id="Inventory_Filter_Button_A1" mnemonicParsing="false" onAction="#onFilterButtonAClick" prefHeight="30.0" prefWidth="93.0" text="A-Z" GridPane.columnIndex="2" />
-                              <Button fx:id="Inventory_Filter_Button_Z1" mnemonicParsing="false" onAction="#onFilterButtonZClick" prefHeight="30.0" prefWidth="93.0" text="Z-A" GridPane.columnIndex="3" />
-                              <Button fx:id="InventoryClearFilterButton1" mnemonicParsing="false" onAction="#onClearFilterClick" prefHeight="30.0" prefWidth="118.0" text="Clear Filter" GridPane.columnIndex="4" />
+                              <HBox prefHeight="45.0" prefWidth="39.0" />
+                              <ComboBox fx:id="itemTypeComboBox" prefHeight="50.0" prefWidth="150.0" promptText="Item Type" GridPane.columnIndex="1" />
+                              <ComboBox fx:id="expiryDateComboBox" prefHeight="50.0" prefWidth="150.0" promptText="Expiry Date" GridPane.columnIndex="2" />
+                              <Button fx:id="inventoryClearFilterButton1" mnemonicParsing="false" onAction="#onClearFilterClick" prefHeight="30.0" prefWidth="118.0" text="Clear Filter" GridPane.columnIndex="3" />
                            </children>
                         </GridPane>
                         <GridPane hgap="10.0" prefHeight="52.0" prefWidth="451.0" vgap="10.0" HBox.hgrow="ALWAYS">
@@ -93,13 +95,17 @@
       </HBox>
    </top>
    <center>
-      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <children>
-            <VBox prefHeight="786.0" prefWidth="1130.0" HBox.hgrow="ALWAYS">
-               <children>
-                        <TableView fx:id="medDetailsTable" prefHeight="462.0" prefWidth="1126.0">
-                           <columns>
-                              <TableColumn fx:id="selectColumn" prefWidth="75.33334350585938" text="Select" />
+      <VBox spacing="10" alignment="CENTER" BorderPane.alignment="CENTER">
+            <TableView fx:id="medDetailsTable" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
+               <columns>
+               <TableColumn fx:id="selectColumn" prefWidth="75.333" text="">
+               <graphic>
+                  <HBox alignment="CENTER">
+                  <CheckBox fx:id="selectAllCheckbox" style="-fx-scale-x:0.6; -fx-scale-y:0.6;" />
+                  <Label text ="Select All" />
+                  </HBox>
+               </graphic>
+               </TableColumn>
                               <TableColumn fx:id="productNameColumn" prefWidth="286.0" text="Product Name" />
                               <TableColumn fx:id="quantityColumn" prefWidth="193.33331298828125" text="Quantity" />
                               <TableColumn fx:id="itemTypeColumn" prefWidth="256.666748046875" text="Item Type" />
@@ -110,10 +116,14 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-               </children>
+
+                  <HBox alignment="CENTER">
+                  <Pagination fx:id="pagination"
+                              pageCount="1"
+                              maxPageIndicatorCount="5"
+                              style="-fx-alignment: center;" />
+                  </HBox>
             </VBox>
-         </children>
-      </HBox>
    </center>
 </BorderPane>
 </StackPane>

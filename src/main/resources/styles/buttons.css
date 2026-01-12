@@ -276,6 +276,14 @@ fx-font-weight: 400;
 }
 
 
+#itemTypeComboBox, #expiryDateComboBox {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #d3d3d3;
 
+}
 
+#itemTypeComboBox:hover, #expiryDateComboBox:hover {
+     -fx-background-color: #066C3D;
+     -fx-text-fill: white;
+}
 
