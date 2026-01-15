@@ -1,6 +1,6 @@
-package com.rocs.infirmary.application.controller.lowstock.helper;
+package com.rocs.infirmary.application.controller.notification.helper;
 
-import com.rocs.infirmary.application.controller.lowstock.NotificationController;
+import com.rocs.infirmary.application.controller.notification.NotificationController;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import com.rocs.infirmary.application.data.model.report.lowstock.LowStockItems;
 import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
@@ -61,22 +61,21 @@ public class NotificationAlertHelper {
      * Checks for low stock items. If found, shows redCircle and
      * sets toggleButton to open the alert modal with product info.
      */
-    public static void checkLowStockAndShowAlert() {
+    public static void getNotification() {
 
         List<LowStockItems> lowStockItems = lowStockService.getDashboardFacade().getAllLowStockMedicine();
         List<Medicine> expiringMedicine = inventoryManagementApplication.getMedicineInventoryFacade().getAllMedicine();
         Date today = new Date();
+        long sevenDaysOnMillis = today.getTime() + 7L * 24 * 60 * 60 * 1000;
 
-        long sevenDaysLaterMillis = today.getTime() + 7L * 24 * 60 * 60 * 1000;
-
-        List<Medicine> expiringSoon = expiringMedicine.stream()
+        List<Medicine> expiringMedicines = expiringMedicine.stream()
                 .filter(med -> {
-                    Date expiryDate = med.getExpirationDate(); // assuming this is java.util.Date
-                    return !expiryDate.before(today) && expiryDate.getTime() <= sevenDaysLaterMillis;
+                    Date expiryDate = med.getExpirationDate();
+                    return !expiryDate.before(today) && expiryDate.getTime() <= sevenDaysOnMillis;
                 })
                 .collect(Collectors.toList());
 
-        if (lowStockItems.isEmpty() && expiringSoon.isEmpty()) {
+        if (lowStockItems.isEmpty() && expiringMedicines.isEmpty()) {
             redCircle.setVisible(false);
             toggleButton.setOnMouseClicked(null);
             return;
@@ -85,8 +84,8 @@ public class NotificationAlertHelper {
         toggleButton.setOnMouseClicked(event -> {
             toggleButton.setDisable(true);
             Stage currentPage = (Stage) node.getScene().getWindow();
+            NotificationController.addExpiringMedicineOnAlert(currentPage,expiringMedicines);
             NotificationController.addLowStockItemOnAlert(currentPage, lowStockItems);
-            NotificationController.addExpiringMedicineOnAlert(currentPage,expiringSoon);
             toggleButton.setDisable(false);
         });
     }

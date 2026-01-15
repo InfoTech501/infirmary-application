@@ -1,4 +1,4 @@
-package com.rocs.infirmary.application.controller.lowstock;
+package com.rocs.infirmary.application.controller.notification;
 
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import com.rocs.infirmary.application.data.model.report.lowstock.LowStockItems;
@@ -39,22 +39,22 @@ public class NotificationController {
     private static Stage activeModal;
     private static NotificationController activeController;
     /**
-     * Sets the alert title and message content in the notification modal
+     * Creates dynamic notification card in the notification modal
      * @param title   the title of the alert
      * @param message the detailed message to be displayed in the alert
      */
     public void createNotificationCard(String title, String message) {
         VBox alertCard = new VBox();
-        alertCard.getStyleClass().add("alert-card");
+        alertCard.getStyleClass().add("alertCard");
         alertCard.setSpacing(10);
         alertCard.setPadding(new Insets(10));
         alertCard.setMaxWidth(440);
 
         Label titleLabel = new Label(title);
-        titleLabel.getStyleClass().add("alert-title");
+        titleLabel.getStyleClass().add("alertTitle");
 
         Label messageLabel = new Label(message);
-        messageLabel.getStyleClass().add("alert-message");
+        messageLabel.getStyleClass().add("alertMessage");
         messageLabel.setWrapText(true);
 
         Button closeBtn = new Button("X");
@@ -76,7 +76,7 @@ public class NotificationController {
 
 
     /**
-     * adds a new low stock item on notification
+     * adds a low stock item on notification
      * to notify the user about inventory medicine that have low stock.
      * @param ownerStage       the main window where the alert should appear beside
      * @param lowStockMedicine a list of Inventory Medicine that are low in stock

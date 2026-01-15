@@ -1,7 +1,7 @@
 package com.rocs.infirmary.application.controller.records;
 
 import static com.rocs.infirmary.application.controller.helper.ControllerHelper.showDialog;
-import com.rocs.infirmary.application.controller.lowstock.helper.NotificationAlertHelper;
+import com.rocs.infirmary.application.controller.notification.helper.NotificationAlertHelper;
 import com.rocs.infirmary.application.data.model.person.employee.Employee;
 import com.rocs.infirmary.application.data.model.medicalrecord.MedicalRecord;
 import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
@@ -300,7 +300,7 @@ public class AddDailyTreatmentRecordController implements Initializable {
             if (clinicVisitLogPageController != null) {
                 clinicVisitLogPageController.addStudentMedicalRecord(medicalRecord);
             }
-            NotificationAlertHelper.checkLowStockAndShowAlert();
+            NotificationAlertHelper.getNotification();
             showDialog("Notification", "Success, Record Added Successfully.");
             addDailyTreatmentRecord.setVisible(false);
             addDailyTreatmentRecord.setDisable(true);

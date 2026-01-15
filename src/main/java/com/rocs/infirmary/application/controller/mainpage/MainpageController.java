@@ -6,8 +6,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 import com.rocs.infirmary.application.InfirmaryApplication;
-import com.rocs.infirmary.application.controller.lowstock.NotificationController;
-import com.rocs.infirmary.application.controller.lowstock.helper.NotificationAlertHelper;
+import com.rocs.infirmary.application.controller.notification.helper.NotificationAlertHelper;
 import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
 import com.rocs.infirmary.application.module.lowstock.notification.service.application.LowStockNotificationServiceApplication;
 import javafx.fxml.FXML;
@@ -54,7 +53,7 @@ public class MainpageController implements Initializable {
         alertHelper.bindService(lowStockService,inventoryManagementApplication);
         alertHelper.bindUI(redCircle,toggleButton);
         alertHelper.setMainNode(homepageScene);
-        NotificationAlertHelper.checkLowStockAndShowAlert();
+        NotificationAlertHelper.getNotification();
     }
 
     private void loadDashboard() {

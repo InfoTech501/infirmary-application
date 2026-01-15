@@ -1,7 +1,7 @@
 package com.rocs.infirmary.application.controller.inventory;
 
 import com.rocs.infirmary.application.app.facade.dashboard.DashboardFacade;
-import com.rocs.infirmary.application.controller.lowstock.helper.NotificationAlertHelper;
+import com.rocs.infirmary.application.controller.notification.helper.NotificationAlertHelper;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import com.rocs.infirmary.application.module.lowstock.notification.service.application.LowStockNotificationServiceApplication;
 import javafx.fxml.FXMLLoader;
@@ -55,7 +55,7 @@ public class ViewInventoryControllerTest {
         lowStockAlertHelper.setMainNode(new Pane());
 
 
-        NotificationAlertHelper.checkLowStockAndShowAlert();
+        NotificationAlertHelper.getNotification();
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/views/InventoryPage.fxml"));
