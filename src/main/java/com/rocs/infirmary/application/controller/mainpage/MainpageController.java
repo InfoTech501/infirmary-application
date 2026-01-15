@@ -6,7 +6,9 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 import com.rocs.infirmary.application.InfirmaryApplication;
+import com.rocs.infirmary.application.controller.lowstock.NotificationController;
 import com.rocs.infirmary.application.controller.lowstock.helper.NotificationAlertHelper;
+import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
 import com.rocs.infirmary.application.module.lowstock.notification.service.application.LowStockNotificationServiceApplication;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -44,12 +46,12 @@ public class MainpageController implements Initializable {
 
     private NotificationAlertHelper alertHelper = new NotificationAlertHelper() ;
     private final LowStockNotificationServiceApplication lowStockService = new LowStockNotificationServiceApplication();
-
+    private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
 
     @Override
     public void initialize (URL url, ResourceBundle rb) {
         loadDashboard();
-        alertHelper.bindService(lowStockService);
+        alertHelper.bindService(lowStockService,inventoryManagementApplication);
         alertHelper.bindUI(redCircle,toggleButton);
         alertHelper.setMainNode(homepageScene);
         NotificationAlertHelper.checkLowStockAndShowAlert();

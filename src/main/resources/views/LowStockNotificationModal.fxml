@@ -23,28 +23,7 @@
             <Button fx:id="closeButton" mnemonicParsing="false" onMouseClicked="#onCloseButton" text="X" translateX="280.0" />
          </children>
       </HBox>
-      <HBox fx:id="alertCardParent">
-         <children>
-            <VBox fx:id="alertCard" maxWidth="447.0" prefHeight="174.0" prefWidth="442.0">
-               <children>
-                  <Label fx:id="alertTitle" stylesheets="@../styles/notification.css" text="Low Stock" translateX="5.0" translateY="5.0">
-                     <VBox.margin>
-                        <Insets left="40.0" />
-                     </VBox.margin>
-                  </Label>
-                  <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" translateY="-25.0">
-                     <image>
-                        <Image url="@../assets/notification-modal.png" />
-                     </image>
-                  </ImageView>
-                  <Label fx:id="alertMessage" text="Alert Message" translateX="5.0" translateY="-15.0">
-                     <VBox.margin>
-                        <Insets left="40.0" />
-                     </VBox.margin></Label>
-               </children>
-            </VBox>
-         </children>
-      </HBox>
+       <VBox fx:id="alertCardParent" spacing="10" alignment="TOP_LEFT"></VBox>
    </children>
    <effect>
       <DropShadow height="0.0" radius="1.9849999999999999" width="9.94" />
