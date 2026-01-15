@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 import com.rocs.infirmary.application.InfirmaryApplication;
-import com.rocs.infirmary.application.controller.lowstock.helper.LowStockAlertHelper;
+import com.rocs.infirmary.application.controller.lowstock.helper.NotificationAlertHelper;
 import com.rocs.infirmary.application.module.lowstock.notification.service.application.LowStockNotificationServiceApplication;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -42,7 +42,7 @@ public class MainpageController implements Initializable {
     @FXML
     private ToggleButton toggleButton;
 
-    private  LowStockAlertHelper alertHelper = new LowStockAlertHelper() ;
+    private NotificationAlertHelper alertHelper = new NotificationAlertHelper() ;
     private final LowStockNotificationServiceApplication lowStockService = new LowStockNotificationServiceApplication();
 
 
@@ -52,7 +52,7 @@ public class MainpageController implements Initializable {
         alertHelper.bindService(lowStockService);
         alertHelper.bindUI(redCircle,toggleButton);
         alertHelper.setMainNode(homepageScene);
-        LowStockAlertHelper.checkLowStockAndShowAlert();
+        NotificationAlertHelper.checkLowStockAndShowAlert();
     }
 
     private void loadDashboard() {

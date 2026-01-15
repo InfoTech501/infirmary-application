@@ -1,6 +1,6 @@
 package com.rocs.infirmary.application.controller.lowstock.helper;
 
-import com.rocs.infirmary.application.controller.lowstock.LowStockNotificationController;
+import com.rocs.infirmary.application.controller.lowstock.NotificationController;
 import com.rocs.infirmary.application.data.model.report.lowstock.LowStockItems;
 import com.rocs.infirmary.application.module.lowstock.notification.service.application.LowStockNotificationServiceApplication;
 import javafx.scene.Node;
@@ -13,17 +13,17 @@ import java.util.List;
 /**
  * Handles low stock alerts by checking inventory and showing notifications.
  */
-public class LowStockAlertHelper {
+public class NotificationAlertHelper {
 
     private static LowStockNotificationServiceApplication lowStockService;
     private static ImageView redCircle;
     private static ToggleButton toggleButton;
     private static Node node;
     /**
-     * LowStockAlertHelper()
-     * is a no-argument constructor that allows creating a LowStockAlertHelper
+     * NotificationAlertHelper()
+     * is a no-argument constructor that allows creating a NotificationAlertHelper
      */
-    public LowStockAlertHelper(){}
+    public NotificationAlertHelper(){}
     /**
      * Binds the red  icon and the toggle button to this helper.
      * These UI elements are needed to show alerts
@@ -68,7 +68,7 @@ public class LowStockAlertHelper {
         toggleButton.setOnMouseClicked(event -> {
             toggleButton.setDisable(true);
             Stage currentPage = (Stage) node.getScene().getWindow();
-            Stage modal =  LowStockNotificationController.showLowStockModal(currentPage, lowStockItems);
+            Stage modal =  NotificationController.showLowStockModal(currentPage, lowStockItems);
             if(modal != null) {
                 modal.setOnHidden(e -> toggleButton.setDisable(false));
             }

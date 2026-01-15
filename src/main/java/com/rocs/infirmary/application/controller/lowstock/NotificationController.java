@@ -20,10 +20,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * {@code LowStockNotificationController} handles the UI for displaying
+ * {@code NotificationController} handles the UI for displaying
  * low stock alert notifications in the application.
  **/
-public class LowStockNotificationController {
+public class NotificationController {
 
     @FXML
     private VBox alertContainer;
@@ -34,7 +34,7 @@ public class LowStockNotificationController {
     @FXML
     private Label alertMessage;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LowStockNotificationController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NotificationController.class);
 
 
     /**
@@ -65,10 +65,10 @@ public class LowStockNotificationController {
 
         try {
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(LowStockNotificationController.class.getResource("/views/LowStockNotificationModal.fxml"));
+            loader.setLocation(NotificationController.class.getResource("/views/LowStockNotificationModal.fxml"));
             VBox root = loader.load();
 
-            LowStockNotificationController controller = loader.getController();
+            NotificationController controller = loader.getController();
 
             String lowStockProductNames = lowStockMedicine.stream()
                     .map(lowStockReport -> lowStockReport.getDescription() + " (Quantity: " + lowStockReport.getQuantityAvailable() + ")")
