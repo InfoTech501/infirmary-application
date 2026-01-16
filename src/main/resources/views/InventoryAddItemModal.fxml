@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane fx:id="inventoryAddItemModal" maxHeight="-Infinity" prefHeight="621.0" prefWidth="1234.0" style="-fx-background-color: white;  -fx-background-radius: 8;" StackPane.alignment="BOTTOM_CENTER" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.inventory.AddInventoryController">
+<StackPane fx:id="inventoryAddItemModal" maxHeight="-Infinity" prefHeight="621.0" prefWidth="1234.0" style="-fx-background-color: white;  -fx-background-radius: 8;" StackPane.alignment="BOTTOM_CENTER" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.inventory.AddInventoryController">
     <effect>
         <DropShadow color="#00000055" offsetY="-300" radius="0" />
     </effect>
@@ -150,8 +150,8 @@
                   <TableView fx:id="medDetailsTable" onMouseClicked="#onSelectData" prefHeight="435.0" prefWidth="983.0">
                      <columns>
                         <TableColumn fx:id="selectColumn" prefWidth="75.33334350585938" text="Select" />
-                        <TableColumn fx:id="descriptionColumn" prefWidth="608.0" text="Description" />
                         <TableColumn fx:id="productNameColumn" prefWidth="261.0" text="Product Name" />
+                        <TableColumn fx:id="descriptionColumn" prefWidth="608.0" text="Description" />
                      </columns>
                   </TableView>
                </children>
