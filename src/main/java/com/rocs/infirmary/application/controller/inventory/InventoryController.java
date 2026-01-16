@@ -508,4 +508,16 @@ public class InventoryController implements Initializable {
             LOGGER.error(" Error: Table update failed due to invalid data or argument.", e);
         }
     }
+
+    public boolean isExpirationDateValid(Timestamp expirationDate) {
+        if (expirationDate == null) {
+            return false;
+        }
+
+        LocalDate expiryDate =
+                expirationDate.toLocalDateTime().toLocalDate();
+
+        return !expiryDate.isBefore(LocalDate.now());
+    }
+
 }

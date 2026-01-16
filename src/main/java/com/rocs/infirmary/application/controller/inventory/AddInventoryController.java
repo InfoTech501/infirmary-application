@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -218,6 +219,18 @@ public class AddInventoryController implements Initializable {
 
         if (!itemTypeComboBox.getSelectionModel().getSelectedItem().equals("Non expiry")) {
             expirationDate = dateFormat.parse(String.valueOf(expirationDatePicker.getValue()));
+        }
+
+        if (parentController != null &&
+                !parentController.isExpirationDateValid(
+                        new Timestamp(expirationDate.getTime())
+                )) {
+
+            showDialog(
+                    "Invalid Expiration Date",
+                    "Expiration date must be today or a future date."
+            );
+            return false;
         }
 
         String productName = productNameTextField.getText();
