@@ -80,7 +80,6 @@ public class AddInventoryController implements Initializable {
         selectColumn.setCellValueFactory(cellData -> cellData.getValue().isSelectedProperty());
         selectColumn.setCellFactory(CheckBoxTableCell.forTableColumn(selectColumn));
         selectColumn.setEditable(true);
-        selectColumn.setStyle("-fx-alignment: CENTER;");
 
         productNameColumn.setCellValueFactory(new PropertyValueFactory<>("itemName"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -147,6 +146,12 @@ public class AddInventoryController implements Initializable {
         inventoryItem = FXCollections.observableArrayList(inventoryManagementApplication.getMedicineInventoryFacade().getAllMedicine());
         medDetailsTable.setItems(medicine);
         itemTypeComboBox.setItems(itemType);
+        productNameTextField.clear();
+        quantityTextField.clear();
+        descriptionTextField.clear();
+        quantityTextField.clear();
+        expirationDatePicker.setValue(null);
+        itemTypeComboBox.setValue(null);
     }
     private void initalizeEditClick(){
         medDetailsTable.setRowFactory(t->{
@@ -456,9 +461,7 @@ public class AddInventoryController implements Initializable {
             return;
         }
         productNameTextField.setText(medicineModel.getItemName());
-        productNameTextField.setStyle("-fx-alignment: LEFT;");
         descriptionTextField.setText(medicineModel.getDescription());
-        descriptionTextField.setStyle("-fx-alignment:LEFT;");
 
     }
     /**
