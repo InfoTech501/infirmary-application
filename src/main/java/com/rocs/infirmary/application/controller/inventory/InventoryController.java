@@ -138,7 +138,7 @@ public class InventoryController implements Initializable {
 
             filteredList.setPredicate(med -> {
 
-                if (selected.equals("Item Type"))
+                if (selected != null && selected.equals("Item Type"))
                     return true;
 
                 return med.getItemType() != null &&
@@ -153,25 +153,26 @@ public class InventoryController implements Initializable {
 
         private void setupFiltersExpiryDate() {
             expiryDateComboBox.setOnAction(e -> {
-                String selected = expiryDateComboBox.getValue();
+                        String selected = expiryDateComboBox.getValue();
+                        if (!filteredList.isEmpty()) {
+                            filteredList.setPredicate(med -> {
 
-                filteredList.setPredicate(med -> {
+                                if (selected != null && selected.equals("Expiry Date"))
+                                    return true;
 
-                    if (selected.equals("Expiry Date"))
-                        return true;
+                                if (med.getExpirationDate() == null) return false;
 
-                    if (med.getExpirationDate() == null) return false;
+                                LocalDate ld = med.getExpirationDate().toLocalDateTime().toLocalDate();
+                                String formatted = ld.format(DateTimeFormatter.ofPattern("yyyy"));
 
-                    LocalDate ld = med.getExpirationDate().toLocalDateTime().toLocalDate();
-                    String formatted = ld.format(DateTimeFormatter.ofPattern("yyyy"));
-
-                    return formatted.equalsIgnoreCase(selected);
-                });
-
+                                return formatted.equalsIgnoreCase(selected);
+                            });
+                        }
                 medDetailsTable.refresh();
                 updatePagination();
                 pagination.setCurrentPageIndex(0);
             });
+
         }
 
     private void setupRowSelectListener() {
