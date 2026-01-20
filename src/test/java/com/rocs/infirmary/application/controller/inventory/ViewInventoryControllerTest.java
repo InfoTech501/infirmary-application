@@ -1,8 +1,9 @@
 package com.rocs.infirmary.application.controller.inventory;
 
 import com.rocs.infirmary.application.app.facade.dashboard.DashboardFacade;
-import com.rocs.infirmary.application.controller.lowstock.helper.LowStockAlertHelper;
+import com.rocs.infirmary.application.controller.notification.helper.NotificationAlertHelper;
 import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
+import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
 import com.rocs.infirmary.application.module.lowstock.notification.service.application.LowStockNotificationServiceApplication;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -44,18 +45,19 @@ public class ViewInventoryControllerTest {
     public void start(Stage stage) throws IOException {
 
         LowStockNotificationServiceApplication lowStockNotificationServiceApplicationMock = mock(LowStockNotificationServiceApplication.class);
+        InventoryManagementApplication inventoryManagementApplication = mock(InventoryManagementApplication.class);
         DashboardFacade dashboardFacadeMock = mock(DashboardFacade.class);
 
         when(lowStockNotificationServiceApplicationMock.getDashboardFacade()).thenReturn(dashboardFacadeMock);
         when(dashboardFacadeMock.getAllLowStockMedicine()).thenReturn(Collections.emptyList());
 
-        LowStockAlertHelper lowStockAlertHelper = new LowStockAlertHelper();
-        lowStockAlertHelper.bindService(lowStockNotificationServiceApplicationMock);
+        NotificationAlertHelper lowStockAlertHelper = new NotificationAlertHelper();
+        lowStockAlertHelper.bindService(lowStockNotificationServiceApplicationMock,inventoryManagementApplication);
         lowStockAlertHelper.bindUI(new ImageView(), new ToggleButton());
         lowStockAlertHelper.setMainNode(new Pane());
 
 
-        LowStockAlertHelper.checkLowStockAndShowAlert();
+        NotificationAlertHelper.getNotification();
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("/views/InventoryPage.fxml"));
