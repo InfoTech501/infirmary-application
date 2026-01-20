@@ -220,7 +220,7 @@ public class AddInventoryController implements Initializable {
         if (!itemTypeComboBox.getSelectionModel().getSelectedItem().equals("Non expiry")) {
             expirationDate = dateFormat.parse(String.valueOf(expirationDatePicker.getValue()));
         }
-        if (!"Non expiry".equals(itemTypeComboBox.getSelectionModel().getSelectedItem())
+        if (!itemTypeComboBox.getSelectionModel().getSelectedItem().equals("Non expiry")
                 && parentController != null) {
             if (!parentController.isExpirationDateValid(
                             new Timestamp(expirationDate.getTime())
