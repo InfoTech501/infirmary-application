@@ -6,7 +6,7 @@
     -fx-text-fill: #000000;
 }
 
-#alertCard {
+.alertCard {
     -fx-background-color: #FFE1CC;
     -fx-background-radius: 12px;
     -fx-padding: 25px;
@@ -16,13 +16,13 @@
       -fx-max-height: Infinity;
 }
 
-#alertTitle {
+.alertTitle {
     -fx-font-size: 14px;
     -fx-font-weight: bold;
     -fx-text-fill: #000000;
 }
 
-#alertMessage {
+.alertMessage {
     -fx-font-size: 12.5px;
     -fx-text-fill: #000000;
     -fx-line-spacing: 0.5em;
@@ -49,4 +49,12 @@
   -fx-min-height: 0;
   -fx-pref-height: -1;
   -fx-max-height: Infinity;
+}
+
+.alert-close-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #FF0000;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-padding: 0 5 0 5;
 }

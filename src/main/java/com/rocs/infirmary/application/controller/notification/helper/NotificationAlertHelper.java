@@ -1,29 +1,34 @@
-package com.rocs.infirmary.application.controller.lowstock.helper;
+package com.rocs.infirmary.application.controller.notification.helper;
 
-import com.rocs.infirmary.application.controller.lowstock.LowStockNotificationController;
+import com.rocs.infirmary.application.controller.notification.NotificationController;
+import com.rocs.infirmary.application.data.model.inventory.medicine.Medicine;
 import com.rocs.infirmary.application.data.model.report.lowstock.LowStockItems;
+import com.rocs.infirmary.application.module.inventory.management.application.InventoryManagementApplication;
 import com.rocs.infirmary.application.module.lowstock.notification.service.application.LowStockNotificationServiceApplication;
 import javafx.scene.Node;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Handles low stock alerts by checking inventory and showing notifications.
  */
-public class LowStockAlertHelper {
+public class NotificationAlertHelper {
 
     private static LowStockNotificationServiceApplication lowStockService;
+    private static InventoryManagementApplication inventoryManagementApplication;
     private static ImageView redCircle;
     private static ToggleButton toggleButton;
     private static Node node;
     /**
-     * LowStockAlertHelper()
-     * is a no-argument constructor that allows creating a LowStockAlertHelper
+     * NotificationAlertHelper()
+     * is a no-argument constructor that allows creating a NotificationAlertHelper
      */
-    public LowStockAlertHelper(){}
+    public NotificationAlertHelper(){}
     /**
      * Binds the red  icon and the toggle button to this helper.
      * These UI elements are needed to show alerts
@@ -39,8 +44,9 @@ public class LowStockAlertHelper {
      * Sets the service that checks which products are low in stock.
      * @param lowStockService the service used to get low stock items
      */
-    public void bindService(LowStockNotificationServiceApplication lowStockService){
+    public void bindService(LowStockNotificationServiceApplication lowStockService,InventoryManagementApplication inventoryManagementApplication){
         this.lowStockService = lowStockService;
+        this.inventoryManagementApplication = inventoryManagementApplication;
     }
     /**
      * Sets the current UI node. This is needed to get the current  window
@@ -55,11 +61,21 @@ public class LowStockAlertHelper {
      * Checks for low stock items. If found, shows redCircle and
      * sets toggleButton to open the alert modal with product info.
      */
-    public static void checkLowStockAndShowAlert() {
+    public static void getNotification() {
 
         List<LowStockItems> lowStockItems = lowStockService.getDashboardFacade().getAllLowStockMedicine();
+        List<Medicine> expiringMedicine = inventoryManagementApplication.getMedicineInventoryFacade().getAllMedicine();
+        Date today = new Date();
+        long sevenDaysOnMillis = today.getTime() + 7L * 24 * 60 * 60 * 1000;
 
-        if (lowStockItems.isEmpty()) {
+        List<Medicine> expiringMedicines = expiringMedicine.stream()
+                .filter(med -> {
+                    Date expiryDate = med.getExpirationDate();
+                    return !expiryDate.before(today) && expiryDate.getTime() <= sevenDaysOnMillis;
+                })
+                .collect(Collectors.toList());
+
+        if (lowStockItems.isEmpty() && expiringMedicines.isEmpty()) {
             redCircle.setVisible(false);
             toggleButton.setOnMouseClicked(null);
             return;
@@ -68,10 +84,9 @@ public class LowStockAlertHelper {
         toggleButton.setOnMouseClicked(event -> {
             toggleButton.setDisable(true);
             Stage currentPage = (Stage) node.getScene().getWindow();
-            Stage modal =  LowStockNotificationController.showLowStockModal(currentPage, lowStockItems);
-            if(modal != null) {
-                modal.setOnHidden(e -> toggleButton.setDisable(false));
-            }
+            NotificationController.addExpiringMedicineOnAlert(currentPage,expiringMedicines);
+            NotificationController.addLowStockItemOnAlert(currentPage, lowStockItems);
+            toggleButton.setDisable(false);
         });
     }
 }

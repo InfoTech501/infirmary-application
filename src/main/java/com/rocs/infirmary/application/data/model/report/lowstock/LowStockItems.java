@@ -2,15 +2,11 @@ package com.rocs.infirmary.application.data.model.report.lowstock;
 
 public class LowStockItems {
     private String description;
-    private int quantityAvailable;
+    private final int quantityAvailable;
 
     public LowStockItems(String description, int quantityAvailable) {
         this.description = description;
         this.quantityAvailable = quantityAvailable;
-    }
-
-    public LowStockItems() {
-
     }
 
     public String getDescription() {
@@ -23,9 +19,5 @@ public class LowStockItems {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public void setQuantityAvailable(int quantityAvailable) {
-        this.quantityAvailable = quantityAvailable;
     }
 }
