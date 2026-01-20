@@ -71,7 +71,7 @@ public class NotificationAlertHelper {
         List<Medicine> expiringMedicines = expiringMedicine.stream()
                 .filter(med -> {
                     Date expiryDate = med.getExpirationDate();
-                    return !expiryDate.before(today) && expiryDate.getTime() <= sevenDaysOnMillis;
+                    return expiryDate != null && !expiryDate.before(today) && expiryDate.getTime() <= sevenDaysOnMillis;
                 })
                 .collect(Collectors.toList());
 
