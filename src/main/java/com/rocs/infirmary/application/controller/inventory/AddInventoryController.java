@@ -220,19 +220,19 @@ public class AddInventoryController implements Initializable {
         if (!itemTypeComboBox.getSelectionModel().getSelectedItem().equals("Non expiry")) {
             expirationDate = dateFormat.parse(String.valueOf(expirationDatePicker.getValue()));
         }
+        if (!"Non expiry".equals(itemTypeComboBox.getSelectionModel().getSelectedItem())
+                && parentController != null) {
+            if (!parentController.isExpirationDateValid(
+                            new Timestamp(expirationDate.getTime())
+                    )) {
 
-        if (parentController != null &&
-                !parentController.isExpirationDateValid(
-                        new Timestamp(expirationDate.getTime())
-                )) {
-
-            showDialog(
-                    "Invalid Expiration Date",
-                    "Expiration date must be today or a future date."
-            );
-            return false;
+                showDialog(
+                        "Invalid Expiration Date",
+                        "Expiration date must be today or a future date."
+                );
+                return false;
+            }
         }
-
         String productName = productNameTextField.getText();
 
         if (productName == null || productName.trim().isEmpty()) {
