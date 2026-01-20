@@ -1,24 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
 
-<StackPane fx:id="inventoryAddItemModal" maxHeight="-Infinity" prefHeight="621.0" prefWidth="1234.0" style="-fx-background-color: white;  -fx-background-radius: 8;" StackPane.alignment="BOTTOM_CENTER" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.inventory.AddInventoryController">
+<StackPane fx:id="inventoryAddItemModal" maxHeight="-Infinity" prefHeight="621.0" prefWidth="1234.0" style="-fx-background-color: white;  -fx-background-radius: 8;" StackPane.alignment="BOTTOM_CENTER" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.rocs.infirmary.application.controller.inventory.AddInventoryController">
     <effect>
         <DropShadow color="#00000055" offsetY="-300" radius="0" />
     </effect>
@@ -105,7 +93,7 @@
                               <RowConstraints maxHeight="27.666656494140625" minHeight="0.0" prefHeight="16.66665267944336" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <TextField fx:id="descriptionTextField" alignment="CENTER" prefHeight="40.0" prefWidth="280.0" GridPane.rowIndex="1" />
+                              <TextField fx:id="descriptionTextField" prefHeight="40.0" prefWidth="280.0" GridPane.rowIndex="1" />
                               <Label fx:id="descriptionLabel" style="-fx-font-size: 14;" text="Description" />
                            </children>
                         </GridPane>
