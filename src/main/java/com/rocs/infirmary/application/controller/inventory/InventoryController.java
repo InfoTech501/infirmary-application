@@ -18,6 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -27,12 +28,10 @@ import java.net.URL;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import javafx.stage.StageStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 /**
@@ -429,6 +428,7 @@ public class InventoryController implements Initializable {
             deleteInventoryController.setParentController(this);
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
+            stage.setResizable(false);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.initOwner(((Node) actionEvent.getSource()).getScene().getWindow());
             stage.show();
