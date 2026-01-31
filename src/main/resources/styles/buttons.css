@@ -1,288 +1,288 @@
-    .button {
-        -fx-background-color: #FFFFFF;
-        -fx-background-radius: 8;
-        -fx-text-fill: #737791;
-    }
+.button {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 8;
+    -fx-text-fill: #737791;
+}
 
 .button:hover {
-        -fx-background-color: #066C3D;
-        -fx-text-fill: white;
-        -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.120), 8, 0, 0, 5);
-    }
-
-    .button.active{
-        -fx-background-color: #066C3D;
-        -fx-text-fill: white;
-    }
-
-     .label,.button, .hyperlink, .toggle-button {
-        -fx-font-family: 'Lexend';
-        -fx-font-weight: 400;
-        -fx-font-size: 15px;
-    }
-
-
-
-    #DashboardSideBar,#ClinicVisitLogSideBar, #InventorySideBar,#MessageSideBar,#StudentHealthSideBar {
-        -fx-background-color: #FFFFFF;
-        -fx-background-radius: 8px;
-        -fx-text-fill: #737791;
-        -fx-translate-y: 40px;
-
-    }
-
-
-    #StudentHealthSideBar :focused{
     -fx-background-color: #066C3D;
-     -fx-text-fill: white;
-    }
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.120), 8, 0, 0, 5);
+}
+
+.button.active {
+    -fx-background-color: #066C3D;
+    -fx-text-fill: white;
+}
+
+ .label,.button, .hyperlink, .toggle-button {
+    -fx-font-family: 'Lexend';
+    -fx-font-weight: 400;
+    -fx-font-size: 15px;
+}
 
 
-    #DashboardSideBar:focused {
-        -fx-background-color: #066C3D;
-        -fx-text-fill: white;
-    }
-    #ClinicVisitLogSideBar:focused {
-        -fx-background-color: #066C3D;
-        -fx-text-fill: white;
-    }
-    #InventorySideBar:focused {
-        -fx-background-color: #066C3D;
-        -fx-text-fill: white;
+
+#DashboardSideBar,#ClinicVisitLogSideBar, #InventorySideBar,#MessageSideBar,#StudentHealthSideBar {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 8px;
+    -fx-text-fill: #737791;
+    -fx-translate-y: 40px;
+
+}
+
+
+#StudentHealthSideBar :focused{
+-fx-background-color: #066C3D;
+ -fx-text-fill: white;
+}
+
+
+#DashboardSideBar:focused {
+    -fx-background-color: #066C3D;
+    -fx-text-fill: white;
+}
+#ClinicVisitLogSideBar:focused {
+    -fx-background-color: #066C3D;
+    -fx-text-fill: white;
+}
+#InventorySideBar:focused {
+    -fx-background-color: #066C3D;
+    -fx-text-fill: white;
 
 
 
-    }
+}
 
-    #MessageSideBar:focused {
-        -fx-background-color: #066C3D;
-        -fx-text-fill: white;
-    }
-
-
-    #DashboardSideBar:hover {
-        -fx-background-color: #066C3D;
-        -fx-text-fill: white;
-        -fx-transition: 0.3s;
-    }
+#MessageSideBar:focused {
+    -fx-background-color: #066C3D;
+    -fx-text-fill: white;
+}
 
 
-    #StudentHealthSideBar:focused {
-        -fx-background-color: #066C3D;
-        -fx-text-fill: white;
-
-    }
-
-    #ClinicVisitLogSideBar:hover {
-        -fx-background-color: #066C3D;
-        -fx-text-fill: white;
-        -fx-transition: 0.3s;
-
-    }
-
-    #InventorySideBar:hover {
-        -fx-background-color: #066C3D;
-        -fx-text-fill: white;
+#DashboardSideBar:hover {
+    -fx-background-color: #066C3D;
+    -fx-text-fill: white;
     -fx-transition: 0.3s;
-    }
+}
 
-    #MessageSideBar:hover {
-     -fx-background-color: #066C3D;
-        -fx-text-fill: white;
-        -fx-transition: 0.3s;
-    }
 
-    #ShowInformationButton{
+#StudentHealthSideBar:focused {
+    -fx-background-color: #066C3D;
     -fx-text-fill: white;
-    -fx-background-color: #2196F3;
-    -fx-font-size:Large;
-    -fx-background-radius: 15px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 10, 5);
-    }
 
-    #ClearFilterButton:focused {
-        -fx-background-color: #066C3D;
-        -fx-text-fill: white;
-    }
+}
 
-    #sexComboBox, #sectionComboBox{
-         -fx-background-color: #ffffff;
-         -fx-border-radius: 10px;
-         -fx-text-fill: #737791;
-         -fx-font-family: 'Lexend';
-    }
+#ClinicVisitLogSideBar:hover {
+    -fx-background-color: #066C3D;
+    -fx-text-fill: white;
+    -fx-transition: 0.3s;
 
-    #sexComboBox:hover, #sectionComboBox:hover{
-         -fx-background-color: #066C3D;
-         -fx-text-fill: white;
-         -fx-transition: 0.3s;
-    }
+}
 
-    #ButtonConfirm {
-        -fx-background-color: #2E2E2E;
-        -fx-text-fill: white;
-        -fx-background-radius: 4px;
-        -fx-border-radius: 4px;
-    }
-    #ButtonCancel{
-    -fx-background-color:#FFFFFF;
+#InventorySideBar:hover {
+    -fx-background-color: #066C3D;
+    -fx-text-fill: white;
+-fx-transition: 0.3s;
+}
+
+#MessageSideBar:hover {
+ -fx-background-color: #066C3D;
+    -fx-text-fill: white;
+    -fx-transition: 0.3s;
+}
+
+#ShowInformationButton{
+-fx-text-fill: white;
+-fx-background-color: #2196F3;
+-fx-font-size:Large;
+-fx-background-radius: 15px;
+-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0, 10, 5);
+}
+
+#ClearFilterButton:focused {
+    -fx-background-color: #066C3D;
+    -fx-text-fill: white;
+}
+
+#sexComboBox, #sectionComboBox{
+     -fx-background-color: #ffffff;
+     -fx-border-radius: 10px;
+     -fx-text-fill: #737791;
+     -fx-font-family: 'Lexend';
+}
+
+#sexComboBox:hover, #sectionComboBox:hover{
+     -fx-background-color: #066C3D;
+     -fx-text-fill: white;
+     -fx-transition: 0.3s;
+}
+
+#ButtonConfirm {
+    -fx-background-color: #2E2E2E;
+    -fx-text-fill: white;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+}
+#ButtonCancel{
+-fx-background-color:#FFFFFF;
+-fx-border-width: 1px;
+-fx-border-color: black;
+-fx-border-radius:10px;
+}
+#ButtonAddField{
+-fx-background-color:#000000;
+-fx-text-fill:#FFFFFF;
+-fx-border-radius:10px;
+
+}
+
+#ButtonEditHealthInfo {
+fx-font-weight: 400;
+    -fx-font-size: 15px;
+}
+
+#deleteMedicalRecordBtn {
+-fx-background-color:#D32F2F;
+-fx-text-fill: white;
+}
+
+#deleteMedicalRecordBtn:hover {
+-fx-background-color:#D32F2F;
+}
+
+#editHealthInfoBtn{
+-fx-background-color:#1976D2;
+-fx-text-fill: white;
+}
+
+#editHealthInfoBtn:hover {
+-fx-background-color:#1976D2;
+}
+
+#AgeComboBox .cell {
+    -fx-alignment: center;
+    -fx-text-alignment: center;
+      -fx-translate-x: 10px;
+        -fx-translate-y: 2px;
+
+}
+
+#sexComboBox .cell {
+-fx-alignment: center;
+    -fx-text-alignment: center;
+      -fx-translate-x: 11px;
+        -fx-translate-y: 1px;
+
+}
+
+
+
+#sectionComboBox .cell {
+-fx-alignment: center;
+    -fx-text-alignment: center;
+      -fx-translate-x: 10px;
+        -fx-translate-y: 1px;
+}
+
+
+
+
+#SexComboBox .text-field,
+#SectionComboBox .text-field {
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+}
+
+#add-entry-btn {
+    -fx-font-size: 18px;
+    -fx-border-radius: 5;
+
+}
+
+#view-close-button {
+    -fx-font-size: 18px;
+
+}
+
+#Inventory_Filter_Button_A,#Inventory_Filter_Button_Z {
+    -fx-background-color: #FFFFFF;
+    -fx-border-radius: 10px;
+    -fx-padding: 10px;
+    -fx-text-fill: #000000;
     -fx-border-width: 1px;
-    -fx-border-color: black;
-    -fx-border-radius:10px;
-    }
-    #ButtonAddField{
-    -fx-background-color:#000000;
-    -fx-text-fill:#FFFFFF;
-    -fx-border-radius:10px;
+    -fx-border-color: #d3d3d3;
+}
 
-    }
+#Inventory_Filter_Button_A: hover{
+ -fx-background-color: #066C3D;
+ -fx-text-fill: white;
+}
 
-    #ButtonEditHealthInfo {
-    fx-font-weight: 400;
-        -fx-font-size: 15px;
-    }
+#Inventory_Filter_Button_Z: hover{
+ -fx-background-color: #066C3D;
+ -fx-text-fill: white;
+}
 
-    #deleteMedicalRecordBtn {
-    -fx-background-color:#D32F2F;
-    -fx-text-fill: white;
-    }
+#InventoryClearFilterButton{
+    -fx-background-color: #FFFFFF;
+    -fx-border-radius: 10px;
+    -fx-padding: 10px;
+    -fx-text-fill: #000000;
+    -fx-border-width: 1px;
+    -fx-border-color: #d3d3d3;
+}
 
-    #deleteMedicalRecordBtn:hover {
-    -fx-background-color:#D32F2F;
-    }
+#InventoryClearFilterButton: hover{
+ -fx-background-color: #066C3D;
+ -fx-text-fill: white;
+ }
 
-    #editHealthInfoBtn{
-    -fx-background-color:#1976D2;
-    -fx-text-fill: white;
-    }
+#QuantityButton{
+ -fx-background-color: #FFFFFF;
+    -fx-border-radius: 10px;
+    -fx-padding: 10px;
+    -fx-text-fill: #000000;
+    -fx-border-width: 1px;
+    -fx-border-color: #d3d3d3;
+}
 
-    #editHealthInfoBtn:hover {
-    -fx-background-color:#1976D2;
-    }
-
-    #AgeComboBox .cell {
-        -fx-alignment: center;
-        -fx-text-alignment: center;
-          -fx-translate-x: 10px;
-            -fx-translate-y: 2px;
-
-    }
-
-    #sexComboBox .cell {
-    -fx-alignment: center;
-        -fx-text-alignment: center;
-          -fx-translate-x: 11px;
-            -fx-translate-y: 1px;
-
-    }
+#QuantityButton: hover{
+ -fx-background-color: #066C3D;
+ -fx-text-fill: white;
+}
 
 
+#InventoryAddItemButton{
+-fx-border-color: #A7C7E7;
+-fx-border-width: 2px;
+-fx-border-radius: 5px;
+-fx-text-fill: 	#4169E1;
+-fx-font-size:Large;
+-fx-background-radius: 15px;
+}
 
-    #sectionComboBox .cell {
-    -fx-alignment: center;
-        -fx-text-alignment: center;
-          -fx-translate-x: 10px;
-            -fx-translate-y: 1px;
-    }
+#InventoryAddItemButton: hover{
+-fx-background-color: #2196F3;
+-fx-text-fill: 	#FFFFFF;
+}
 
 
+#InventoryRemoveItemsButton{
+-fx-border-color: #D3D3D3;
+ -fx-text-fill: #A9A9A9;
+ -fx-border-radius: 5px;
+}
 
 
-    #SexComboBox .text-field,
-    #SectionComboBox .text-field {
-        -fx-text-alignment: center;
-        -fx-alignment: center;
-    }
+#itemTypeComboBox, #expiryDateComboBox {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #d3d3d3;
 
-    #add-entry-btn {
-        -fx-font-size: 18px;
-        -fx-border-radius: 5;
+}
 
-    }
-
-    #view-close-button {
-        -fx-font-size: 18px;
-
-    }
-
-    #Inventory_Filter_Button_A,#Inventory_Filter_Button_Z {
-        -fx-background-color: #FFFFFF;
-        -fx-border-radius: 10px;
-        -fx-padding: 10px;
-        -fx-text-fill: #000000;
-        -fx-border-width: 1px;
-        -fx-border-color: #d3d3d3;
-    }
-
-    #Inventory_Filter_Button_A: hover{
+#itemTypeComboBox:hover, #expiryDateComboBox:hover {
      -fx-background-color: #066C3D;
      -fx-text-fill: white;
-    }
-
-    #Inventory_Filter_Button_Z: hover{
-     -fx-background-color: #066C3D;
-     -fx-text-fill: white;
-    }
-
-    #InventoryClearFilterButton{
-        -fx-background-color: #FFFFFF;
-        -fx-border-radius: 10px;
-        -fx-padding: 10px;
-        -fx-text-fill: #000000;
-        -fx-border-width: 1px;
-        -fx-border-color: #d3d3d3;
-    }
-
-    #InventoryClearFilterButton: hover{
-     -fx-background-color: #066C3D;
-     -fx-text-fill: white;
-     }
-
-    #QuantityButton{
-     -fx-background-color: #FFFFFF;
-        -fx-border-radius: 10px;
-        -fx-padding: 10px;
-        -fx-text-fill: #000000;
-        -fx-border-width: 1px;
-        -fx-border-color: #d3d3d3;
-    }
-
-    #QuantityButton: hover{
-     -fx-background-color: #066C3D;
-     -fx-text-fill: white;
-    }
-
-
-    #InventoryAddItemButton{
-    -fx-border-color: #A7C7E7;
-    -fx-border-width: 2px;
-    -fx-border-radius: 5px;
-    -fx-text-fill: 	#4169E1;
-    -fx-font-size:Large;
-    -fx-background-radius: 15px;
-    }
-
-    #InventoryAddItemButton: hover{
-    -fx-background-color: #2196F3;
-    -fx-text-fill: 	#FFFFFF;
-    }
-
-
-    #InventoryRemoveItemsButton{
-    -fx-border-color: #D3D3D3;
-     -fx-text-fill: #A9A9A9;
-     -fx-border-radius: 5px;
-    }
-
-
-    #itemTypeComboBox, #expiryDateComboBox {
-        -fx-background-color: #FFFFFF;
-        -fx-border-color: #d3d3d3;
-
-    }
-
-    #itemTypeComboBox:hover, #expiryDateComboBox:hover {
-         -fx-background-color: #066C3D;
-         -fx-text-fill: white;
-    }
+}
 
