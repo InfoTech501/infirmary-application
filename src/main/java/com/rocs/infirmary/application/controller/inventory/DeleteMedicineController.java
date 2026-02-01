@@ -47,45 +47,24 @@ public class DeleteMedicineController {
         int rowIndex = 0;
         for (Medicine med : selectedMedicines) {
             GridPane innerGrid = new GridPane();
-            innerGrid.setPrefWidth(441);
-            innerGrid.setPrefHeight(103);
-            innerGrid.setHgap(10);
-            innerGrid.setVgap(5);
+
 
             ColumnConstraints col1 = new ColumnConstraints();
-            col1.setHgrow(Priority.ALWAYS);
-            col1.setMaxWidth(219.67);
-            col1.setMinWidth(10.0);
-            col1.setPrefWidth(33.67);
+
 
             ColumnConstraints col2 = new ColumnConstraints();
-            col2.setHgrow(Priority.ALWAYS);
-            col2.setMaxWidth(446.3333377838135);
-            col2.setMinWidth(10.0);
-            col2.setPrefWidth(428.33);
 
             innerGrid.getColumnConstraints().addAll(col1, col2);
 
             RowConstraints row1 = new RowConstraints();
-            row1.setVgrow(Priority.ALWAYS);
+            row1.setVgrow(Priority.NEVER);
             row1.setMaxHeight(27.33);
             row1.setPrefHeight(20.0);
 
-            RowConstraints row2 = new RowConstraints();
-            row2.setVgrow(Priority.ALWAYS);
-            row2.setMaxHeight(68.0);
-            row2.setPrefHeight(68.0);
 
-            RowConstraints row3 = new RowConstraints();
-            row3.setVgrow(Priority.ALWAYS);
-            row3.setMaxHeight(29.67);
-            row3.setPrefHeight(14.33);
-
-            innerGrid.getRowConstraints().addAll(row1, row2, row3);
+            innerGrid.getRowConstraints().addAll(row1);
 
             Label medLabel = new Label(med.getItemName());
-            medLabel.setPrefWidth(220.0);
-            medLabel.setPrefHeight(73.0);
             medLabel.setAlignment(Pos.CENTER_LEFT);
             medLabel.setStyle("-fx-font-weight: 700; -fx-font-size: 14px;");
 
@@ -96,10 +75,7 @@ public class DeleteMedicineController {
 
             medicineListContainer.add(innerGrid, 0, rowIndex);
 
-            RowConstraints outerRow = new RowConstraints();
-            outerRow.setPrefHeight(103);
-            outerRow.setVgrow(Priority.ALWAYS);
-            medicineListContainer.getRowConstraints().add(outerRow);
+
             medicineList.add(med);
             rowIndex++;
         }
