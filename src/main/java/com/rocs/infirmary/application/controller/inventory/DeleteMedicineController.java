@@ -116,6 +116,7 @@ public class DeleteMedicineController {
             showDialog("Notification","Medicine successfully Deleted");
             if(parentController != null){
                 parentController.refresh();
+                parentController.removeInputs();
                 if(parentController.getParentController() != null) {
                     parentController.getParentController().refresh();
                 }

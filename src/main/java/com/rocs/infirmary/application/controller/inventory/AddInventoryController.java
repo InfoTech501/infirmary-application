@@ -146,6 +146,13 @@ public class AddInventoryController implements Initializable {
         inventoryItem = FXCollections.observableArrayList(inventoryManagementApplication.getMedicineInventoryFacade().getAllMedicine());
         medDetailsTable.setItems(medicine);
         itemTypeComboBox.setItems(itemType);
+
+    }
+
+    /**
+     * this method removes the content of input fields
+     **/
+    public void removeInputs(){
         productNameTextField.clear();
         quantityTextField.clear();
         descriptionTextField.clear();
@@ -284,6 +291,7 @@ public class AddInventoryController implements Initializable {
                         if (updated) {
                             showDialog("Notification", "Quantity successfully updated in inventory.");
                             refresh();
+                            removeInputs();
                             return true;
                         }
                     }
@@ -301,6 +309,7 @@ public class AddInventoryController implements Initializable {
                     if (inserted) {
                         showDialog("Notification", "Item successfully added. Check your inventory.");
                         refresh();
+                        removeInputs();
                         return true;
                     }
                 }
@@ -319,6 +328,7 @@ public class AddInventoryController implements Initializable {
                     refresh();
                     if (addMedicineToInventory(quantity, itemTypeComboBox.getSelectionModel().getSelectedItem().toString(), expirationDate)) {
                         showDialog("Notification", "Item successfully added. Check your inventory.");
+                        removeInputs();
                         return true;
                     }
                 }
@@ -449,6 +459,7 @@ public class AddInventoryController implements Initializable {
             dialog.showAndWait();
             if(type.getButtonData().isDefaultButton()){
                 refresh();
+                removeInputs();
             }
         }
     }
