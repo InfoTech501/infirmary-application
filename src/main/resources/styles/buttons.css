@@ -4,17 +4,16 @@
     -fx-text-fill: #737791;
 }
 
-.button:focused {
-    -fx-background-color: #066C3D;
-    -fx-text-fill: white;
-}
-
 .button:hover {
     -fx-background-color: #066C3D;
     -fx-text-fill: white;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.120), 8, 0, 0, 5);
 }
 
+.button.active {
+    -fx-background-color: #066C3D;
+    -fx-text-fill: white;
+}
 
  .label,.button, .hyperlink, .toggle-button {
     -fx-font-family: 'Lexend';
