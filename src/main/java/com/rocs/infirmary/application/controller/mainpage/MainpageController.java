@@ -32,6 +32,12 @@ public class MainpageController implements Initializable {
     private Button clinicVisitLogBtn;
 
     @FXML
+    private Button studentHealthProfileBtn;
+
+    @FXML
+    private Button inventoryBtn;
+
+    @FXML
     private StackPane homepageScene;
 
     @FXML
@@ -43,6 +49,7 @@ public class MainpageController implements Initializable {
     @FXML
     private ToggleButton toggleButton;
 
+    private Button activeButton;
     private NotificationAlertHelper alertHelper = new NotificationAlertHelper() ;
     private final LowStockNotificationServiceApplication lowStockService = new LowStockNotificationServiceApplication();
     private final InventoryManagementApplication inventoryManagementApplication = new InventoryManagementApplication();
@@ -60,6 +67,7 @@ public class MainpageController implements Initializable {
         try {
             switchScene("/views/DashboardPage.fxml");
             pageLabel.setText("Dashboard");
+            setActiveButton(dashboardBtn);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -73,6 +81,7 @@ public class MainpageController implements Initializable {
         switchScene("/views/ClinicVisitLogPage.fxml");
         pageLabel.setText("Clinic Visit Log");
         clinicVisitLogBtn.setDefaultButton(true);
+        setActiveButton(clinicVisitLogBtn);
     }
 
     /**
@@ -82,6 +91,7 @@ public class MainpageController implements Initializable {
     void setDashboardBtn() throws IOException {
         switchScene("/views/DashboardPage.fxml");
         pageLabel.setText("Dashboard");
+        setActiveButton(dashboardBtn);
     }
 
     /**
@@ -91,6 +101,7 @@ public class MainpageController implements Initializable {
     void setStudentHealthProfileBtn() throws IOException {
         switchScene("/views/StudentHealthProfilePage.fxml");
         pageLabel.setText("Student Health Profile");
+        setActiveButton(studentHealthProfileBtn);
     }
 
     /**
@@ -100,11 +111,22 @@ public class MainpageController implements Initializable {
     public void setInventoryBtn() throws IOException {
         switchScene("/views/InventoryPage.fxml");
         pageLabel.setText("Inventory");
+        setActiveButton(inventoryBtn);
     }
 
     private void switchScene(String fxmlFile) throws IOException {
         homepageScene.getChildren().clear();
         Parent newPage = FXMLLoader.load(Objects.requireNonNull(InfirmaryApplication.class.getResource(fxmlFile)));
         homepageScene.getChildren().add(newPage);
+    }
+
+    private void setActiveButton(Button button){
+        if(activeButton != null){
+            activeButton.getStyleClass().remove("active");
+        }
+        activeButton = button;
+        if(!button.getStyleClass().contains("active")){
+            button.getStyleClass().add("active");
+        }
     }
 }
