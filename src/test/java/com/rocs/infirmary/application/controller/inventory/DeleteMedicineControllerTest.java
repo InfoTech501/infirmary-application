@@ -49,7 +49,7 @@ class DeleteMedicineControllerTest {
     }
 
 
-    @Disabled
+    //@Disabled
     @Test
     void testDeleteMedicine(FxRobot robot) {
         robot.clickOn(confirmButton);
@@ -59,7 +59,7 @@ class DeleteMedicineControllerTest {
     }
 
 
-    @Disabled
+   //@Disabled
     @Test
     void testDeleteConfirmation(FxRobot robot) {
         robot.clickOn(confirmButton);
@@ -68,7 +68,7 @@ class DeleteMedicineControllerTest {
     }
 
 
-    @Disabled
+    //@Disabled
     @Test
     void testCancelDeletion(FxRobot robot) {
         robot.clickOn(cancelButton);
@@ -76,7 +76,7 @@ class DeleteMedicineControllerTest {
         assertFalse(medDetailsTable.getItems().isEmpty() || medDetailsTable.getItems().isEmpty());
     }
 
-    @Disabled
+    //@Disabled
     @Test
     void testNoSelectedItems(FxRobot robot) {
         robot.interact(() -> medDetailsTable.getItems().clear());

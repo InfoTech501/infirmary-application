@@ -84,7 +84,7 @@ public class ViewInventoryControllerTest {
         assertNotNull(inventoryClearFilterButton);
     }
 
-    @Disabled
+    //@Disabled
     @Test
     public void testQuantityButton(FxRobot robot){
         robot.clickOn(quantityButton);
@@ -92,7 +92,7 @@ public class ViewInventoryControllerTest {
                 medDetailsTable.getItems().stream().map(Medicine::getQuantity).sorted().toList());
     }
 
-    @Disabled
+    //@Disabled
     @Test
     public void testInventoryFilterButtonA(FxRobot robot){
         robot.clickOn(inventoryFilterButtonA);
